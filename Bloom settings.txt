@@ -1,0 +1,10 @@
+Hey guys. I'll be showing you how to disable bloom (in TSW 2) as well as altering the colours, lighting and extending the draw distance. This requires a fairly powerful PC as it naturally has some FPS impacts. This will vary from person to person based on your preferences.
+
+Instructions:
+1.) Locate Engine.ini by going to: Documents\My Games\TrainSimWorld2\Saved\Config\WindowsNoEditor
+
+2.) Open it and inside it add the following values at the bottom, in a blank space
+[SystemSettings]
+r.ViewDistanceScale=3
+r.BloomQuality=0
+r.Color.Mid=0.4
