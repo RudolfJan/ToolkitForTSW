@@ -12,7 +12,7 @@ namespace TSWTools
 		public static Boolean
 			AllowDevMode = false; // set to false to completely disable DevMode for users
 
-		public static String TSWToolsManualVersion { get; } = "v0.52";
+		public static String TSWToolsManualVersion { get; } = "v0.6";
 
 		private static Boolean _PropDeveloperMode = false;
 		private static Boolean _PropTestMode = false;
@@ -46,7 +46,22 @@ namespace TSWTools
 
 		public static Boolean NotFirstRun { get; set; }
 
-		public static String Version { get; } = "Version 0.5 alpha";
+		public static String Version { get; } = "Version 0.6 alpha";
+
+    public static String GetGameSaveLocation()
+      {
+      var MyPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+      MyPath += @"\My Games\TrainSimWorld2\";
+      return MyPath;
+      }
+
+    public static string GameSaveLocation
+      {
+      get
+        {
+        return GetGameSaveLocation();
+        }
+      }
 
 		// static holder for instance, need to use lambda to construct since constructor private
 		// ReSharper disable once InconsistentNaming
@@ -77,7 +92,7 @@ namespace TSWTools
 			get
 				{
 				return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-				       + "\\My Games\\TS2Prototype\\Saved\\Screenshots\\WindowsNoEditor";
+				       + "\\My Games\\TrainsimWorld2\\Saved\\Screenshots\\WindowsNoEditor";
 				}
 			}
 
@@ -86,7 +101,7 @@ namespace TSWTools
 			get
 				{
 				return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-				       + "\\My Games\\TS2Prototype\\Saved\\Config\\WindowsNoEditor";
+				       + "\\My Games\\TrainsimWorld2\\Saved\\Config\\WindowsNoEditor";
 				}
 			}
 
@@ -123,7 +138,7 @@ namespace TSWTools
 			get
 				{
 				return SteamProgramDirectory + "\\userdata\\" + SteamUserId +
-				       "\\760\\remote\\530070\\screenshots";
+							 "\\760\\remote\\1282590\\screenshots";
 				}
 			}
 
@@ -363,8 +378,8 @@ namespace TSWTools
 			var SourceDir = InstallDirectory;
 			try
 				{
-				File.Copy(SourceDir + "Manuals\\TSWTools Manual " + CTSWOptions.TSWToolsManualVersion+".pdf",
-					TSWToolsFolder + "TSWTools Manual " + CTSWOptions.TSWToolsManualVersion + ".pdf", true);
+				File.Copy(SourceDir + "Manuals\\ToolkitForTSW Manual " + CTSWOptions.TSWToolsManualVersion+".pdf",
+					TSWToolsFolder + "ToolkitForTSW Manual " + CTSWOptions.TSWToolsManualVersion + ".pdf", true);
 				File.Copy(SourceDir + "Manuals\\TSW Starters guide.pdf", TSWToolsFolder + "TSW Starters guide.pdf",
 					true);
 				File.Copy(SourceDir + "Manuals\\License information.pdf", TSWToolsFolder + "License information.pdf",
@@ -481,7 +496,7 @@ namespace TSWTools
 						@"Set configuration",
 						MessageBoxButton.OK, MessageBoxImage.Asterisk);
 					SetNotFirstRun();
-					MessageBox.Show(@"Something went wrong, I cannot find the LuaCreator folder structure",
+					MessageBox.Show(@"Something went wrong, I cannot find the ToolkitForTSW folder structure",
 						@"Something went wrong",
 						MessageBoxButton.OK, MessageBoxImage.Error);
 					return;

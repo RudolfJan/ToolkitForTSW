@@ -11,7 +11,10 @@
 	<ScrollViewer>
 		<StackPanel>
 			<Image Margin="10" Source="Images/MainWindowImage.png" MaxHeight="250" />
-			<TextBlock FontSize="14" TextWrapping="Wrap" MaxHeight="60" MaxWidth="500" Style="{StaticResource DefaultTextBlock}">Important. Use this Toolkit only for TSW2! For TSW2020 download TS, which is a similar program</TextBlock>
+			<TextBlock FontSize="16" FontWeight="Bold" TextWrapping="Wrap" MaxHeight="60" MaxWidth="500" 
+			           Style="{StaticResource DefaultTextBlock}">
+				Important. Use this Toolkit only for TSW2! For TSW2020 download TSWTools, which is a similar program
+			</TextBlock>
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition />
@@ -49,6 +52,10 @@
 				<Border Grid.Column="1" Style="{StaticResource DefaultBorder}">
 					<StackPanel>
 						<TextBlock Style="{StaticResource HeaderTextBlock}">Unpack and view</TextBlock>
+						<Button Name="ScenarioManagerButton" Style="{StaticResource WideButton}"
+						        ToolTip="Tools to manage scenarios you created with the Scenario Planner" Click="OnScenarioManager">
+							Scenario Manager
+						</Button>
 						<Button Name="UnpackerButton" Style="{StaticResource WideButton}"
 						        ToolTip="Using the Unreal Unpacker you can unpack the game .pak files here"
 						        Click="OnUnpackerButtonClicked">

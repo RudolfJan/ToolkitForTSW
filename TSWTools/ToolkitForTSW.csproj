@@ -6,6 +6,11 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Company>HollandHiking</Company>
+    <Authors>Rudolf Heijink</Authors>
+    <Version>0.6.0</Version>
+    <PackageProjectUrl>https://github.com/RudolfJan/ToolkitForTSW</PackageProjectUrl>
+    <Copyright>(C) 2020 Rudolf Heijink</Copyright>
   </PropertyGroup>  
 
 <ItemGroup>
@@ -67,6 +72,7 @@
     <ProjectReference Include="..\..\mirzaevolution\ThumbnailSharp\ThumbnailSharp\ThumbnailSharp.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Logging.Library\Logging.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Styles.Library\Styles.Library.csproj" />
+    <ProjectReference Include="..\SavCracker.Library\SavCracker.Library.csproj" />
   </ItemGroup>
 
 

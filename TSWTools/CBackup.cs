@@ -148,16 +148,9 @@ List with all backup sets
 		return Now.ToString("yyyy-MM-dd$HHmm");
 		}
 
-	public String GetGameSaveLocation()
-		{
-		var MyPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-		MyPath += @"\My Games\TS2Prototype\";
-		return MyPath;
-		}
-
 		public void MakeBackup()
 			{
-			var SourceBase = GetGameSaveLocation();
+			var SourceBase = CTSWOptions.GameSaveLocation;
 			var TargetBase = CTSWOptions.BackupFolder+CreateBackupSetName()+"\\";
 			BackUpPart(SourceBase,TargetBase,"Saved\\Config\\",SaveConfig);
 			BackUpPart(SourceBase, TargetBase, "Saved\\SaveGames\\", SaveSaveGames);
@@ -182,7 +175,7 @@ List with all backup sets
 
 	public void RestoreBackup(String Source)
 		{
-		var Target= GetGameSaveLocation();
+		var Target= CTSWOptions.GameSaveLocation;
 		CApps.CopyDir(Source, Target,true);
 		}
 

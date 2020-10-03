@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
+using ToolkitForTSW;
 
 namespace TSWTools
 	{
@@ -56,6 +57,12 @@ namespace TSWTools
 		#endregion
 
 		#region Unpack
+
+    private void OnScenarioManager(object sender, RoutedEventArgs e)
+      {
+			var Form= new FormScenarioManager();
+      Form.Show();
+      }
 
 		private void OnUnpackerButtonClicked(Object Sender, RoutedEventArgs E)
 			{
@@ -151,6 +158,7 @@ namespace TSWTools
 
 
     #endregion
+
  
     }
 	}

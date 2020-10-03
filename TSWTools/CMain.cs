@@ -46,12 +46,12 @@ namespace TSWTools
 
 		public void OpenManual()
 			{
-			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "TSWTools Manual "+ CTSWOptions.TSWToolsManualVersion+".pdf");
+			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "ToolkitForTSW Manual "+ CTSWOptions.TSWToolsManualVersion+".pdf");
 			}
 
 		public void OpenStartersGuide()
 			{
-			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "TSW Starters guide.pdf");
+			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "TSW2 Starters guide.pdf");
 			}
 		}
 	}

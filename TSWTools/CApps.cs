@@ -217,6 +217,12 @@ namespace TSWTools
 			{
 			try
 				{
+				if (Filepath.Contains("\'"))
+					{
+					//TODO fix this work around
+					return CLog.Trace("Cannot open file " + Filepath + " because it contains single quotes. Remove the qute from the file path", LogEventType.Error);
+					}
+
 				if (File.Exists(Filepath))
 					{
 					using (var OpenFileProcess = new Process())
