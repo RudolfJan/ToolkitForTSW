@@ -101,7 +101,7 @@ namespace SavCracker.Library
         default:
             {
             scenario.RouteName = inputName;
-            scenario.RouteAbbreviation = "???";
+            scenario.RouteAbbreviation = "XXX";
             break;
             }
         }
