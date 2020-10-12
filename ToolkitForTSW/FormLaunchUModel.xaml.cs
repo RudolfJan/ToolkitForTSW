@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	/// <summary>
 	/// Interaction logic for FormLaunchUModel.xaml

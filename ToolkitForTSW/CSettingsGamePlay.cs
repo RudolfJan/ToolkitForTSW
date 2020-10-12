@@ -1,24 +1,13 @@
 ﻿using Styles.Library.Helpers;
 using System;
-using System.Windows.Input;
 
-namespace TSWTools
+namespace ToolkitForTSW
 {
-	public class CSettingsGamePlay : Notifier
+	public class CSettingsGamePlay : CSetting
 		{
 		#region Properties
 
-		private CSettingsManager _SettingsManager;
 
-		public CSettingsManager SettingsManager
-			{
-			get { return _SettingsManager; }
-			set
-				{
-				_SettingsManager = value;
-				OnPropertyChanged("SettingsManager");
-				}
-			}
 
 		private Boolean _QuickWalk;
 
@@ -108,11 +97,11 @@ namespace TSWTools
 			}
 
 		public void Init()
-			{
-			GetQuickWalk();
-			GetCabSway();
-			GetForceFeedback();
-			GetJunctionDerail();
+      {
+      QuickWalk = GetBooleanValue("QuickWalk", false);
+      CabSway = GetBooleanValue("bCameraMotionSwayEnabled", true);
+      ForceFeedback = GetBooleanValue("ForceFeedback", false);
+      DisableJunctionDerail = GetBooleanValue("DisableJunctionDerail", false);
 			GetUnits();
 			GetGradeUnits();
 			GetTemperatureUnits();
@@ -120,14 +109,13 @@ namespace TSWTools
 
 		public void Update()
 			{
-			WriteCabSway();
-			WriteQuickWalk();
-			WriteForceFeedback();
-			WriteJunctionDerail();
+			WriteBooleanValue(CabSway, "bCameraMotionSwayEnabled",SectionEnum.User);
+			WriteBooleanValue(QuickWalk, "QuickWalk",SectionEnum.User);
+			WriteBooleanValue(ForceFeedback, "ForceFeedback",SectionEnum.User);
+			WriteBooleanValue(DisableJunctionDerail, "DisableJunctionDerail",SectionEnum.User);
       WriteGradeSettings();
       WriteMeasurement();
       WriteTemperature();
-			SettingsManager.UpdateSetting("TemperatureUnit", TemperatureUnits.ToString(), SectionEnum.User);
 			}
 
     private void WriteTemperature()
@@ -202,88 +190,15 @@ namespace TSWTools
         }
 			}
 
-
-
-    private Boolean StringToBoolean(String Value)
-			{
-			return String.Equals(Value, "true", StringComparison.OrdinalIgnoreCase);
-			}
-
-		private void GetCabSway()
-			{
-			SettingsManager.GetSetting("bCameraMotionSwayEnabled", out var ShowCabSway);
-			CabSway = StringToBoolean(ShowCabSway);
-			}
-
-		private void GetQuickWalk()
-			{
-			SettingsManager.GetSetting("QuickWalk", out var ShowQuickWalk);
-			QuickWalk = StringToBoolean(ShowQuickWalk);
-			}
-
-		private void WriteQuickWalk()
-			{
-			if (QuickWalk)
-				{
-				SettingsManager.UpdateSetting("QuickWalk", "True", SectionEnum.User);
-				}
-			else
-				{
-				SettingsManager.UpdateSetting("QuickWalk", "False", SectionEnum.User);
-				}
-			}
-
-		private void WriteCabSway()
-			{
-			if (CabSway)
-				{
-				SettingsManager.UpdateSetting("bCameraMotionSwayEnabled", "True", SectionEnum.User);
-				}
-			else
-				{
-				SettingsManager.UpdateSetting("bCameraMotionSwayEnabled", "False", SectionEnum.User);
-				}
-			}
-
-		private void GetJunctionDerail()
-			{
-			SettingsManager.GetSetting("DisableJunctionDerail", out var Temp);
-			DisableJunctionDerail = StringToBoolean(Temp);
-			}
-
-		private void WriteJunctionDerail()
-			{
-			if (DisableJunctionDerail)
-				{
-				SettingsManager.UpdateSetting("DisableJunctionDerail", "True", SectionEnum.User);
-				}
-			else
-				{
-				SettingsManager.UpdateSetting("DisableJunctionDerail", "False", SectionEnum.User);
-				}
-			}
-
-		private void GetForceFeedback()
-			{
-			SettingsManager.GetSetting("ForceFeedback", out var Temp);
-			ForceFeedback = StringToBoolean(Temp);
-			}
-
-		private void WriteForceFeedback()
-			{
-			if (ForceFeedback)
-				{
-				SettingsManager.UpdateSetting("ForceFeedback", "True", SectionEnum.User);
-				}
-			else
-				{
-				SettingsManager.UpdateSetting("ForceFeedback", "False", SectionEnum.User);
-				}
-			}
-
 		private void GetUnits()
 			{
-			SettingsManager.GetSetting("Measurement", out var Temp);
+      SettingsManager.GetSetting("MeasurementSetting", out var Temp);
+      if (string.CompareOrdinal(Temp, "Automatic")==0)
+        {
+        Units = UnitsEnum.Automatic;
+        return;
+        }
+			SettingsManager.GetSetting("Measurement", out Temp);
 			Units = UnitsEnum.Metric;
 			if (String.CompareOrdinal(Temp, "Imperial") == 0)
 				{
@@ -293,7 +208,14 @@ namespace TSWTools
 
 		private void GetGradeUnits()
 			{
-			SettingsManager.GetSetting("GradeUnit", out var Temp);
+      SettingsManager.GetSetting("GradeSetting", out var Temp);
+      if (string.CompareOrdinal(Temp, "Automatic") == 0)
+        {
+        GradeUnits = GradeUnitsEnum.Automatic;
+        return;
+        }
+
+			SettingsManager.GetSetting("GradeUnit", out Temp);
 			GradeUnits = GradeUnitsEnum.Percentage;
 			if (String.CompareOrdinal(Temp, "Ratio") == 0)
 				{
@@ -303,7 +225,13 @@ namespace TSWTools
 
 		private void GetTemperatureUnits()
 			{
-			SettingsManager.GetSetting("TemperatureUnit", out var Temp);
+      SettingsManager.GetSetting("TemperatureSetting", out var Temp);
+      if (string.CompareOrdinal(Temp, "Automatic")==0)
+        {
+        TemperatureUnits = TemperatureEnum.Automatic;
+        return;
+        }
+			SettingsManager.GetSetting("TemperatureUnit", out Temp);
 			TemperatureUnits = TemperatureEnum.Celsius;
 			if (String.CompareOrdinal(Temp, "Fahrenheit") == 0)
 				{

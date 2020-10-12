@@ -4,7 +4,7 @@ using System.IO;
 using Microsoft.Win32;
 using Styles.Library.Helpers;
 
-namespace TSWTools
+namespace ToolkitForTSW
     {
     public class CScreenshotManager : Notifier
         {

@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 //	https://github.com/mirzaevolution/ThumbnailSharp
 
-namespace TSWTools
+namespace ToolkitForTSW
     {
     /// <summary>
     /// Interaction logic for FormScreenshotManager.xaml

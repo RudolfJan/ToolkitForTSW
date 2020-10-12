@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 
-namespace TSWTools
+namespace ToolkitForTSW
 {
 	public class CUnpacker : Notifier
 		{

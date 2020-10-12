@@ -10,7 +10,7 @@ using System.Xml;
 using System.Xml.Linq;
 
 // static class to invoke external applications
-namespace TSWTools
+namespace ToolkitForTSW
 {
 	public static class CApps
 		{

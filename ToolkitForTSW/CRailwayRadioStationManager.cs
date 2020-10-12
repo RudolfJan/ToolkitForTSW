@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace TSWTools
+namespace ToolkitForTSW
   {
   public class CRailwayRadioStationManager : Notifier
     {

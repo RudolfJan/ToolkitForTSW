@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace TSWTools
+namespace ToolkitForTSW
     {
     /// <summary>
     /// Interaction logic for FormInputMapperManager.xaml

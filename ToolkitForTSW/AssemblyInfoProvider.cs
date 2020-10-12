@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace TSWTools
+namespace ToolkitForTSW
 {
     public static class AssemblyInfoProvider
 		{

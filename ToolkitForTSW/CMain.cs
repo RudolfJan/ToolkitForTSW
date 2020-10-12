@@ -2,7 +2,7 @@
 using System;
 using System.Windows;
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	public class CMain : Notifier
 		{

@@ -6,7 +6,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Company>HollandHiking</Company>
+    <Company>Holland Hiking</Company>
     <Authors>Rudolf Heijink</Authors>
     <Version>0.6.0</Version>
     <PackageProjectUrl>https://github.com/RudolfJan/ToolkitForTSW</PackageProjectUrl>

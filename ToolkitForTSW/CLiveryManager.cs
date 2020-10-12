@@ -7,7 +7,7 @@ using System.Data.SQLite;
 using System.IO;
 
 
-namespace TSWTools
+namespace ToolkitForTSW
   {
   public enum LiveryTypesEnum
 

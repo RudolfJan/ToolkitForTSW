@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TSWTools;
+using ToolkitForTSW;
 
 namespace ToolkitForTSW
   {

@@ -1,9 +1,9 @@
-﻿<Window x:Class="TSWTools.FormOptions"
+﻿<Window x:Class="ToolkitForTSW.FormOptions"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TSWTools"
+        xmlns:local="clr-namespace:ToolkitForTSW"
         xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
         mc:Ignorable="d"
         Title="ToolkitForTSW Options" 
@@ -52,6 +52,8 @@
 						<userControls:LabelTextBox LabelText="Steam user key" LabelWidth="100"
 						                            TextBoxText="{Binding SteamUserId, Mode=TwoWay}" Width="220"
 						                            HorizontalAlignment="Left" ToolTip="To obtain the Steam screenshots, ToolkitForTSW needs the steam Id. If it is guessed wrong, provide it here"/>
+            <CheckBox Name="ÜseAdvancedSettingsCheckBox" IsChecked="{Binding UseAdvancedSettings}">Use advanced settings by default</CheckBox>
+            <CheckBox  Name="LimitSoundVolumesCheckBox" IsChecked="{Binding LimitSoundVolumes}">Limit sound volumes by default</CheckBox>
 					</StackPanel>
 				</Border>
 			</TabItem>

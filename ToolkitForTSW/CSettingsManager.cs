@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using ToolkitForTSW;
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	#region enums
 
@@ -51,6 +51,14 @@ namespace TSWTools
 		[Description("Medium")] Medium = 1,
 		[Description("High")] High = 2,
 		[Description("Ultra")] Ultra = 3,
+		}
+
+  public enum QualityPlusOffEnum
+    {
+    [Description("Off")] Off = 0,
+    [Description("Low")] Low = 1,
+    [Description("Medium")] Medium = 2,
+    [Description("High")] High = 3
 		}
 
 	public enum AntiAliasingEnum
@@ -157,7 +165,7 @@ namespace TSWTools
 		/*
 		if true used advanced settings, otherwise do not write them to output
 		*/
-		private Boolean _UseAdvanced;
+		private Boolean _UseAdvanced= CTSWOptions.UseAdvancedSettings;
 		public Boolean UseAdvanced
 			{
 			get { return _UseAdvanced; }
@@ -538,8 +546,7 @@ namespace TSWTools
 				Result += CLog.Trace("Settings key not found " + Key);
 				return;
 				}
-			var Setting2 = SettingsDictionary[Idx];
-			Setting2.Value = Value;
+			SettingsDictionary[Idx].Value=Value;
 			}
 
 		public void GetSetting(String Key, out String Value)

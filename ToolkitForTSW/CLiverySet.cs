@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 
 
-namespace TSWTools
+namespace ToolkitForTSW
   {
   public class CLiverySet : Notifier
     {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using ToolkitForTSW;
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

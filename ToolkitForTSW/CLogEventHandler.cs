@@ -1,6 +1,6 @@
 using System;
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	public enum LogEventType { Debug, Error, Message, Event, Undefined };
 

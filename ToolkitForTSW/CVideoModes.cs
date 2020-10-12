@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 // https://stackoverflow.com/questions/744541/how-to-list-available-video-modes-using-c
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	public class VideoMode
 		{

@@ -2,8 +2,10 @@
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Forms;
+using MessageBox = System.Windows.MessageBox;
 
-namespace TSWTools
+namespace ToolkitForTSW
   {
   public class CTSWOptions
 		{
@@ -295,7 +297,10 @@ namespace TSWTools
 				}
 			}
 
-		public static Boolean TestMode
+    public static bool UseAdvancedSettings { get; set; }
+    public static bool LimitSoundVolumes { get; set; }
+
+    public static Boolean TestMode
 			{
 			set { _PropTestMode = value; }
 			get
@@ -314,7 +319,6 @@ namespace TSWTools
 
 		public static String Installer { get; set; } = String.Empty;
 
-		public static Boolean UseAdvancedSettings { get; set; } = false;
 
 		#endregion
 
@@ -430,7 +434,8 @@ namespace TSWTools
 				_PropDeveloperMode = ((Int32) AppKey.GetValue("DeveloperMode", 0) == 1);
 				}
 
-			UseAdvancedSettings = (Boolean) AppKey.GetValue("UseAdvacendSettings", true);
+			UseAdvancedSettings = (Int32)AppKey.GetValue("UseAdvancedSettings", 1)==1;
+      LimitSoundVolumes = (Int32)AppKey.GetValue("LimitSoundVolumes", 1)==1;
 			}
 
 		public static void WriteToRegistry()
@@ -456,6 +461,7 @@ namespace TSWTools
 			AppKey.SetValue("DeveloperMode", _PropDeveloperMode, RegistryValueKind.DWord);
 			AppKey.SetValue("Initialized", _PropIsInitialized, RegistryValueKind.DWord);
 			AppKey.SetValue("UseAdvancedSettings", UseAdvancedSettings, RegistryValueKind.DWord);
+      AppKey.SetValue("LimitSoundVolumes", LimitSoundVolumes, RegistryValueKind.DWord);
 			}
 
 		public static Boolean GetNotFirstRun()

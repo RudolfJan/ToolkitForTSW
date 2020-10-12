@@ -3,21 +3,11 @@ using System;
 
 
 
-namespace TSWTools
+namespace ToolkitForTSW
 {
-	public class CSettingsScreen: Notifier
-    {
+	public class CSettingsScreen : CSetting
+		{
 		#region Properties
-    private CSettingsManager _SettingsManager;
-    public CSettingsManager SettingsManager
-	    {
-	    get { return _SettingsManager; }
-	    set
-		    {
-		    _SettingsManager = value;
-		    OnPropertyChanged("SettingsManager");
-		    }
-	    }
 
     private CVideoModes _VideoModes;
     public CVideoModes VideoModes
@@ -42,7 +32,6 @@ namespace TSWTools
 				OnPropertyChanged("ScreenMode");
 			}
 		}
-
 
 		private Int32 _ResolutionSizeX;
 		public Int32 ResolutionSizeX
@@ -100,27 +89,10 @@ namespace TSWTools
     public void Init()
 	    {
 	    GetScreenMode();
-	    SettingsManager.GetSetting("ResolutionSizeX", out var Temp);
-	    if (Temp.Length > 0)
-		    {
-		    ResolutionSizeX = Convert.ToInt32(Temp);
-		    }
-	    else
-		    {
-		    ResolutionSizeX = 0;
-		    }
-
-	    SettingsManager.GetSetting("ResolutionSizeY", out Temp);
-	    if (Temp.Length > 0)
-		    {
-		    ResolutionSizeY = Convert.ToInt32(Temp);
-		    }
-	    else
-		    {
-		    ResolutionSizeY = 0;
-		    }
-			VSync = GetBooleanValue("bUseVSync");
-	    ScreenshotQuality = GetBooleanValueFromInt("ScreenShotQuality");
+      ResolutionSizeX = GetIntValue("ResolutionSizeX", 800);
+      ResolutionSizeY = GetIntValue("ResolutionSizeY", 640);
+			VSync = GetBooleanValue("bUseVSync",false);
+	    ScreenshotQuality = GetBooleanValueFromInt("ScreenShotQuality",false);
 		}
 
     public void Update()
@@ -128,29 +100,10 @@ namespace TSWTools
 			SettingsManager.UpdateSetting("ResolutionSizeX", ResolutionSizeX.ToString(), SectionEnum.User);
 	    SettingsManager.UpdateSetting("ResolutionSizeY", ResolutionSizeY.ToString(), SectionEnum.User);
 			SettingsManager.UpdateSetting("PreferredFullscreenMode", ((Int32)ScreenMode).ToString(), SectionEnum.User);
-			WriteVSync();
-	    WriteScreenshotQuality();
+			WriteBooleanValue(VSync,"bUseVSync",SectionEnum.User);
+	    WriteBooleanValueAsInt(ScreenshotQuality, "ScreenShotQuality",SectionEnum.User);
 	    }
-
-    private Boolean GetBooleanValueFromInt(String Key)
-	    {
-	    SettingsManager.GetSetting(Key, out var Temp);
-	    if (Temp.Length == 0 || (String.CompareOrdinal(Temp, "1") == 0))
-		    {
-		    return true;
-		    }
-	    return false;
-	    }
-    private Boolean GetBooleanValue(String Key)
-      {
-      SettingsManager.GetSetting(Key, out var Temp);
-      if (Temp.Length == 0 || (String.CompareOrdinal(Temp, "True") == 0))
-        {
-        return true;
-        }
-      return false;
-      }
-
+  
     private void GetScreenMode()
 	    {
 	    SettingsManager.GetSetting("PreferredFullscreenMode", out var Temp);
@@ -161,30 +114,5 @@ namespace TSWTools
 		    }
 			ScreenMode= (ScreenModeEnum)Convert.ToInt32(Temp);
 			}
-
-    private void WriteVSync()
-	    {
-	    if (VSync)
-		    {
-		    SettingsManager.UpdateSetting("bUseVSync", "True", SectionEnum.User);
-		    }
-	    else
-		    {
-		    SettingsManager.UpdateSetting("bUseVSync", "False", SectionEnum.User);
-		    }
-	    }
-
-    private void WriteScreenshotQuality()
-	    {
-	    if (ScreenshotQuality)
-		    {
-		    SettingsManager.UpdateSetting("ScreenShotQuality", "1", SectionEnum.User);
-		    }
-	    else
-		    {
-		    SettingsManager.UpdateSetting("ScreenShotQuality", "0", SectionEnum.User);
-		    }
-	    }
-
 	}
 }

@@ -3,7 +3,7 @@ using System;
 
 
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	public class CLogFilter : Notifier
 		{

@@ -4,7 +4,7 @@ using System.IO;
 using System.Collections.ObjectModel;
 
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	public class CDirTreeItem : Notifier
 		{

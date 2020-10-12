@@ -3,21 +3,10 @@ using System;
 
 
 
-namespace TSWTools
+namespace ToolkitForTSW
 {
-	public class CSettingsHUD : Notifier
+	public class CSettingsHUD : CSetting
 		{
-		private CSettingsManager _SettingsManager;
-
-		public CSettingsManager SettingsManager
-			{
-			get { return _SettingsManager; }
-			set
-				{
-				_SettingsManager = value;
-				OnPropertyChanged("SettingsManager");
-				}
-			}
 
 		private Boolean _ObjectiveMarker;
 
@@ -30,6 +19,18 @@ namespace TSWTools
 				OnPropertyChanged("ObjectiveMarker");
 				}
 			}
+
+    private Boolean _StopAtMarker;
+
+    public Boolean StopAtMarker
+			{
+      get { return _StopAtMarker; }
+      set
+        {
+				_StopAtMarker = value;
+        OnPropertyChanged("StopAtMarker");
+        }
+      }
 
 		private HudStyleEnum _NextSignalMarker;
 
@@ -121,61 +122,35 @@ namespace TSWTools
 			}
 
 		public void Init()
-			{
-			GetObjectiveMarker();
+      {
+      ObjectiveMarker = GetBooleanValue("ShowObjectiveMarker", true);
+      StopAtMarker = GetBooleanValue("ShowObjectiveStopAtMarker", true);
 			GetNextSignalMarker();
-			GetNextSignalAspect();
+      NextSignalAspect = GetBooleanValue("ShowNextSignalAspectMarker", true);
 			GetNextSpeedLimitMarker();
-			GetCompass();
-			GetScenarioMarker();
-			GetScore();
-			GetStopMarker();
-			}
+      Compass = GetBooleanValue("ShowCompass", true);
+			Score = GetBooleanValue("ShowScore", true);
+      StopMarker = GetBooleanValue("ShowObjectiveStopAtMarker", true);
+      ScenarioMarker = GetBooleanValue("ShowScenarioMarker", true);
+      }
 
 		public void Update()
 			{
-			WriteObjectiveMarker();
-			WriteNextSignalMarker();
-			WriteNextSignalAspect();
+			WriteBooleanValue(ObjectiveMarker, "ShowObjectiveMarker",SectionEnum.User);
+			WriteBooleanValue(StopAtMarker, "ShowObjectiveStopAtMarker",SectionEnum.User);
+			WriteBooleanValue(NextSignalAspect, "ShowNextSignalAspectMarker",SectionEnum.User);
+      WriteNextSignalMarker();
 			WriteNextSpeedLimitMarker();
-			WriteCompass();
-			WriteStopMarker();
-			WriteScenarioMarker();
-			WriteScore();
+			WriteBooleanValue(Compass, "ShowCompass",SectionEnum.User);
+			WriteBooleanValue(StopMarker, "ShowObjectiveStopAtMarker",SectionEnum.User);
+			WriteBooleanValue(ScenarioMarker, "ShowScenarioMarker",SectionEnum.User);
+			WriteBooleanValue(Score, "ShowScore",SectionEnum.User);
 			}
-
-		private Boolean StringToBoolean(String Value)
-			{
-			return String.Equals(Value, "true", StringComparison.OrdinalIgnoreCase);
-			}
-
-		private void GetObjectiveMarker()
-			{
-			SettingsManager.GetSetting("ShowObjectiveMarker", out var ShowObjectiveMarker);
-			SettingsManager.GetSetting("ShowObjectiveStopAtMarker", out var ShowObjectiveStopAtMarker);
-			var ObjectiveMarkerBool = StringToBoolean(ShowObjectiveMarker);
-			var ObjectiveMarkerStopAt = StringToBoolean(ShowObjectiveStopAtMarker);
-			ObjectiveMarker = true;
-			}
-
-		public void WriteObjectiveMarker()
-			{
-	    if (ObjectiveMarker)
-        {
-        SettingsManager.UpdateSetting("ShowObjectiveMarker", "True", SectionEnum.User);
-        }
-      else
-        {
-        SettingsManager.UpdateSetting("ShowObjectiveMarker", "False", SectionEnum.User);
-        }
-      }
 
 		private void GetNextSignalMarker()
 			{
-			SettingsManager.GetSetting("ShowNextSignalMarker", out var ShowNextSignalMarker);
-			SettingsManager.GetSetting("ShowNextSignalScreen", out var ShowNextSignalScreen);
-			var NextSignalMarkerBool = StringToBoolean(ShowNextSignalMarker);
-			var ShowNextSignalScreenBool = StringToBoolean(ShowNextSignalScreen);
+      var NextSignalMarkerBool = GetBooleanValue("ShowNextSignalMarker", true);
+      var ShowNextSignalScreenBool = GetBooleanValue("ShowNextSignalScreen", true);
 			NextSignalMarker = HudStyleEnum.None;
 			if (NextSignalMarkerBool && ShowNextSignalScreenBool)
 				{
@@ -213,30 +188,10 @@ namespace TSWTools
 				}
 			}
 
-		private void GetNextSignalAspect()
+	private void GetNextSpeedLimitMarker()
 			{
-			SettingsManager.GetSetting("ShowNextSignalAspectMarker", out var ShowNextSignalAspectMarker);
-			NextSignalAspect = StringToBoolean(ShowNextSignalAspectMarker);
-			}
-
-		private void WriteNextSignalAspect()
-			{
-			if (NextSignalAspect)
-				{
-				SettingsManager.UpdateSetting("ShowNextSignalAspectMarker", "True", SectionEnum.User);
-				}
-			else
-				{
-				SettingsManager.UpdateSetting("ShowNextSignalAspectMarker", "False", SectionEnum.User);
-				}
-			}
-
-		private void GetNextSpeedLimitMarker()
-			{
-			SettingsManager.GetSetting("ShowSpeedLimitMarker", out var ShowSpeedLimitMarker);
-			SettingsManager.GetSetting("ShowSpeedLimitScreen", out var ShowSpeedLimitScreen);
-			var ShowSpeedLimitMarkerBool = StringToBoolean(ShowSpeedLimitMarker);
-			var ShowSpeedLimitScreenBool = StringToBoolean(ShowSpeedLimitScreen);
+      var ShowSpeedLimitMarkerBool = GetBooleanValue("ShowSpeedLimitMarker",true);
+      var ShowSpeedLimitScreenBool = GetBooleanValue("ShowSpeedLimitScreen", true);
 			NextSpeedLimitMarker = HudStyleEnum.None;
 			if (ShowSpeedLimitMarkerBool && ShowSpeedLimitScreenBool)
 				{
@@ -273,79 +228,5 @@ namespace TSWTools
 				SettingsManager.UpdateSetting("ShowSpeedLimitScreen", "False", SectionEnum.User);
 				}
 			}
-
-		private void GetScenarioMarker()
-			{
-			SettingsManager.GetSetting("ShowScenarioMarker", out var ShowScenarioMarker);
-			ScenarioMarker = StringToBoolean(ShowScenarioMarker);
-			}
-
-		private void WriteScenarioMarker()
-			{
-			if (ScenarioMarker)
-				{
-				SettingsManager.UpdateSetting("ShowScenarioMarker", "True", SectionEnum.User);
-				}
-			else
-				{
-				SettingsManager.UpdateSetting("ShowScenarioMarker", "False", SectionEnum.User);
-				}
-			}
-
-		private void GetScore()
-			{
-			SettingsManager.GetSetting("ShowScore", out var ShowScore);
-			Score = StringToBoolean(ShowScore);
-			}
-
-		private void WriteScore()
-			{
-			if (Score)
-				{
-				SettingsManager.UpdateSetting("ShowScore", "True", SectionEnum.User);
-				}
-			else
-				{
-				SettingsManager.UpdateSetting("ShowScore", "False", SectionEnum.User);
-				}
-			}
-
-		private void GetCompass()
-			{
-			SettingsManager.GetSetting("ShowCompass", out var ShowCompass);
-			Compass = StringToBoolean(ShowCompass);
-			}
-
-		private void WriteCompass()
-			{
-			if (Compass)
-				{
-				SettingsManager.UpdateSetting("ShowCompass", "True", SectionEnum.User);
-				}
-			else
-				{
-				SettingsManager.UpdateSetting("ShowCompass", "False", SectionEnum.User);
-				}
-			}
-
-		private void GetStopMarker()
-			{
-			SettingsManager.GetSetting("ShowObjectiveStopAtMarker", out var ShowStopMarker);
-			StopMarker = StringToBoolean(ShowStopMarker);
-			}
-
-		private void WriteStopMarker()
-			{
-			if (StopMarker)
-				{
-				SettingsManager.UpdateSetting("ShowObjectiveStopAtMarker", "True", SectionEnum.User);
-				}
-			else
-				{
-				SettingsManager.UpdateSetting("ShowObjectiveStopAtMarker", "False", SectionEnum.User);
-				}
-			}
-
-
 	}
 }

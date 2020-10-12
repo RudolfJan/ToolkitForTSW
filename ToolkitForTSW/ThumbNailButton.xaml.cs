@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace TSWTools
+namespace ToolkitForTSW
 {
     /// <summary>
     /// Interaction logic for ThumbNailButton.xaml

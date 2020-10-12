@@ -4,7 +4,7 @@ using System.IO;
 
 
 
-namespace TSWTools
+namespace ToolkitForTSW
 {
 	// local copy of all options, to allow explicit saving them
 	public class CTSWOptionsView : Notifier
@@ -163,6 +163,36 @@ Path to 7Zip program
 				}
 			}
 
+    private bool _useAdvancedSettings;
+
+    public bool UseAdvancedSettings
+      {
+      get
+        {
+        return _useAdvancedSettings;
+        }
+      set
+        {
+        _useAdvancedSettings = value;
+				OnPropertyChanged("UseAdvancedSettings");
+        }
+      }
+
+    private bool _limitSoundVolumes;
+
+    public bool LimitSoundVolumes
+      {
+      get
+        {
+        return _limitSoundVolumes;
+        }
+      set
+        {
+        _limitSoundVolumes = value;
+				OnPropertyChanged("LimitSoundVolumes");
+        }
+      }
+
 		#endregion
 
 		#region Constructor
@@ -187,7 +217,9 @@ Path to 7Zip program
 			SevenZip = CTSWOptions.SevenZip;
 			Unpacker = CTSWOptions.Unpacker;
 			UAssetUnpacker = CTSWOptions.UAssetUnpacker;
-			}
+      UseAdvancedSettings = CTSWOptions.UseAdvancedSettings;
+      LimitSoundVolumes = CTSWOptions.LimitSoundVolumes;
+      }
 
 		public void SaveOptions()
 			{
@@ -201,6 +233,8 @@ Path to 7Zip program
 			CTSWOptions.SevenZip = SevenZip;
 			CTSWOptions.Unpacker = Unpacker;
 			CTSWOptions.UAssetUnpacker=UAssetUnpacker;
+      CTSWOptions.UseAdvancedSettings = UseAdvancedSettings;
+      CTSWOptions.LimitSoundVolumes = LimitSoundVolumes;
 			CTSWOptions.WriteToRegistry();
 			CTSWOptions.CreateDirectories();
 			CTSWOptions.MoveManuals();

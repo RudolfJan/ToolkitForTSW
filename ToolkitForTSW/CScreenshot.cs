@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 using ThumbnailSharp;
 
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	public class CScreenshot : Notifier
 		{

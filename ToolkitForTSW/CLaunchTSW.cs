@@ -3,7 +3,7 @@ using System;
 using System.IO;
 
 
-namespace TSWTools
+namespace ToolkitForTSW
   {
   public class CLaunchTSW : Notifier
     {
@@ -118,7 +118,7 @@ namespace TSWTools
         }
 
       var TSWProgram = new FileInfo(CTSWOptions.SteamProgramDirectory + "Steam.exe");
-      Result += CApps.ExecuteFile(TSWProgram, "steam://rungameid/530070");
+      Result += CApps.ExecuteFile(TSWProgram, "steam://rungameid/1282590");
       }
     }
   }

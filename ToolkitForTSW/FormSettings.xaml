@@ -1,10 +1,10 @@
-﻿<Window x:Class="TSWTools.FormSettings"
+﻿<Window x:Class="ToolkitForTSW.FormSettings"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
-        xmlns:local="clr-namespace:TSWTools"
+        xmlns:local="clr-namespace:ToolkitForTSW"
         xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
         mc:Ignorable="d"
         Style="{StaticResource AllWindows}"
@@ -60,6 +60,15 @@
 			</ObjectDataProvider.MethodParameters>
 		</ObjectDataProvider>
 
+		<ObjectDataProvider x:Key="QualityPlusOffEnum"
+		                    MethodName="GetValues"
+		                    ObjectType="{x:Type core:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type Type="local:QualityPlusOffEnum" />
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+
+
 		<ObjectDataProvider x:Key="AntiAliasingEnum"
                         MethodName="GetValues"
                         ObjectType="{x:Type core:Enum}">
@@ -89,10 +98,12 @@
                     ItemsSource="{Binding SavedUserSettingsList}" AutoGenerateColumns="False"
                     SelectionChanged="OnSettingFilesDataGridSelectionChanged">
 						<DataGrid.Columns>
-							<DataGridTextColumn x:Name="NameColumn" Header="Set name" Width="180" Binding="{Binding Name}"
+							<DataGridTextColumn x:Name="NameColumn" Header="Set name" Width="160" Binding="{Binding Name}"
                                   SortMemberPath="NameColumn" />
 						</DataGrid.Columns>
 					</DataGrid>
+					<Button Name="DeleteSaveSetButton" Style="{StaticResource DefaultButton}" Click="OnDeleteSaveSetBurttonClicked"
+					        >Delete</Button>
 				</StackPanel>
 			</Border>
 
@@ -232,13 +243,13 @@
 										<TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource DefaultTextBlock}">Shadow quality</TextBlock>
 										<ComboBox Grid.Column="1" Grid.Row="3"
 
-                              ItemsSource="{Binding Source={StaticResource QualityEnum}}"
+                              ItemsSource="{Binding Source={StaticResource QualityPlusOffEnum}}"
                               SelectedValue="{Binding SettingsQuality.ShadowQuality}" />
 
 										<TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource DefaultTextBlock}">Effects quality</TextBlock>
 										<ComboBox Grid.Column="1" Grid.Row="4"
 
-                              ItemsSource="{Binding Source={StaticResource QualityEnum}}"
+                              ItemsSource="{Binding Source={StaticResource QualityPlusOffEnum}}"
                               SelectedValue="{Binding SettingsQuality.EffectsQuality}" />
 
 										<TextBlock Grid.Column="0" Grid.Row="5" Style="{StaticResource DefaultTextBlock}">Post processing quality</TextBlock>
@@ -313,7 +324,7 @@
                             SelectionStart="0" SelectionEnd="1.0"
                             IsSnapToTickEnabled="True"
                             TickFrequency="0.2" Value="{Binding SettingsSound.MasterSoundVolume ,Mode=TwoWay}"
-                            Grid.ColumnSpan="3" />
+                            Grid.ColumnSpan="3" ValueChanged="OnMasterVolumeChanged" />
 										<TextBox Grid.Column="4" Grid.Row="0"
                              Text="{Binding Value, ElementName=MasterVolumeSlider, StringFormat={}{0:0.0}}"
                              VerticalAlignment="Center" HorizontalContentAlignment="Right" />
@@ -325,7 +336,7 @@
                             SelectionStart="0" SelectionEnd="1.0"
                             IsSnapToTickEnabled="True"
                             TickFrequency="0.2" Value="{Binding SettingsSound.AmbienceSoundVolume  ,Mode=TwoWay}"
-                            Grid.ColumnSpan="3" />
+                            Grid.ColumnSpan="3" ValueChanged="OmAmbientVolumeChanged" />
 										<TextBox Grid.Column="4" Grid.Row="1"
                              Text="{Binding Value, ElementName=AmbientVolumeSlider, StringFormat={}{0:0.0}}"
                              VerticalAlignment="Center" HorizontalContentAlignment="Right" />
@@ -337,7 +348,7 @@
                             SelectionStart="0" SelectionEnd="1.0"
                             IsSnapToTickEnabled="True"
                             TickFrequency="0.2" Value="{Binding SettingsSound.DialogSoundVolume  ,Mode=TwoWay}"
-                            Grid.ColumnSpan="3" />
+                            Grid.ColumnSpan="3" ValueChanged="OnDialogSoundVolumeChanged" />
 										<TextBox Grid.Column="4" Grid.Row="2"
                              Text="{Binding Value, ElementName=DialogSoundVolumeSlider, StringFormat={}{0:0.0}}"
                              VerticalAlignment="Center" HorizontalContentAlignment="Right" />
@@ -349,7 +360,7 @@
                             SelectionStart="0" SelectionEnd="1.0"
                             IsSnapToTickEnabled="True"
                             TickFrequency="0.2" Value="{Binding SettingsSound.ExternalAlertVolume  ,Mode=TwoWay}"
-                            Grid.ColumnSpan="3" />
+                            Grid.ColumnSpan="3" ValueChanged="OnExternalAlertVolumeChanged" />
 										<TextBox Grid.Column="4" Grid.Row="3"
                              Text="{Binding Value, ElementName=ExternalAlertVolumeSlider, StringFormat={}{0:0.0}}"
                              VerticalAlignment="Center" HorizontalContentAlignment="Right" />
@@ -361,7 +372,7 @@
                             SelectionStart="0" SelectionEnd="1.0"
                             IsSnapToTickEnabled="True"
                             TickFrequency="0.2" Value="{Binding SettingsSound.SFXSoundVolume  ,Mode=TwoWay}"
-                            Grid.ColumnSpan="3" />
+                            Grid.ColumnSpan="3" ValueChanged="OnSFXSoundVolumeChanged" />
 										<TextBox Grid.Column="4" Grid.Row="4"
                              Text="{Binding Value, ElementName=SFXSoundVolumeSlider, StringFormat={}{0:0.0}}"
                              VerticalAlignment="Center" HorizontalContentAlignment="Right" />
@@ -373,7 +384,7 @@
                             SelectionStart="0" SelectionEnd="1.0"
                             IsSnapToTickEnabled="True"
                             TickFrequency="0.2" Value="{Binding SettingsSound.MenuSFXSoundVolume ,Mode=TwoWay}"
-                            Grid.ColumnSpan="3" />
+                            Grid.ColumnSpan="3" ValueChanged="OnMenuSFXVolumeChanged" />
 										<TextBox Grid.Column="4" Grid.Row="5"
                              Text="{Binding Value, ElementName=MenuSFXVolumeSlider, StringFormat={}{0:0.0}}"
                              VerticalAlignment="Center" HorizontalContentAlignment="Right" />
@@ -387,7 +398,8 @@
 											Window Audio Focus
 										</CheckBox>
 										<CheckBox Grid.Column="0" Grid.Row="7" Name="LimitVolume"
-                              IsChecked="{Binding SettingsSound.LimitVolume  ,Mode=TwoWay}">
+                              IsChecked="{Binding SettingsSound.LimitVolume, Mode=TwoWay}" Checked="OnLimitVolumeChecked"
+                              >
 											Limit volumes
 										</CheckBox>
 										<Button Grid.Column="1" Grid.Row="7" Name="SetRecommendedSoundButton"

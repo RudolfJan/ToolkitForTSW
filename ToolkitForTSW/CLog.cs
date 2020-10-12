@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 
 
-namespace TSWTools
+namespace ToolkitForTSW
 {
 	public class CLogEntry : Notifier
 

@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.IO;
 
-namespace TSWTools
+namespace ToolkitForTSW
 {
 	public class CDatabase : Notifier
 		{

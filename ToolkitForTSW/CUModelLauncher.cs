@@ -3,7 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 
 
-namespace TSWTools
+namespace ToolkitForTSW
 {
 	public class CUModelLauncher : Notifier
 		{

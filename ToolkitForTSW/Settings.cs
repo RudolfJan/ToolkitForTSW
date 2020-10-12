@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TSWTools.Properties {
+namespace ToolkitForTSW.Properties {
     
     
     // This class allows you to handle specific events on the settings class:

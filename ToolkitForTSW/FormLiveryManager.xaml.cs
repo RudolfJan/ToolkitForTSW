@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 
-namespace TSWTools
+namespace ToolkitForTSW
   {
   /// <summary>
   /// Interaction logic for FormLiveryManager.xaml

@@ -4,7 +4,7 @@ using System.Windows.Data;
 using Microsoft.Win32;
 using System.IO;
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	/// <summary>
 	/// Interaction logic for FormLogViewer.xaml

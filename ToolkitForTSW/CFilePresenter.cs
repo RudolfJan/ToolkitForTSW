@@ -3,7 +3,7 @@ using System;
 using System.IO;
 
 
-namespace TSWTools
+namespace ToolkitForTSW
 	{
 	public class CFilePresenter : Notifier
 		{
