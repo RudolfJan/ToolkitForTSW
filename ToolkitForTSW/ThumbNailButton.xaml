@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="ToolkitForTSW.ThumbNailButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             x:Name="Root"
+             d:DesignHeight="120" d:DesignWidth="180">
+    <Border Name="ThumbNailBorder" BorderThickness="1" BorderBrush="Darkred"
+            Width="{Binding Width, ElementName=Root, TargetNullValue=200, FallbackValue=200}" 
+            Height="{Binding Height, ElementName=Root, TargetNullValue=120, FallbackValue=120}" Padding="0" Margin="0" 
+            ToolTip="{Binding Screenshot.Path.Name, ElementName=Root, TargetNullValue='Image not found', FallbackValue='Image not found'}">
+        <Button Name="ThumbNailPart" Padding="0" Margin="0" Click="OnThumbNailPartClicked" >
+            <Image Name="ThumbNailImage" 
+                   Source="{Binding Screenshot.ThumbNail, ElementName=Root, 
+                TargetNullValue='Images//NoImageFound.png',
+                FallbackValue='Images/NoImageFound.png'}"/>
+        </Button>
+            
+    </Border>
+</UserControl>

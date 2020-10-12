@@ -1,0 +1,38 @@
+﻿<windowSizing:SizableWindow x:Class="ToolkitForTSW.FormPublishScenario"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                            xmlns:local="clr-namespace:ToolkitForTSW"
+                            xmlns:windowSizing="clr-namespace:UISupport.Library.WindowSizing;assembly=Styles.Library"
+                            xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+                            mc:Ignorable="d"
+                            Style="{StaticResource AllWindows}"
+                            Title="Publish Scenario" Width="600">
+	<ScrollViewer>
+		<Border Style="{StaticResource DefaultBorder}">
+			<StackPanel>
+					<WrapPanel>
+						<TextBlock>Route:</TextBlock>
+						<TextBlock Text="{Binding SavScenario.RouteName}"/>
+						<TextBlock>Scenario:</TextBlock>
+						<TextBlock Text="{Binding SavScenario.ScenarioName}"/>
+						<TextBlock>Guid:</TextBlock>
+						<TextBlock Text="{Binding SavScenario.ScenarioGuid}"/>
+					</WrapPanel>
+
+						<userControls:LabelTextBox Name="AuthorTextBox" LabelText="Author" LabelWidth="70" 
+							                           Style="{StaticResource DefaultLabelTextBox}"
+							                           TextBoxText="{Binding Author }"/>
+				<userControls:LabelTextBox Name="DescriptionTextBox" LabelText="Description" LabelWidth="70" 
+                           Style="{StaticResource  MultiLineLabelTextBox}"
+                           TextBoxText="{Binding Description}"/>
+	
+			<WrapPanel HorizontalAlignment="Right">
+				<Button Name="CancelKButton" Style="{StaticResource CancelButton}" HorizontalAlignment="Right" Click="CancelKButton_Click">Cancel</Button>
+				<Button Name="OKButton" Style="{StaticResource OKButton}" HorizontalAlignment="Right" Click="OKButton_Click">Save</Button>
+			</WrapPanel>
+		</StackPanel>
+		</Border>
+	</ScrollViewer>
+</windowSizing:SizableWindow>

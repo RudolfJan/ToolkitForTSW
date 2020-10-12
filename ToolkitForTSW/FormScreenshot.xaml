@@ -1,0 +1,40 @@
+﻿<Window x:Class="ToolkitForTSW.FormScreenshot"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToolkitForTSW"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource AllWindows}"
+        Title="Screenshot">
+
+    <ScrollViewer>
+		<StackPanel>
+			<Border Style="{StaticResource DefaultBorder}">
+				<StackPanel>
+					<Border Name="ImageBorder" Height="400" MinWidth="600">
+                        <Image Name="SelectedImageBox" Source="{Binding Path=Path.FullName}" VerticalAlignment="Top" />
+					</Border>
+					<TextBox Style="{StaticResource StaticTextBox}" Text="{Binding Path=Path.FullName, Mode=OneWay}" VerticalAlignment="Bottom"/>
+					<WrapPanel VerticalAlignment="Bottom">
+						<Button Name="SaveAsButton"   Style="{StaticResource DefaultButton}"
+				            ToolTip="Save selected screenshot with new name" Click="OnSaveAsButtonClicked" >
+							Save as ...
+						</Button>
+						<Button Name="DeleteButton"  Style="{StaticResource DefaultButton}"
+				            ToolTip="Delete selected screenshot" Click="OnDeleteButtonClicked" >
+							Delete
+						</Button>
+					</WrapPanel>
+				</StackPanel>
+
+			</Border>
+
+			<Button Name="OKButton" Style="{StaticResource OKButton}"  HorizontalAlignment="Right"
+	            Click="OnOkButtonClicked">
+				Close
+			</Button>
+		</StackPanel>
+	</ScrollViewer>
+</Window>

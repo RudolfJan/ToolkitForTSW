@@ -1,0 +1,97 @@
+﻿<Window x:Class="ToolkitForTSW.FormPakInstaller"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToolkitForTSW"
+        
+        xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        mc:Ignorable="d"
+        Style="{StaticResource AllWindows}"
+        Title="Pak Installer">
+
+  <Window.Resources>
+    <HierarchicalDataTemplate DataType="{x:Type local:CDirectoryItem}" ItemsSource="{Binding DirectoryItems}">
+      <WrapPanel>
+        <Image Source="Images/folder.png"/>
+        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
+      </WrapPanel>
+    </HierarchicalDataTemplate>
+
+    <DataTemplate DataType="{x:Type local:CFileItem}">
+      <WrapPanel>
+        <Image Source="Images/wand.png"/>
+        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
+      </WrapPanel>
+    </DataTemplate>
+  </Window.Resources>
+
+<ScrollViewer>
+    <StackPanel>
+      <Grid MinHeight="300">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Style="{StaticResource DefaultBorder}">
+          <StackPanel>
+            <userControls:FileInputBox Name="ArchiveFileTextBox" LabelText="Archive path" LabelWidth="60"
+                Filter="archive files (rar, 7z, zip, pak)|*.zip;*.7z;*.rar;*.pak|All files (*.*)|*.*"  
+                CheckPathExists="True" 
+                FileDialogType="OpenFile" 
+                RestoreDirectory="False" 
+                Title="Open archive" FileNameChanged="OnArchiveFileTextBoxFileNameChanged" >
+            </userControls:FileInputBox>
+          <DataGrid Name="PakFileListDataGrid" Style="{StaticResource DefaultDataGrid}" MinHeight="200"
+             ItemsSource="{Binding PakFileList}" AutoGenerateColumns="False" SelectionChanged="OnPakFileListDataGridSelectionChanged" >
+            <DataGrid.Columns>
+              <DataGridTextColumn x:Name="PakNameColumn"  Header="Pak name"  Width="180"  Binding="{Binding Name}" SortMemberPath="PakNameColumn" />
+            </DataGrid.Columns>
+          </DataGrid>
+            <WrapPanel>
+            <Button Name="InstallToSetsButton" Style="{StaticResource DefaultButton}" Click="OnInstallToSetsButtonClicked" >Install to sets</Button>
+            <Button Name="InstallToGameButton" Style="{StaticResource DefaultButton}" Click="OnInstallToGameButtonClicked" >Install to game</Button>
+            </WrapPanel>
+            <DataGrid Name="DocumentationDataGrid" Style="{StaticResource DefaultDataGrid}" MinHeight="200"
+                      ItemsSource="{Binding DocumentsList}" AutoGenerateColumns="False" SelectionChanged="OnDocumentationDataGridSelectionChanged" MouseUp="DocumentationDataGrid_MouseUp" >
+              <DataGrid.Columns>
+                <DataGridTextColumn x:Name="DocColumn"  Header="Document"  Width="180"  Binding="{Binding Name}" SortMemberPath="DocColumn" />
+              </DataGrid.Columns>
+            </DataGrid>
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="1" Style="{StaticResource DefaultBorder}">
+          <StackPanel>
+            <TreeView Name="FileTreeView"
+                      Height="300" MinWidth="300"
+                      Margin="{StaticResource DefaultMargin}"
+                      ItemsSource="{Binding TreeItems}"
+                      ScrollViewer.CanContentScroll="True"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      SelectedItemChanged="OnFileTreeViewSelectedItemChanged" />
+
+            <userControls:LabelTextBox Name="NewDirTextBox" LabelText="New directory name" LabelWidth="100"
+                                        Style="{StaticResource DefaultLabelTextBox}" TextChanged="OnNewDirTextBoxTextChanged" />
+
+            <WrapPanel>
+              <Button Name="AddDirButton" Style="{StaticResource DefaultButton}" Click="OnAddDirButtonClicked" >Add dir</Button>
+              <Button Name="AddChildButton" Style="{StaticResource DefaultButton}" Click="OnAddChildButtonClicked" >Add as child</Button>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+      </Grid>
+      <Border Style="{StaticResource DefaultBorder}">
+        <DockPanel>
+          <userControls:ResultsTextBox x:Name="ResultsTextBox" MinWidth="500"
+                                        Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Result}" Source="Images/page_delete.png"/>
+          <Button Name="OKButton" Style="{StaticResource OKButton}" DockPanel.Dock="Right" VerticalAlignment="Bottom"
+                  Click="OnOKButtonClicked">
+            Close
+          </Button>
+
+        </DockPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</Window>

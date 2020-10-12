@@ -1,0 +1,72 @@
+﻿<Window x:Class="ToolkitForTSW.FormLaunchTSW"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        mc:Ignorable="d"
+				Style="{StaticResource AllWindows}"
+        WindowStartupLocation="CenterScreen"
+        Title="Launcher" Width="800">
+  <ScrollViewer>
+    <StackPanel>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition  />
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border Name="FirstColumn" Grid.Column="0"  Style="{StaticResource DefaultBorder}">
+          <StackPanel>
+            <TextBlock Style="{StaticResource HeaderTextBlock}">Settings collection</TextBlock>
+            <DataGrid Name="SettingFilesDataGrid" MinHeight="300"  Style="{StaticResource DefaultDataGrid}" ItemsSource="{Binding SettingsManager.SavedUserSettingsList}" AutoGenerateColumns="False" SelectionChanged="OnSettingFilesDataGridSelectionChanged" >
+              <DataGrid.Columns>
+                <DataGridTextColumn x:Name="NameColumn"  Header="Set name"  Width="180"  Binding="{Binding Name}" SortMemberPath="NameColumn"/>
+              </DataGrid.Columns>
+            </DataGrid>
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="1"  Style="{StaticResource DefaultBorder}">
+          <StackPanel>
+            <TextBlock Style="{StaticResource HeaderTextBlock}">Livery sets</TextBlock>
+            <DataGrid Name="LiverySetsDataGrid" MinHeight="300"  Style="{StaticResource DefaultDataGrid}" ItemsSource="{Binding LiverySet.LiverySetList}" AutoGenerateColumns="False" SelectionChanged="OnSettingFilesDataGridSelectionChanged" >
+              <DataGrid.Columns>
+                <DataGridTextColumn x:Name="LiveryNameColumn"  Header="Set name"  Width="180"  Binding="{Binding Name}" SortMemberPath="NameColumn"/>
+              </DataGrid.Columns>
+            </DataGrid>
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="2"  Style="{StaticResource DefaultBorder}">
+          <StackPanel>
+            <TextBlock Style="{StaticResource HeaderTextBlock}">Radio stations</TextBlock>
+            <DataGrid Name="RadioStationsUrlDataGrid" MinHeight="300"  Style="{StaticResource DefaultDataGrid}" AutoGenerateColumns="False" SelectionChanged="OnSettingFilesDataGridSelectionChanged" >
+              <DataGrid.Columns>
+                <DataGridTextColumn x:Name="RadioStationUrlColumn"  Header="Radio station"  Width="250"  Binding="{Binding Route}" SortMemberPath="NameColumn"/>
+              </DataGrid.Columns>
+            </DataGrid>
+          </StackPanel>
+        </Border>
+
+      </Grid>
+      <DockPanel>
+        <Border Style="{StaticResource DefaultBorder}">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+ 
+          <StackPanel Grid.Column="0">
+              <userControls:ResultsTextBox HorizontalAlignment="Stretch" TextHeight="125" Text="{Binding Result}" Style="{StaticResource DefaultResultsTextBox}" Source="Images/page_delete.png"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+              <Button Name="LiveryButton" Style="{StaticResource DefaultButton}"  Click="OnLiveryButtonClicked">Set liveries</Button>
+              <Button Name="LaunchTSWButton" Style="{StaticResource BigOKButton}" HorizontalAlignment="Center" ToolTip="Load selected settings and launch TSW" Click="LaunchTSWButton_Click" >Launch TSW</Button>
+              <Button Name="OKButton" Style="{StaticResource OKButton}" VerticalAlignment="Bottom" ToolTip="Close this window" Click="OKButton_Click" >Close</Button>
+            </StackPanel>
+          </Grid>
+        </Border>
+      </DockPanel>
+    </StackPanel>
+  </ScrollViewer>
+</Window>

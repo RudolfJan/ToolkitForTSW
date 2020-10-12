@@ -3,13 +3,32 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolkitForTSW", "TSWTools\ToolkitForTSW.csproj", "{B2FE5230-3D35-49BB-B0EA-A34E54BB983B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolkitForTSW", "ToolkitForTSW\ToolkitForTSW.csproj", "{B2FE5230-3D35-49BB-B0EA-A34E54BB983B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Styles.Library", "..\RudolfLibraries\Styles.Library\Styles.Library.csproj", "{CED7837C-ED27-4627-9DD4-B2E8E7556203}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging.Library", "..\RudolfLibraries\Logging.Library\Logging.Library.csproj", "{87F7DC88-080D-4A2F-A4F5-27BD79F18D3E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThumbnailSharp", "..\mirzaevolution\ThumbnailSharp\ThumbnailSharp\ThumbnailSharp.csproj", "{7F48B065-68B6-487A-93DF-07078FAA8E61}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SavCracker.Library", "SavCracker.Library\SavCracker.Library.csproj", "{26D4BA07-0182-45DA-B6E2-799E5AF85520}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{C8F3413C-C3C4-4F5F-AB08-7011DF938231}"
+	ProjectSection(SolutionItems) = preProject
+		Manual\License information.docx = Manual\License information.docx
+		Manual\ToolkitForTSW Manual.docx = Manual\ToolkitForTSW Manual.docx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{EC5B65F0-A74A-4AF2-8183-C2A83F819CC6}"
+	ProjectSection(SolutionItems) = preProject
+		D:\TSWTools\Templates\NiceTemplate.html = D:\TSWTools\Templates\NiceTemplate.html
+		D:\TSWTools\Templates\SimpleTemplate.html = D:\TSWTools\Templates\SimpleTemplate.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{16B7FFBA-A86C-4DEB-AD87-D4EF9E9804FE}"
+	ProjectSection(SolutionItems) = preProject
+		Setup\ToolkitForTSW.iss = Setup\ToolkitForTSW.iss
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +52,10 @@ Global
 		{7F48B065-68B6-487A-93DF-07078FAA8E61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F48B065-68B6-487A-93DF-07078FAA8E61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F48B065-68B6-487A-93DF-07078FAA8E61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26D4BA07-0182-45DA-B6E2-799E5AF85520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26D4BA07-0182-45DA-B6E2-799E5AF85520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26D4BA07-0182-45DA-B6E2-799E5AF85520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26D4BA07-0182-45DA-B6E2-799E5AF85520}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

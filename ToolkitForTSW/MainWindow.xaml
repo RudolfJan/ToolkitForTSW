@@ -1,0 +1,134 @@
+﻿<Window x:Class="ToolkitForTSW.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        mc:Ignorable="d"
+        Title="Toolkit for TSW"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource AllWindows}">
+	<ScrollViewer>
+		<StackPanel>
+			<Image Margin="10" Source="Images/MainWindowImage.png" MaxHeight="250" />
+			<TextBlock FontSize="16" FontWeight="Bold" TextWrapping="Wrap" MaxHeight="60" MaxWidth="500" 
+			           Style="{StaticResource DefaultTextBlock}">
+				Important. Use this Toolkit only for TSW2! For TSW2020 download TSWTools, which is a similar program
+			</TextBlock>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition />
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<Border Grid.Column="0" Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						
+						<TextBlock Style="{StaticResource HeaderTextBlock}">Utilities</TextBlock>
+						<Button Name="OptionsButton" Style="{StaticResource WideButton}"
+						        Click="OnOptionsButtonClicked"
+						        ToolTip="Settings for TSWTools">
+							Options
+						</Button>
+						<Button Name="LogViewButton" Style="{StaticResource WideButton}"
+						        ToolTip="Have a look here if strange things happen or if you want to submit a bug"
+						        Click="OnLogViewButtonClicked">
+							View log
+						</Button>
+						<Button Name="BackupButton" Style="{StaticResource WideButton}"
+						        ToolTip="Make a backup of your saved game data and avoid the risk of loosing progress"
+						        Click="OnBackupButtonClicked">
+							Backup save area
+						</Button>
+						<Button Name="KeyBindingButton" Style="{StaticResource WideButton}"
+						        ToolTip="View the default key bindings" Click="OnKeyBindingButtonClicked">
+							Key bindings
+						</Button>
+
+					</StackPanel>
+				</Border>
+
+				<Border Grid.Column="1" Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<TextBlock Style="{StaticResource HeaderTextBlock}">Unpack and view</TextBlock>
+						<Button Name="ScenarioManagerButton" Style="{StaticResource WideButton}"
+						        ToolTip="Tools to manage scenarios you created with the Scenario Planner" Click="OnScenarioManager">
+							Scenario Manager
+						</Button>
+						<Button Name="UnpackerButton" Style="{StaticResource WideButton}"
+						        ToolTip="Using the Unreal Unpacker you can unpack the game .pak files here"
+						        Click="OnUnpackerButtonClicked">
+							Unpack game files
+						</Button>
+						<Button Name="ViewUnpackedPaksButton" Style="{StaticResource WideButton}"  ToolTip="Browse the unpacked files using explorer" Click="OnViewUnpackedPaksButtonClicked">View unpacked files</Button>
+						<Button Name="UModelLauncherButton" Style="{StaticResource WideButton}"  ToolTip="Explore game files using the UModel tool" Click="OnUModelLauncherButtonClicked" >Launch UModel</Button>
+					</StackPanel>
+				</Border>
+
+				<Border Grid.Column="2" Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<TextBlock Style="{StaticResource HeaderTextBlock}">Tools</TextBlock>
+						<Button Name="LaunchTSWButton" Style="{StaticResource WideButton}" 
+						        ToolTip="Launch TSW with additional settings" 
+						        Click="OnLaunchTSWButtonClicked" >Launch TSW2</Button>
+						<Button Style="{StaticResource WideButton}" Name="EditSettingsButton"
+						        ToolTip="Edit your TSW settings and create several different setting collections"
+						        Click="OnEditSettingsButtonClicked">
+							Edit TSW2 settings
+						</Button>
+						<Button Style="{StaticResource WideButton}" Name="LiveryManagerButton"
+						        ToolTip="Add community content liveries to the game or remove them" Click="OnLiveryManagerButtonClicked">
+							Manage liveries
+						</Button>
+            <Button Style="{StaticResource WideButton}" Name="RadioStationsButton" 
+                     ToolTip="Manage railway radio stations collection" Click="OnRadioStationsButtonClicked">
+              Radio stations
+            </Button>
+            <Button Style="{StaticResource WideButton}" Name="ScreenshotManagerButton"
+						        Click="OnScreenshotManagerButtonClicked" ToolTip="View all screenshots in a nice viewer">
+							Screenshot manager
+						</Button>
+            <Button Style="{StaticResource WideButton}" Name="PakInstallerButton"
+                    ToolTip="Install Pak files directly from your download" Click="OnPakInstallerButtonClicked" >
+              Pak Installer
+            </Button>
+          </StackPanel>
+				</Border>
+
+				<Border Grid.Column="3" Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<TextBlock Style="{StaticResource HeaderTextBlock}">Help</TextBlock>
+						<Button Name="AboutButton" Style="{StaticResource WideButton}" Click="OnAboutButtonClicked"
+						        ToolTip="About this toolkit">
+							About
+						</Button>
+						<Button Name="ManualButton" Style="{StaticResource WideButton}"
+						        ToolTip="My secret tip: read the manual here" Click="OnManualButtonClicked">
+							ToolkitForTSW manual
+						</Button>
+						<Button Name="StartersGuideButton" Style="{StaticResource WideButton}"
+						        ToolTip="You go the TSW starters guide included with TSWTools. Read it here!"
+						        Click="OnStartersGuideButtonClicked">
+							TSW2 Starters guide
+						</Button>
+						<Button Name="RouteGuidesButton" Style="{StaticResource WideButton}"
+						        ToolTip="The route guides contain a lot of additional information. Read them here"
+						        Click="OnRouteGuidesButtonClicked">
+							Route guides
+						</Button>
+					</StackPanel>
+				</Border>
+			</Grid>
+			<Border Style="{StaticResource DefaultBorder}">
+				<StackPanel>
+					<userControls:ResultsTextBox Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Result}" Source="Images/page_delete.png"/>
+				</StackPanel>
+			</Border>
+			<Button Name="OKButton" Style="{StaticResource OKButton}" HorizontalAlignment="Right"
+			        Click="OnOkButtonClicked" ToolTip="Close TSW Tools main screen">
+				Close
+			</Button>
+		</StackPanel>
+	</ScrollViewer>
+</Window>

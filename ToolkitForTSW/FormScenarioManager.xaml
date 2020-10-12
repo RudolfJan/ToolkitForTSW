@@ -1,0 +1,144 @@
+﻿<windowSizing:SizableWindow x:Class="ToolkitForTSW.FormScenarioManager"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                             xmlns:local="clr-namespace:ToolkitForTSW"
+                             xmlns:windowSizing="clr-namespace:UISupport.Library.WindowSizing;assembly=Styles.Library"
+                             mc:Ignorable="d"
+                             Style="{StaticResource AllWindows}"
+                             Title="Scenario Manager">
+	<ScrollViewer>
+		<StackPanel>
+			<TextBlock Style="{StaticResource HeaderTextBlock}">Scenarios created with the Scenario Planner</TextBlock>
+
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+
+				<StackPanel Grid.Column="0">
+					<DataGrid Name="ScenarioDataGrid" Style="{StaticResource DefaultDataGrid}"
+          CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False"
+          ItemsSource="{Binding ScenarioList }"
+					SelectedItem="{Binding SelectedSavScenario }" 
+          Height="385" Width="400" SelectionChanged="OnSelectedScenarioChanged">
+						<DataGrid.Columns>
+							<DataGridTemplateColumn Header="Scenario">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate>
+										<StackPanel>
+											<WrapPanel>
+												<TextBlock Style="{StaticResource DefaultTextBlock}" Margin="{StaticResource SmallMargin}">Route:</TextBlock>
+												<TextBlock Style="{StaticResource DefaultTextBlock}" Margin="{StaticResource SmallMargin}"
+												           Text="{Binding SavScenario.RouteAbbreviation }"/>
+												<TextBlock Style="{StaticResource DefaultTextBlock}" Margin="{StaticResource SmallMargin}"
+												           Text="{Binding SavScenario.RouteName }"/>
+											</WrapPanel>
+											<WrapPanel>
+												<CheckBox IsChecked="{Binding SavScenario.RulesDisabledMode }" 
+												          Margin="{StaticResource SmallMargin}">OTR</CheckBox>
+												<TextBlock Style="{StaticResource DefaultTextBlock}"
+												           Margin="{StaticResource SmallMargin}"> Scenario:</TextBlock>
+												<TextBlock Style="{StaticResource DefaultTextBlock}" 
+												           Text="{Binding SavScenario.ScenarioName }"
+												           TextWrapping="Wrap" Margin="{StaticResource SmallMargin}"/>
+											</WrapPanel>
+											<TextBlock Style="{StaticResource DefaultTextBlock}" 
+											           Text="{Binding SavScenario.ScenarioGuid }"
+											           TextWrapping="Wrap" Margin="{StaticResource SmallMargin}"/>
+										</StackPanel>
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
+
+						</DataGrid.Columns>
+					</DataGrid>
+					<DataGrid Name="ScenarioIssueDataGrid" Style="{StaticResource DefaultDataGrid}"
+					          CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False"
+					          AutoGenerateColumns="False"
+					          ItemsSource="{Binding ScenarioIssueList}"
+					          Height="200" Width="400">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Scenario checks" Binding="{Binding}"/>
+
+						</DataGrid.Columns>
+					</DataGrid>
+
+				</StackPanel>
+
+				<StackPanel Grid.Column="1">
+
+					<DataGrid Name="ServicesDataGrid" Style="{StaticResource DefaultDataGrid}"
+					          CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False"
+					          ItemsSource="{Binding SelectedSavScenario.SavScenario.SavServiceList }"
+					          Height="310" Width="300"
+					          SelectedItem="{Binding SelectedSavService, NotifyOnSourceUpdated=True }" SelectionChanged="OnSelectedServiceChanged"
+					          >
+						<DataGrid.Columns>
+							<DataGridTemplateColumn Header="Services">
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate>
+										<StackPanel>
+											<WrapPanel>
+												<CheckBox IsChecked="{Binding IsPlayerService}" Margin="{StaticResource SmallMargin}">Player </CheckBox>
+												<TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding StartTimeText }" Margin="{StaticResource SmallMargin}" />
+												<TextBlock Style="{StaticResource DefaultTextBlock}" Margin="{StaticResource SmallMargin}"> Service: </TextBlock>
+												<TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ServiceName }" Margin="{StaticResource SmallMargin}" />
+											</WrapPanel>
+											<WrapPanel>
+												<TextBlock Style="{StaticResource DefaultTextBlock}" Margin="{StaticResource SmallMargin}"> From:</TextBlock>
+												<TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding StartPoint }" Margin="{StaticResource SmallMargin}"/>
+											</WrapPanel>
+											<WrapPanel>
+												<TextBlock Style="{StaticResource DefaultTextBlock}" Margin="{StaticResource SmallMargin}"> To:</TextBlock>
+												<TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding EndPoint }" Margin="{StaticResource SmallMargin}" />
+											</WrapPanel>
+										</StackPanel>
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
+						</DataGrid.Columns>
+					</DataGrid>
+					<WrapPanel>
+						<CheckBox IsChecked="{Binding SelectedSavService.IsPassengerService}">Passenger Service</CheckBox>
+						<TextBlock Style="{StaticResource DefaultTextBlock}"> Path</TextBlock>
+						<TextBlock Style="{StaticResource DefaultTextBlock}" 
+						           Text="{Binding SelectedSavService.ServicePath, Mode=TwoWay}" />
+					</WrapPanel>
+					<WrapPanel>
+						<TextBlock Style="{StaticResource DefaultTextBlock}"> Engine</TextBlock>
+						<TextBlock Style="{StaticResource DefaultTextBlock}" 
+						           Text="{Binding SelectedSavService.EngineName, Mode=TwoWay}" TextWrapping="WrapWithOverflow"/>
+						<TextBlock Style="{StaticResource DefaultTextBlock}"> Consist</TextBlock>
+						<TextBlock Style="{StaticResource DefaultTextBlock}" 
+						           Text="{Binding SelectedSavService.ConsistName, Mode=TwoWay}" TextWrapping="WrapWithOverflow"/>
+					</WrapPanel>
+	        <WrapPanel>
+						<TextBlock Style="{StaticResource DefaultTextBlock}"> Guid</TextBlock>
+						<TextBlock Style="{StaticResource DefaultTextBlock}" 
+						           Text="{Binding SelectedSavService.ServiceGuid, Mode=TwoWay}" />
+					</WrapPanel>
+					<DataGrid Name="StopLocationsDataGrid" Style="{StaticResource DefaultDataGrid}"
+					          CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False"
+										AutoGenerateColumns="False"
+					          ItemsSource="{Binding SelectedSavService.StopLocationList}"
+					          Height="200" Width="300">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Stop location" Binding="{Binding}"/>
+
+						</DataGrid.Columns>
+</DataGrid>
+				</StackPanel>
+			</Grid>
+			<WrapPanel HorizontalAlignment="Right">
+			<Button Name="PublishButton" Style="{StaticResource DefaultButton}" Click="PublishButton_Click">Publish</Button>
+			<Button Name="CloneButton" Style="{StaticResource DefaultButton}" Click="CloneButton_Click">Clone</Button>
+
+			<Button Name="OKButton" Style="{StaticResource OKButton}" Click="OnExitButtonClicked">Close</Button>
+			</WrapPanel>
+		</StackPanel>
+	</ScrollViewer>
+</windowSizing:SizableWindow>

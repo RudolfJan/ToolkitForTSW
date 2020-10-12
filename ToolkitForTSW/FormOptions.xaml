@@ -1,0 +1,71 @@
+﻿<Window x:Class="ToolkitForTSW.FormOptions"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToolkitForTSW"
+        xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        mc:Ignorable="d"
+        Title="ToolkitForTSW Options" 
+        Style="{StaticResource AllWindows}">
+    <StackPanel>
+		<TabControl>
+			<TabItem Header="File locations">
+				<Border  Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<Label Style="{StaticResource BorderHeaderLabel}">File locations</Label>
+						<userControls:FileInputBox x:Name="SteamProgramFolderFileInput" LabelText="Steam program folder"
+                                        Style="{StaticResource OptionsOpenFile}"
+                                        InitialDirectory="C:\Program Files (x86)\Steam" FileDialogType="BrowseDir"
+                                        FileName="{Binding SteamProgramDirectory, Mode=TwoWay}"
+                                        FileNameChanged="OnSteamProgramFolderFileInputChanged"
+                                        ToolTip="TYou need to tell ToolkitForTSW where you installed Steam" />
+						<userControls:FileInputBox LabelText="TSW2 program" Style="{StaticResource OptionsOpenFile}"
+                                        InitialDirectory="C:\Program Files (x86)\Steam\steamapps\common\Train Sim World 2\WindowsNoEditor"
+                                        Filter="exe files (*.exe)|*.exe"
+                                        FileName="{Binding TrainSimWorldDirectory, Mode=TwoWay}" CheckFileExists="True"
+                                        ToolTip="Here you need to tell where the TSW executable is installed" Loaded="FileInputBox_Loaded" />
+						<userControls:FileInputBox LabelText="ToolkitForTSW folder" Style="{StaticResource OptionsOpenFile}"
+                                        FileDialogType="BrowseDir" FileName="{Binding TSWToolsFolder, Mode=TwoWay}"
+                                        ToolTip="This folder is where all data ToolkitForTSW is working with will be stored" />
+						<userControls:FileInputBox LabelText="Text editor" Style="{StaticResource OptionsOpenFile}"
+                                        InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
+                                        FileName="{Binding TextEditor, Mode=TwoWay}" CheckFileExists="True"
+                                        ToolTip="Choose your favourite text editor, mine is Notepad++ (freeware)" />
+						<userControls:FileInputBox LabelText="Unreal unpack" Style="{StaticResource OptionsOpenFile}"
+                                        InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
+                                        FileName="{Binding Unpacker, Mode=TwoWay}" CheckFileExists="True"
+                                        ToolTip="You will not be able to do a lot if you did not install the Unreal unpacker tool. See the ToolkitForTSW manual for details" />
+						<userControls:FileInputBox LabelText="UAsset unpack" Style="{StaticResource OptionsOpenFile}"
+                                        InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
+                                        FileName="{Binding UAssetUnpacker, Mode=TwoWay}" CheckFileExists="True" ToolTip="Set here the location of the UModel application"/>
+						<userControls:FileInputBox LabelText="7Zip" Style="{StaticResource OptionsOpenFile}"
+                                        InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
+                                        FileName="{Binding SevenZip, Mode=TwoWay}" CheckFileExists="True" ToolTip="7Zip will be used a lot for various purposes"/>
+					</StackPanel>
+				</Border>
+			</TabItem>
+			<TabItem Header="Other">
+				<Border Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<Label Style="{StaticResource BorderHeaderLabel}">Other settings</Label>
+						<userControls:LabelTextBox LabelText="Steam user key" LabelWidth="100"
+						                            TextBoxText="{Binding SteamUserId, Mode=TwoWay}" Width="220"
+						                            HorizontalAlignment="Left" ToolTip="To obtain the Steam screenshots, ToolkitForTSW needs the steam Id. If it is guessed wrong, provide it here"/>
+            <CheckBox Name="ÜseAdvancedSettingsCheckBox" IsChecked="{Binding UseAdvancedSettings}">Use advanced settings by default</CheckBox>
+            <CheckBox  Name="LimitSoundVolumesCheckBox" IsChecked="{Binding LimitSoundVolumes}">Limit sound volumes by default</CheckBox>
+					</StackPanel>
+				</Border>
+			</TabItem>
+		</TabControl>
+	   <Border MinWidth="400" Style="{StaticResource DefaultBorder}">
+            <StackPanel>
+                <userControls:ResultsTextBox Style="{StaticResource DefaultResultsTextBox}" Source="Images/page_delete.png"/>
+            </StackPanel>
+        </Border>
+        <WrapPanel HorizontalAlignment="Right">
+            <Button Name="CancelButton" Style="{StaticResource CancelButton}"  Click="OnCancelButtonClicked">Cancel</Button>
+            <Button Name="OKButton" Style="{StaticResource OKButton}" Click="OnOKButtonClicked">Save</Button>
+        </WrapPanel>
+    </StackPanel>
+</Window>
