@@ -20,12 +20,12 @@ namespace SavCrackerTest.Models
 		public StructureTypeEnum StructureType { get; set; }
 		public List<SavPropertyModel> PayLoad { get; set; } = new List<SavPropertyModel>();
 
-		public new string Report
-			{
-			get
-				{
-				return $"{base.Report}, Structure Type {StructureType}, Content length {ContentLength}";
-				}
-			}
+		//public new string Report
+		//	{
+		//	get
+		//		{
+		//		return $"{base.Report}, Structure Type {StructureType}, Content length {ContentLength}";
+		//		}
+		//	}
 		}
 	}

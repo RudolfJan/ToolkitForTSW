@@ -21,28 +21,28 @@ namespace ToolkitForTSW
 
   // https://stackoverflow.com/questions/1799370/getting-attributes-of-enums-value
 
-  public static class EnumExtensions
-    {
-    // This extension method is broken out so you can use a similar pattern with 
-    // other MetaData elements in the future. This is your base method for each.
-    public static T GetAttribute<T>(this Enum Value) where T : Attribute
-      {
-      var Type = Value.GetType();
-      var MemberInfo = Type.GetMember(Value.ToString());
-      var Attributes = MemberInfo[0].GetCustomAttributes(typeof(T), false);
-      return Attributes.Length > 0
-        ? (T)Attributes[0]
-        : null;
-      }
+  //public static class EnumExtensions
+  //  {
+  //  // This extension method is broken out so you can use a similar pattern with 
+  //  // other MetaData elements in the future. This is your base method for each.
+  //  public static T GetAttribute<T>(this Enum Value) where T : Attribute
+  //    {
+  //    var Type = Value.GetType();
+  //    var MemberInfo = Type.GetMember(Value.ToString());
+  //    var Attributes = MemberInfo[0].GetCustomAttributes(typeof(T), false);
+  //    return Attributes.Length > 0
+  //      ? (T)Attributes[0]
+  //      : null;
+  //    }
 
-    // This method creates a specific call to the above method, requesting the
-    // Description MetaData attribute.
-    public static String ToName(this Enum Value)
-      {
-      var Attribute = Value.GetAttribute<DescriptionAttribute>();
-      return Attribute == null ? Value.ToString() : Attribute.Description;
-      }
-    }
+  //  // This method creates a specific call to the above method, requesting the
+  //  // Description MetaData attribute.
+  //  public static String ToName(this Enum Value)
+  //    {
+  //    var Attribute = Value.GetAttribute<DescriptionAttribute>();
+  //    return Attribute == null ? Value.ToString() : Attribute.Description;
+  //    }
+  //  }
 
   public class CSetting : Notifier
     {

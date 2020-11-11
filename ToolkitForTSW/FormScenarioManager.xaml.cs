@@ -60,7 +60,9 @@ namespace ToolkitForTSW
 
     private void CloneButton_Click(object sender, RoutedEventArgs e)
       {
-
+      CScenario cloneSource = ScenarioManager.SelectedSavScenario;
+      var Form = new FormCloneScenario(cloneSource);
+      Form.ShowDialog();
       }
     }
   }

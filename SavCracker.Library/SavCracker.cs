@@ -58,9 +58,6 @@ namespace SavCrackerTest
         }
       }
 
-
- 
-
     private void GetRoute()
       {
       var position = Position;
@@ -73,45 +70,58 @@ namespace SavCrackerTest
       LogString += $"{position:D4} {s}\n";
       }
 
-
-
     private SavPropertyModel ProcessNextProperty(int position)
       {
       var elementName = GrabStringElement();
       var s = GetStringFromElement(elementName);
       if (String.CompareOrdinal(s, "None") == 0)
         {
-        var output = new SavPropertyModel();
-        output.PropertyType = PropertyTypeEnum.Empty;
-        output.PropertyName = "None";
-        output.Position = position;
-        return output;
+        return GrabNoneElement(position);
         }
 
       if (String.CompareOrdinal(s, "NameProperty") == 0)
         {
-        var output = new StringPropertyModel();
-        output.Position = position;
-        output.Length = elementName.Length + 4;
-        output.PropertyName = string.Empty;
-        output.PropertyType = PropertyTypeEnum.NameProperty;
-        var element = GrabStringElement();
-        output.Length += element.Length + 4;
-        output.Value = GetStringFromElement(element);
-        LogString += $"{output.Report}\n";
-        return output;
+        return CreateAnonymousNameProperty(position, elementName);
         }
       else
         {
-        var element = GrabStringElement();
-        var propertyTypeString = GetStringFromElement(element);
-        var output = CreatePropertyType(propertyTypeString, s);
-        output.Position = position;
-        output.Length = elementName.Length + element.Length + 8;
-        output.PropertyName = s;
-        LogString += $"{output.Report}\n";
-        return output;
+        return GrabProperty(position, elementName, s);
         }
+      }
+
+    private SavPropertyModel GrabProperty(int position, SavElementModel elementName, string s)
+      {
+      var element = GrabStringElement();
+      var propertyTypeString = GetStringFromElement(element);
+      var output = CreatePropertyType(propertyTypeString, s);
+      output.Position = position;
+      //output.Length = elementName.Length + element.Length + 8;
+      output.PropertyName = s;
+      //LogString += $"{output.Report}\n";
+      return output;
+      }
+
+    private SavPropertyModel CreateAnonymousNameProperty(int position, SavElementModel elementName)
+      {
+      var output = new StringPropertyModel();
+      output.Position = position;
+      //output.Length = elementName.Length + 4;
+      output.PropertyName = string.Empty;
+      output.PropertyType = PropertyTypeEnum.NameProperty;
+      var element = GrabStringElement();
+      //output.Length += element.Length + 4;
+      output.Value = GetStringFromElement(element);
+      //LogString += $"{output.Report}\n";
+      return output;
+      }
+
+    private static SavPropertyModel GrabNoneElement(int position)
+      {
+      var output = new SavPropertyModel();
+      output.PropertyType = PropertyTypeEnum.Empty;
+      output.PropertyName = "None";
+      output.Position = position;
+      return output;
       }
 
     public SavPropertyModel CreatePropertyType(string propertyTypeString, string propertyName)
@@ -120,179 +130,237 @@ namespace SavCrackerTest
         {
         case "NameProperty":
             {
-            var output = new StringPropertyModel();
-            output.PropertyType = PropertyTypeEnum.NameProperty;
-            output.PropertyName = propertyName;
-            // get payload length and index
-            output.ContentLength = GetInt();
-            output.IndexValue = GetInt();
-            SkipCode(1); //skip terminator here
-
-            // get value
-            var element = GrabStringElement();
-            output.Value = GetStringFromElement(element);
-            output.Length += element.Length + 4;
-            return output;
+            return CreateNameProperty(propertyName);
             }
         case "StrProperty":
             {
-            var output = new StringPropertyModel();
-            output.PropertyType = PropertyTypeEnum.StringProperty;
-            output.PropertyName = propertyName;
-            // get payload length and index
-            output.ContentLength = GetInt();
-            output.IndexValue = GetInt();
-            SkipCode(1); //skip terminator here
-
-            // get value
-            var element = GrabStringElement();
-            output.Value = GetStringFromElement(element);
-            output.Length += element.Length + 4;
-            return output;
+            return CreateStringProperty(propertyName);
             }
         case "BoolProperty":
             {
-            var output = new BoolPropertyModel();
-            output.PropertyType = PropertyTypeEnum.BoolProperty;
-            output.PropertyName = propertyName;
-            SkipCode(8); // 8 null values, no need for length and index?
-            var element = GrabFlagElement();
-            output.Length += 9;
-            output.Value = BitConverter.ToBoolean(element.Data, 0);
-            return output;
+            return CreateBoolProperty(propertyName);
             }
         case "StructProperty":
             {
-            var output = new StructPropertyModel();
-            output.PropertyType = PropertyTypeEnum.StructProperty;
-            output.PropertyName = propertyName;
-            // get payload length and index
-            output.ContentLength = GetInt();
-            output.IndexValue = GetInt();
-            var structureElement = GrabStringElement();
-            var structureContentNameString = GetStringFromElement(structureElement);
-            output.StructureContentName = structureContentNameString;
-            output.StructureType = GetStructureType(structureContentNameString);
-
-            switch (output.StructureType)
-              {
-              case StructureTypeEnum.Guid:
-                  {
-                  var g = new GuidPropertyModel();
-                  g.PropertyName = "Guid";
-                  g.Position = Position;
-                  g.Length = 16; // check this!
-                  g.PropertyType = PropertyTypeEnum.GuidProperty;
-                  SkipCode(17); // This should contain a Value type but seems not to be used. Contains null values
-                  g.GuidValue = GetGuid();
-                  output.PayLoad.Add(g);
-                  break;
-                  }
-              case StructureTypeEnum.TimeSpan:
-                  {
-                  SkipCode(17);
-                  var timeSpanElement = GrabCodeElement(8);
-                  //Array.Reverse(timeSpanElement.Data);
-                  //DateTime getNow = DateTime.FromBinary(getLong);
-                  var t = new TimespanPropertyModel();
-                  t.PropertyName = "StartTime";
-                  t.PropertyType = PropertyTypeEnum.TimeSpanProperty;
-                  t.TimeValue = BitConverter.ToUInt64(timeSpanElement.Data, 0) / 10000000; //TODO: check again, assumes time in seconds
-                  var minutes = t.TimeValue / 60;
-                  var hours = minutes / 60;
-                  minutes = minutes - hours * 60;
-                  t.TimeString = $"{hours:D2}:{minutes:D2}";
-                  output.PayLoad.Add(t);
-                  break;
-                  }
-              case StructureTypeEnum.SoftObjectPath:
-                  {
-                  var p = new StringPropertyModel();
-                  p.PropertyName = "SoftObjectPath";
-                  p.Position = Position;
-                  p.PropertyType = PropertyTypeEnum.SoftObjectPathProperty;
-                  SkipCode(17);
-                  var element = GrabStringElement();
-                  p.Value = GetStringFromElement(element);
-                  SkipCode(4); //four null bytes found after the string
-                  p.Length += element.Length + 8;
-                  output.PayLoad.Add(p);
-                  break;
-                  }
-              case StructureTypeEnum.EmbeddedObject:
-                  {
-                  SkipCode(17);
-                  int structPosition = Position; // check if this is correct
-                  while (Position < structPosition + output.ContentLength)
-                    {
-                    var result = ProcessNextProperty(Position);
-                    output.PayLoad.Add(result);
-
-                    }
-                  break;
-                  }
-              }
+            var output = CreateStructProperty(propertyName);
             return output;
             }
         case "ArrayProperty":
             {
-            var output = new ArrayPropertyModel();
-            output.PropertyType = PropertyTypeEnum.ArrayProperty;
-            // get payload length and index
-            output.ContentLength = GetInt();
-            output.IndexValue = GetInt();
-            var element = GrabStringElement();
-            var elementTypeString = GetStringFromElement(element);
-            output.ElementType = GetArrayElementType(elementTypeString);
-            SkipCode(1);
-            output.ElementCount = GetInt();
-            // Tricky, if the ArrayProperty has elementTpe NameProperty a shortcut is used, where a list of strings is provided.
-            if (output.ElementType == PropertyTypeEnum.NameProperty)
-              {
-              for (int i = 0; i < output.ElementCount; i++)
-                {
-                var n = new StringPropertyModel();
-                n.PropertyType = PropertyTypeEnum.NameProperty;
-                n.PropertyName = propertyName;
-                // get payload length and index
-                n.ContentLength = -1;
-                n.IndexValue = -1;
-                // get value
-                var nameElement = GrabStringElement();
-                n.Value = GetStringFromElement(nameElement);
-                output.Length += element.Length + 4;
-                output.PayLoad.Add(n);
-                }
-              }
-            else
-              {
-              for (int i = 0; i < output.ElementCount; i++)
-                {
-                var result = ProcessNextProperty(Position);
-                output.PayLoad.Add(result);
-                }
-              }
-            return output;
+            return CreateArrayProperty(propertyName);
             }
         case "SoftObjectProperty":
             {
-            var output = new SoftObjectPropertyModel();
-            output.PropertyType = PropertyTypeEnum.SoftObjectProperty;
-            output.PropertyName = propertyName;
-            // get payload length and index
-            output.ContentLength = GetInt();
-            output.IndexValue = GetInt();
-            SkipCode(1); //skip terminator here
-
-            // get value
-            var element = GrabStringElement();
-            output.Value = GetStringFromElement(element);
-            output.Length += element.Length + 4;
-            SkipCode(4); // TODO: is this correct? 
-            return output;
+            return CreateSoftObjectProperty(propertyName);
             }
         }
       return null;
+      }
+
+    private SavPropertyModel CreateSoftObjectProperty(string propertyName)
+      {
+      var output = new SoftObjectPropertyModel
+        {
+        PropertyType = PropertyTypeEnum.SoftObjectProperty,
+        PropertyName = propertyName,
+        // get payload length and index
+        ContentLength = GetInt(),
+        IndexValue = GetInt()
+        };
+      SkipCode(1); //skip terminator here
+
+      // get value
+      var element = GrabStringElement();
+      output.Value = GetStringFromElement(element);
+      //output.Length += element.Length + 4;
+      SkipCode(4);
+      return output;
+      }
+
+    private SavPropertyModel CreateArrayProperty(string propertyName)
+      {
+      var output = new ArrayPropertyModel
+        {
+        PropertyType = PropertyTypeEnum.ArrayProperty,
+        // get payload length and index
+        ContentLength = GetInt(),
+        IndexValue = GetInt()
+        };
+      var element = GrabStringElement();
+      var elementTypeString = GetStringFromElement(element);
+      output.ElementType = GetArrayElementType(elementTypeString);
+      SkipCode(1);
+      output.ElementCount = GetInt();
+      // Tricky, if the ArrayProperty has elementTpe NameProperty a shortcut is used, where a list of strings is provided.
+      if (output.ElementType == PropertyTypeEnum.NameProperty)
+        {
+        for (int i = 0; i < output.ElementCount; i++)
+          {
+          var n = new StringPropertyModel
+            {
+            PropertyType = PropertyTypeEnum.NameProperty,
+            PropertyName = propertyName,
+            // get payload length and index
+            ContentLength = -1,
+            IndexValue = -1
+            };
+          // get value
+          var nameElement = GrabStringElement();
+          n.Value = GetStringFromElement(nameElement);
+          //output.Length += element.Length + 4;
+          output.PayLoad.Add(n);
+          }
+        }
+      else
+        {
+        for (int i = 0; i < output.ElementCount; i++)
+          {
+          var result = ProcessNextProperty(Position);
+          output.PayLoad.Add(result);
+          }
+        }
+      return output;
+      }
+
+    private StructPropertyModel CreateStructProperty(string propertyName)
+      {
+      var output = new StructPropertyModel
+        {
+        PropertyType = PropertyTypeEnum.StructProperty,
+        PropertyName = propertyName,
+        // get payload length and index
+        ContentLength = GetInt(),
+        IndexValue = GetInt()
+        };
+      var structureElement = GrabStringElement();
+      var structureContentNameString = GetStringFromElement(structureElement);
+      output.StructureContentName = structureContentNameString;
+      output.StructureType = GetStructureType(structureContentNameString);
+      SkipCode(17); // This should contain a Value type but seems not to be used. Contains null values
+
+      switch (output.StructureType)
+        {
+        case StructureTypeEnum.Guid:
+            {
+            var g = CreateGuidProperty();
+            output.PayLoad.Add(g);
+            break;
+            }
+        case StructureTypeEnum.TimeSpan:
+            {
+            var t = CreateTimeSpan();
+            output.PayLoad.Add(t);
+            break;
+            }
+        case StructureTypeEnum.SoftObjectPath:
+            {
+            var p = CreateSoftObjectPath();
+            output.PayLoad.Add(p);
+            break;
+            }
+        case StructureTypeEnum.EmbeddedObject:
+            {
+            int structPosition = Position;
+            while (Position < structPosition + output.ContentLength)
+              {
+              var result = ProcessNextProperty(Position);
+              output.PayLoad.Add(result);
+              }
+            break;
+            }
+        }
+      return output;
+      }
+
+    private StringPropertyModel CreateSoftObjectPath()
+      {
+      var p = new StringPropertyModel
+        {
+        PropertyName = "SoftObjectPath",
+        Position = Position,
+        PropertyType = PropertyTypeEnum.SoftObjectPathProperty
+        };
+      var element = GrabStringElement();
+      p.Value = GetStringFromElement(element);
+      SkipCode(4); //four null bytes found after the string
+      //p.Length += element.Length + 8;
+      return p;
+      }
+
+    private TimespanPropertyModel CreateTimeSpan()
+      {
+      var timeSpanElement = GrabCodeElement(8);
+      var t = new TimespanPropertyModel();
+      t.PropertyName = "StartTime";
+      t.PropertyType = PropertyTypeEnum.TimeSpanProperty;
+      t.TimeValue = BitConverter.ToUInt64(timeSpanElement.Data, 0) / 10000000; //TODO: check again, assumes time in seconds
+      var minutes = t.TimeValue / 60;
+      var hours = minutes / 60;
+      minutes = minutes - hours * 60;
+      t.TimeString = $"{hours:D2}:{minutes:D2}";
+      return t;
+      }
+
+    private GuidPropertyModel CreateGuidProperty()
+      {
+      var g = new GuidPropertyModel
+        {
+        PropertyName = "Guid",
+        Position = Position,
+        //Length = 16,
+        PropertyType = PropertyTypeEnum.GuidProperty,
+        GuidValue = GetGuid()
+        };
+      return g;
+      }
+
+    private SavPropertyModel CreateBoolProperty(string propertyName)
+      {
+      var output = new BoolPropertyModel
+        {
+        PropertyType = PropertyTypeEnum.BoolProperty,
+        PropertyName = propertyName
+        };
+      SkipCode(8); // 8 null values, no need for length and index?
+      var element = GrabFlagElement();
+      //output.Length += 9;
+      output.Value = BitConverter.ToBoolean(element.Data, 0);
+      return output;
+      }
+
+    private SavPropertyModel CreateStringProperty(string propertyName)
+      {
+      var output = new StringPropertyModel
+        {
+        PropertyType = PropertyTypeEnum.StringProperty,
+        PropertyName = propertyName,
+        // get payload length and index
+        ContentLength = GetInt(),
+        IndexValue = GetInt()
+        };
+      SkipCode(1); //skip terminator here
+      // get value
+      output.Value = GetString();
+      //output.Length += output.Value.Length + 5; //including terminating null and string length prefix
+      return output;
+      }
+
+
+    private SavPropertyModel CreateNameProperty(string propertyName)
+      {
+      var output = new StringPropertyModel
+        {
+        PropertyType = PropertyTypeEnum.NameProperty,
+        PropertyName = propertyName,
+        // get payload length and index
+        ContentLength = GetInt(),
+        IndexValue = GetInt()
+        };
+      SkipCode(1); //skip terminator here
+      // get value
+      output.Value = GetString();
+      //output.Length += output.Value.Length + 5;
+      return output;
       }
 
     public PropertyTypeEnum GetArrayElementType(string propertyTypeString)
@@ -338,6 +406,12 @@ namespace SavCrackerTest
         }
       int output = BitConverter.ToInt32(element.Data, 0);
       return output;
+      }
+
+    private string GetString()
+      {
+      var element = GrabStringElement();
+      return GetStringFromElement(element);
       }
 
     private StructureTypeEnum GetStructureType(string structureTypeTypeString)

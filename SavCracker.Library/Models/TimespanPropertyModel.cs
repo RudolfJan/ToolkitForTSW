@@ -9,12 +9,12 @@ namespace SavCrackerTest.Models
     public ulong TimeValue { get; set; }
     public DateTime StartTime { get; set; }
     public string TimeString { get; set; }
-    public new string Report
-      {
-      get
-        {
-        return $"{base.Report}";
-        }
-      }
+    //public new string Report
+    //  {
+    //  get
+    //    {
+    //    return $"{base.Report}";
+    //    }
+    //  }
     }
   }

@@ -220,7 +220,7 @@ namespace ToolkitForTSW
 				if (Filepath.Contains("\'"))
 					{
 					//TODO fix this work around
-					return CLog.Trace("Cannot open file " + Filepath + " because it contains single quotes. Remove the qute from the file path", LogEventType.Error);
+					return CLog.Trace("Cannot open file " + Filepath + " because it contains single quotes. Remove the quote from the file path", LogEventType.Error);
 					}
 
 				if (File.Exists(Filepath))
