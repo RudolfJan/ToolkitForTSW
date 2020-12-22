@@ -1,6 +1,11 @@
-﻿using SavCrackerTest.Models;
+﻿using Logging.Library;
+using SavCracker.Library.Models;
+using SavCrackerTest.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace SavCracker.Library
@@ -27,83 +32,25 @@ namespace SavCracker.Library
       return s;
       }
 
-    public static void HarmonizeRouteName(SavScenarioModel scenario, string inputName)
+    public static void HarmonizeRouteName(SavScenarioModel scenario, string inputName, List<SavCrackerRouteModel> routeList)
       {
-      switch (inputName)
+      if (routeList == null)
         {
-        case "SanFranSanJose":
-            {
-            scenario.RouteName = "Peninsula Corridor";
-            scenario.RouteAbbreviation = "SFJ";
-            break;
-            }
-        case "SandPatchGrade":
-            {
-            scenario.RouteName = "Sandpatch Grade";
-            scenario.RouteAbbreviation = "SPG";
-            break;
-            }
-        case "Bakerloo":
-            {
-            scenario.RouteName = "Bakerloo Line";
-            scenario.RouteAbbreviation = "BKL";
-            break;
-            }
-        case "DSN":
-            {
-            scenario.RouteName = "Tees Valley Line";
-            scenario.RouteAbbreviation = "TVL";
-            break;
-            }
-        case "BrightonEastbourne":
-            {
-            scenario.RouteName = "East Coast Way";
-            scenario.RouteAbbreviation = "ECW";
-            break;
-            }
-        case "LIRR":
-            {
-            scenario.RouteName = "Long Island Railroad";
-            scenario.RouteAbbreviation = "LIRR";
-            break;
-            }
-        case "RuhrSiegNord":
-            {
-            scenario.RouteName = "Ruhr-Sieg Nord";
-            scenario.RouteAbbreviation = "RSN";
-            break;
-            }
-        case "KolnAachen":
-            {
-            scenario.RouteName = "Schnellstrecke Köln-Aachen";
-            scenario.RouteAbbreviation = "SKA";
-            break;
-            }
-        case "DuisburgBochum":
-            {
-            scenario.RouteName = "Hauptstrecke Rhein-Ruhr";
-            scenario.RouteAbbreviation = "HRR";
-            break;
-            }
-        case "Leipzig_S2_S-Bahn":
-            {
-            scenario.RouteName = "Rapid transit";
-            scenario.RouteAbbreviation = "RT";
-            break;
-            }
-        case "MainSpessartBahn":
-            {
-            scenario.RouteName = "MainSpessartBahn";
-            scenario.RouteAbbreviation = "MSB";
-            break;
-            }
-
-        default:
-            {
-            scenario.RouteName = inputName;
-            scenario.RouteAbbreviation = "XXX";
-            break;
-            }
+        Log.Trace("RoueList is null, initialization missing?", LogEventType.Error);
+        scenario.RouteName = "inputName";
+        scenario.RouteAbbreviation = "XXX";
+        return;
+        }
+      SavCrackerRouteModel route = routeList.FirstOrDefault(x => x.ScenarioPlannerRouteName == inputName);
+      if (route == null)
+        {
+        scenario.RouteName = "inputName";
+        scenario.RouteAbbreviation = "XXX";
+        }
+      else
+        {
+        scenario.RouteName = route.RouteName;
+        scenario.RouteAbbreviation = route.RouteAbbrev;
         }
       }
     }

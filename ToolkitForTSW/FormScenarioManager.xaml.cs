@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ToolkitForTSW.DataAccess;
 
 namespace ToolkitForTSW
   {
@@ -25,6 +26,7 @@ namespace ToolkitForTSW
       {
       InitializeComponent();
       DataContext = ScenarioManager;
+      SavCrackerTest.SavCracker.RouteList = RouteDataAccess.GetSavCrackerRouteList();
       SetControlStates();
       }
 

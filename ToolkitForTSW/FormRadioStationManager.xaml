@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToolkitForTSW"
-        
         xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
         mc:Ignorable="d"
         Style="{StaticResource AllWindows}"
@@ -19,9 +18,11 @@
         <Border Grid.Column="0" Style="{StaticResource DefaultBorder}">
           <StackPanel>
               <TextBlock Style="{StaticResource HeaderTextBlock}">Railway Radio Station Urls</TextBlock>
-            <DataGrid Name="RadioStationsUrlDataGrid" Height="220"  Style="{StaticResource DefaultDataGrid}" AutoGenerateColumns="False" SelectionChanged="OnRadioStationsUrlDataGridSelectionChanged"  >
+            <DataGrid Name="RadioStationsUrlDataGrid" Height="220"  Style="{StaticResource DataGridReadOnly}"
+                      ItemsSource="{Binding RadioStationsList}"
+                      SelectionChanged="OnRadioStationsUrlDataGridSelectionChanged"  >
               <DataGrid.Columns>
-                <DataGridTextColumn x:Name="RadioStationUrlColumn"  Header="Radio station"  Width="250"  Binding="{Binding Route}" SortMemberPath="NameColumn"/>
+                <DataGridTextColumn x:Name="RadioStationUrlColumn"  Header="Radio station"  Width="250"  Binding="{Binding RouteName}" SortMemberPath="NameColumn"/>
               </DataGrid.Columns>
             </DataGrid>
           </StackPanel>
@@ -29,7 +30,7 @@
         <Border Grid.Column="1" Style="{StaticResource DefaultBorder}">
           <StackPanel>
             <userControls:LabelTextBox Name="UrlTextBox" LabelText="Url"  LabelWidth="60" Style="{StaticResource DefaultLabelTextBox}" TextBoxText="{Binding ElementName=RadioStationsUrlDataGrid, Path=SelectedItem.Url, NotifyOnSourceUpdated=True, Mode=TwoWay}"/>
-            <userControls:LabelTextBox Name="RouteTextBox" LabelText="Route"  LabelWidth="60" Style="{StaticResource DefaultLabelTextBox}" TextBoxText="{Binding ElementName=RadioStationsUrlDataGrid, Path=SelectedItem.Route, NotifyOnSourceUpdated=True, Mode=TwoWay}"/>
+            <userControls:LabelTextBox Name="RouteTextBox" LabelText="Route"  LabelWidth="60" Style="{StaticResource DefaultLabelTextBox}" TextBoxText="{Binding ElementName=RadioStationsUrlDataGrid, Path=SelectedItem.RouteName, NotifyOnSourceUpdated=True, Mode=TwoWay}"/>
             <userControls:LabelTextBox Name="DescriptionTextBox" LabelText="Description" LabelWidth="60" Style="{StaticResource MultiLineLabelTextBox}" TextBoxText="{Binding ElementName=RadioStationsUrlDataGrid, Path=SelectedItem.Description, NotifyOnSourceUpdated=True, Mode=TwoWay}"/>
             <WrapPanel>
               <Button Name="AddUrlButton" Style="{StaticResource DefaultButton}" Click="OnAddUrlButtonClicked">Add</Button>

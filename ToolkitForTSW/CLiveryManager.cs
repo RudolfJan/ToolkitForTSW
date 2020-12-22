@@ -21,6 +21,7 @@ namespace ToolkitForTSW
 		[Description("Scenario")] Scenario,
 		[Description("Service timetable")] Service,
 		[Description("Weather")] Weather,
+    [Description("Game")] Game,
 		[Description("Other")] Other
 		};
 
@@ -110,38 +111,10 @@ namespace ToolkitForTSW
 
 		private void Initialise()
 			{
-			CreateLiveryTable();
 			GetPakFiles();
 			CreateDataSet();
 			GetInstalledPakFiles();
 			UpdateInstalledStates();
-			}
-
-		private void CreateLiveryTable()
-			{
-			try
-				{
-				var Db = new CDatabase();
-				var LiveryTableCreateStatement = @"CREATE TABLE ""Livery"" (
-	""Id""	INTEGER PRIMARY KEY,
-	""Name""	TEXT,
-	""FilePath""	TEXT UNIQUE ON CONFLICT IGNORE,
-	""FileName""	TEXT,
-	""DLCName""	TEXT,
-	""Description""	TEXT,
-	""Image""	TEXT,
-	""Source""	TEXT,
-	""LiveryType""	TEXT,
-	""ReplaceName""	TEXT,
-	""IsInstalled""	INTEGER NOT NULL DEFAULT 0
-)";
-
-				Db.CreateTable(LiveryTableName, LiveryTableCreateStatement);
-				}
-			catch (Exception E)
-				{
-				Result += CLog.Trace("Error creating Livery database because " + E.Message);
-				}
 			}
 
 		private void CreateDataSet()

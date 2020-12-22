@@ -1,5 +1,6 @@
 ﻿using Logging.Library;
 using SavCracker.Library;
+using SavCracker.Library.Models;
 using SavCrackerTest.Models;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace SavCrackerTest
     public byte[] Data { get; set; }
     public string ScenarioFileName { get; set; }
     public List<SavPropertyModel> SavDataList { get; set; } = new List<SavPropertyModel>();
-
+    public static List<SavCrackerRouteModel> RouteList;
 
     public SavCracker(string scenarioFileName)
       {
@@ -34,7 +35,7 @@ namespace SavCrackerTest
         }
       catch (Exception ex)
         {
-        Console.WriteLine("Exception during reading data "); //TODO: use logging
+        Log.Trace("Exception during reading data ",ex, LogEventType.Error);
         return null;
         }
       }
@@ -66,7 +67,7 @@ namespace SavCrackerTest
       var s = GetStringFromElement(element);
       Scenario.RouteString = s;
       s = RouteLogic.StripRouteString(s);
-      RouteLogic.HarmonizeRouteName(Scenario, s);
+      RouteLogic.HarmonizeRouteName(Scenario, s, RouteList);
       LogString += $"{position:D4} {s}\n";
       }
 

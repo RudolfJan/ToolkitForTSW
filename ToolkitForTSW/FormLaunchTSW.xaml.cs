@@ -18,17 +18,9 @@ namespace ToolkitForTSW
       InitializeComponent();
 
       LaunchTSW = new CLaunchTSW();
-      SetItemsSource();
       DataContext = LaunchTSW;
       }
-
-    private void SetItemsSource()
-      {
-      RadioStationsUrlDataGrid.ItemsSource = LaunchTSW.RailwayRadioStationManager
-        .RadioStationDataSet.Tables[0].DefaultView;
-      RadioStationsUrlDataGrid.Items.Refresh();
-      }
-
+ 
     private void OnSettingFilesDataGridSelectionChanged(Object Sender, SelectionChangedEventArgs E)
       {
       }

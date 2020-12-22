@@ -776,7 +776,7 @@ namespace ToolkitForTSW
 				.Replace("\"", "&quot;");
 			}
 
-		// Utility function to put a string in quotes, maybe needed in XML constructs, e.g. Inpt string output "string"
+		// Utility function to put a string in quotes, maybe needed in XML constructs, e.g. Input string output "string"
 		public static String AddQuotes(String S)
 			{
 			// first, we add backslashes before each quote to escape the quote

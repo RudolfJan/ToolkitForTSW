@@ -27,6 +27,8 @@
     <None Remove="Images\resultset_previous.png" />
     <None Remove="Images\safe.png" />
     <None Remove="Images\wand.png" />
+    <None Remove="SQL\CreateTables.sql" />
+    <None Remove="SQL\RouteDataImport.csv" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,16 +68,22 @@
     <Content Include="Images\wand.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\CreateTables.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\RouteDataImport.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Syroot.Windows.IO.KnownFolders" Version="1.2.3" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\mirzaevolution\ThumbnailSharp\ThumbnailSharp\ThumbnailSharp.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Logging.Library\Logging.Library.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\SQLiteDatabase.Library\SQLiteDatabase.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Styles.Library\Styles.Library.csproj" />
     <ProjectReference Include="..\SavCracker.Library\SavCracker.Library.csproj" />
   </ItemGroup>
