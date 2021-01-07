@@ -8,3 +8,54 @@ Instructions:
 r.ViewDistanceScale=3
 r.BloomQuality=0
 r.Color.Mid=0.4
+
+
+r.Shadow.FilterMethod=1
+This enables Nvidia PCSS in-game so that shadows get softer as you get further away from the shadow source. It's not transformative or anything, but it has helped the overall feel of the world lighting and especially shadows cast into the cab.
+
+weet niet of je deze al geprobeerd heb r.LandscapeLOD0DistributionScale=3 ;Tunnels look better from distance
+
+
+Here's a couple of tips that might help you with AA personally (as opposed to an official DTG streamer :) ). First, TAA ghosting can be minimised somewhat with Engine.ini tweaks:
+Code:
+
+r.TemporalAASharpness=2.0
+r.TemporalAASamples=64
+r.TemporalAACurrentFrameWeight=0.2
+
+And if that still doesn't suit your fancy, I would hook ReShade to TSW2 and enable the SMAA filter as it shares all of the benefits of TXAA that you listed while also being less blurry (they are closely related, after all).
+
+Not sure what resolution you play at (1080p with upscaling set to 200%?) but the above TAA settings look very nice on my 1440p monitor at 115% upscale.
+
+I’ve followed the advice in that thread and it has seemingly got rid of all of the flickering with TAA enabled.
+
+I’m going to have a play with it and see if I can find a decent balance between the recommended 1 and making it look a bit more smooth.
+
+*Edited to add*
+
+1) Even setting the r.TemporalAASamples to 2 introduces flickering again, although very very little. It definitely looks better than one. If it won’t take decimal points then setting it to 2 might be the right balance between quality and no flickering.
+
+2) It doesn’t seem to accept decimal points. If you add this to the .ini file you should see a significant reduction in TAA flickering and ghosting.
+
+r.TemporalAASharpness=2.0
+r.TemporalAASamples=2
+r.TemporalAACurrentFrameWeight=0.2 
+
+r.LandscapeLOD0DistributionScale=4
+
+This draws terrain most detailed LOD (the LOD0) 4 times further than regular. You can use also the value 3 or 2 that will use only 3 or 2 times factors for better performance. There´s no aparent impact on performance as terrain mesh is normally not extremely detailed here as in other games that require higher details at close distances, but it has two main benefits:
+
+1) Prevents the horrible effect of terrain covering distant tunnels entries, bridges and embankments
+
+2) Allows better drawing of distant track basement, which is extremely important at LGV line to be able to spot the gradient changes in time for braking
+
+ts2.CameraMotionSway.EnableUprightCompensation=0
+ts2.CameraMotionSway.KSitting.Y=100.0
+ts2.CameraMotionSway.KSitting.Z=50.0
+ts2.CameraMotionSway.LSitting.Y=10
+ts2.CameraMotionSway.LSitting.Z=1
+ts2.CameraMotionSway.SittingPivotOffset=-200
+ts2.CameraMotionSway.LSitting.X=10
+
+
+

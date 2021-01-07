@@ -21,7 +21,9 @@ namespace SavCrackerTest.Models
 		public bool IsPassengerService { get; set; }
     public ulong StartTime { get; set; }
 		public string StartTimeText { get; set; }
-    public List<string> LiveryList { get; set; } =new List<string>();
+    public string LiveryIdentifier { get; set; }
+    public string LiveryName { get; set; } // Not yet used, in order to use we need to open the livery editor .sav file
+    public List<string> LiveryList { get; set; } =new List<string>(); // TODO Obsolete? 
 		public List<string> StopLocationList { get; set; }=new List<string>();
 		}
 	}

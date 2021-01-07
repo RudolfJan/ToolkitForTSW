@@ -46,6 +46,9 @@ namespace SavCracker.Library
         }
       return 0;
       }
+
+
+
     private static List<string> AIStartTimeCheck(List<SavServiceModel> savServiceList)
       {
       var output = new List<string>();

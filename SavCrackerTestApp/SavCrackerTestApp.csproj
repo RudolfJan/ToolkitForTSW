@@ -1,12 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\RudolfLibraries\Logging.Library\Logging.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Utilities.Library\Utilities.Library.csproj" />
+    <ProjectReference Include="..\SavCracker.Library\SavCracker.Library.csproj" />
+    <ProjectReference Include="..\ToolkitForTSW\ToolkitForTSW.csproj" />
   </ItemGroup>
 
 </Project>

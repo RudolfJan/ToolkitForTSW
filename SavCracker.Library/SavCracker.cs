@@ -5,6 +5,7 @@ using SavCrackerTest.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Utilities.Library.TextHelpers;
 
 namespace SavCrackerTest
   {
@@ -28,9 +29,10 @@ namespace SavCrackerTest
       {
       try
         {
-        var s = new FileStream(
-          scenarioFileName, FileMode.Open);
-        byte[] data = new BinaryReader(s).ReadBytes(((int)s.Length));
+        //var s = new FileStream(
+        //  scenarioFileName, FileMode.Open);
+        //byte[] data = new BinaryReader(s).ReadBytes(((int)s.Length));
+        var data = File.ReadAllBytes(scenarioFileName);
         return data;
         }
       catch (Exception ex)
@@ -96,9 +98,7 @@ namespace SavCrackerTest
       var propertyTypeString = GetStringFromElement(element);
       var output = CreatePropertyType(propertyTypeString, s);
       output.Position = position;
-      //output.Length = elementName.Length + element.Length + 8;
       output.PropertyName = s;
-      //LogString += $"{output.Report}\n";
       return output;
       }
 
@@ -106,13 +106,10 @@ namespace SavCrackerTest
       {
       var output = new StringPropertyModel();
       output.Position = position;
-      //output.Length = elementName.Length + 4;
       output.PropertyName = string.Empty;
       output.PropertyType = PropertyTypeEnum.NameProperty;
       var element = GrabStringElement();
-      //output.Length += element.Length + 4;
       output.Value = GetStringFromElement(element);
-      //LogString += $"{output.Report}\n";
       return output;
       }
 
@@ -164,7 +161,6 @@ namespace SavCrackerTest
         {
         PropertyType = PropertyTypeEnum.SoftObjectProperty,
         PropertyName = propertyName,
-        // get payload length and index
         ContentLength = GetInt(),
         IndexValue = GetInt()
         };
@@ -173,7 +169,6 @@ namespace SavCrackerTest
       // get value
       var element = GrabStringElement();
       output.Value = GetStringFromElement(element);
-      //output.Length += element.Length + 4;
       SkipCode(4);
       return output;
       }
@@ -183,7 +178,6 @@ namespace SavCrackerTest
       var output = new ArrayPropertyModel
         {
         PropertyType = PropertyTypeEnum.ArrayProperty,
-        // get payload length and index
         ContentLength = GetInt(),
         IndexValue = GetInt()
         };
@@ -201,14 +195,11 @@ namespace SavCrackerTest
             {
             PropertyType = PropertyTypeEnum.NameProperty,
             PropertyName = propertyName,
-            // get payload length and index
             ContentLength = -1,
             IndexValue = -1
             };
-          // get value
           var nameElement = GrabStringElement();
           n.Value = GetStringFromElement(nameElement);
-          //output.Length += element.Length + 4;
           output.PayLoad.Add(n);
           }
         }
@@ -229,7 +220,6 @@ namespace SavCrackerTest
         {
         PropertyType = PropertyTypeEnum.StructProperty,
         PropertyName = propertyName,
-        // get payload length and index
         ContentLength = GetInt(),
         IndexValue = GetInt()
         };
@@ -284,7 +274,6 @@ namespace SavCrackerTest
       var element = GrabStringElement();
       p.Value = GetStringFromElement(element);
       SkipCode(4); //four null bytes found after the string
-      //p.Length += element.Length + 8;
       return p;
       }
 
@@ -294,11 +283,8 @@ namespace SavCrackerTest
       var t = new TimespanPropertyModel();
       t.PropertyName = "StartTime";
       t.PropertyType = PropertyTypeEnum.TimeSpanProperty;
-      t.TimeValue = BitConverter.ToUInt64(timeSpanElement.Data, 0) / 10000000; //TODO: check again, assumes time in seconds
-      var minutes = t.TimeValue / 60;
-      var hours = minutes / 60;
-      minutes = minutes - hours * 60;
-      t.TimeString = $"{hours:D2}:{minutes:D2}";
+      t.TimeValue = BitConverter.ToUInt64(timeSpanElement.Data, 0) / 10000000;
+      t.TimeString = TimeConverters.SecondsToString(t.TimeValue, false);
       return t;
       }
 
@@ -308,7 +294,6 @@ namespace SavCrackerTest
         {
         PropertyName = "Guid",
         Position = Position,
-        //Length = 16,
         PropertyType = PropertyTypeEnum.GuidProperty,
         GuidValue = GetGuid()
         };
@@ -324,7 +309,6 @@ namespace SavCrackerTest
         };
       SkipCode(8); // 8 null values, no need for length and index?
       var element = GrabFlagElement();
-      //output.Length += 9;
       output.Value = BitConverter.ToBoolean(element.Data, 0);
       return output;
       }
@@ -335,14 +319,11 @@ namespace SavCrackerTest
         {
         PropertyType = PropertyTypeEnum.StringProperty,
         PropertyName = propertyName,
-        // get payload length and index
         ContentLength = GetInt(),
         IndexValue = GetInt()
         };
       SkipCode(1); //skip terminator here
-      // get value
       output.Value = GetString();
-      //output.Length += output.Value.Length + 5; //including terminating null and string length prefix
       return output;
       }
 
@@ -353,14 +334,11 @@ namespace SavCrackerTest
         {
         PropertyType = PropertyTypeEnum.NameProperty,
         PropertyName = propertyName,
-        // get payload length and index
         ContentLength = GetInt(),
         IndexValue = GetInt()
         };
       SkipCode(1); //skip terminator here
-      // get value
       output.Value = GetString();
-      //output.Length += output.Value.Length + 5;
       return output;
       }
 

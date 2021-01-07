@@ -1,13 +1,10 @@
 ﻿using SavCracker.Library;
-using SavCrackerTest;
 using SavCrackerTest.Models;
 using Styles.Library.Helpers;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using ToolkitForTSW;
+using ToolkitForTSW.DataAccess;
 
 namespace ToolkitForTSW
   {
@@ -70,13 +67,15 @@ namespace ToolkitForTSW
 
     public CScenarioManager()
       {
+      SavCrackerTest.SavCracker.RouteList = RouteDataAccess.GetSavCrackerRouteList();
       BuildScenarioList();
       }
 
-    private void BuildScenarioList()
+    public void BuildScenarioList()
       {
       var Path=  $"{CTSWOptions.GameSaveLocation}Saved\\SaveGames\\";
       DirectoryInfo DirInfo = new DirectoryInfo(Path);
+      ScenarioList.Clear();
       var files = DirInfo.GetFiles("USD_*.sav", SearchOption.TopDirectoryOnly);
       foreach (var file in files)
         {

@@ -1,6 +1,8 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using Logging.Library;
+using Microsoft.VisualBasic.FileIO;
 using SavCracker.Library.Models;
 using SQLiteDatabase.Library;
+using System;
 using System.Collections.Generic;
 using ToolkitForTSW.Models;
 
@@ -25,28 +27,54 @@ namespace ToolkitForTSW.DataAccess
     public static void InitRouteForSavCracker(string savCrackerCsv)
       {
       // https://stackoverflow.com/questions/5282999/reading-csv-file-and-storing-values-into-an-array
-      using (TextFieldParser csvParser = new TextFieldParser(savCrackerCsv))
+
+
+      try
         {
-        csvParser.CommentTokens = new string[] { "#" };
-        csvParser.SetDelimiters(new string[] { "," });
-        csvParser.HasFieldsEnclosedInQuotes = true;
-
-        // Skip the row with the column names
-        csvParser.ReadLine();
-
-        while (!csvParser.EndOfData)
+        using (TextFieldParser csvParser = new TextFieldParser(savCrackerCsv))
           {
-          // Read current line fields, pointer moves to the next line.
-          string[] fields = csvParser.ReadFields();
-          RouteModel route = new RouteModel();
-          route.ScenarioPlannerRouteName=fields[0];
-          route.RouteName = fields[1];
-          route.RouteAbbrev = fields[2];
-          route.RouteDescription= string.Empty;
-          route.RouteImagePath= string.Empty;
-          route.ScenarioPlannerRouteString= string.Empty;
-          InsertRoute(route);
+          csvParser.CommentTokens = new string[] {"#"};
+          csvParser.SetDelimiters(new string[] {","});
+          csvParser.HasFieldsEnclosedInQuotes = true;
+
+          // Skip the row with the column names
+          csvParser.ReadLine();
+
+          while (!csvParser.EndOfData)
+            {
+            // Read current line fields, pointer moves to the next line.
+            string[] fields = csvParser.ReadFields();
+            int length = fields.GetLength(0);
+            RouteModel route = new RouteModel();
+            if (length > 0)
+              {
+              route.ScenarioPlannerRouteName = fields[0];
+              }
+
+            if (length > 1)
+              {
+              route.RouteName = fields[1];
+              }
+
+            if (length > 2)
+              {
+              route.RouteAbbrev = fields[2];
+              }
+
+            if (length > 3)
+              {
+              route.ScenarioPlannerRouteString = fields[3];
+              }
+
+            route.RouteDescription = string.Empty;
+            route.RouteImagePath = string.Empty;
+            InsertRoute(route);
+            }
           }
+        }
+      catch (Exception ex)
+        {
+        Log.Trace( $"Error reading route import {ex.Message}");
         }
       }
 

@@ -23,7 +23,7 @@
 					<DataGrid Name="ScenarioDataGrid" Style="{StaticResource DefaultDataGrid}"
           CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False"
           ItemsSource="{Binding ScenarioList }"
-					SelectedItem="{Binding SelectedSavScenario }" 
+					SelectedItem="{Binding SelectedSavScenario, NotifyOnSourceUpdated=True}" 
           Height="385" Width="400" SelectionChanged="OnSelectedScenarioChanged">
 						<DataGrid.Columns>
 							<DataGridTemplateColumn Header="Scenario">
@@ -117,9 +117,9 @@
 						           Text="{Binding SelectedSavService.ConsistName, Mode=TwoWay}" TextWrapping="WrapWithOverflow"/>
 					</WrapPanel>
 	        <WrapPanel>
-						<TextBlock Style="{StaticResource DefaultTextBlock}"> Guid</TextBlock>
+						<TextBlock Style="{StaticResource DefaultTextBlock}"> Livery</TextBlock>
 						<TextBlock Style="{StaticResource DefaultTextBlock}" 
-						           Text="{Binding SelectedSavService.ServiceGuid, Mode=TwoWay}" />
+						           Text="{Binding SelectedSavService.LiveryIdentifier, Mode=TwoWay}" />
 					</WrapPanel>
 					<DataGrid Name="StopLocationsDataGrid" Style="{StaticResource DefaultDataGrid}"
 					          CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False"
@@ -134,10 +134,13 @@
 				</StackPanel>
 			</Grid>
 			<WrapPanel HorizontalAlignment="Right">
-			<Button Name="PublishButton" Style="{StaticResource DefaultButton}" Click="PublishButton_Click">Publish</Button>
-			<Button Name="CloneButton" Style="{StaticResource DefaultButton}" Click="CloneButton_Click">Clone</Button>
+				<Button Name="HexButton" Style="{StaticResource ButtonDefault}" Click="OnHexButtonClicked" >Open in editor</Button>
 
-			<Button Name="OKButton" Style="{StaticResource OKButton}" Click="OnExitButtonClicked">Close</Button>
+				<Button Name="PublishButton" Style="{StaticResource ButtonDefault}" Click="PublishButton_Click">Publish</Button>
+				<Button Name="EditButton" Style="{StaticResource ButtonDefault}" Click="EditButton_Click">Edit</Button>
+				<Button Name="DeleteButton" Style="{StaticResource ButtonDefault}" Click="DeleteButton_Click">Delete</Button>
+
+<Button Name="OKButton" Style="{StaticResource ButtonOK}" Click="OnExitButtonClicked">Close</Button>
 			</WrapPanel>
 		</StackPanel>
 	</ScrollViewer>

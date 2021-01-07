@@ -25,11 +25,14 @@ namespace SavCracker.Library
                   {
                   case "UserServiceName":
                       {
-                      service = new SavServiceModel();
-                      service.ServiceName = PropertiesLogic.GetStrPropertyValue(payloadProperty);
+                      service = new SavServiceModel
+                        {
+                        ServiceName = PropertiesLogic.GetStrPropertyValue(payloadProperty)
+                        };
                       break;
                       }
                   case "formation":
+                  case "Formation":
                       {
                       if (!(payloadProperty is StructPropertyModel))
                         {
@@ -53,8 +56,8 @@ namespace SavCracker.Library
                               break;
                               }
                           case "SelectedReskins":
-                              {
-                              //TODO: support this
+                            {
+                            service.LiveryIdentifier = PropertiesLogic.GetReskin(elementProperty);
                               break;
                               }
                           case "None":
