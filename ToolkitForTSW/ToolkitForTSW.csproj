@@ -16,6 +16,8 @@
 
 <ItemGroup>
     <None Remove="Images\AboutPicture.png" />
+    <None Remove="Images\arrow_down.png" />
+    <None Remove="Images\arrow_up.png" />
     <None Remove="Images\folder.png" />
     <None Remove="Images\LuaCreator.ico" />
     <None Remove="Images\MainWindowImage.png" />
@@ -86,6 +88,11 @@
     <ProjectReference Include="..\..\RudolfLibraries\SQLiteDatabase.Library\SQLiteDatabase.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Styles.Library\Styles.Library.csproj" />
     <ProjectReference Include="..\SavCracker.Library\SavCracker.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\arrow_down.png" />
+    <Resource Include="Images\arrow_up.png" />
   </ItemGroup>
 
 

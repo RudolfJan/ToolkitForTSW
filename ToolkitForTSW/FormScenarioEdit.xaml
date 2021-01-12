@@ -161,27 +161,42 @@
 							</TabItem>
 							<TabItem Header="Stop locations editor">
 								<StackPanel>
-									<DataGrid Name="StopLocationsDataGrid" Style="{StaticResource DataGridReadOnly}"
-									          ItemsSource="{Binding StopPointsList}"
-														SelectedItem="{Binding SelectedStopLocation}"
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="auto"/>
+											<ColumnDefinition Width="auto"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<DataGrid Grid.Column="0" Name="StopLocationsDataGrid" Style="{StaticResource DataGridReadOnly}"
+										          ItemsSource="{Binding StopPointsList}"
+										          SelectedItem="{Binding SelectedStopLocation}"
 
-									          Height="200" Width="300" SelectionChanged="OnSelectedStopLocationChanged">
-										<DataGrid.Columns>
-											<DataGridTextColumn Header="Stop location" Binding="{Binding}"/>
-										</DataGrid.Columns>
-									</DataGrid>
-									<WrapPanel>
-										<Button Name="EditStopLocation" Style="{StaticResource ButtonDefault}">Edit</Button>
-										<Button Name="DeleteStopLocation" Style="{StaticResource ButtonDefault}">Delete</Button>
-										<Button Name="AddStopLocation" Style="{StaticResource ButtonDefault}">Add</Button>
-									</WrapPanel>
+										          Height="200" Width="200" SelectionChanged="OnSelectedStopLocationChanged">
+											<DataGrid.Columns>
+												<DataGridTextColumn Header="Stop location" Binding="{Binding}"/>
+											</DataGrid.Columns>
+										</DataGrid>
+										<StackPanel Grid.Column="1">
+											<Button Name="MoveUpButton" Style="{StaticResource ButtonTransparentImage}" Click="MoveUpButtonClicked" >
+													<Image Source="Images/arrow_up.png"/>
+											</Button>
+											<Button Name="MoveDownButton" Style="{StaticResource ButtonTransparentImage}" Click="MoveDownButtonClicked" >
+												<Image Source="Images/arrow_down.png"/>
+											</Button>
+											<Button Name="EditStopLocation" Style="{StaticResource ButtonNarrow}" Click="OnEditStopLocationClicked" >Edit</Button>
+											<Button Name="DeleteStopLocation" Style="{StaticResource ButtonNarrow} " Click="OnDeleteStopLocationClicked">Delete</Button>
+											<Button Name="AddStopLocation" Style="{StaticResource ButtonNarrow}">Add</Button>
+											<Button Name="SaveStopLocation" Style="{StaticResource ButtonNarrow}">Save</Button>
+
+										</StackPanel>
+									</Grid>
+									
+								
 									<WrapPanel>
 										<TextBlock Style="{StaticResource TextBlockDefault}">Stop location</TextBlock>
 										<TextBox Name="StopLocationTextBox" Width="200" Style="{StaticResource TextBoxDefault}" Text="{Binding StopLocation}" HorizontalAlignment="Right"/>
 									</WrapPanel>
 									<WrapPanel>
-										<Button Name="SaveStopLocation" Style="{StaticResource ButtonDefault}">Save</Button>
-										<Button Name="ClearStopLocation" Style="{StaticResource ButtonDefault}">Clear</Button>
 									</WrapPanel>
 								</StackPanel>
 							</TabItem>
@@ -195,8 +210,8 @@
 		<StackPanel>
 			<WrapPanel VerticalAlignment="Bottom" HorizontalAlignment="Right">
 				<Button Name="CancelButton" Style="{StaticResource ButtonCancel}" Click="CancelButton_OnClick">Cancel</Button>
-				<Button Name="SaveButton" Style="{StaticResource ButtonOK}" Click="SaveButton_OnClick">Save</Button>
-				<Button Name="OKButton" Style="{StaticResource ButtonOK}" Click="OKButton_OnClick">Backup and save</Button>
+				<Button Name="SaveOverWriteButton" Style="{StaticResource ButtonOK}" Click="SaveOverWriteClicked">Save overwrite</Button>
+				<Button Name="SaveCopyButton" Style="{StaticResource ButtonOK}" Click="SaveCopyClicked">Save copy</Button>
 			</WrapPanel>
 		</StackPanel>
 	</StackPanel>

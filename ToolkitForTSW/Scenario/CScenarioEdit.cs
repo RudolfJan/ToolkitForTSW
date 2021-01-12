@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel.Description;
 using System.Text;
+using ToolkitForTSW.DataAccess;
+using ToolkitForTSW.Models;
 using ToolkitForTSW.Scenario;
 using Utilities.Library.TextHelpers;
 
@@ -30,7 +32,7 @@ namespace ToolkitForTSW
       }
 
     private string _ClonedScenarioName;
-    public string ClonedScenarioName
+    public string ScenarioName
       {
       get { return _ClonedScenarioName; }
       set
@@ -41,7 +43,7 @@ namespace ToolkitForTSW
       }
 
     private Guid _ClonedScenarioGuid = Guid.NewGuid();
-    public Guid ClonedScenarioGuid
+    public Guid ScenarioGuid
       {
       get { return _ClonedScenarioGuid; }
       set
@@ -227,17 +229,18 @@ namespace ToolkitForTSW
         }
       }
 
+    public bool IsToolkitGenerated { get; set; }
 
-   
 
     #region ScenarioEditHandlers
 
     public void ScenarioEdit()
       {
-      ClonedScenarioName = Scenario.SavScenario.ScenarioName;
-      ClonedScenarioGuid = Guid.NewGuid();
+      // ScenarioName = Scenario.SavScenario.ScenarioName;
+      ScenarioGuid = Guid.NewGuid();
       ScenarioStartTime = GetPlayerServiceStartTimeText(Scenario.SavScenario.SavServiceList);
       OffTheRailsMode = Scenario.SavScenario.RulesDisabledMode;
+      IsToolkitGenerated= (ScenarioDataAccess.GetScenarioByGuid(Scenario.SavScenario.ScenarioGuid)!=null);
       ServicesList = new List<SavServiceModel>();
       foreach (var service in Scenario.SavScenario.SavServiceList)
         {
@@ -366,50 +369,73 @@ namespace ToolkitForTSW
 
     public void MoveUpStopPoint()
       {
-      //if (selectedPerson == null)
-      //  {
-      //  return;
-      //  }
-      //int ix = Persons.IndexOf(selectedPerson);
-      //if (ix > 0)
-      //  {
-      //  Person _thisPerson = selectedPerson;
-      //  Person _previousPerson = Persons[ix - 1];
-      //  Persons[ix] = _previousPerson;
-      //  Persons[ix - 1] = _thisPerson;
-      //}
+      if (SelectedStopLocation == null)
+        {
+        return;
+        }
+      var ix = StopPointsList.IndexOf(SelectedStopLocation);
+      if (ix > 0)
+        {
+        string currentLocation = SelectedStopLocation;
+        string previousLocation = StopPointsList[ix - 1];
+        StopPointsList[ix] = previousLocation;
+        StopPointsList[ix - 1] = currentLocation;
+        }
       }
-
 
     public void MoveDownStopPoint()
       {
-      //if (selectedPerson == null)
-      //  {
-      //  return;
-      //  }
-      //int ix = Persons.IndexOf(selectedPerson);
-      //if (ix < Persons.Count - 1)
-      //  {
-      //  Person _thisPerson = selectedPerson;
-      //  Person _nextPerson = Persons[ix + 1];
-      //  Persons[ix] = _nextPerson;
-      //  Persons[ix + 1] = _thisPerson;
-      //  }
+      if (SelectedStopLocation == null)
+        {
+        return;
+        }
+      var ix = StopPointsList.IndexOf(SelectedStopLocation);
+      if (ix < StopPointsList.Count - 1)
+        {
+        string currentLocation = SelectedStopLocation;
+        string nextLocation = StopPointsList[ix + 1];
+        StopPointsList[ix] = nextLocation;
+        StopPointsList[ix + 1] = currentLocation;
+        }
       }
 
     public void UpdateScenarioStartTime()
       {
       if (TimeConverters.IsValidTimeString(ScenarioStartTime))
         {
-        ulong newStartTime = TimeConverters.TimeStringToSeconds(ScenarioStartTime);
-        ulong oldStartTime= GetPlayerServiceStartTime(Scenario.SavScenario.SavServiceList);
+        var newStartTime = TimeConverters.TimeStringToSeconds(ScenarioStartTime);
+        var oldStartTime= GetPlayerServiceStartTime(Scenario.SavScenario.SavServiceList);
         if (newStartTime != oldStartTime)
           {
-          long offset = (long) (newStartTime - oldStartTime);
+          var offset = (long) (newStartTime - oldStartTime);
           RecalculateStartTimes(offset, Scenario.SavScenario.SavServiceList);
           }
         }
-      
+      }
+
+    public void EditStopLocation()
+      {
+      StopLocation = SelectedStopLocation;
+      }
+
+    public void DeleteStopLocation()
+      {
+      StopPointsList.Remove(SelectedStopLocation);
+      SelectedStopLocation=null;
+      StopLocation = "";
+      }
+
+    public void SaveStopLocation()
+      {
+      if (SelectedStopLocation == null)
+        {
+        StopPointsList.Add(StopLocation);
+        StopLocation = "";
+        }
+      else
+        {
+        SelectedStopLocation = StopLocation;
+        }
       }
 
     public void SaveCopy()
@@ -418,8 +444,8 @@ namespace ToolkitForTSW
       var newScenario = new CScenario();
       var newSavScenario = new SavScenarioModel();
       newScenario.SavScenario = newSavScenario;
-      newSavScenario.ScenarioName = ClonedScenarioName;
-      newSavScenario.ScenarioGuid = ClonedScenarioGuid;
+      newSavScenario.ScenarioName = ScenarioName;
+      newSavScenario.ScenarioGuid = ScenarioGuid;
       newSavScenario.GlobalElectrificationMode = Scenario.SavScenario.GlobalElectrificationMode;
       newSavScenario.RouteAbbreviation = Scenario.SavScenario.RouteAbbreviation;
       newSavScenario.RouteName = Scenario.SavScenario.RouteName;
@@ -430,6 +456,16 @@ namespace ToolkitForTSW
       newScenario.ScenarioFile = new FileInfo(SavScenarioBuilder.GetClonedScenarioFileName(newSavScenario.ScenarioGuid.ToString(),false));
       Scenario=newScenario;
       SavScenarioBuilder.Build(newScenario);
+      if (!IsToolkitGenerated)
+        {
+        ScenarioModel scenarioDb = new ScenarioModel
+          {
+          ScenarioGuid = newSavScenario.ScenarioGuid.ToString(),
+          ScenarioName = newSavScenario.ScenarioName,
+          RouteId = RouteDataAccess.GetRouteIdByAbbreviation(newSavScenario.RouteAbbreviation)
+          };
+        ScenarioDataAccess.InsertScenario(scenarioDb);
+        }
       }
 
     public void SaveOverwrite()

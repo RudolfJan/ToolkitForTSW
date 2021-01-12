@@ -22,10 +22,10 @@ namespace SavCrackerTestApp
         CScenarioEdit clone = new CScenarioEdit
           {
           Scenario = scenario,
-          ClonedScenarioGuid = scenario.SavScenario.ScenarioGuid,
-          ClonedScenarioName = scenario.SavScenario.ScenarioName
+          ScenarioGuid = scenario.SavScenario.ScenarioGuid,
+          ScenarioName = scenario.SavScenario.ScenarioName
           };
-        var testFile= SavScenarioBuilder.GetClonedScenarioFileName(clone.ClonedScenarioGuid.ToString(),true);
+        var testFile= SavScenarioBuilder.GetClonedScenarioFileName(clone.ScenarioGuid.ToString(),true);
         SavScenarioBuilder.Build(scenario);
         CompareBinaryFiles(clone.Scenario.ScenarioFile.FullName, testFile,scenario);
         }

@@ -4,6 +4,7 @@ using SavCracker.Library.Models;
 using SQLiteDatabase.Library;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ToolkitForTSW.Models;
 
 namespace ToolkitForTSW.DataAccess
@@ -97,6 +98,12 @@ namespace ToolkitForTSW.DataAccess
       {
       var sql = "DELETE FROM Routes WHERE Id=@id";
       DbAccess.SaveData<dynamic>(sql, new { id });
+      }
+
+    public static int GetRouteIdByAbbreviation(string routeAbbreviation)
+      {
+      var sql = "SELECT Id FROM Routes  WHERE RouteAbbrev = @routeAbbreviation";
+      return DbAccess.LoadData<int, dynamic>(sql, new { routeAbbreviation }).FirstOrDefault();
       }
     }
   }

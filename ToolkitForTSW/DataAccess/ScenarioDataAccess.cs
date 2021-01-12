@@ -15,10 +15,11 @@ namespace ToolkitForTSW.DataAccess
       return DbAccess.LoadData<ScenarioModel, dynamic>(sql, new { });
       }
 
-    public static ScenarioModel GetScenarioByGuid(string scenarioGuid)
+    public static ScenarioModel GetScenarioByGuid(Guid scenarioGuid)
       {
-      var sql = "SELECT * FROM Scenarios WHERE ScenarioGuid=@scenarioGuid";
-      return DbAccess.LoadData<ScenarioModel, dynamic>(sql, new { scenarioGuid}).FirstOrDefault();
+      var sql = "SELECT * FROM Scenarios WHERE ScenarioGuid=@guidString";
+      var guidString= scenarioGuid.ToString();
+      return DbAccess.LoadData<ScenarioModel, dynamic>(sql, new {guidString }).FirstOrDefault();
       }
 
     public static int InsertScenario(ScenarioModel scenario)
