@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using ToolkitForTSW;
 using ToolkitForTSW.DataAccess;
+using ToolkitForTSW.Scenario;
 using Utilities.Library.TextHelpers;
 
 namespace SavCrackerTestApp
@@ -18,12 +19,14 @@ namespace SavCrackerTestApp
       CScenarioManager ScenarioManager = new CScenarioManager();
       foreach (var scenario in ScenarioManager.ScenarioList)
         {
-        CScenarioEdit clone = new CScenarioEdit();
-        clone.Scenario= scenario;
-        clone.ClonedScenarioGuid = scenario.SavScenario.ScenarioGuid;
-        clone.ClonedScenarioName = scenario.SavScenario.ScenarioName;
-        var testFile= clone.GetClonedScenarioFileName(true);
-        clone.Build();
+        CScenarioEdit clone = new CScenarioEdit
+          {
+          Scenario = scenario,
+          ClonedScenarioGuid = scenario.SavScenario.ScenarioGuid,
+          ClonedScenarioName = scenario.SavScenario.ScenarioName
+          };
+        var testFile= SavScenarioBuilder.GetClonedScenarioFileName(clone.ClonedScenarioGuid.ToString(),true);
+        SavScenarioBuilder.Build(scenario);
         CompareBinaryFiles(clone.Scenario.ScenarioFile.FullName, testFile,scenario);
         }
       }

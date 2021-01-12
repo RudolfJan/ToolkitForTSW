@@ -153,8 +153,8 @@
 									<TextBox Name="LiveryIdTextBox" Width="80" Style="{StaticResource TextBoxDefault}" Text="{Binding LiveryIdentifier}" HorizontalAlignment="Right"/>
 								</WrapPanel>
 									<WrapPanel>
-										<Button Name="SaveService" Style="{StaticResource ButtonDefault}">Save</Button>
-										<Button Name="ClearService" Style="{StaticResource ButtonDefault}">Clear</Button>
+										<Button Name="SaveService" Style="{StaticResource ButtonDefault}" Click="OnServiceSaveClicked" >Save</Button>
+										<Button Name="ClearService" Style="{StaticResource ButtonDefault}" Click="OnServiceClearClicked">Clear</Button>
 									</WrapPanel>
 
 								</StackPanel>

@@ -29,8 +29,10 @@ namespace ToolkitForTSW
     public FormScenarioEdit(CScenario _scenario)
       {
       InitializeComponent();
-      CloneScenario = new CScenarioEdit();
-      CloneScenario.Scenario = _scenario;
+      CloneScenario = new CScenarioEdit
+        {
+        Scenario = _scenario
+        };
       CloneScenario.ScenarioEdit();
       DataContext = CloneScenario;
       SetControlStates();
@@ -81,12 +83,13 @@ namespace ToolkitForTSW
 
     private void OnServiceDeleteClicked(object sender, RoutedEventArgs e)
       {
-
+      CloneScenario.ServiceDelete();
       }
 
     private void OnServiceCloneClicked(object sender, RoutedEventArgs e)
       {
-
+      CloneScenario.ServiceClone();
+      SetControlStates();
       }
 
     private void OnSelectedServiceChanged(object sender, SelectionChangedEventArgs e)
@@ -99,6 +102,18 @@ namespace ToolkitForTSW
       {
       CloneScenario.SelectedStopLocation = (string) StopLocationsDataGrid.SelectedItem;
       CloneScenario.StopLocation = CloneScenario.SelectedStopLocation;
+      SetControlStates();
+      }
+
+    private void OnServiceSaveClicked(object sender, RoutedEventArgs e)
+      {
+      CloneScenario.ServiceSave();
+      SetControlStates();
+      }
+
+    private void OnServiceClearClicked(object sender, RoutedEventArgs e)
+      {
+      CloneScenario.ServiceClear();
       SetControlStates();
       }
     }

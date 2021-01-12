@@ -29,9 +29,6 @@ namespace SavCrackerTest
       {
       try
         {
-        //var s = new FileStream(
-        //  scenarioFileName, FileMode.Open);
-        //byte[] data = new BinaryReader(s).ReadBytes(((int)s.Length));
         var data = File.ReadAllBytes(scenarioFileName);
         return data;
         }
@@ -44,7 +41,7 @@ namespace SavCrackerTest
 
     public void ParseScenario()
       {
-      GetRoute();
+      ExtractRoute();
       try
         {
         SkipCode(9);
@@ -61,7 +58,7 @@ namespace SavCrackerTest
         }
       }
 
-    private void GetRoute()
+    private void ExtractRoute()
       {
       var position = Position;
       var element = GrabStringElement();
@@ -84,7 +81,7 @@ namespace SavCrackerTest
 
       if (String.CompareOrdinal(s, "NameProperty") == 0)
         {
-        return CreateAnonymousNameProperty(position, elementName);
+        return ExtractAnonymousNameProperty(position, elementName);
         }
       else
         {
@@ -96,18 +93,20 @@ namespace SavCrackerTest
       {
       var element = GrabStringElement();
       var propertyTypeString = GetStringFromElement(element);
-      var output = CreatePropertyType(propertyTypeString, s);
+      var output = ExtractPropertyType(propertyTypeString, s);
       output.Position = position;
       output.PropertyName = s;
       return output;
       }
 
-    private SavPropertyModel CreateAnonymousNameProperty(int position, SavElementModel elementName)
+    private SavPropertyModel ExtractAnonymousNameProperty(int position, SavElementModel elementName)
       {
-      var output = new StringPropertyModel();
-      output.Position = position;
-      output.PropertyName = string.Empty;
-      output.PropertyType = PropertyTypeEnum.NameProperty;
+      var output = new StringPropertyModel
+        {
+        Position = position,
+        PropertyName = string.Empty,
+        PropertyType = PropertyTypeEnum.NameProperty
+        };
       var element = GrabStringElement();
       output.Value = GetStringFromElement(element);
       return output;
@@ -115,47 +114,49 @@ namespace SavCrackerTest
 
     private static SavPropertyModel GrabNoneElement(int position)
       {
-      var output = new SavPropertyModel();
-      output.PropertyType = PropertyTypeEnum.Empty;
-      output.PropertyName = "None";
-      output.Position = position;
+      var output = new SavPropertyModel
+        {
+        PropertyType = PropertyTypeEnum.Empty,
+        PropertyName = "None",
+        Position = position
+        };
       return output;
       }
 
-    public SavPropertyModel CreatePropertyType(string propertyTypeString, string propertyName)
+    public SavPropertyModel ExtractPropertyType(string propertyTypeString, string propertyName)
       {
       switch (propertyTypeString)
         {
         case "NameProperty":
             {
-            return CreateNameProperty(propertyName);
+            return ExtractNameProperty(propertyName);
             }
         case "StrProperty":
             {
-            return CreateStringProperty(propertyName);
+            return ExtractStringProperty(propertyName);
             }
         case "BoolProperty":
             {
-            return CreateBoolProperty(propertyName);
+            return ExtractBoolProperty(propertyName);
             }
         case "StructProperty":
             {
-            var output = CreateStructProperty(propertyName);
+            var output = ExtractStructProperty(propertyName);
             return output;
             }
         case "ArrayProperty":
             {
-            return CreateArrayProperty(propertyName);
+            return ExtractArrayProperty(propertyName);
             }
         case "SoftObjectProperty":
             {
-            return CreateSoftObjectProperty(propertyName);
+            return ExtractSoftObjectProperty(propertyName);
             }
         }
       return null;
       }
 
-    private SavPropertyModel CreateSoftObjectProperty(string propertyName)
+    private SavPropertyModel ExtractSoftObjectProperty(string propertyName)
       {
       var output = new SoftObjectPropertyModel
         {
@@ -173,7 +174,7 @@ namespace SavCrackerTest
       return output;
       }
 
-    private SavPropertyModel CreateArrayProperty(string propertyName)
+    private SavPropertyModel ExtractArrayProperty(string propertyName)
       {
       var output = new ArrayPropertyModel
         {
@@ -214,7 +215,7 @@ namespace SavCrackerTest
       return output;
       }
 
-    private StructPropertyModel CreateStructProperty(string propertyName)
+    private StructPropertyModel ExtractStructProperty(string propertyName)
       {
       var output = new StructPropertyModel
         {
@@ -233,19 +234,19 @@ namespace SavCrackerTest
         {
         case StructureTypeEnum.Guid:
             {
-            var g = CreateGuidProperty();
+            var g = ExtractGuidProperty();
             output.PayLoad.Add(g);
             break;
             }
         case StructureTypeEnum.TimeSpan:
             {
-            var t = CreateTimeSpan();
+            var t = ExtractTimeSpan();
             output.PayLoad.Add(t);
             break;
             }
         case StructureTypeEnum.SoftObjectPath:
             {
-            var p = CreateSoftObjectPath();
+            var p = ExtractSoftObjectPath();
             output.PayLoad.Add(p);
             break;
             }
@@ -263,7 +264,7 @@ namespace SavCrackerTest
       return output;
       }
 
-    private StringPropertyModel CreateSoftObjectPath()
+    private StringPropertyModel ExtractSoftObjectPath()
       {
       var p = new StringPropertyModel
         {
@@ -277,18 +278,20 @@ namespace SavCrackerTest
       return p;
       }
 
-    private TimespanPropertyModel CreateTimeSpan()
+    private TimespanPropertyModel ExtractTimeSpan()
       {
       var timeSpanElement = GrabCodeElement(8);
-      var t = new TimespanPropertyModel();
-      t.PropertyName = "StartTime";
-      t.PropertyType = PropertyTypeEnum.TimeSpanProperty;
-      t.TimeValue = BitConverter.ToUInt64(timeSpanElement.Data, 0) / 10000000;
+      var t = new TimespanPropertyModel
+        {
+        PropertyName = "StartTime",
+        PropertyType = PropertyTypeEnum.TimeSpanProperty,
+        TimeValue = BitConverter.ToUInt64(timeSpanElement.Data, 0) / 10000000
+        };
       t.TimeString = TimeConverters.SecondsToString(t.TimeValue, false);
       return t;
       }
 
-    private GuidPropertyModel CreateGuidProperty()
+    private GuidPropertyModel ExtractGuidProperty()
       {
       var g = new GuidPropertyModel
         {
@@ -300,7 +303,7 @@ namespace SavCrackerTest
       return g;
       }
 
-    private SavPropertyModel CreateBoolProperty(string propertyName)
+    private SavPropertyModel ExtractBoolProperty(string propertyName)
       {
       var output = new BoolPropertyModel
         {
@@ -313,7 +316,7 @@ namespace SavCrackerTest
       return output;
       }
 
-    private SavPropertyModel CreateStringProperty(string propertyName)
+    private SavPropertyModel ExtractStringProperty(string propertyName)
       {
       var output = new StringPropertyModel
         {
@@ -328,7 +331,7 @@ namespace SavCrackerTest
       }
 
 
-    private SavPropertyModel CreateNameProperty(string propertyName)
+    private SavPropertyModel ExtractNameProperty(string propertyName)
       {
       var output = new StringPropertyModel
         {
@@ -455,14 +458,14 @@ namespace SavCrackerTest
 
     public string GetStringFromElement(SavElementModel element)
       {
-      var s = string.Empty;
       if (element.Length > 0) // negative length means Unicode string
         {
         return ConvertByteArrayToString(element.Data);
         }
-      s = System.Text.Encoding.Unicode.GetString(element.Data, 0, Math.Abs(element.Length * 2));
+      var s = System.Text.Encoding.Unicode.GetString(element.Data, 0, Math.Abs(element.Length * 2));
       return s.Substring(0, s.Length - 1);
       }
+
     public void SkipCode(int length)
       {
       var position = Position;
@@ -470,7 +473,6 @@ namespace SavCrackerTest
       Scenario.ElementList.Add(element);
       LogString += $"{position:D4} Code length {length}\n";
       }
-
 
     public SavElementModel GrabCodeElement(int length)
       {

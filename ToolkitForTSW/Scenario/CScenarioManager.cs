@@ -79,9 +79,11 @@ namespace ToolkitForTSW
       var files = DirInfo.GetFiles("USD_*.sav", SearchOption.TopDirectoryOnly);
       foreach (var file in files)
         {
-        var Scenario= new CScenario();
-        Scenario.ScenarioFile = file;
-        Scenario.Cracker= new SavCrackerTest.SavCracker(file.FullName);
+        var Scenario = new CScenario
+          {
+          ScenarioFile = file,
+          Cracker = new SavCrackerTest.SavCracker(file.FullName)
+          };
         Scenario.Cracker.ParseScenario();
         Scenario.SavScenario = Scenario.Cracker.Scenario;
         SavScenarioLogic.BuildSavScenario(Scenario.SavScenario,Scenario.Cracker);
