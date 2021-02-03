@@ -70,10 +70,58 @@ namespace SavCracker.Library
       return guidProperty;
       }
 
+    public static string GetReskin(SavPropertyModel property)
+      {
+      if (!(property is ArrayPropertyModel))
+        {
+        var ex = new InvalidCastException("property is not an ArrayPropertyModel");
+        Log.Trace("property is not an ArrayProperty, should never happen", ex, LogEventType.Error);
+        throw ex;
+        }
+      var arrayProperty = (ArrayPropertyModel)property;
+      if (arrayProperty.PayLoad.Count == 0)
+        {
+        return string.Empty;
+        }
+      if (!(arrayProperty.PayLoad[0] is StringPropertyModel))
+        {
+        var ex = new InvalidCastException("property is not a StringPropertyPropertyModel");
+        Log.Trace("property is not a StringProperty, should never happen", ex, LogEventType.Error);
+        throw ex;
+        }
+      var nameProperty = (StringPropertyModel)arrayProperty.PayLoad[0];
+      return nameProperty.Value;
+      }
+
     public static Guid GetGuidPropertyValue(SavPropertyModel property)
       {
       var guidProperty = GetGuidPropertyFromStruct(property);
       return guidProperty.GuidValue;
+      }
+
+    private static StringPropertyModel GetSoftObjectPathFromStruct(SavPropertyModel property)
+      {
+      if (!(property is StructPropertyModel))
+        {
+        var ex = new InvalidCastException("property is not a StructPropertyModel");
+        Log.Trace("property is not a StructProperty, should never happen", ex, LogEventType.Error);
+        throw ex;
+        }
+      var structProperty = (StructPropertyModel)property;
+      if (!(structProperty.PayLoad[0] is StringPropertyModel))
+        {
+        var ex = new InvalidCastException("property is not a SoftObjectPropertyModel");
+        Log.Trace("property is not a SoftObjectProperty, should never happen", ex, LogEventType.Error);
+        throw ex;
+        }
+      var softObjectPathProperty = (StringPropertyModel)structProperty.PayLoad[0];
+      return softObjectPathProperty;
+      }
+
+    public static string GetSoftObjectPathValue(SavPropertyModel property)
+      {
+      var softObjectPathProperty= GetSoftObjectPathFromStruct(property);
+      return softObjectPathProperty.Value;
       }
 
     public static string GetStrPropertyValue(SavPropertyModel property)

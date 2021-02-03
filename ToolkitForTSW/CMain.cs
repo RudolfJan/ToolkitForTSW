@@ -1,6 +1,9 @@
-﻿using Styles.Library.Helpers;
+﻿using Logging.Library;
+using SQLiteDatabase.Library;
+using Styles.Library.Helpers;
 using System;
 using System.Windows;
+using ToolkitForTSW.DataAccess;
 
 namespace ToolkitForTSW
 	{
@@ -18,7 +21,7 @@ namespace ToolkitForTSW
 				}
 			}
 
-		public CMain()
+    public CMain()
 			{
 			while (!CTSWOptions.GetNotFirstRun())
 				{
@@ -41,8 +44,30 @@ namespace ToolkitForTSW
 				{
 				CTSWOptions.CreateDirectories();
 				CTSWOptions.MoveManuals();
-				}
+        InitDatabase();
+        }
 			}
+
+    public void InitDatabase()
+      {
+      var factory = new DatabaseFactory();
+			var databasePath=$"{CTSWOptions.TSWToolsFolder}TSWTools.db";
+			var connectionString = $"Data Source = {databasePath}; Version = 3;";
+			DbManager.InitDatabase(connectionString, databasePath, factory);
+      var version = DbManager.GetCurrentVersion();
+      if (version.VersionNr < 3) // old database version ois not compatible
+        {
+        DbManager.DeleteDatabase(); 
+        DbManager.InitDatabase(connectionString, databasePath, factory);
+				}
+			DbManager.UpdateDatabaseVersionNumber(3, "Refactoring DbAccess");
+      version = DbManager.GetCurrentVersion();
+      RouteDataAccess.InitRouteForSavCracker("SQL\\RouteDataImport.csv");
+
+			Log.Trace($"Created database {databasePath} Version={version.VersionNr} {version.Description}");
+			}
+
+
 
 		public void OpenManual()
 			{

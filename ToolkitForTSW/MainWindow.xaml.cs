@@ -96,10 +96,10 @@ namespace ToolkitForTSW
 			Form.Show();
 			}
 
-		private void OnLiveryManagerButtonClicked(Object Sender, RoutedEventArgs E)
+		private void OnModManagerButtonClicked(Object Sender, RoutedEventArgs E)
 			{
-			var LiveryManager = new CLiveryManager();
-			var Form = new FormLiveryManager(LiveryManager);
+			var ModManager = new CModManager();
+			var Form = new FormModManager(ModManager);
 			Form.Show();
 			}
 

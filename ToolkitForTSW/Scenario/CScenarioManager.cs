@@ -1,13 +1,10 @@
 ﻿using SavCracker.Library;
-using SavCrackerTest;
 using SavCrackerTest.Models;
 using Styles.Library.Helpers;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using ToolkitForTSW;
+using ToolkitForTSW.DataAccess;
 
 namespace ToolkitForTSW
   {
@@ -70,22 +67,35 @@ namespace ToolkitForTSW
 
     public CScenarioManager()
       {
+      SavCrackerTest.SavCracker.RouteList = RouteDataAccess.GetSavCrackerRouteList();
       BuildScenarioList();
       }
 
-    private void BuildScenarioList()
+    public void ScenarioDelete(CScenario toBeDeleted)
+      {
+      CApps.DeleteSingleFile(toBeDeleted.ScenarioFile.FullName);
+      ScenarioDataAccess.DeleteScenario(toBeDeleted.SavScenario.ScenarioGuid); // remove from database if it is there 
+      BuildScenarioList();
+      SelectedSavScenario = null; // TODO refresh works but this feels clumsy ...
+      }
+
+    public void BuildScenarioList()
       {
       var Path=  $"{CTSWOptions.GameSaveLocation}Saved\\SaveGames\\";
       DirectoryInfo DirInfo = new DirectoryInfo(Path);
+      ScenarioList.Clear();
       var files = DirInfo.GetFiles("USD_*.sav", SearchOption.TopDirectoryOnly);
       foreach (var file in files)
         {
-        var Scenario= new CScenario();
-        Scenario.ScenarioFile = file;
-        Scenario.Cracker= new SavCrackerTest.SavCracker(file.FullName);
+        var Scenario = new CScenario
+          {
+          ScenarioFile = file,
+          Cracker = new SavCrackerTest.SavCracker(file.FullName)
+          };
         Scenario.Cracker.ParseScenario();
         Scenario.SavScenario = Scenario.Cracker.Scenario;
         SavScenarioLogic.BuildSavScenario(Scenario.SavScenario,Scenario.Cracker);
+        Scenario.IsToolkitCreated= ScenarioDataAccess.GetScenarioByGuid(Scenario.SavScenario.ScenarioGuid)!=null;
         ScenarioList.Add(Scenario);
         }
       ScenarioList = ScenarioList.OrderBy(x => x.SavScenario.RouteAbbreviation).ToList();

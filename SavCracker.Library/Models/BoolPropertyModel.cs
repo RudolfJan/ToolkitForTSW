@@ -7,12 +7,12 @@ namespace SavCrackerTest.Models
 	public class BoolPropertyModel: SavPropertyModel
 		{
 		public bool Value { get; set; }
-		public new string Report
-			{
-			get
-				{
-				return $"{base.Report}, {Value}";
-				}
-			}
+		//public new string Report
+		//	{
+		//	get
+		//		{
+		//		return $"{base.Report}, {Value}";
+		//		}
+		//	}
 		}
 	}

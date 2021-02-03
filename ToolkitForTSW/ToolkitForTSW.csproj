@@ -11,11 +11,16 @@
     <Version>0.6.0</Version>
     <PackageProjectUrl>https://github.com/RudolfJan/ToolkitForTSW</PackageProjectUrl>
     <Copyright>(C) 2020 Rudolf Heijink</Copyright>
+    <ApplicationIcon>Images\LuaCreator.ico</ApplicationIcon>
   </PropertyGroup>  
 
 <ItemGroup>
     <None Remove="Images\AboutPicture.png" />
+    <None Remove="Images\arrow_down.png" />
+    <None Remove="Images\arrow_up.png" />
     <None Remove="Images\folder.png" />
+    <None Remove="Images\LeftArrow.ico" />
+    <None Remove="Images\LuaCreator.ico" />
     <None Remove="Images\MainWindowImage.png" />
     <None Remove="Images\NoImageFound.png" />
     <None Remove="Images\page_delete.png" />
@@ -23,8 +28,11 @@
     <None Remove="Images\resultset_last.png" />
     <None Remove="Images\resultset_next.png" />
     <None Remove="Images\resultset_previous.png" />
+    <None Remove="Images\RightArrow.ico" />
     <None Remove="Images\safe.png" />
     <None Remove="Images\wand.png" />
+    <None Remove="SQL\CreateTables.sql" />
+    <None Remove="SQL\RouteDataImport.csv" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +40,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\folder.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\LuaCreator.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\MainWindowImage.png">
@@ -61,18 +72,32 @@
     <Content Include="Images\wand.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\CreateTables.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\RouteDataImport.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Syroot.Windows.IO.KnownFolders" Version="1.2.3" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\mirzaevolution\ThumbnailSharp\ThumbnailSharp\ThumbnailSharp.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Logging.Library\Logging.Library.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\SQLiteDatabase.Library\SQLiteDatabase.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Styles.Library\Styles.Library.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\Utilities.Library\Utilities.Library.csproj" />
     <ProjectReference Include="..\SavCracker.Library\SavCracker.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\arrow_down.png" />
+    <Resource Include="Images\arrow_up.png" />
+    <Resource Include="Images\LeftArrow.ico" />
+    <Resource Include="Images\RightArrow.ico" />
   </ItemGroup>
 
 

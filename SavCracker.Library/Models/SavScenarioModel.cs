@@ -15,5 +15,6 @@ namespace SavCrackerTest.Models
 		public Guid ScenarioGuid { get; set; }
 		public bool RulesDisabledMode { get; set; }
 		public bool GlobalElectrificationMode { get; set; }
-		}
+    public string TargetAsset { get; set; }
+    }
 	}

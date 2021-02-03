@@ -21,16 +21,16 @@ namespace SavCrackerTest.Models
 	public class SavPropertyModel
 		{
 		public int Position { get; set; }
-		public int Length { get; set; }
+		//public int Length { get; set; }
 		public string PropertyName { get; set; }
 		public PropertyTypeEnum PropertyType { get; set; }
 
-		public string Report
-			{
-			get
-				{
-				return $"{Position:D4}, {Length:D4}, {PropertyType}, {PropertyName}";
-				}
-			}
+		//public string Report
+		//	{
+		//	get
+		//		{
+		//		return $"{Position:D4}, {Length:D4}, {PropertyType}, {PropertyName}";
+		//		}
+		//	}
 		}
 	}

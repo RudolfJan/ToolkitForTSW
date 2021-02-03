@@ -12,6 +12,7 @@ using System.Xml.Linq;
 // static class to invoke external applications
 namespace ToolkitForTSW
 {
+
     public static class CApps
     {
 
@@ -711,6 +712,7 @@ namespace ToolkitForTSW
         }
 
         /*
+
 		 * Prepare a string to include it in XML
 	&lt; < less than
 	&gt; > greater than
@@ -718,6 +720,7 @@ namespace ToolkitForTSW
 	&apos; ' apostrophe
 	&quot; " quotation mark
 	*/
+
 
         public static String AddEntities(String S)
         {

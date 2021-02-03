@@ -22,6 +22,18 @@ namespace ToolkitForTSW
         OnPropertyChanged("SavScenario");
         }
       }
+
+    private bool _IsToolkitCreated;
+    public bool IsToolkitCreated
+      {
+      get { return _IsToolkitCreated; }
+      set
+        {
+        _IsToolkitCreated = value;
+        OnPropertyChanged("IsToolkitCreated");
+        }
+      }
+
     }
   }
 

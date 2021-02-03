@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SavCrackerTest.Models;
+﻿using SavCrackerTest.Models;
+using System;
 
 namespace SavCracker.Library
   {
@@ -29,7 +27,10 @@ namespace SavCracker.Library
                 {
                 savScenario.ScenarioGuid = PropertiesLogic.GetGuidPropertyValue(property);
                 }
-
+              if (String.CompareOrdinal(property.PropertyName, "TargetAsset") == 0)
+                {
+                savScenario.TargetAsset = PropertiesLogic.GetSoftObjectPathValue(property);
+                }
               break;
               }
             case PropertyTypeEnum.BoolProperty:

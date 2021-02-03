@@ -45,6 +45,74 @@
 					</StackPanel>
 				</Border>
 			</TabItem>
+			<TabItem Header="Routes">
+				<Border Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<StackPanel Grid.Column="0">
+								<TextBlock Style="{StaticResource TextBlockHeader}" HorizontalAlignment="Center">Routes</TextBlock>
+								<DataGrid Name="RoutesDataGrid" Style="{StaticResource DataGridReadOnly}"
+													ItemsSource="{Binding RouteList}"
+													SelectedItem="{Binding SelectedRoute}"
+													SelectionChanged="RouteListSelectedItemChanged"
+								          Height="300">
+									<DataGrid.Columns>
+										<DataGridTextColumn Header="Abbrev" Width="40" Binding="{Binding RouteAbbrev }"/>
+										<DataGridTextColumn Header="Name" Width="150" Binding="{Binding RouteName }"/>
+									</DataGrid.Columns>
+								</DataGrid>
+								<WrapPanel>
+									<Button Name="RouteEditButton" Style="{StaticResource ButtonDefault}" Click="OnEditRoute"
+									        >Edit</Button>
+									<Button Name="RouteDeleteButton" Style="{StaticResource ButtonDefault}" Click="OnDeleteRoute">Delete</Button>
+									<Button Name="RouteLoaderButton" Style="{StaticResource ButtonDefault}" 
+									        ToolTip="Load predefined route data, will NOT overwrite your data" Click="OnLoadRouteList">Load list</Button>
+
+								</WrapPanel>
+
+							</StackPanel>
+							<StackPanel Grid.Column="1">
+								<TextBlock Style="{StaticResource TextBlockHeader}" HorizontalAlignment="Center">Editor</TextBlock>
+								<userControls:LabelTextBox Name="RouteNameTextBox" LabelText="Route name"   
+								                           TextBoxText="{Binding RouteName, Mode=TwoWay}"
+								                           Style="{StaticResource LabelTextBoxDefault}"
+								                           LabelWidth="80" Width="200"/>
+								<userControls:LabelTextBox Name="RouteAbbreviationTextBox" LabelText="Abbreviation"   
+								                           TextBoxText="{Binding RouteAbbrev, Mode=TwoWay}"
+																					 Style="{StaticResource LabelTextBoxDefault}"
+								                           LabelWidth="80" Width="200" TextChanged="OnAbbrevTextChanged" />
+								<userControls:LabelTextBox Name="ScenarioPlannerNameTextBox" LabelText="SP name" 
+								                           ToolTip="RouteName as used inside the Scenario Planner"  
+								                           TextBoxText="{Binding ScenarioPlannerRouteName, Mode=TwoWay}"
+								                           Style="{StaticResource LabelTextBoxDefault}"
+								                           LabelWidth="80" Width="200"/>
+								<userControls:LabelTextBox Name="ScenarioPlannerStringTextBox" LabelText="RouteString" 
+																					 ToolTip="String that represents this route in the scenario planner .sav file"
+								                           TextBoxText="{Binding ScenarioPlannerRouteString, Mode=TwoWay}"
+								                           Style="{StaticResource LabelTextBoxDefault}"
+								                           LabelWidth="80" Width="200"/>
+								<TextBlock Style="{StaticResource TextBlockDefault}">Description</TextBlock>
+
+								<TextBox Name="RouteDescriptionTextBox"  
+								                           Text="{Binding RouteDescription, Mode=TwoWay}"
+								                           Style="{StaticResource TextBoxMultiLine}"
+								                           Width="190" Height="100"/>
+								<WrapPanel>
+									<Button Name="RouteSaveButton" Style="{StaticResource ButtonDefault}" Width="90" Click="OnSaveRoute">Save</Button>
+									<Button Name="RouteClearButton" Style="{StaticResource ButtonDefault}" Width="90" Click="OnClearRoute">Clear</Button>
+								</WrapPanel>
+							</StackPanel>
+						</Grid>
+
+					</StackPanel>
+				</Border>
+			</TabItem>
+
 			<TabItem Header="Other">
 				<Border Style="{StaticResource DefaultBorder}">
 					<StackPanel>

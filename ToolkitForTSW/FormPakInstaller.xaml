@@ -49,8 +49,9 @@
             </DataGrid.Columns>
           </DataGrid>
             <WrapPanel>
-            <Button Name="InstallToSetsButton" Style="{StaticResource DefaultButton}" Click="OnInstallToSetsButtonClicked" >Install to sets</Button>
-            <Button Name="InstallToGameButton" Style="{StaticResource DefaultButton}" Click="OnInstallToGameButtonClicked" >Install to game</Button>
+            <Button Name="InstallToSetsButton" Style="{StaticResource DefaultButton}" Click="OnInstallToSetsButtonClicked" >Install</Button>
+							<TextBlock>Select directory to enable Install button</TextBlock>
+
             </WrapPanel>
             <DataGrid Name="DocumentationDataGrid" Style="{StaticResource DefaultDataGrid}" MinHeight="200"
                       ItemsSource="{Binding DocumentsList}" AutoGenerateColumns="False" SelectionChanged="OnDocumentationDataGridSelectionChanged" MouseUp="DocumentationDataGrid_MouseUp" >

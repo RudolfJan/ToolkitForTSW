@@ -1,16 +1,7 @@
 ﻿using SavCracker.Library;
 using SavCrackerTest.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ToolkitForTSW
   {
@@ -24,14 +15,16 @@ namespace ToolkitForTSW
     public FormScenarioManager()
       {
       InitializeComponent();
+      
       DataContext = ScenarioManager;
       SetControlStates();
       }
 
     private void SetControlStates()
       {
+      HexButton.IsEnabled = ScenarioDataGrid.SelectedItem != null;
       PublishButton.IsEnabled = ScenarioDataGrid.SelectedItem != null;
-      CloneButton.IsEnabled= ScenarioDataGrid.SelectedItem != null;
+      EditButton.IsEnabled= ScenarioDataGrid.SelectedItem != null;
       }
 
     private void OnExitButtonClicked(object sender, RoutedEventArgs e)
@@ -42,7 +35,13 @@ namespace ToolkitForTSW
     private void OnSelectedScenarioChanged(object sender, SelectionChangedEventArgs e)
       {
       ScenarioManager.SelectedSavScenario= (CScenario) ScenarioDataGrid.SelectedItem;
-      ScenarioManager.ScenarioIssueList = ScenarioProblemTracker.FindScenarioProblems(ScenarioManager.SelectedSavScenario.SavScenario);
+      if (ScenarioManager.SelectedSavScenario != null)
+        {
+        ScenarioManager.ScenarioIssueList =
+          ScenarioProblemTracker.FindScenarioProblems(ScenarioManager.SelectedSavScenario
+            .SavScenario);
+        }
+
       SetControlStates();
       }
 
@@ -58,9 +57,28 @@ namespace ToolkitForTSW
       Form.ShowDialog();
       }
 
-    private void CloneButton_Click(object sender, RoutedEventArgs e)
+    private void EditButton_Click(object sender, RoutedEventArgs e)
       {
+      CScenario cloneSource = ScenarioManager.SelectedSavScenario;
+      var Form = new FormScenarioEdit(cloneSource);
+      Form.ShowDialog();
+      ScenarioManager.BuildScenarioList();
+      ScenarioManager.SelectedSavScenario = null; // TODO refresh works but this feels clumsy ...
+      SetControlStates();
+      }
 
+    private void DeleteButton_Click(object sender, RoutedEventArgs e)
+      {
+      CScenario toBeDeleted = ScenarioManager.SelectedSavScenario;
+      ScenarioManager.ScenarioDelete(toBeDeleted);
+      SetControlStates();
+      }
+
+ 
+
+    private void OnHexButtonClicked(object sender, RoutedEventArgs e)
+      {
+      CApps.OpenGenericFile(ScenarioManager.SelectedSavScenario.ScenarioFile.FullName);
       }
     }
   }

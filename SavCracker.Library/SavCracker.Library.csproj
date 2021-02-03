@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\RudolfLibraries\Logging.Library\Logging.Library.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\Utilities.Library\Utilities.Library.csproj" />
   </ItemGroup>
 
 </Project>
