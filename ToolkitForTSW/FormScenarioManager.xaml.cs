@@ -70,11 +70,11 @@ namespace ToolkitForTSW
     private void DeleteButton_Click(object sender, RoutedEventArgs e)
       {
       CScenario toBeDeleted = ScenarioManager.SelectedSavScenario;
-      CApps.DeleteSingleFile(toBeDeleted.ScenarioFile.FullName);
-      ScenarioManager.BuildScenarioList();
-      ScenarioManager.SelectedSavScenario=null; // TODO refresh works but this feels clumsy ...
+      ScenarioManager.ScenarioDelete(toBeDeleted);
       SetControlStates();
       }
+
+ 
 
     private void OnHexButtonClicked(object sender, RoutedEventArgs e)
       {

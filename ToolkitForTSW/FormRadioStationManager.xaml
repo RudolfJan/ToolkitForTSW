@@ -8,52 +8,61 @@
         mc:Ignorable="d"
         Style="{StaticResource AllWindows}"
         Title="Radio Stations">
-  <ScrollViewer>
-    <StackPanel>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Style="{StaticResource DefaultBorder}">
-          <StackPanel>
-              <TextBlock Style="{StaticResource HeaderTextBlock}">Railway Radio Station Urls</TextBlock>
-            <DataGrid Name="RadioStationsUrlDataGrid" Height="220"  Style="{StaticResource DataGridReadOnly}"
-                      ItemsSource="{Binding RadioStationsList}"
+	<ScrollViewer>
+		<StackPanel>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<Border Grid.Column="0" Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<TextBlock Style="{StaticResource HeaderTextBlock}">Railway Radio Station Urls</TextBlock>
+						<DataGrid Name="RadioStationsUrlDataGrid" Height="220"  Style="{StaticResource DataGridReadOnly}"
+                      ItemsSource="{Binding RadioStationList}"
+                      SelectedItem="{Binding SelectedRadioStation}"
                       SelectionChanged="OnRadioStationsUrlDataGridSelectionChanged"  >
-              <DataGrid.Columns>
-                <DataGridTextColumn x:Name="RadioStationUrlColumn"  Header="Radio station"  Width="250"  Binding="{Binding RouteName}" SortMemberPath="NameColumn"/>
-              </DataGrid.Columns>
-            </DataGrid>
-          </StackPanel>
-        </Border>
-        <Border Grid.Column="1" Style="{StaticResource DefaultBorder}">
-          <StackPanel>
-            <userControls:LabelTextBox Name="UrlTextBox" LabelText="Url"  LabelWidth="60" Style="{StaticResource DefaultLabelTextBox}" TextBoxText="{Binding ElementName=RadioStationsUrlDataGrid, Path=SelectedItem.Url, NotifyOnSourceUpdated=True, Mode=TwoWay}"/>
-            <userControls:LabelTextBox Name="RouteTextBox" LabelText="Route"  LabelWidth="60" Style="{StaticResource DefaultLabelTextBox}" TextBoxText="{Binding ElementName=RadioStationsUrlDataGrid, Path=SelectedItem.RouteName, NotifyOnSourceUpdated=True, Mode=TwoWay}"/>
-            <userControls:LabelTextBox Name="DescriptionTextBox" LabelText="Description" LabelWidth="60" Style="{StaticResource MultiLineLabelTextBox}" TextBoxText="{Binding ElementName=RadioStationsUrlDataGrid, Path=SelectedItem.Description, NotifyOnSourceUpdated=True, Mode=TwoWay}"/>
-            <WrapPanel>
-              <Button Name="AddUrlButton" Style="{StaticResource DefaultButton}" Click="OnAddUrlButtonClicked">Add</Button>
-              <Button Name="UpdateUrlButton" Style="{StaticResource DefaultButton}" Click="OnUpdateUrlButtonClicked">Update</Button>
-            </WrapPanel>
-            <WrapPanel>
-              <Button Name="DeleteUrlButton" Style="{StaticResource DefaultButton}" Click="OnDeleteUrlButtonClicked">Delete</Button>
-              <Button Name="TestUrlButton" Style="{StaticResource DefaultButton}" Click="OnTestUrlButtonClicked">Test</Button>
-            </WrapPanel>
-          </StackPanel>
-        </Border>
-      </Grid>
-      <Grid>
-<Grid.ColumnDefinitions>
-<ColumnDefinition/>
-<ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+							<DataGrid.Columns>
+								<DataGridTextColumn x:Name="NameColumn"  Header="Route"  Width="50"  Binding="{Binding RouteName}" SortMemberPath="NameColumn"/>
+								<DataGridTextColumn Header="URL"  Width="250"  Binding="{Binding Url}"/>
+							</DataGrid.Columns>
+						</DataGrid>
+					</StackPanel>
+				</Border>
+				<Border Grid.Column="1" Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<userControls:LabelTextBox Name="UrlTextBox" LabelText="Url"  LabelWidth="60" Style="{StaticResource DefaultLabelTextBox}" TextBoxText="{Binding Url, NotifyOnSourceUpdated=True, Mode=TwoWay}"/>
+						<userControls:LabelTextBox Name="RouteTextBox" LabelText="Route"  LabelWidth="60" Style="{StaticResource DefaultLabelTextBox}" TextBoxText="{Binding RouteName, NotifyOnSourceUpdated=True, Mode=TwoWay}"/>
+						<userControls:LabelTextBox Name="DescriptionTextBox" LabelText="Description" 
+						                           LabelWidth="60" 
+						                           Style="{StaticResource MultiLineLabelTextBox}" 
+						                           TextBoxText="{Binding Description, NotifyOnSourceUpdated=True, Mode=TwoWay}" 
+						                           TextBoxBackGround="{StaticResource TextBoxBackground}"/>
+						<WrapPanel>
+							<Button Name="EditUrlButton" Style="{StaticResource DefaultButton}" Click="OnEditUrlButtonClicked">Edit</Button>
+							<Button Name="SaveUrlButton" Style="{StaticResource DefaultButton}" Click="OnSaveUrlButtonClicked">Save</Button>
+						</WrapPanel>
+						<WrapPanel>
+							<Button Name="DeleteUrlButton" Style="{StaticResource DefaultButton}" Click="OnDeleteUrlButtonClicked">Delete</Button>
+							<Button Name="ClearButton" Style="{StaticResource DefaultButton}" Click="OnClearButtonClicked" >Clear</Button>
+						</WrapPanel>
+						<WrapPanel>
+							<Button Name="TestUrlButton" Style="{StaticResource DefaultButton}" Click="OnTestUrlButtonClicked">Test</Button>
+						</WrapPanel>
+					</StackPanel>
+				</Border>
+			</Grid>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
 
-      <userControls:ResultsTextBox Grid.Column="0"   Style="{StaticResource DefaultResultsTextBox}"
+				<userControls:ResultsTextBox Grid.Column="0"   Style="{StaticResource DefaultResultsTextBox}"
                                     HorizontalAlignment="Stretch"
                                     Text="{Binding Result}" Source="Images/page_delete.png"/>
-      <Button Name="OKButton" Grid.Column="1" Style="{StaticResource OKButton}" VerticalAlignment="Bottom" Click="OnOKButtonClicked" >Close</Button>
-      </Grid>
-    </StackPanel>
-  </ScrollViewer>
+				<Button Name="OKButton" Grid.Column="1" Style="{StaticResource OKButton}" VerticalAlignment="Bottom" Click="OnOKButtonClicked" >Close</Button>
+			</Grid>
+		</StackPanel>
+	</ScrollViewer>
 </Window> 

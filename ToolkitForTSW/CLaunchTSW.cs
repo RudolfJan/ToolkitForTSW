@@ -43,15 +43,15 @@ namespace ToolkitForTSW
         }
       }
 
-    private CLiverySet _LiverySet;
+    private CModSet _modSet;
 
-    public CLiverySet LiverySet
+    public CModSet ModSet
       {
-      get { return _LiverySet; }
+      get { return _modSet; }
       set
         {
-        _LiverySet = value;
-        OnPropertyChanged("LiverySet");
+        _modSet = value;
+        OnPropertyChanged("ModSet");
         }
       }
 
@@ -87,8 +87,7 @@ namespace ToolkitForTSW
 
 //		RadioUrl = "https://tunein.com/radio/Railroad-Radio-West-Slope-s89688/"; // Default
       RadioUrl = String.Empty;
-      LiverySet = new CLiverySet();
-      LiverySet.FillLiverySetList();
+      ModSet = new CModSet();
       }
 
     public void LaunchPrograms(DirectoryInfo SaveSet)

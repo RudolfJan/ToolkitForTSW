@@ -77,9 +77,9 @@
 						        Click="OnEditSettingsButtonClicked">
 							Edit TSW2 settings
 						</Button>
-						<Button Style="{StaticResource WideButton}" Name="LiveryManagerButton"
-						        ToolTip="Add community content liveries to the game or remove them" Click="OnLiveryManagerButtonClicked">
-							Manage liveries
+						<Button Style="{StaticResource WideButton}" Name="ModManagerButton"
+						        ToolTip="Add community content mods to the game or remove them" Click="OnModManagerButtonClicked">
+							Manage mods
 						</Button>
             <Button Style="{StaticResource WideButton}" Name="RadioStationsButton" 
                      ToolTip="Manage railway radio stations collection" Click="OnRadioStationsButtonClicked">
@@ -90,8 +90,8 @@
 							Screenshot manager
 						</Button>
             <Button Style="{StaticResource WideButton}" Name="PakInstallerButton"
-                    ToolTip="Install Pak files directly from your download" Click="OnPakInstallerButtonClicked" >
-              Pak Installer
+                    ToolTip="Install Mods directly from your download" Click="OnPakInstallerButtonClicked" >
+              Mod Installer
             </Button>
           </StackPanel>
 				</Border>

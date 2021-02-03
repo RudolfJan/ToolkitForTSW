@@ -28,6 +28,9 @@
 	                                   Style="{StaticResource DefaultLabelTextBox}"
 	                                   TextBoxBackGround="{StaticResource WindowBackground}"
 	                                   TextBoxText="{Binding Scenario.SavScenario.RouteName, Mode=TwoWay}"/>
+					<CheckBox Name="IsToolkitCreatedCheckBox" Grid.Row="0" Grid.Column="1" IsChecked="{Binding IsToolkitCreated, Mode=TwoWay}" >
+						Is created by ToolkitForTSW
+					</CheckBox>
 					<userControls:LabelTextBox Name="SourceScenarioNameTextBox" Grid.Row="1" Grid.Column="0" 
 				                           LabelText="Source scenario" LabelWidth="90" Width="350" 
 				                           Style="{StaticResource DefaultLabelTextBox}"
@@ -38,13 +41,13 @@
 				                           Style="{StaticResource DefaultLabelTextBox}"
 				                           TextBoxBackGround="{StaticResource WindowBackground}"
 				                           TextBoxText="{Binding Scenario.SavScenario.ScenarioGuid, Mode=TwoWay}"/>
-					<userControls:LabelTextBox Name="ClonedScenarioNameTextBox" Grid.Row="2" Grid.Column="0" 
+					<userControls:LabelTextBox Name="TargetScenarioNameTextBox" Grid.Row="2" Grid.Column="0" 
 				                           LabelText="Target scenario" LabelWidth="90" Width="350"
 				                           Style="{StaticResource DefaultLabelTextBox}"
-				                            TextChanged="ClonedScenarioNameTextBox_OnTextChanged"
+				                            TextChanged="TargetScenarioNameTextBox_OnTextChanged"
 				                           >
 						<userControls:LabelTextBox.TextBoxText>
-							<Binding Path="ClonedScenarioName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+							<Binding Path="ScenarioName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
 								<Binding.ValidationRules>
 									<local:NameRule />
 								</Binding.ValidationRules>
@@ -52,11 +55,11 @@
 						</userControls:LabelTextBox.TextBoxText>
 					</userControls:LabelTextBox>
 
-					<userControls:LabelTextBox Name="ClonedScenarioGuidTextBox" Grid.Row="2" Grid.Column="1" 
+					<userControls:LabelTextBox Name="TargetScenarioGuidTextBox" Grid.Row="2" Grid.Column="1" 
 				                           LabelText="Target scenario Guid" LabelWidth="120"
 				                           Style="{StaticResource DefaultLabelTextBox}" 
 				                           TextBoxBackGround="{StaticResource WindowBackground}"
-				                           TextBoxText="{Binding ClonedScenarioGuid, Mode=TwoWay}"/>
+				                           TextBoxText="{Binding ScenarioGuid, Mode=TwoWay}"/>
 				</Grid>
 			</StackPanel>
 		</Border>
@@ -84,7 +87,7 @@
 						<DataGrid Name="ServicesDataGrid" Style="{StaticResource DataGridReadOnly}"
 						          ItemsSource="{Binding ServicesList }"
 						          Height="310" Width="300"
-						          SelectedItem="{Binding SelectedService, NotifyOnSourceUpdated=True }" SelectionChanged="OnSelectedServiceChanged" 
+						          SelectedItem="{Binding SelectedService, NotifyOnSourceUpdated=True }" SelectionChanged="OnSelectedServiceChanged" MouseLeftButtonDown="OnPreviewServicesDataGridMouseDown" 
 						>
 							<DataGrid.Columns>
 								<DataGridTemplateColumn Header="Services">
@@ -112,9 +115,9 @@
 							</DataGrid.Columns>
 						</DataGrid>
 						<WrapPanel>
-						<Button Name="EditService" Style="{StaticResource ButtonDefault}" Click="OnServiceEditClicked" >Edit</Button>
-							<Button Name="CloneService" Style="{StaticResource ButtonDefault}" Click="OnServiceCloneClicked" >Clone</Button>
-							<Button Name="DeleteService" Style="{StaticResource ButtonDefault}" Click="OnServiceDeleteClicked" >Delete</Button>
+						<Button Name="EditService" Style="{StaticResource ButtonNarrow}" Click="OnServiceEditClicked" >Edit</Button>
+							<Button Name="CloneService" Style="{StaticResource ButtonNarrow}" Click="OnServiceCloneClicked" >Clone</Button>
+							<Button Name="DeleteService" Style="{StaticResource ButtonNarrow}" Click="OnServiceDeleteClicked" >Delete</Button>
 						</WrapPanel>
 					</StackPanel>
 					<StackPanel Grid.Column="1" Grid.Row="0">
@@ -133,24 +136,24 @@
 							         Text="{Binding ServiceStartTime}" HorizontalAlignment="Right"/>
 								</WrapPanel>
 								<WrapPanel>
-									<TextBlock Style="{StaticResource TextBlockDefault}">Start location</TextBlock>
-									<TextBox Name="StartLocationTextBox" Width="180" Style="{StaticResource TextBoxDefault}" Text="{Binding StartLocation}" HorizontalAlignment="Right"/>
+									<TextBlock Style="{StaticResource TextBlockDefault}" Width="70">Start location</TextBlock>
+									<TextBox Name="StartLocationTextBox" Width="220" Style="{StaticResource TextBoxDefault}" Text="{Binding StartLocation}" HorizontalAlignment="Right"/>
 								</WrapPanel>
 								<WrapPanel>
-									<TextBlock Style="{StaticResource TextBlockDefault}">End location</TextBlock>
-									<TextBox Name="EndLocationTextBox" Width="180" Style="{StaticResource TextBoxDefault}" Text="{Binding EndLocation}" HorizontalAlignment="Right"/>
+										<TextBlock Style="{StaticResource TextBlockDefault}"  Width="70">End location</TextBlock>
+									<TextBox Name="EndLocationTextBox" Width="220" Style="{StaticResource TextBoxDefault}" Text="{Binding EndLocation}" HorizontalAlignment="Right"/>
 								</WrapPanel>
 								<WrapPanel>
-									<TextBlock Style="{StaticResource TextBlockDefault}">Engine string</TextBlock>
-									<TextBox Name="EngineStringTextBox" Width="180" Style="{StaticResource TextBoxDefault}" Text="{Binding EngineString}" HorizontalAlignment="Right"/>
+										<TextBlock Style="{StaticResource TextBlockDefault}"  Width="70">Engine string</TextBlock>
+									<TextBox Name="EngineStringTextBox" Width="220" Style="{StaticResource TextBoxDefault}" Text="{Binding EngineString}" HorizontalAlignment="Right"/>
 								</WrapPanel>
 								<WrapPanel>
-									<TextBlock Style="{StaticResource TextBlockDefault}">Consist string</TextBlock>
-									<TextBox Name="ConsistStringTextBox" Width="180" Style="{StaticResource TextBoxDefault}" Text="{Binding ConsistString}" HorizontalAlignment="Right"/>
+										<TextBlock Style="{StaticResource TextBlockDefault}"  Width="70">Consist string</TextBlock>
+									<TextBox Name="ConsistStringTextBox" Width="220" Style="{StaticResource TextBoxDefault}" Text="{Binding ConsistString}" HorizontalAlignment="Right"/>
 								</WrapPanel>
 								<WrapPanel>
-									<TextBlock Style="{StaticResource TextBlockDefault}">Livery Id</TextBlock>
-									<TextBox Name="LiveryIdTextBox" Width="80" Style="{StaticResource TextBoxDefault}" Text="{Binding LiveryIdentifier}" HorizontalAlignment="Right"/>
+										<TextBlock Style="{StaticResource TextBlockDefault}"  Width="70">Livery Id</TextBlock>
+									<TextBox Name="LiveryIdTextBox" Width="100" Style="{StaticResource TextBoxDefault}" Text="{Binding LiveryIdentifier}" HorizontalAlignment="Right"/>
 								</WrapPanel>
 									<WrapPanel>
 										<Button Name="SaveService" Style="{StaticResource ButtonDefault}" Click="OnServiceSaveClicked" >Save</Button>
@@ -168,7 +171,7 @@
 											<ColumnDefinition Width="*"/>
 										</Grid.ColumnDefinitions>
 										<DataGrid Grid.Column="0" Name="StopLocationsDataGrid" Style="{StaticResource DataGridReadOnly}"
-										          ItemsSource="{Binding StopPointsList}"
+										          ItemsSource="{Binding StopPointsList, NotifyOnSourceUpdated=True, Mode=TwoWay}"
 										          SelectedItem="{Binding SelectedStopLocation}"
 
 										          Height="200" Width="200" SelectionChanged="OnSelectedStopLocationChanged">
@@ -184,10 +187,9 @@
 												<Image Source="Images/arrow_down.png"/>
 											</Button>
 											<Button Name="EditStopLocation" Style="{StaticResource ButtonNarrow}" Click="OnEditStopLocationClicked" >Edit</Button>
-											<Button Name="DeleteStopLocation" Style="{StaticResource ButtonNarrow} " Click="OnDeleteStopLocationClicked">Delete</Button>
-											<Button Name="AddStopLocation" Style="{StaticResource ButtonNarrow}">Add</Button>
-											<Button Name="SaveStopLocation" Style="{StaticResource ButtonNarrow}">Save</Button>
-
+											<Button Name="AddStopLocation" Style="{StaticResource ButtonNarrow}" Click="OnAddStopLocationClicked" >Add new</Button>
+											<Button Name="DeleteStopLocation" Style="{StaticResource ButtonNarrow}" Click="OnDeleteStopLocationClicked">Delete</Button>
+											<Button Name="SaveStopLocation" Style="{StaticResource ButtonNarrow}" Click="OnSaveStopLocationClicked" >Save</Button>
 										</StackPanel>
 									</Grid>
 									
@@ -197,6 +199,9 @@
 										<TextBox Name="StopLocationTextBox" Width="200" Style="{StaticResource TextBoxDefault}" Text="{Binding StopLocation}" HorizontalAlignment="Right"/>
 									</WrapPanel>
 									<WrapPanel>
+										<Button Name="AbandonStopLocationChanges" Style="{StaticResource ButtonDefault}" Click="OnCancelStopLocationList" >Cancel</Button>
+										<Button Name="SaveStopLocationChanges" Style="{StaticResource ButtonDefault}" Click="OnSaveStopLocationList"  >Save to service</Button>
+
 									</WrapPanel>
 								</StackPanel>
 							</TabItem>

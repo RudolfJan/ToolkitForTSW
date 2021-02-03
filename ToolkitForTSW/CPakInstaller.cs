@@ -80,7 +80,7 @@ namespace ToolkitForTSW
 
     public void FillPakDirList()
       {
-      var Dir = new DirectoryInfo(CTSWOptions.LiveriesFolder);
+      var Dir = new DirectoryInfo(CTSWOptions.ModsFolder);
       FileTree = new CTreeItemProvider();
       TreeItems = FileTree.GetDirItems(Dir.FullName);
       }
@@ -214,7 +214,7 @@ namespace ToolkitForTSW
           {
           if (TreeItem?.Path == null)
             {
-            Path = CTSWOptions.LiveriesFolder + DirName;
+            Path = CTSWOptions.ModsFolder + DirName;
             }
           else
             {
@@ -245,7 +245,7 @@ namespace ToolkitForTSW
               {
               CApps.SevenZipExtractSingle(ArchiveFile, InstallDir,
                 FileEntry.FullName);
-              Result += CLiveryManager.UpdateLiveryTable(InstallDir+"\\"+FileEntry.FullName, ToGame);
+              Result += CModManager.UpdateModTable(new FileInfo(InstallDir+"\\"+FileEntry.FullName));
               return;
               }
             case ".exe:":

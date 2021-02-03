@@ -46,6 +46,8 @@
 												           Text="{Binding SavScenario.ScenarioName }"
 												           TextWrapping="Wrap" Margin="{StaticResource SmallMargin}"/>
 											</WrapPanel>
+											<CheckBox IsChecked="{Binding IsToolkitCreated}" 
+											          Margin="{StaticResource SmallMargin}">Created by ToolkitForTSW</CheckBox>
 											<TextBlock Style="{StaticResource DefaultTextBlock}" 
 											           Text="{Binding SavScenario.ScenarioGuid }"
 											           TextWrapping="Wrap" Margin="{StaticResource SmallMargin}"/>

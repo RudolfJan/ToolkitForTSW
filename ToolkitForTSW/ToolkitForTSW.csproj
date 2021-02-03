@@ -19,6 +19,7 @@
     <None Remove="Images\arrow_down.png" />
     <None Remove="Images\arrow_up.png" />
     <None Remove="Images\folder.png" />
+    <None Remove="Images\LeftArrow.ico" />
     <None Remove="Images\LuaCreator.ico" />
     <None Remove="Images\MainWindowImage.png" />
     <None Remove="Images\NoImageFound.png" />
@@ -27,6 +28,7 @@
     <None Remove="Images\resultset_last.png" />
     <None Remove="Images\resultset_next.png" />
     <None Remove="Images\resultset_previous.png" />
+    <None Remove="Images\RightArrow.ico" />
     <None Remove="Images\safe.png" />
     <None Remove="Images\wand.png" />
     <None Remove="SQL\CreateTables.sql" />
@@ -87,12 +89,15 @@
     <ProjectReference Include="..\..\RudolfLibraries\Logging.Library\Logging.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\SQLiteDatabase.Library\SQLiteDatabase.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Styles.Library\Styles.Library.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\Utilities.Library\Utilities.Library.csproj" />
     <ProjectReference Include="..\SavCracker.Library\SavCracker.Library.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Images\arrow_down.png" />
     <Resource Include="Images\arrow_up.png" />
+    <Resource Include="Images\LeftArrow.ico" />
+    <Resource Include="Images\RightArrow.ico" />
   </ItemGroup>
 
 

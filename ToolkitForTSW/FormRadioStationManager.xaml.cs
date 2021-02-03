@@ -17,20 +17,14 @@ namespace ToolkitForTSW
       InitializeComponent();
       RailWayRadioStationManager=new CRailwayRadioStationManager();
       DataContext = RailWayRadioStationManager;
-      SetItemsSource();
       SetControlStates();
       }
 
-    private void SetItemsSource()
-      {
-      //RadioStationsUrlDataGrid.ItemsSource = RailWayRadioStationManager.RadioStationDataSet.Tables[0].DefaultView;
-      RadioStationsUrlDataGrid.Items.Refresh();
-      }
-
+   
     private void SetControlStates()
       {
       DeleteUrlButton.IsEnabled= RadioStationsUrlDataGrid.SelectedItem != null;
-      UpdateUrlButton.IsEnabled= RadioStationsUrlDataGrid.SelectedItem != null;
+      EditUrlButton.IsEnabled= RadioStationsUrlDataGrid.SelectedItem != null;
       TestUrlButton.IsEnabled= RadioStationsUrlDataGrid.SelectedItem != null;
       }
 
@@ -39,38 +33,39 @@ namespace ToolkitForTSW
       SetControlStates();
       }
 
-    private void OnAddUrlButtonClicked(Object Sender, RoutedEventArgs E)
+    private void OnEditUrlButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      RailWayRadioStationManager.AddRadioStation(UrlTextBox.TextBoxText, RouteTextBox.TextBoxText, DescriptionTextBox.TextBoxText);
-      RadioStationsUrlDataGrid.SelectedItem = null;
+      RailWayRadioStationManager.EditRadioStation();
+      RadioStationsUrlDataGrid.Items.Refresh();
       SetControlStates();
       }
 
-    private void OnUpdateUrlButtonClicked(Object Sender, RoutedEventArgs E)
+    private void OnSaveUrlButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var Selection = (RadioStationModel)RadioStationsUrlDataGrid.SelectedItem;
-
-      // Update database
-      Selection.Url = UrlTextBox.TextBoxText;
-      RailWayRadioStationManager.UpdateRadioStation(Selection);
+      RailWayRadioStationManager.SaveRadioStation();
+      RadioStationsUrlDataGrid.Items.Refresh();
       }
 
     private void OnDeleteUrlButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var Selection = (RadioStationModel)RadioStationsUrlDataGrid.SelectedItem;
-      RailWayRadioStationManager.DeleteRadioStation(Selection.Id);
+      RailWayRadioStationManager.DeleteRadioStation();
+      RadioStationsUrlDataGrid.Items.Refresh();
       SetControlStates();
       }
 
     private void OnTestUrlButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var Selection = (RadioStationModel)RadioStationsUrlDataGrid.SelectedItem;
-      CApps.LaunchUrl(Selection.Url, true);
+      RailWayRadioStationManager.TestUrl();
       }
 
     private void OnOKButtonClicked(Object Sender, RoutedEventArgs E)
       {
       Close();
+      }
+
+    private void OnClearButtonClicked(object sender, RoutedEventArgs e)
+      {
+      RailWayRadioStationManager.ClearRadioStation();
       }
     }
   }

@@ -3,6 +3,7 @@ using System.Data;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using ToolkitForTSW.Models;
 
 namespace ToolkitForTSW
   {
@@ -34,21 +35,11 @@ namespace ToolkitForTSW
           (DirectoryInfo) SettingFilesDataGrid.SelectedItem;
         }
 
-      var Selection = (DataRowView) RadioStationsUrlDataGrid.SelectedItem;
+      var Selection = (RadioStationModel) RadioStationsUrlDataGrid.SelectedItem;
       if (Selection != null)
         {
-        LaunchTSW.RadioUrl = (String) Selection.Row[1];
+        LaunchTSW.RadioUrl = Selection.Url;
         }
-
-      var LiverySetFile = (FileInfo) LiverySetsDataGrid.SelectedItem;
-      if (LiverySetFile != null)
-        {
-        var LiveryManager = new CLiveryManager();
-        LiveryManager.RemoveAllInstalledPaks();
-        LaunchTSW.LiverySet.InstallSets(LiverySetFile);
-        LiveryManager.UpdateInstalledStates();
-        }
-
       LaunchTSW.LaunchPrograms(MySaveSet);
       }
 
@@ -57,11 +48,16 @@ namespace ToolkitForTSW
       Close();
       }
 
-    private void OnLiveryButtonClicked(Object Sender, RoutedEventArgs E)
+    private void OnSetModsButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var LiveryManager = new CLiveryManager();
-      var Form = new FormLiveryManager(LiveryManager);
+      var ModManager = new CModManager();
+      var Form = new FormModManager(ModManager);
       Form.ShowDialog();
+      }
+
+    private void OnActivateSelectedModSet(object sender, RoutedEventArgs e)
+      {
+      CModSet.ActivateModSet(LaunchTSW.ModSet.SelectedModSet);
       }
     }
   }

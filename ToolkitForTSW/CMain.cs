@@ -54,8 +54,14 @@ namespace ToolkitForTSW
 			var databasePath=$"{CTSWOptions.TSWToolsFolder}TSWTools.db";
 			var connectionString = $"Data Source = {databasePath}; Version = 3;";
 			DbManager.InitDatabase(connectionString, databasePath, factory);
-      DbManager.UpdateDatabaseVersionNumber(2, "Refactoring DbAccess");
       var version = DbManager.GetCurrentVersion();
+      if (version.VersionNr < 3) // old database version ois not compatible
+        {
+        DbManager.DeleteDatabase(); 
+        DbManager.InitDatabase(connectionString, databasePath, factory);
+				}
+			DbManager.UpdateDatabaseVersionNumber(3, "Refactoring DbAccess");
+      version = DbManager.GetCurrentVersion();
       RouteDataAccess.InitRouteForSavCracker("SQL\\RouteDataImport.csv");
 
 			Log.Trace($"Created database {databasePath} Version={version.VersionNr} {version.Description}");

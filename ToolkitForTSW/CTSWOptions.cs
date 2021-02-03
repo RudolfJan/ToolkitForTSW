@@ -40,7 +40,7 @@ namespace ToolkitForTSW
 
 		// Properties will be initialized programmatically
 		public static String ManualsFolder { get; set; }
-		public static String LiveriesFolder { get; set; }
+		public static String ModsFolder { get; set; }
 		public static String UnpackFolder { get; set; }
 		public static String AssetUnpackFolder { get; set; }
 		public static String TempFolder { get; set; }
@@ -357,7 +357,7 @@ namespace ToolkitForTSW
 			{
 			ManualsFolder = TSWToolsFolder + "Manuals\\";
 			var RouteGuidesFolder = ManualsFolder + "RouteGuides\\";
-			LiveriesFolder = TSWToolsFolder + "Liveries\\";
+			ModsFolder = TSWToolsFolder + "Mods\\";
 			UnpackFolder = TSWToolsFolder + "Unpack\\";
 			AssetUnpackFolder = TSWToolsFolder + "Unpack\\UnpackedAssets";
 			TempFolder = TSWToolsFolder + "Temp\\";
@@ -369,7 +369,7 @@ namespace ToolkitForTSW
 				Directory.CreateDirectory(ManualsFolder);
 				Directory.CreateDirectory(RouteGuidesFolder);
 				Directory.CreateDirectory(TempFolder);
-				Directory.CreateDirectory(LiveriesFolder);
+				Directory.CreateDirectory(ModsFolder);
 				Directory.CreateDirectory(UnpackFolder);
 				Directory.CreateDirectory(AssetUnpackFolder);
 				Directory.CreateDirectory(OptionsSetDir);

@@ -29,7 +29,6 @@ namespace ToolkitForTSW
 
     private void SetControlStates()
       {
-      InstallToGameButton.IsEnabled = PakFileListDataGrid.SelectedItem != null;
       InstallToSetsButton.IsEnabled = PakFileListDataGrid.SelectedItem != null &&
                                       FileTreeView.SelectedItem != null;
       AddDirButton.IsEnabled =

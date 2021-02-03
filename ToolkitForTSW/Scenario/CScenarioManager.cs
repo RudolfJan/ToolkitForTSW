@@ -71,6 +71,14 @@ namespace ToolkitForTSW
       BuildScenarioList();
       }
 
+    public void ScenarioDelete(CScenario toBeDeleted)
+      {
+      CApps.DeleteSingleFile(toBeDeleted.ScenarioFile.FullName);
+      ScenarioDataAccess.DeleteScenario(toBeDeleted.SavScenario.ScenarioGuid); // remove from database if it is there 
+      BuildScenarioList();
+      SelectedSavScenario = null; // TODO refresh works but this feels clumsy ...
+      }
+
     public void BuildScenarioList()
       {
       var Path=  $"{CTSWOptions.GameSaveLocation}Saved\\SaveGames\\";
@@ -87,6 +95,7 @@ namespace ToolkitForTSW
         Scenario.Cracker.ParseScenario();
         Scenario.SavScenario = Scenario.Cracker.Scenario;
         SavScenarioLogic.BuildSavScenario(Scenario.SavScenario,Scenario.Cracker);
+        Scenario.IsToolkitCreated= ScenarioDataAccess.GetScenarioByGuid(Scenario.SavScenario.ScenarioGuid)!=null;
         ScenarioList.Add(Scenario);
         }
       ScenarioList = ScenarioList.OrderBy(x => x.SavScenario.RouteAbbreviation).ToList();

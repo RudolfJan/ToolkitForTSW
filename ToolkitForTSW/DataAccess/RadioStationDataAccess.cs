@@ -14,14 +14,14 @@ namespace ToolkitForTSW.DataAccess
 
     public static int InsertRadioStation(RadioStationModel radioStation)
       {
-      var sql = $"INSERT OR IGNORE INTO RadioStations (Url, Route, Description) VALUES(@Url, @RouteName, @Description);{DbAccess.LastRowInsertQuery}";
+      var sql = $"INSERT OR IGNORE INTO RadioStations (Url, RouteName, Description) VALUES(@Url, @RouteName, @Description);{DbAccess.LastRowInsertQuery}";
       return DbAccess.SaveData<dynamic>(sql, new {radioStation.Url, radioStation.RouteName, radioStation.Description });
       }
 
     public static int UpdateRadioStation(RadioStationModel radioStation)
       {
       // $"UPDATE OR IGNORE Persons SET FirstName=@FirstName, LastName=@LastName WHERE Id= @Id;
-      var sql = $"UPDATE OR IGNORE RadioStations SET Url=@Url, Route=@RouteName, Description=@Description WHERE Id= @Id; {DbAccess.LastRowInsertQuery}";
+      var sql = $"UPDATE OR IGNORE RadioStations SET Url=@Url, RouteName=@RouteName, Description=@Description WHERE Id= @Id; {DbAccess.LastRowInsertQuery}";
       return DbAccess.SaveData<dynamic>(sql, new { radioStation.Url, radioStation.RouteName, radioStation.Description, radioStation.Id});
       }
 

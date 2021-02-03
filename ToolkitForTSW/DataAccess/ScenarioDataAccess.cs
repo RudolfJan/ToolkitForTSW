@@ -41,5 +41,12 @@ namespace ToolkitForTSW.DataAccess
       var sql = "DELETE FROM Scenarios WHERE Id=@id";
       DbAccess.SaveData<dynamic>(sql, new { id });
       }
+
+    public static void DeleteScenario(Guid scenarioGuid)
+      {
+      var sql = "DELETE FROM Scenarios WHERE ScenarioGuid=@ScenarioGuidString";
+      var ScenarioGuidString = scenarioGuid.ToString();
+      DbAccess.SaveData<dynamic>(sql, new { ScenarioGuidString });
+      }
     }
   }
