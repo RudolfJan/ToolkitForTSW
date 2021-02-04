@@ -1,4 +1,5 @@
-﻿using Styles.Library.Helpers;
+﻿using Logging.Library;
+using Styles.Library.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -37,7 +38,7 @@ namespace ToolkitForTSW
 			                      "TS2Prototype-WindowsNoEditor.pak\\TS2Prototype\\Config\\DefaultInput.ini";
 			if (!File.Exists(InputMapperFile))
 				{
-				Result += CLog.Trace("Cannot open Input mapper file. Did you unpack the core game? " +
+				Result += Log.Trace("Cannot open Input mapper file. Did you unpack the core game? " +
 				                     InputMapperFile);
 				return;
 				}

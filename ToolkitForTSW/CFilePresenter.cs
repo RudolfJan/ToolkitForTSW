@@ -1,4 +1,5 @@
-﻿using Styles.Library.Helpers;
+﻿using Logging.Library;
+using Styles.Library.Helpers;
 using System;
 using System.IO;
 
@@ -128,12 +129,12 @@ namespace ToolkitForTSW
 					CreationDate = new DateTimeOffset(Year, Month, Day, Hours, Minutes, 0, Offset);
 					if (Month > 12)
 						{
-						CLog.Trace("Conversion error", LogEventType.Debug);
+						Log.Trace("Conversion error", LogEventType.Debug);
 						}
 					}
 				catch (Exception E)
 					{
-					CLog.Trace("Conversion error in line " + Line + " because " + E.Message, LogEventType.Debug);
+					Log.Trace("Conversion error in line " + Line + " because " + E.Message, LogEventType.Debug);
 					}
 				}
 			}

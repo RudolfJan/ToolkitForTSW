@@ -1,4 +1,5 @@
-﻿using Syroot.Windows.IO;
+﻿using Logging.Library;
+using Syroot.Windows.IO;
 using System;
 using System.IO;
 using System.Windows;
@@ -73,12 +74,12 @@ namespace ToolkitForTSW
         {
         PakInstaller.InstallPakFile(ArchiveFile, InstallDirectory, FileEntry, false);
         PakInstaller.Result +=
-          CLog.Trace("Pak " + FileEntry?.Name + "Installed");
+          Log.Trace("Pak " + FileEntry?.Name + "Installed");
         }
       else
         {
         PakInstaller.Result +=
-          CLog.Trace("Invalid input for PakInstaller.InstallPakfile", LogEventType.Error);
+          Log.Trace("Invalid input for PakInstaller.InstallPakfile", LogEventType.Error);
         }
       }
 
@@ -91,12 +92,12 @@ namespace ToolkitForTSW
         {
         PakInstaller.InstallPakFile(ArchiveFile, InstallDirectory, FileEntry, true);
         PakInstaller.Result +=
-          CLog.Trace("Pak " + FileEntry?.Name + "Installed");
+          Log.Trace("Pak " + FileEntry?.Name + "Installed");
         }
       else
         {
         PakInstaller.Result +=
-          CLog.Trace("Invalid input for PakInstaller.InstallPakfile", LogEventType.Error);
+          Log.Trace("Invalid input for PakInstaller.InstallPakfile", LogEventType.Error);
         }
       }
 

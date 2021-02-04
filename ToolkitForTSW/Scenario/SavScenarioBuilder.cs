@@ -1,4 +1,5 @@
-﻿using SavCrackerTest.Models;
+﻿using Logging.Library;
+using SavCrackerTest.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,7 +61,7 @@ namespace ToolkitForTSW.Scenario
         }
       catch (Exception ex)
         {
-        CLog.Trace("Exception during reading data for cloned scenario " + ex.Message); // TODO replace this by Logging.Library
+        Log.Trace("Exception during reading data for cloned scenario " + ex.Message); // TODO replace this by Logging.Library
         return;
         }
       }
@@ -120,8 +121,6 @@ namespace ToolkitForTSW.Scenario
       return output;
       }
 
-
-
     private static byte[] GetStringByteString(string input)
       {
       int length = input.Length + 1; // Must include terminating zero
@@ -149,8 +148,6 @@ namespace ToolkitForTSW.Scenario
       var length = payLoad.GetLength(0);
       return GetLengthBytesWithIndex(length, fillers, additionalLength);
       }
-
-
 
     private static byte[] GetLengthBytesWithIndex(int length, int fillers = 1, int additionalLength = 0)
       {
@@ -206,7 +203,6 @@ namespace ToolkitForTSW.Scenario
       return output;
 
       }
-
     private static byte[] BuildGuidProperty(Guid myGuid)
       {
       byte[] guidBytes = myGuid.ToByteArray();
@@ -249,7 +245,6 @@ namespace ToolkitForTSW.Scenario
       byte[] elementCountBytes = ConvertIntToBytes(elementCount);
       var arrayObjectType = GetStringByteString("StructProperty");
 
-
       return arrayPropertyType
         .Concat(payloadLengthBytes)
         .Concat(indexFiller1)
@@ -289,7 +284,6 @@ namespace ToolkitForTSW.Scenario
       return output;
       }
 
-
     private static byte[] BuildServicesPayLoadElement(SavServiceModel service)
       {
       var serviceName = BuildStringProperty("UserServiceName", service.ServiceName);
@@ -320,7 +314,6 @@ namespace ToolkitForTSW.Scenario
       return output;
       }
 
-
     private static byte[] BuildFormation(SavServiceModel service)
       {
       var formation = BuildFormationPayload(service);
@@ -328,7 +321,6 @@ namespace ToolkitForTSW.Scenario
       var output = BuildStruct("formation", "ScenarioDesignFormation", formation);
       return output;
       }
-
 
     private static byte[] BuildFormationPayload(SavServiceModel service)
       {
@@ -345,7 +337,6 @@ namespace ToolkitForTSW.Scenario
         .ToArray();
       return output;
       }
-
 
     private static byte[] BuildSelectedReskinsArray(SavServiceModel service)
       {

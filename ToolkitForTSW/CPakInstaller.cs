@@ -1,4 +1,5 @@
-﻿using Styles.Library.Helpers;
+﻿using Logging.Library;
+using Styles.Library.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -90,7 +91,7 @@ namespace ToolkitForTSW
       var Extension = ArchiveFile.Extension.ToLower();
       if (DestinationFileList == null)
         {
-        Result +=CLog.Trace("File presenter is null", LogEventType.Error);
+        Result +=Log.Trace("File presenter is null", LogEventType.Error);
         return;
         }
 
@@ -114,7 +115,7 @@ namespace ToolkitForTSW
             }
           default:
             {
-            Result += CLog.Trace("Archive type " + Extension + " is not (yet) supported");
+            Result +=Log.Trace("Archive type " + Extension + " is not (yet) supported");
             break;
             }
         }
@@ -127,7 +128,7 @@ namespace ToolkitForTSW
         {
         if (DestinationFileList == null)
           {
-          Result += CLog.Trace("File presenter is null", LogEventType.Error);
+          Result += Log.Trace("File presenter is null", LogEventType.Error);
           return;
           }
         using (ZipArchive Archive = ZipFile.OpenRead(ArchiveFile.FullName))
@@ -147,7 +148,7 @@ namespace ToolkitForTSW
         }
       catch (Exception)
         {
-        Result += CLog.Trace("Failed to show file entries for archive " + ArchiveFile.FullName,
+        Result += Log.Trace("Failed to show file entries for archive " + ArchiveFile.FullName,
           LogEventType.Error);
         }
       }
@@ -227,7 +228,7 @@ namespace ToolkitForTSW
         }
       catch (Exception E)
         {
-        Result += CLog.Trace("Cannot create directory because " + E.Message, LogEventType.Error);
+        Result += Log.Trace("Cannot create directory because " + E.Message, LogEventType.Error);
         }
       }
 
@@ -255,7 +256,7 @@ namespace ToolkitForTSW
               }
             default:
               {
-              Result += CLog.Trace("No suitable installer found for file " + ArchiveFile);
+              Result += Log.Trace("No suitable installer found for file " + ArchiveFile);
               break;
               }
           }

@@ -1,4 +1,5 @@
-﻿using Styles.Library.Helpers;
+﻿using Logging.Library;
+using Styles.Library.Helpers;
 using System;
 using System.Data;
 using System.Data.SQLite;
@@ -99,7 +100,7 @@ namespace ToolkitForTSW
 				}
 			catch (Exception E)
 				{
-				Result += CLog.Trace("Failed to create table " + TableName + "because " + E.Message, LogEventType.Error);
+				Result += Log.Trace("Failed to create table " + TableName + "because " + E.Message, LogEventType.Error);
 				throw;
 				}
 			}
@@ -139,7 +140,7 @@ namespace ToolkitForTSW
 				}
 			catch (Exception E)
 				{
-				Result += CLog.Trace("Failed to create query " + Query + " because " + E.Message,
+				Result += Log.Trace("Failed to create query " + Query + " because " + E.Message,
 					LogEventType.Error);
 				return null;
 				}

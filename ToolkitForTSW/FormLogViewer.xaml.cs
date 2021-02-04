@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logging.Library;
+using System;
 using System.Windows;
 using System.Windows.Data;
 using Microsoft.Win32;
@@ -11,10 +12,10 @@ namespace ToolkitForTSW
 	/// </summary>
 	public partial class FormLogViewer
 		{
-		CLog Log { get; set; }
-		CLogFilter Filter { get; set; }
+		Log Log { get; set; }
+		LogFilter Filter { get; set; }
 
-		public FormLogViewer(CLog MyLog)
+		public FormLogViewer(Log MyLog)
 			{
 			InitializeComponent();
 			var WinHeight = SystemParameters.MaximizedPrimaryScreenHeight * 0.85;
@@ -26,7 +27,7 @@ namespace ToolkitForTSW
 
 			Log = MyLog;
 			DataContext = Log;
-			Filter = new CLogFilter(DebugCheckBox.IsChecked != null && (Boolean) DebugCheckBox.IsChecked,
+			Filter = new LogFilter(DebugCheckBox.IsChecked != null && (Boolean) DebugCheckBox.IsChecked,
 				ErrorCheckBox.IsChecked != null && (Boolean) ErrorCheckBox.IsChecked,
 				MessageCheckBox.IsChecked != null && (Boolean) MessageCheckBox.IsChecked,
 				EventCheckBox.IsChecked != null && (Boolean) EventCheckBox.IsChecked);
@@ -78,7 +79,7 @@ namespace ToolkitForTSW
 				{
 				if (Filter == null)
 					{
-					Filter = new CLogFilter(
+					Filter = new LogFilter(
 						DebugCheckBox.IsChecked != null && (Boolean) DebugCheckBox.IsChecked,
 						ErrorCheckBox.IsChecked != null && (Boolean) ErrorCheckBox.IsChecked,
 						MessageCheckBox.IsChecked != null && (Boolean) MessageCheckBox.IsChecked,

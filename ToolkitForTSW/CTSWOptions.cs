@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Logging.Library;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Windows;
@@ -379,7 +380,7 @@ namespace ToolkitForTSW
         }
 			catch (Exception E)
 				{
-				CLog.Trace("Error creating directories because " + E.Message, LogEventType.Error);
+				Log.Trace("Error creating directories because " + E.Message, LogEventType.Error);
 				}
 			}
 
@@ -397,7 +398,7 @@ namespace ToolkitForTSW
 				}
 			catch (Exception E)
 				{
-				CLog.Trace("Error installing manual files because " + E.Message);
+				Log.Trace("Error installing manual files because " + E.Message);
 				}
 			}
 

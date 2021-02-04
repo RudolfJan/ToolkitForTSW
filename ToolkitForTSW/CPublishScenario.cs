@@ -1,4 +1,5 @@
-﻿using SavCrackerTest.Models;
+﻿using Logging.Library;
+using SavCrackerTest.Models;
 using Styles.Library.Helpers;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace ToolkitForTSW
       var templateList = GetTemplates(CTSWOptions.TemplateFolder);
       if (templateList.Count < 1)
         {
-        CLog.Trace("No template found, cannot create scenario documentation");
+        Log.Trace("No template found, cannot create scenario documentation");
         return;
         }
       var template = File.ReadAllText(templateList[0].FullName);

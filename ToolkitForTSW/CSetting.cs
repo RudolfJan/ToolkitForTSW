@@ -1,4 +1,5 @@
-﻿using Styles.Library.Helpers;
+﻿using Logging.Library;
+using Styles.Library.Helpers;
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -121,7 +122,7 @@ namespace ToolkitForTSW
           }
 
         Section = SectionEnum.Other;
-        CLog.Trace("Section is unknown " + InputLine + " Please use [SystemSettings] in Engine.ini");
+        Log.Trace("Section is unknown " + InputLine + " Please use [SystemSettings] in Engine.ini");
         }
 
       if (InputLine.Length > 1)
@@ -223,9 +224,6 @@ namespace ToolkitForTSW
         }
       SettingsManager.UpdateSetting(key, "0", section);
       }
-
-
-
 
     public override String ToString()
       {
