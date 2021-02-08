@@ -8,11 +8,23 @@
     <UseWPF>true</UseWPF>
     <Company>Holland Hiking</Company>
     <Authors>Rudolf Heijink</Authors>
-    <Version>0.6.0</Version>
+    <Version>0.7.0</Version>
     <PackageProjectUrl>https://github.com/RudolfJan/ToolkitForTSW</PackageProjectUrl>
-    <Copyright>(C) 2020 Rudolf Heijink</Copyright>
+    <Copyright>(C) 2020/2021 Rudolf Heijink</Copyright>
     <ApplicationIcon>Images\LuaCreator.ico</ApplicationIcon>
-  </PropertyGroup>  
+    <PackageLicenseFile>License information.pdf</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Backup\**" />
+    <EmbeddedResource Remove="Backup\**" />
+    <None Remove="Backup\**" />
+    <None Include="..\Manual\License information.pdf">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <Page Remove="Backup\**" />
+  </ItemGroup>  
 
 <ItemGroup>
     <None Remove="Images\AboutPicture.png" />

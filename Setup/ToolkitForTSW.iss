@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ToolkitForTSW"
-#define MyAppVersion "0.6 alpha"
+#define MyAppVersion "0.7 beta"
 #define MyAppPublisher "Holland Hiking"
 #define MyAppURL "http://www.hollandhiking.nl/trainsimulator"
 #define MyAppExeName "ToolkitForTSW.exe"
@@ -50,7 +50,8 @@ Source: "Inputfiles\Binaries\*.dll"; DestDir: "{#DefaultDirName}"; Flags: ignore
 Source: "Inputfiles\Binaries\*.json"; DestDir: "{#DefaultDirName}"; Flags: ignoreversion
 Source: "Inputfiles\Binaries\runtimes\*.*"; DestDir: "{#DefaultDirName}\runtimes"; Flags: ignoreversion recursesubdirs
 Source: "Inputfiles\Binaries\Images\*.*"; DestDir: "{#DefaultDirName}\Images"; Flags: ignoreversion
-Source: "Inputfiles\Manuals\*.pdf"; DestDir: "{#DataDirName}\Manuals"; Flags: ignoreversion
+Source: "Inputfiles\Binaries\SQL\*.*"; DestDir: "{#DefaultDirName}\SQL"; Flags: ignoreversion
+Source: "Inputfiles\Manuals\*.pdf"; DestDir: "{#DefaultDirName}\Manuals"; Flags: ignoreversion
 Source: "Inputfiles\NoCopy\CSXicon.bmp"; DestDir: "{#DefaultDirName}"; Flags: ignoreversion
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files

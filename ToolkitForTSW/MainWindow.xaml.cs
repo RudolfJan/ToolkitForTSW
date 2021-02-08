@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logging.Library;
+using System;
 using System.Diagnostics;
 using System.Windows;
 using ToolkitForTSW;
@@ -11,8 +12,8 @@ namespace ToolkitForTSW
 	public partial class MainWindow
 		{
 		public CMain MainData { get; set; }
-		public CLog LogForm;
-		public static CLogEventHandler LogEventHandler { get; set; }
+		public Log LogForm;
+		public static LogEventHandler LogEventHandler { get; set; }
 
 		public MainWindow()
 			{
@@ -21,8 +22,8 @@ namespace ToolkitForTSW
 			Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
 			Trace.AutoFlush = true;
 			Trace.Indent();
-			LogEventHandler = new CLogEventHandler();
-			LogForm = new CLog();
+			LogEventHandler = new LogEventHandler();
+			LogForm = new Log();
 			MainData = new CMain();
 			DataContext = MainData;
 			}

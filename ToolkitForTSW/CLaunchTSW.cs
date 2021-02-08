@@ -1,4 +1,5 @@
-﻿using Styles.Library.Helpers;
+﻿using Logging.Library;
+using Styles.Library.Helpers;
 using System;
 using System.IO;
 
@@ -105,7 +106,7 @@ namespace ToolkitForTSW
           }
         catch (Exception E)
           {
-          Result += CLog.Trace("Failed to launch TSW problem loading ini file " + E.Message,
+          Result += Log.Trace("Failed to launch TSW problem loading ini file " + E.Message,
             LogEventType.Error);
           return;
           }

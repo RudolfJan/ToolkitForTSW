@@ -1,0 +1,11 @@
+All contents in this package are licensed under following Creative Common license:
+
+CC Attribution-NonCommercial-ShareAlike (CC BY-NC-SA)
+
+This license lets others remix, tweak, and build upon your work non-commercially, as long as they credit you and license their new creations under identical terms.
+
+The content is provided "as-is" and by using it you agree the author is NOT liable in any form for the use of this software. Usage is completely at your onw risk.
+
+You are NOT entitled any form of support, though feedback is welcome.
+
+You understand that Dovetail Games Ltd or any related company is NOT involved in this software package by any means and cannot be held responsible for the use of this software.

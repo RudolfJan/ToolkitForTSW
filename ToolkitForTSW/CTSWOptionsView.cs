@@ -332,7 +332,7 @@ Installation folder for Steam program
       CTSWOptions.LimitSoundVolumes = LimitSoundVolumes;
       CTSWOptions.WriteToRegistry();
       CTSWOptions.CreateDirectories();
-      CTSWOptions.MoveManuals();
+      CTSWOptions.CopyManuals();
       }
 
     #region RouteEditor

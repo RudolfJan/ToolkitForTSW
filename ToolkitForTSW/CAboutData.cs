@@ -12,7 +12,7 @@ namespace ToolkitForTSW
 
 		public String Description => AssemblyInfoProvider.AssemblyDescription;
 
-		public String Version => "0.6 alfa";
+		public String Version => "0.7 beta";
 
 		public Uri DownloadLocation => new Uri("https://www.hollandhiking.nl/trainsimulator");
 		}

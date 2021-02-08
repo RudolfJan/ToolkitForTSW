@@ -44,22 +44,21 @@
                               SelectedItem="{Binding SelectedMod}"
                               SelectionChanged="OnAvailablePaksDataGridSelectionChanged">
                       <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding ModName, UpdateSourceTrigger=PropertyChanged}"
-                                            ElementStyle="{StaticResource TextBlockDefault}"
-                                            Header="Name "
-                                            IsReadOnly="True" />
-                        <DataGridCheckBoxColumn Binding="{Binding IsInstalled}" Header="Installed "
-                                                IsReadOnly="True" />
-                        <DataGridTextColumn Binding="{Binding FilePath}" Header="Pak file "
-                                            ElementStyle="{StaticResource TextBlockDefault}"
-                                            FontWeight="Bold"
-                                            IsReadOnly="True" />
-                        <DataGridTextColumn Binding="{Binding DLCName, UpdateSourceTrigger=PropertyChanged}"
-                                            ElementStyle="{StaticResource TextBlockDefault}"
-                                            Header="DLC "
-                                            IsReadOnly="True" />
-
-                      </DataGrid.Columns>
+												<DataGridTemplateColumn Header="Mod details">
+													<DataGridTemplateColumn.CellTemplate>
+														<DataTemplate>
+															<StackPanel ToolTip="{Binding ModDescription}">
+																<WrapPanel>
+																	<CheckBox IsChecked="{Binding IsInstalled}">Installed?</CheckBox>
+																	<TextBlock Text="{Binding DLCName, UpdateSourceTrigger=PropertyChanged}" Margin="3,0,0,0"/>
+																	<TextBlock Text="{Binding ModName, UpdateSourceTrigger=PropertyChanged}" Margin="3,0,0,0"/>
+																</WrapPanel >
+																<TextBlock Text="{Binding FilePath}"/>
+															</StackPanel>
+														</DataTemplate>
+													</DataGridTemplateColumn.CellTemplate>
+												</DataGridTemplateColumn>
+	                  </DataGrid.Columns>
                     </DataGrid>
 										<WrapPanel>
 										<Button Name="EditProperties" Style="{StaticResource ButtonNarrow}" Click="OnEditModProperties" >Edit</Button>
@@ -84,14 +83,14 @@
                                               TextBoxText="{Binding ModSource, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               />
 									<WrapPanel>
-                    <TextBlock Width="72" Style="{StaticResource DefaultTextBlock}">Livery Type</TextBlock>
+                    <TextBlock Width="72" Style="{StaticResource DefaultTextBlock}">Mod Type</TextBlock>
                     <ComboBox Name="LiveryComboBox" Width="80"
                               ItemsSource="{Binding Source={StaticResource LiveryTypesEnum}}"
                               Text="{Binding ModType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                               />
                     <CheckBox Name="IsInstalledCheckBox"
                               IsChecked="{Binding IsInstalled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IntConverter}}">
-                      Is installed
+                      Is activated
                     </CheckBox>
                   </WrapPanel>
                   <userControls:LabelTextBox x:Name="DescriptionTextBox" LabelText="Description" LabelWidth="80"
@@ -134,24 +133,23 @@
                               ItemsSource="{Binding AvailableModList}"
                               SelectedItem="{Binding ModSet.SelectedMod}"
                               SelectionChanged="OnAvailablePaksDataGridSetsSelectionChanged">
-                      <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding ModName, UpdateSourceTrigger=PropertyChanged}"
-                                            ElementStyle="{StaticResource DefaultTextBlock}"
-                                            Header="Name "
-                                            IsReadOnly="True" />
-                        <DataGridCheckBoxColumn Binding="{Binding IsInstalled}" Header="Installed "
-                                                IsReadOnly="True" />
-                        <DataGridTextColumn Binding="{Binding FilePath}" Header="Pak file "
-                                            ElementStyle="{StaticResource DefaultTextBlock}"
-                                            FontWeight="Bold"
-                                            IsReadOnly="True" />
-                        <DataGridTextColumn Binding="{Binding DLCName, UpdateSourceTrigger=PropertyChanged}"
-                                            ElementStyle="{StaticResource DefaultTextBlock}"
-                                            Header="DLC "
-                                            IsReadOnly="True" />
-
-                      </DataGrid.Columns>
-                    </DataGrid>
+	                    <DataGrid.Columns>
+		                    <DataGridTemplateColumn Header="Mod details">
+			                    <DataGridTemplateColumn.CellTemplate>
+				                    <DataTemplate>
+					                    <StackPanel ToolTip="{Binding ModDescription}">
+						                    <WrapPanel>
+							                    <CheckBox IsChecked="{Binding IsInstalled}">Installed?</CheckBox>
+							                    <TextBlock Text="{Binding DLCName, UpdateSourceTrigger=PropertyChanged}" Margin="3,0,0,0"/>
+							                    <TextBlock Text="{Binding ModName, UpdateSourceTrigger=PropertyChanged}" Margin="3,0,0,0"/>
+						                    </WrapPanel >
+						                    <TextBlock Text="{Binding FilePath}"/>
+					                    </StackPanel>
+				                    </DataTemplate>
+			                    </DataGridTemplateColumn.CellTemplate>
+		                    </DataGridTemplateColumn>
+	                    </DataGrid.Columns>
+										</DataGrid>
 	                  <WrapPanel>
 										<WrapPanel>
 												<Button Name="AddToSetButton" Style="{StaticResource DefaultButton}" ToolTip="Add mod to set" Click="OnAddToSetButtonClicked" >
@@ -190,7 +188,13 @@
                                 Height="250" Width="150" SelectionChanged="OnModSetsDataGridSelectionChanged"
                                 >
 												<DataGrid.Columns>
-                          <DataGridTextColumn Header="Name" Binding="{Binding ModSetName}"/>
+													<DataGridTextColumn Header="Name" Binding="{Binding ModSetName}">
+														<DataGridTextColumn.CellStyle>
+															<Style TargetType="DataGridCell">
+																<Setter Property="ToolTip" Value="{Binding ModSetDescription}" />
+															</Style>
+														</DataGridTextColumn.CellStyle>
+													</DataGridTextColumn>
 												</DataGrid.Columns>
 											</DataGrid>
 										</StackPanel>
@@ -199,9 +203,16 @@
 											<DataGrid Name="ModsInSetDataGrid" Style="{StaticResource DataGridReadOnly}"
 											          ItemsSource="{Binding ModSet.ModsInSetList}"
 											          SelectedItem="{Binding ModSet.SelectedModInSet}"
-											          Height="250" Width="150" SelectionChanged="OnModsInSetDataGridSelectionChanged" >
+											          Height="250" Width="150" SelectionChanged="OnModsInSetDataGridSelectionChanged" 
+											          >
 												<DataGrid.Columns>
-													<DataGridTextColumn Header="Name" Binding="{Binding ModName}"/>
+													<DataGridTextColumn Header="Name" Binding="{Binding ModName}">
+														<DataGridTextColumn.CellStyle>
+															<Style TargetType="DataGridCell">
+																<Setter Property="ToolTip" Value="{Binding ModDescription}" />
+															</Style>
+														</DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
 												</DataGrid.Columns>
 											</DataGrid>
 										</StackPanel>

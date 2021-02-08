@@ -1,4 +1,5 @@
-﻿using Styles.Library.Helpers;
+﻿using Logging.Library;
+using Styles.Library.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -299,7 +300,7 @@ namespace ToolkitForTSW
 				}
 			catch (Exception E)
 				{
-				Result += CLog.Trace("Failed to install mod pak because " + E.Message,
+				Result += Log.Trace("Failed to install mod pak because " + E.Message,
 					LogEventType.Error);
 				}
 			}
@@ -330,7 +331,7 @@ namespace ToolkitForTSW
         }
       catch (Exception E)
         {
-        return CLog.Trace("Failed to install mod pak because " + E.Message,
+        return Log.Trace("Failed to install mod pak because " + E.Message,
           LogEventType.Error);
         }
       }

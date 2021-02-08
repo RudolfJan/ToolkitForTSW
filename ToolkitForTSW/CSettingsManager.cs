@@ -1,4 +1,5 @@
-﻿using Styles.Library.Helpers;
+﻿using Logging.Library;
+using Styles.Library.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -362,7 +363,7 @@ namespace ToolkitForTSW
 			{
 			if (!File.Exists(SettingsFile.FullName))
 				{
-				Result += CLog.Trace("Settings file " + SettingsFile.FullName + " not found",
+				Result += Log.Trace("Settings file " + SettingsFile.FullName + " not found",
 					LogEventType.Message);
 				return;
 				}
@@ -372,13 +373,13 @@ namespace ToolkitForTSW
 
 			if(EngineIniFile==null)
 				{
-				Result += CLog.Trace("Settings file Engine.ini" + " not specified");
+				Result += Log.Trace("Settings file Engine.ini" + " not specified");
 				return;
 			}
 
 			if (!File.Exists(EngineIniFile.FullName))
 				{
-				Result += CLog.Trace("Engine.ini file " + EngineIniFile.FullName + " not found");
+				Result += Log.Trace("Engine.ini file " + EngineIniFile.FullName + " not found");
 				return;
 				}
 			ProcessSettingsFile(EngineIniFile);
@@ -388,7 +389,7 @@ namespace ToolkitForTSW
 			{
 			if (SaveSetName.Length < 1)
 				{
-				Result += CLog.Trace("SaveSet name is not valid", LogEventType.Error);
+				Result += Log.Trace("SaveSet name is not valid", LogEventType.Error);
 				return; // failed, should never happen
 				}
 
@@ -439,7 +440,7 @@ namespace ToolkitForTSW
 				}
 			catch (Exception E)
 				{
-				Result += CLog.Trace(
+				Result += Log.Trace(
 					"Cannot read Settings file " + SettingsFile.FullName + " because " + E.Message,
 					LogEventType.Error);
 				return;
@@ -450,7 +451,7 @@ namespace ToolkitForTSW
 			{
 			if (SaveSetName.Length < 3)
 				{
-				Result += CLog.Trace("SaveSet name is too short", LogEventType.Error);
+				Result += Log.Trace("SaveSet name is too short", LogEventType.Error);
 				return; // failed, should never happen
 				}
 
@@ -496,7 +497,7 @@ namespace ToolkitForTSW
 				}
 			catch (Exception E)
 				{
-				Result += CLog.Trace(
+				Result += Log.Trace(
 					"Cannot write Settings file " + SettingsFile.FullName + " because " + E.Message,
 					LogEventType.Error);
 				return;
@@ -543,7 +544,7 @@ namespace ToolkitForTSW
 				{
 				var Setting = new CSetting(Key, Value, Section);
 				SettingsDictionary.Add(Setting);
-				Result += CLog.Trace("Settings key not found " + Key);
+				Result += Log.Trace("Settings key not found " + Key);
 				return;
 				}
 			SettingsDictionary[Idx].Value=Value;
@@ -554,7 +555,7 @@ namespace ToolkitForTSW
 			var Idx = GetItemIndex(Key);
 			if (Idx == -1)
 				{
-				Result += CLog.Trace("Settings key not found " + Key);
+				Result += Log.Trace("Settings key not found " + Key);
 				Value = String.Empty;
 				return;
 				}

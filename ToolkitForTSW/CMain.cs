@@ -2,6 +2,7 @@
 using SQLiteDatabase.Library;
 using Styles.Library.Helpers;
 using System;
+using System.IO;
 using System.Windows;
 using ToolkitForTSW.DataAccess;
 
@@ -43,12 +44,25 @@ namespace ToolkitForTSW
 			if (CTSWOptions.TSWToolsFolder.Length > 1)
 				{
 				CTSWOptions.CreateDirectories();
-				CTSWOptions.MoveManuals();
+				CTSWOptions.CopyManuals();
+        MoveMods();
         InitDatabase();
         }
 			}
 
-    public void InitDatabase()
+    public static void MoveMods()
+      {
+			// Move Mods to proper directory
+      var destination = CTSWOptions.ModsFolder;
+      var source = destination.Replace("Mods", "Liveries");
+      if (Directory.Exists(source))
+        {
+        CApps.CopyDir(source, destination, true);
+        MessageBox.Show($"You can now safely remove the Liveries folder {source}");
+        }
+      }
+
+		public void InitDatabase()
       {
       var factory = new DatabaseFactory();
 			var databasePath=$"{CTSWOptions.TSWToolsFolder}TSWTools.db";
@@ -71,7 +85,7 @@ namespace ToolkitForTSW
 
 		public void OpenManual()
 			{
-			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "ToolkitForTSW Manual "+ CTSWOptions.TSWToolsManualVersion+".pdf");
+			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "ToolkitForTSW Manual"+".pdf");
 			}
 
 		public void OpenStartersGuide()

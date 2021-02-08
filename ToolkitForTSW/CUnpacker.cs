@@ -1,4 +1,5 @@
-﻿using Styles.Library.Helpers;
+﻿using Logging.Library;
+using Styles.Library.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -77,7 +78,7 @@ Unpacking in progress
 				}
 			catch (Exception E)
 				{
-				Result = CLog.Trace(
+				Result = Log.Trace(
 					"Failed to create list of .pak files for directory " + DirectoryName + "because " + E.Message,
 					LogEventType.Error);
 				}
@@ -123,7 +124,7 @@ Unpacking in progress
 				}
 			catch (Exception E)
 				{
-				Result += CLog.Trace(@"Unpack all .pak files failed: " + E.Message, LogEventType.Error);
+				Result += Log.Trace(@"Unpack all .pak files failed: " + E.Message, LogEventType.Error);
 				}
 
 			Busy = false;
@@ -161,16 +162,13 @@ public String UnpackSelected(ObservableCollection<FileInfo> SelectedPaks)
 				}
 			catch (Exception E)
 				{
-				Result += CLog.Trace(@"Unpack all .pak files failed: " + E.Message, LogEventType.Error);
+				Result += Log.Trace(@"Unpack all .pak files failed: " + E.Message, LogEventType.Error);
 				}
 
 			Busy = false;
 			Result +="Unpacking done\r\n";
 			return Result;
 			}
-
-
-
 
 		public void UnpackFile(String Pak)
 			{
@@ -187,7 +185,7 @@ public String UnpackSelected(ObservableCollection<FileInfo> SelectedPaks)
 				}
 			catch (Exception E)
 				{
-				Result += CLog.Trace(@"Unpack .pak file failed: " + Pak + " " + E.Message, LogEventType.Error);
+				Result += Log.Trace(@"Unpack .pak file failed: " + Pak + " " + E.Message, LogEventType.Error);
 				}
 
 			while (MyTask != null && !MyTask.IsCompleted)

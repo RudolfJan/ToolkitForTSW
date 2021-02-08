@@ -48,6 +48,8 @@ namespace ToolkitForTSW
       CloneService.IsEnabled= ScenarioCopy.SelectedService!=null;
       MoveDownButton.IsEnabled= ScenarioCopy.SelectedStopLocation!=null;
       MoveUpButton.IsEnabled = ScenarioCopy.SelectedStopLocation != null;
+      EditStopLocation.IsEnabled= ScenarioCopy.SelectedStopLocation != null;
+      DeleteStopLocation.IsEnabled= ScenarioCopy.SelectedStopLocation != null;
 
       // Make this checkbox read only
       IsToolkitCreatedCheckBox.IsHitTestVisible=false;
