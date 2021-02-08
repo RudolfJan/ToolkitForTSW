@@ -384,14 +384,14 @@ namespace ToolkitForTSW
 				}
 			}
 
-		public static void MoveManuals()
+		public static void CopyManuals()
 			{
 			var SourceDir = InstallDirectory;
 			try
 				{
-				File.Copy(SourceDir + "Manuals\\ToolkitForTSW Manual " + CTSWOptions.TSWToolsManualVersion+".pdf",
-					TSWToolsFolder + "ToolkitForTSW Manual " + CTSWOptions.TSWToolsManualVersion + ".pdf", true);
-				File.Copy(SourceDir + "Manuals\\TSW Starters guide.pdf", TSWToolsFolder + "TSW Starters guide.pdf",
+				File.Copy(SourceDir + "Manuals\\ToolkitForTSW Manual.pdf",
+					TSWToolsFolder + "ToolkitForTSW Manual.pdf", true);
+				File.Copy(SourceDir + "Manuals\\TSW2 Starters guide.pdf", TSWToolsFolder + "TSW2 Starters guide.pdf",
 					true);
 				File.Copy(SourceDir + "Manuals\\License information.pdf", TSWToolsFolder + "License information.pdf",
 					true);

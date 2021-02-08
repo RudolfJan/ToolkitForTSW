@@ -12,7 +12,6 @@ namespace ToolkitForTSW
   public partial class FormModManager
     {
     public CModManager ModManager { get; set; }
-    private bool _HasChanged;
 
     public FormModManager(CModManager modManager)
       {
@@ -49,7 +48,7 @@ namespace ToolkitForTSW
     private void OnSaveModButtonClicked(object Sender, RoutedEventArgs E)
       {
       ModManager.SaveModProperties();
-      _HasChanged = false;
+      AvailablePaksDataGrid.Items.Refresh();
       SetControlStates();
       }
 

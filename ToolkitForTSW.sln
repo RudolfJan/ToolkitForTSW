@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		Manual\Drawings manual.pub = Manual\Drawings manual.pub
 		Manual\License information.docx = Manual\License information.docx
 		Manual\ToolkitForTSW Manual.docx = Manual\ToolkitForTSW Manual.docx
+		Manual\TSWTools Manual Visio Drawings.vsdx = Manual\TSWTools Manual Visio Drawings.vsdx
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{EC5B65F0-A74A-4AF2-8183-C2A83F819CC6}"

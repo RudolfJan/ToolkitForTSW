@@ -16,6 +16,11 @@ See the manual for details.
 
 Version history:
 
+Version 0.7:
+- Added Scenario Editor
+- Updated Mod tool
+- Bug fixes
+
 Version 0.6:
 - Application renamed to ToolkitForTSW
 - Now supprts TSW2 only
