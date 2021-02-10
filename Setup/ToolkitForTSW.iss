@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ToolkitForTSW"
-#define MyAppVersion "0.7 beta"
+#define MyAppVersion "0.71 beta"
 #define MyAppPublisher "Holland Hiking"
 #define MyAppURL "http://www.hollandhiking.nl/trainsimulator"
 #define MyAppExeName "ToolkitForTSW.exe"
@@ -156,3 +156,4 @@ Filename: "{#DefaultDirName}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{
 
 [Registry]
 Root: "HKCU"; Subkey: "software\Holland Hiking\ToolkitForTSW"; ValueType: string; ValueName: "InstallDirectory"; ValueData: "{app}\"; Flags: createvalueifdoesntexist
+Root: "HKCU"; Subkey: "software\Holland Hiking\ToolkitForTSW"; ValueType: string; ValueName: "TSWToolsFolder"; ValueData: "{#DataDirName}\"; Flags: createvalueifdoesntexist

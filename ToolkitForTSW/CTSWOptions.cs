@@ -390,10 +390,10 @@ namespace ToolkitForTSW
 			try
 				{
 				File.Copy(SourceDir + "Manuals\\ToolkitForTSW Manual.pdf",
-					TSWToolsFolder + "ToolkitForTSW Manual.pdf", true);
-				File.Copy(SourceDir + "Manuals\\TSW2 Starters guide.pdf", TSWToolsFolder + "TSW2 Starters guide.pdf",
+          ManualsFolder + "ToolkitForTSW Manual.pdf", true);
+				File.Copy(SourceDir + "Manuals\\TSW2 Starters guide.pdf", ManualsFolder + "TSW2 Starters guide.pdf",
 					true);
-				File.Copy(SourceDir + "Manuals\\License information.pdf", TSWToolsFolder + "License information.pdf",
+				File.Copy(SourceDir + "Manuals\\License information.pdf", ManualsFolder + "License information.pdf",
 					true);
 				}
 			catch (Exception E)

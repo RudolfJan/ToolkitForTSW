@@ -16,6 +16,9 @@ See the manual for details.
 
 Version history:
 
+Version 0.71
+- Fixed an issue with the installation procedure
+
 Version 0.7:
 - Added Scenario Editor
 - Updated Mod tool

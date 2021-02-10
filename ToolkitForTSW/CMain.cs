@@ -32,6 +32,7 @@ namespace ToolkitForTSW
 				CTSWOptions.ReadFromRegistry();
 
 				var InitialInstallDirectory = CTSWOptions.TSWToolsFolder;
+        InitDatabase(); // must be done before trying to get options to avoid exception
 				var Form = new FormOptions();
 
 				Form.ShowDialog();
@@ -85,7 +86,7 @@ namespace ToolkitForTSW
 
 		public void OpenManual()
 			{
-			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "ToolkitForTSW Manual"+".pdf");
+			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "ToolkitForTSW Manual.pdf");
 			}
 
 		public void OpenStartersGuide()
