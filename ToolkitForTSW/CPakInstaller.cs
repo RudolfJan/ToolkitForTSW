@@ -113,12 +113,28 @@ namespace ToolkitForTSW
             //Empty list
             break;
             }
+          case ".pak":
+            {
+            GetNotArchivedPakFile(ArchiveFile, DestinationFileList);
+            break;
+            }
           default:
             {
             Result +=Log.Trace("Archive type " + Extension + " is not (yet) supported");
             break;
             }
         }
+      }
+
+
+    // Show .pak file entry if not in archive
+    public void GetNotArchivedPakFile(FileInfo ArchiveFile,
+      ObservableCollection<CFilePresenter> DestinationFileList)
+      {
+      CFilePresenter FilePresenter =
+        new CFilePresenter(ArchiveFile.FullName, ArchiveFile.Name, ArchiveFile.LastWriteTime);
+      DestinationFileList.Add(FilePresenter);
+      DocumentsList.Clear();
       }
 
     // Show contents of a .zip file
@@ -244,9 +260,15 @@ namespace ToolkitForTSW
           {
             case ".pak":
               {
+              if (Path.GetExtension(ArchiveFile) == ".pak")
+                {
+                File.Copy(FileEntry.FullName, $"{InstallDir}\\{FileEntry.Name}", true);
+                Result += CModManager.UpdateModTable(new FileInfo($"{InstallDir}\\{FileEntry.Name}"));
+                return;
+                }
               CApps.SevenZipExtractSingle(ArchiveFile, InstallDir,
                 FileEntry.FullName);
-              Result += CModManager.UpdateModTable(new FileInfo(InstallDir+"\\"+FileEntry.FullName));
+              Result += CModManager.UpdateModTable(new FileInfo($"{InstallDir}\\{FileEntry.Name}"));
               return;
               }
             case ".exe:":
