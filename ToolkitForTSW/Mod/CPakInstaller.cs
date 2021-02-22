@@ -1,19 +1,49 @@
 ﻿using Logging.Library;
 using Styles.Library.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ToolkitForTSW.DataAccess;
+using ToolkitForTSW.Models;
 
-
-namespace ToolkitForTSW
+namespace ToolkitForTSW.Mod
   {
   public class CPakInstaller : Notifier
     {
+    private string _ArchiveFile;
+    public string ArchiveFile
+      {
+      get { return _ArchiveFile; }
+      set
+        {
+        _ArchiveFile = value;
+        OnPropertyChanged("ArchiveFile");
+        }
+      }
+
+    private string _InstallDirectory;
+    public string InstallDirectory
+      {
+      get { return _InstallDirectory; }
+      set
+        {
+        _InstallDirectory = value;
+        OnPropertyChanged("InstallDirectory");
+        }
+      }
+
+    private CFilePresenter _FileEntry;
+    public CFilePresenter FileEntry
+      {
+      get { return _FileEntry; }
+      set
+        {
+        _FileEntry = value;
+        OnPropertyChanged("FileEntry");
+        }
+      }
+
     private CTreeItemProvider _FileTree;
 
     public CTreeItemProvider FileTree
@@ -72,6 +102,106 @@ namespace ToolkitForTSW
         }
       }
 
+    private string _modName;
+    public string ModName
+      {
+      get { return _modName; }
+      set
+        {
+        _modName = value;
+        OnPropertyChanged("ModName");
+        }
+      }
+
+    private string _filePath;
+    public string FilePath
+      {
+      get { return _filePath; }
+      set
+        {
+        _filePath = value;
+        OnPropertyChanged("FilePath");
+        }
+      }
+
+
+    private string _fileName;
+    public string FileName
+      {
+      get { return _fileName; }
+      set
+        {
+        _fileName = value;
+        OnPropertyChanged("FileName");
+        }
+      }
+
+    private string _modDescription;
+    public string ModDescription
+      {
+      get { return _modDescription; }
+      set
+        {
+        _modDescription = value;
+        OnPropertyChanged("ModDescription");
+        }
+      }
+
+    private string _modImage;
+    public string ModImage
+      {
+      get { return _modImage; }
+      set
+        {
+        _modImage = value;
+        OnPropertyChanged("ModImage");
+        }
+      }
+
+    private string _modSource;
+    public string ModSource
+      {
+      get { return _modSource; }
+      set
+        {
+        _modSource = value;
+        OnPropertyChanged("ModSource");
+        }
+      }
+
+    private ModTypesEnum _modType;
+    public ModTypesEnum ModType
+      {
+      get { return _modType; }
+      set
+        {
+        _modType = value;
+        OnPropertyChanged("ModType");
+        }
+      }
+
+    private string _DLCName;
+    public string DLCName
+      {
+      get { return _DLCName; }
+      set
+        {
+        _DLCName = value;
+        OnPropertyChanged("DLCName");
+        }
+      }
+
+    private bool _IsInstalled;
+    public bool IsInstalled
+      {
+      get { return _IsInstalled; }
+      set
+        {
+        _IsInstalled = value;
+        OnPropertyChanged("IsInstalled");
+        }
+      }
+
     public CPakInstaller()
       {
       PakFileList = new ObservableCollection<CFilePresenter>();
@@ -91,36 +221,36 @@ namespace ToolkitForTSW
       var Extension = ArchiveFile.Extension.ToLower();
       if (DestinationFileList == null)
         {
-        Result +=Log.Trace("File presenter is null", LogEventType.Error);
+        Result += Log.Trace("File presenter is null", LogEventType.Error);
         return;
         }
 
       switch (Extension)
         {
-          case ".zip":
+        case ".zip":
             {
             GetZipArchivedFiles(ArchiveFile, DestinationFileList, FileType);
             break;
             }
-          case ".rar":
-          case ".7z":
+        case ".rar":
+        case ".7z":
             {
             GetRwpArchivedFiles(ArchiveFile, DestinationFileList, FileType);
             break;
             }
-          case ".exe":
+        case ".exe":
             {
             //Empty list
             break;
             }
-          case ".pak":
+        case ".pak":
             {
             GetNotArchivedPakFile(ArchiveFile, DestinationFileList);
             break;
             }
-          default:
+        default:
             {
-            Result +=Log.Trace("Archive type " + Extension + " is not (yet) supported");
+            Result += Log.Trace("Archive type " + Extension + " is not (yet) supported");
             break;
             }
         }
@@ -185,8 +315,9 @@ namespace ToolkitForTSW
         }
 
       var Reader = new StringReader(FileReport);
-      // ReSharper disable once NotAccessedVariable debugging, do not remove this
-      var MetaData = String.Empty;
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+      var MetaData = "";
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
       for (Int32 I = 0; I < Skip; I++) // tricky!
         {
         // ReSharper disable once RedundantAssignment debugging, do not remove this
@@ -250,39 +381,86 @@ namespace ToolkitForTSW
 
     #region Installers
 
-    public void InstallPakFile(String ArchiveFile, String InstallDir,
-      CFilePresenter FileEntry, Boolean ToGame)
+    public void InstallPakFile()
       {
       // Otherwise, check if there is an installable SelectedFIle
       if (FileEntry != null)
         {
         switch (FileEntry.Extension)
           {
-            case ".pak":
+          case ".pak":
               {
               if (Path.GetExtension(ArchiveFile) == ".pak")
                 {
-                File.Copy(FileEntry.FullName, $"{InstallDir}\\{FileEntry.Name}", true);
-                Result += CModManager.UpdateModTable(new FileInfo($"{InstallDir}\\{FileEntry.Name}"));
+                File.Copy(FileEntry.FullName, $"{InstallDirectory}\\{FileEntry.Name}", true);
+                Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
                 return;
                 }
-              CApps.SevenZipExtractSingle(ArchiveFile, InstallDir,
+              CApps.SevenZipExtractSingle(ArchiveFile, InstallDirectory,
                 FileEntry.FullName);
-              Result += CModManager.UpdateModTable(new FileInfo($"{InstallDir}\\{FileEntry.Name}"));
+              Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
+
               return;
               }
-            case ".exe:":
+          case ".exe:":
               {
               Result += CApps.ExecuteFile(ArchiveFile);
               return;
               }
-            default:
+          default:
               {
               Result += Log.Trace("No suitable installer found for file " + ArchiveFile);
               break;
               }
           }
         }
+      }
+
+    public void InstallMod()
+      {
+      if (InstallDirectory == null)
+        {
+        Result +=
+          Log.Trace("Invalid input for InstallPakfile", LogEventType.Error);
+        return;
+        }
+      
+      InstallPakFile();
+      InsertModInDatabase();
+      Result +=
+        Log.Trace("Pak " + FileEntry?.Name + "Installed");
+      }
+
+    public void InsertModInDatabase()
+      {
+      var filePath = $"{InstallDirectory}\\{FileEntry.Name}";
+      var mod = new ModModel()
+        {
+        ModName = ModName,
+        ModDescription = ModDescription,
+        ModSource = ModSource,
+        ModType = ModType,
+        DLCName = DLCName,
+        FilePath= filePath,
+        FileName = Path.GetFileName(filePath),
+        IsInstalled = IsInstalled
+        };
+      ModDataAccess.UpsertMod(mod);
+      }
+
+    public void ClearInstallData()
+      {
+      ModName = "";
+      ModDescription = "";
+      ModSource = "";
+      ModType = ModTypesEnum.Undefined;
+      DLCName = "";
+      FileName = "";
+      FilePath = "";
+      IsInstalled=false;
+      ArchiveFile = "";
+      DocumentsList.Clear();
+      PakFileList.Clear();
       }
 
     #endregion Installers

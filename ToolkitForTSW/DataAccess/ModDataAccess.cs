@@ -51,6 +51,19 @@ namespace ToolkitForTSW.DataAccess
       return mod;
       }
 
+    public static ModModel UpsertMod(ModModel mod)
+      {
+      var mod2 = ModDataAccess.GetModByFilePath(mod.FilePath);
+      if (mod2 == null)
+        {
+        ModDataAccess.InsertMod(mod);
+        return mod;
+        };
+      UpdateMod(mod);
+      return mod;
+      }
+
+
     public static void DeleteMod(int id)
       {
       var sql = "DELETE FROM Mods WHERE Id=@id";

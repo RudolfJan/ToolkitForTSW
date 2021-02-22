@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using ToolkitForTSW;
+using ToolkitForTSW.Mod;
 
 namespace ToolkitForTSW
 	{

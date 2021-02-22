@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToolkitForTSW"
         xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        xmlns:mod="clr-namespace:ToolkitForTSW.Mod"
         mc:Ignorable="d"
         Title="Mod manager"
         WindowStartupLocation="CenterScreen"
@@ -17,7 +18,7 @@
                         MethodName="GetValues"
                         ObjectType="{x:Type core:Enum}">
       <ObjectDataProvider.MethodParameters>
-        <x:Type Type="local:ModTypesEnum" />
+        <x:Type Type="mod:ModTypesEnum" />
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
   </Window.Resources>

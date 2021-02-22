@@ -1,4 +1,6 @@
-﻿namespace ToolkitForTSW.Models
+﻿using ToolkitForTSW.Mod;
+
+namespace ToolkitForTSW.Models
   {
   public class ModModel
     {
