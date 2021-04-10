@@ -7,59 +7,16 @@
                             
                             xmlns:windowSizing="clr-namespace:UISupport.Library.WindowSizing;assembly=Styles.Library"
                             xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+                            xmlns:views="clr-namespace:Screenshots.Library.WPF.Views;assembly=Screenshots.Library.WPF"
                             mc:Ignorable="d"
                             Title="Screenshots"
                             WindowStartupLocation="CenterScreen"
                             Style="{StaticResource AllWindows}">
     <ScrollViewer>
-        <StackPanel>
-            <Border Style="{StaticResource DefaultBorder}" MinWidth="620">
-                <StackPanel>
-                    <ScrollViewer Name="ThumbNailScrollView" VerticalScrollBarVisibility="Auto"
-                                  HorizontalScrollBarVisibility="Auto"
-                                  MinHeight="560" MaxHeight="560">
-                        <ItemsControl Name="ScreenshotsItemsControl" ItemsSource="{Binding DisplayScreenshotList}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid x:Name="ThumbNailUniformGrid" Rows="5" Columns="3" Margin="0"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <local:ThumbNailButton x:Name="MyThumbNail"  Screenshot="{Binding}" Width="200" Height="110" MyCustomEventHandler="OnThumbNailButtonClicked"/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                    <WrapPanel>
-                        <Button Name="FirstButton" Style="{StaticResource DefaultButton}" Width="25" Background="Gold"
-                                 ToolTip="First page" Click="OnFirstButtonClicked" >
-                            <Image Source="Images/resultset_first.png"/>
-                        </Button>
-                        <Button Name="PreviousButton" Style="{StaticResource DefaultButton}" Width="25"
-                                Click="OnPreviousButtonClicked" ToolTip="Previous page">
-                            <Image Source="Images/resultset_previous.png"/>
-                        </Button>
-                        <Button Name="NextButton" Style="{StaticResource DefaultButton}" Width="25" ToolTip="Next page"
-                                Click="OnNextButtonClicked">
-                            <Image Source="Images/resultset_next.png"/>
-                        </Button>
-                        <Button Name="LastButton" Style="{StaticResource DefaultButton}" Width="25" ToolTip="Last page" Click="OnLastButtonClicked" 
-                                >
-                            <Image Source="Images/resultset_last.png"/>
-                        </Button>
-                        <userControls:LabelTextBox LabelText="Page" LabelWidth="25"
-                                                    TextBoxText="{Binding FormattedPage, Mode=TwoWay}"
-                                                    ToolTip="Current page shown" />
-                        <userControls:LabelTextBox LabelText="Total images" LabelWidth="80"
-                                                    TextBoxText="{Binding TotalScreenshotCount}"
-                                                    ToolTip="Number of screenshots found on disk, both TSW and steam" />
-                    </WrapPanel>
-                    <userControls:ResultsTextBox Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Results}" Source="Images/page_delete.png" />
-                </StackPanel>
-            </Border>
-            <Button Name="OKButton" Style="{StaticResource OKButton}" HorizontalAlignment="Right"
-                    Click="OnOkButtonClicked">
+		<StackPanel>
+			<views:ScreenshotManagerView Name="ScreenshotManagerView"/>
+			<Button Name="OKButton" Style="{StaticResource OKButton}" HorizontalAlignment="Right"
+			        Click="OnOkButtonClicked">
                 Close
             </Button>
         </StackPanel>

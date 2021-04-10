@@ -9,14 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Styles.Library", "..\Rudolf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging.Library", "..\RudolfLibraries\Logging.Library\Logging.Library.csproj", "{87F7DC88-080D-4A2F-A4F5-27BD79F18D3E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThumbnailSharp", "..\mirzaevolution\ThumbnailSharp\ThumbnailSharp\ThumbnailSharp.csproj", "{7F48B065-68B6-487A-93DF-07078FAA8E61}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SavCracker.Library", "SavCracker.Library\SavCracker.Library.csproj", "{26D4BA07-0182-45DA-B6E2-799E5AF85520}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{C8F3413C-C3C4-4F5F-AB08-7011DF938231}"
 	ProjectSection(SolutionItems) = preProject
 		Manual\Drawings manual.pub = Manual\Drawings manual.pub
 		Manual\License information.docx = Manual\License information.docx
+		Manual\License information.pdf = Manual\License information.pdf
 		Manual\ToolkitForTSW Manual.docx = Manual\ToolkitForTSW Manual.docx
 		Manual\TSWTools Manual Visio Drawings.vsdx = Manual\TSWTools Manual Visio Drawings.vsdx
 	EndProjectSection
@@ -38,6 +37,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SavCrackerTestApp", "SavCra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities.Library", "..\RudolfLibraries\Utilities.Library\Utilities.Library.csproj", "{8CA047F2-49DD-4AF8-80F4-280F9D3476DF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.Library", "..\RudolfLibraries\Filter.Library\Filter.Library.csproj", "{72C617E5-25B9-466F-BF5B-CFDD926D3F63}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.Library.WPF", "..\RudolfLibraries\Filter.Library.WPF\Filter.Library.WPF.csproj", "{2B6DA609-5186-487A-9FD7-63CFEF99B168}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screenshots.Library", "..\RudolfLibraries\Screenshots.Library\Screenshots.Library.csproj", "{6E418E5D-3F8E-4C80-B70A-502A09364748}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screenshots.Library.WPF", "..\RudolfLibraries\Screenshots.Library.WPF\Screenshots.Library.WPF.csproj", "{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,10 +63,6 @@ Global
 		{87F7DC88-080D-4A2F-A4F5-27BD79F18D3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87F7DC88-080D-4A2F-A4F5-27BD79F18D3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87F7DC88-080D-4A2F-A4F5-27BD79F18D3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F48B065-68B6-487A-93DF-07078FAA8E61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F48B065-68B6-487A-93DF-07078FAA8E61}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F48B065-68B6-487A-93DF-07078FAA8E61}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F48B065-68B6-487A-93DF-07078FAA8E61}.Release|Any CPU.Build.0 = Release|Any CPU
 		{26D4BA07-0182-45DA-B6E2-799E5AF85520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{26D4BA07-0182-45DA-B6E2-799E5AF85520}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26D4BA07-0182-45DA-B6E2-799E5AF85520}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -76,6 +79,22 @@ Global
 		{8CA047F2-49DD-4AF8-80F4-280F9D3476DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CA047F2-49DD-4AF8-80F4-280F9D3476DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CA047F2-49DD-4AF8-80F4-280F9D3476DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72C617E5-25B9-466F-BF5B-CFDD926D3F63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72C617E5-25B9-466F-BF5B-CFDD926D3F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72C617E5-25B9-466F-BF5B-CFDD926D3F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72C617E5-25B9-466F-BF5B-CFDD926D3F63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B6DA609-5186-487A-9FD7-63CFEF99B168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B6DA609-5186-487A-9FD7-63CFEF99B168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B6DA609-5186-487A-9FD7-63CFEF99B168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B6DA609-5186-487A-9FD7-63CFEF99B168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E418E5D-3F8E-4C80-B70A-502A09364748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E418E5D-3F8E-4C80-B70A-502A09364748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E418E5D-3F8E-4C80-B70A-502A09364748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E418E5D-3F8E-4C80-B70A-502A09364748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

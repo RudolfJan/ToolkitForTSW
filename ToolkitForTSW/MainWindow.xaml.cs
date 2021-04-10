@@ -34,6 +34,7 @@ namespace ToolkitForTSW
 		private void OnOptionsButtonClicked(Object Sender, RoutedEventArgs E)
 			{
 			var Form = new FormOptions();
+			
 			Form.ShowDialog();
 			}
 

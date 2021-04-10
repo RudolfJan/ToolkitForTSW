@@ -90,9 +90,9 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private String _Result;
+    private string _Result;
 
-    public String Result
+    public string Result
       {
       get { return _Result; }
       set
@@ -102,7 +102,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private string _modName;
+    private string _modName="";
     public string ModName
       {
       get { return _modName; }
@@ -136,7 +136,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private string _modDescription;
+    private string _modDescription="";
     public string ModDescription
       {
       get { return _modDescription; }
@@ -158,7 +158,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private string _modSource;
+    private string _modSource="";
     public string ModSource
       {
       get { return _modSource; }
@@ -169,7 +169,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private ModTypesEnum _modType;
+    private ModTypesEnum _modType=ModTypesEnum.Undefined;
     public ModTypesEnum ModType
       {
       get { return _modType; }
@@ -180,7 +180,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private string _DLCName;
+    private string _DLCName="";
     public string DLCName
       {
       get { return _DLCName; }
@@ -216,9 +216,9 @@ namespace ToolkitForTSW.Mod
       TreeItems = FileTree.GetDirItems(Dir.FullName);
       }
 
-    public void GetArchivedFiles(FileInfo ArchiveFile, ObservableCollection<CFilePresenter> DestinationFileList, String FileType = "")
+    public void GetArchivedFiles(FileInfo archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType = "")
       {
-      var Extension = ArchiveFile.Extension.ToLower();
+      var Extension = archiveFile.Extension.ToLower();
       if (DestinationFileList == null)
         {
         Result += Log.Trace("File presenter is null", LogEventType.Error);
@@ -229,13 +229,13 @@ namespace ToolkitForTSW.Mod
         {
         case ".zip":
             {
-            GetZipArchivedFiles(ArchiveFile, DestinationFileList, FileType);
+            GetZipArchivedFiles(archiveFile, DestinationFileList, FileType);
             break;
             }
         case ".rar":
         case ".7z":
             {
-            GetRwpArchivedFiles(ArchiveFile, DestinationFileList, FileType);
+            GetRwpArchivedFiles(archiveFile, DestinationFileList, FileType);
             break;
             }
         case ".exe":
@@ -245,7 +245,7 @@ namespace ToolkitForTSW.Mod
             }
         case ".pak":
             {
-            GetNotArchivedPakFile(ArchiveFile, DestinationFileList);
+            GetNotArchivedPakFile(archiveFile, DestinationFileList);
             break;
             }
         default:
@@ -258,17 +258,17 @@ namespace ToolkitForTSW.Mod
 
 
     // Show .pak file entry if not in archive
-    public void GetNotArchivedPakFile(FileInfo ArchiveFile,
+    public void GetNotArchivedPakFile(FileInfo archiveFile,
       ObservableCollection<CFilePresenter> DestinationFileList)
       {
-      CFilePresenter FilePresenter =
-        new CFilePresenter(ArchiveFile.FullName, ArchiveFile.Name, ArchiveFile.LastWriteTime);
+      var FilePresenter =
+        new CFilePresenter(archiveFile.FullName, archiveFile.Name, archiveFile.LastWriteTime);
       DestinationFileList.Add(FilePresenter);
       DocumentsList.Clear();
       }
 
     // Show contents of a .zip file
-    public void GetZipArchivedFiles(FileInfo ArchiveFile, ObservableCollection<CFilePresenter> DestinationFileList, String FileType = "")
+    public void GetZipArchivedFiles(FileInfo archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType = "")
       {
       try
         {
@@ -277,15 +277,15 @@ namespace ToolkitForTSW.Mod
           Result += Log.Trace("File presenter is null", LogEventType.Error);
           return;
           }
-        using (ZipArchive Archive = ZipFile.OpenRead(ArchiveFile.FullName))
+        using (var Archive = ZipFile.OpenRead(archiveFile.FullName))
           {
-          foreach (ZipArchiveEntry Entry in Archive.Entries)
+          foreach (var Entry in Archive.Entries)
             {
             if (FileType.Length == 0 ||
-                String.CompareOrdinal(Path.GetExtension(Entry.Name), FileType) == 0
+                string.CompareOrdinal(Path.GetExtension(Entry.Name), FileType) == 0
               ) // first part makes this work if no filter is specified
               {
-              CFilePresenter FilePresenter =
+              var FilePresenter =
                 new CFilePresenter(Entry.FullName, Entry.Name, Entry.LastWriteTime);
               DestinationFileList.Add(FilePresenter);
               }
@@ -294,22 +294,22 @@ namespace ToolkitForTSW.Mod
         }
       catch (Exception)
         {
-        Result += Log.Trace("Failed to show file entries for archive " + ArchiveFile.FullName,
+        Result += Log.Trace("Failed to show file entries for archive " + archiveFile.FullName,
           LogEventType.Error);
         }
       }
 
-    public void GetRwpArchivedFiles(FileInfo ArchiveFile, ObservableCollection<CFilePresenter> DestinationFileList, String FileType = "")
+    public void GetRwpArchivedFiles(FileInfo archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType = "")
       {
-      GetRwpArchivedFiles(ArchiveFile.FullName, DestinationFileList, FileType);
+      GetRwpArchivedFiles(archiveFile.FullName, DestinationFileList, FileType);
       }
 
-    public void GetRwpArchivedFiles(String ArchiveFile, ObservableCollection<CFilePresenter> DestinationFileList, String FileType)
+    public void GetRwpArchivedFiles(string archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType)
       {
       CApps.ListZipFiles(ArchiveFile, out var FileReport);
       var Skip = 16;
-      if (String.Compare(Path.GetExtension(ArchiveFile), ".rar", StringComparison.Ordinal) == 0 ||
-          String.Compare(Path.GetExtension(ArchiveFile), ".7z", StringComparison.Ordinal) == 0)
+      if (string.Compare(Path.GetExtension(archiveFile), ".rar", StringComparison.Ordinal) == 0 ||
+          string.Compare(Path.GetExtension(archiveFile), ".7z", StringComparison.Ordinal) == 0)
         {
         Skip = 19;
         }
@@ -318,7 +318,7 @@ namespace ToolkitForTSW.Mod
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
       var MetaData = "";
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
-      for (Int32 I = 0; I < Skip; I++) // tricky!
+      for (var I = 0; I < Skip; I++) // tricky!
         {
         // ReSharper disable once RedundantAssignment debugging, do not remove this
         MetaData = Reader.ReadLine() + "\r\n";
@@ -339,7 +339,7 @@ namespace ToolkitForTSW.Mod
             var FilePresenter = new CFilePresenter();
             FilePresenter.Parse7ZLine(Temp);
             if (FileType.Length == 0 ||
-                String.CompareOrdinal(Path.GetExtension(FilePresenter.Name), FileType) == 0)
+                string.CompareOrdinal(Path.GetExtension(FilePresenter.Name), FileType) == 0)
               {
               DestinationFileList.Add(FilePresenter);
               }
@@ -348,11 +348,11 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    public void AddDirectory(CDirTreeItem TreeItem, String DirName, Boolean AsChild)
+    public void AddDirectory(CDirTreeItem TreeItem, string DirName, bool AsChild)
       {
-      String Path;
       try
         {
+        string Path;
         if (AsChild)
           {
           Path = TreeItem.Path + "\\" + DirName;
@@ -393,13 +393,11 @@ namespace ToolkitForTSW.Mod
               if (Path.GetExtension(ArchiveFile) == ".pak")
                 {
                 File.Copy(FileEntry.FullName, $"{InstallDirectory}\\{FileEntry.Name}", true);
-                Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
+                // Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
                 return;
                 }
-              CApps.SevenZipExtractSingle(ArchiveFile, InstallDirectory,
-                FileEntry.FullName);
-              Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
-
+              CApps.SevenZipExtractSingle(ArchiveFile, InstallDirectory, FileEntry.FullName);
+              // Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
               return;
               }
           case ".exe:":
@@ -424,7 +422,7 @@ namespace ToolkitForTSW.Mod
           Log.Trace("Invalid input for InstallPakfile", LogEventType.Error);
         return;
         }
-      
+
       InstallPakFile();
       InsertModInDatabase();
       Result +=
@@ -441,11 +439,15 @@ namespace ToolkitForTSW.Mod
         ModSource = ModSource,
         ModType = ModType,
         DLCName = DLCName,
-        FilePath= filePath,
+        FilePath = CModManager.StripModDir(filePath),
         FileName = Path.GetFileName(filePath),
         IsInstalled = IsInstalled
         };
       ModDataAccess.UpsertMod(mod);
+      if (IsInstalled)
+        {
+        CModManager.ActivateMod(mod);
+        }
       }
 
     public void ClearInstallData()
@@ -457,7 +459,7 @@ namespace ToolkitForTSW.Mod
       DLCName = "";
       FileName = "";
       FilePath = "";
-      IsInstalled=false;
+      IsInstalled = false;
       ArchiveFile = "";
       DocumentsList.Clear();
       PakFileList.Clear();

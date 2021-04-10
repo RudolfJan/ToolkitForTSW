@@ -10,50 +10,46 @@ namespace ToolkitForTSW
   {
   public class CTSWOptions
 		{
-		// reg key 	HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\railsimulator.com\railworks\install_path
 		// Number of read only constants, that depend on the version
-		public static Boolean
-			AllowDevMode = false; // set to false to completely disable DevMode for users
+		public static bool AllowDevMode = false; // set to false to completely disable DevMode for users
 
-		public static String TSWToolsManualVersion { get; } = "v0.6";
+	  private static bool _DeveloperMode = false;
+		private static bool _TestMode = false;
+		private static string _TextEditor = string.Empty;
+		private static string _XmlEditor = string.Empty;
+		private static string _SevenZip = string.Empty;
+		private static string _FileCompare = string.Empty;
+		private static string _RegkeyString = string.Empty;
+		private static string _SteamRegKey = string.Empty;
+		private static string _TrainSimWorldDirectory = string.Empty;
+		private static string _SteamProgramDirectory = string.Empty;
+		private static string _SteamUserId = string.Empty;
+		private static string _Unpacker = string.Empty;
 
-		private static Boolean _PropDeveloperMode = false;
-		private static Boolean _PropTestMode = false;
-		private static String _PropTextEditor = String.Empty;
-		private static String _PropXmlEditor = String.Empty;
-		private static String _PropSevenZip = String.Empty;
-		private static String _PropFileCompare = String.Empty;
-		private static String _PropRegkeyString = String.Empty;
-		private static String _PropSteamRegKey = String.Empty;
-		private static String _PropTrainSimWorldDirectory = String.Empty;
-		private static String _PropSteamProgramDirectory = String.Empty;
-		private static String _PropSteamUserId = String.Empty;
-		private static String _PropUnpacker = String.Empty;
+		private static string
+      _AssetUnpacker = string.Empty; // Unpack tool for UAsset files, must be UModel 
 
-		private static String
-			_PropAssetUnpacker = String.Empty; // Unpack tool for UAsset files, must be UModel 
-
-		private static String _PropTSWToolsFolder = String.Empty;
-		private static Boolean _PropIsInitialized = false;
+		private static string _TSWToolsFolder = string.Empty;
+		private static bool _IsInitialized = false;
 
 		protected static RegistryKey AppKey = null;
 		protected static RegistryKey SteamKey = null;
 
 		// Properties will be initialized programmatically
-		public static String ManualsFolder { get; set; }
-		public static String ModsFolder { get; set; }
-		public static String UnpackFolder { get; set; }
-		public static String AssetUnpackFolder { get; set; }
-		public static String TempFolder { get; set; }
-		public static String BackupFolder { get; set; }
-    public static String TemplateFolder { get; set; }
-    public static String ScenarioFolder { get; set; }
+		public static string ManualsFolder { get; set; }
+		public static string ModsFolder { get; set; }
+		public static string UnpackFolder { get; set; }
+		public static string AssetUnpackFolder { get; set; }
+		public static string TempFolder { get; set; }
+		public static string BackupFolder { get; set; }
+    public static string TemplateFolder { get; set; }
+    public static string ScenarioFolder { get; set; }
+    public static string ThumbnailFolder { get; set; }
+		public static bool NotFirstRun { get; set; }
 
-		public static Boolean NotFirstRun { get; set; }
+		public static string Version { get; } = "Version 0.8 beta";
 
-		public static String Version { get; } = "Version 0.6 alpha";
-
-    public static String GetGameSaveLocation()
+    public static string GetGameSaveLocation()
       {
       var MyPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
       MyPath += @"\My Games\TrainSimWorld2\";
@@ -92,7 +88,7 @@ namespace ToolkitForTSW
 
 		#region Properties
 
-		public static String SavedScreenshots
+		public static string SavedScreenshots
 			{
 			get
 				{
@@ -101,7 +97,7 @@ namespace ToolkitForTSW
 				}
 			}
 
-		public static String TSWSettingsDirectory
+		public static string TSWSettingsDirectory
 			{
 			get
 				{
@@ -110,35 +106,35 @@ namespace ToolkitForTSW
 				}
 			}
 
-		public static String SteamProgramDirectory
+		public static string SteamProgramDirectory
 			{
-			set { _PropSteamProgramDirectory = value; }
+			set { _SteamProgramDirectory = value; }
 
 			get
 				{
 				ReadFromRegistry();
 				if (TestMode) // append test folder to default directory if test mode has been selected
 					{
-					return _PropSteamProgramDirectory;
+					return _SteamProgramDirectory;
 					}
 				else
 					{
-					return _PropSteamProgramDirectory;
+					return _SteamProgramDirectory;
 					}
 				}
 			}
 
-		public static String SteamUserId
+		public static string SteamUserId
 			{
-			set { _PropSteamUserId = value; }
+			set { _SteamUserId = value; }
 			get
 				{
 				ReadFromRegistry();
-				return _PropSteamUserId;
+				return _SteamUserId;
 				}
 			}
 
-		public static String SavedSteamScreenshots
+		public static string SavedSteamScreenshots
 			{
 			get
 				{
@@ -147,55 +143,55 @@ namespace ToolkitForTSW
 				}
 			}
 
-		public static String RegkeyString
+		public static string RegkeyString
 			{
 			get
 				{
-				_PropRegkeyString = "software\\" + AssemblyInfoProvider.AssemblyCompany + "\\" +
+				_RegkeyString = "software\\" + AssemblyInfoProvider.AssemblyCompany + "\\" +
 				                    AssemblyInfoProvider.AssemblyProduct;
-				return _PropRegkeyString;
+				return _RegkeyString;
 				}
 			}
 
-		public static String SteamKeyString
+		public static string SteamKeyString
 			{
 			get
 				{
-				_PropSteamRegKey = "Software\\Valve\\Steam";
-				return _PropSteamRegKey;
+				_SteamRegKey = "Software\\Valve\\Steam";
+				return _SteamRegKey;
 				}
 			}
 
-		public static String TrainSimWorldDirectory
+		public static string TrainSimWorldDirectory
 			{
-			set { _PropTrainSimWorldDirectory = value; }
+			set { _TrainSimWorldDirectory = value; }
 			get
 				{
 				ReadFromRegistry();
 				if (TestMode) // append test folder to default directory if test mode has been selected
 					{
-					return _PropTrainSimWorldDirectory;
+					return _TrainSimWorldDirectory;
 					}
 				else
 					{
-					return _PropTrainSimWorldDirectory;
+					return _TrainSimWorldDirectory;
 					}
 				}
 			}
 
-		public static String TSWToolsFolder
+		public static string TSWToolsFolder
 			{
-			set { _PropTSWToolsFolder = value; }
+			set { _TSWToolsFolder = value; }
 			get
 				{
 				ReadFromRegistry();
-				return _PropTSWToolsFolder;
+				return _TSWToolsFolder;
 				}
 			}
 
-		private static String _InstallDirectory;
+		private static string _InstallDirectory;
 
-		public static String InstallDirectory
+		public static string InstallDirectory
 			{
 			set { _InstallDirectory = value; }
 			get
@@ -205,91 +201,91 @@ namespace ToolkitForTSW
 				}
 			}
 
-		public static String OptionsSetDir
+		public static string OptionsSetDir
 			{
 			get { return TSWToolsFolder + "OptionsSets\\"; }
 			}
 
-		public static Boolean IsInitialized
+		public static bool IsInitialized
 			{
-			set { _PropIsInitialized = value; }
+			set { _IsInitialized = value; }
 			get
 				{
 				ReadFromRegistry();
-				return _PropIsInitialized;
+				return _IsInitialized;
 				}
 			}
 
-		public static String XmlEditor
+		public static string XmlEditor
 			{
-			set { _PropXmlEditor = value; }
+			set { _XmlEditor = value; }
 			get
 				{
 				ReadFromRegistry();
-				return _PropXmlEditor;
+				return _XmlEditor;
 				}
 			}
 
-		public static String TextEditor
+		public static string TextEditor
 			{
-			set { _PropTextEditor = value; }
+			set { _TextEditor = value; }
 			get
 				{
 				ReadFromRegistry();
-				return _PropTextEditor;
+				return _TextEditor;
 				}
 			}
 
-		public static String Unpacker
+		public static string Unpacker
 			{
-			set { _PropUnpacker = value; }
+			set { _Unpacker = value; }
 			get
 				{
 				ReadFromRegistry();
-				return _PropUnpacker;
+				return _Unpacker;
 				}
 			}
 
-		public static String UAssetUnpacker
+		public static string UAssetUnpacker
 			{
-			set { _PropAssetUnpacker = value; }
+			set { _AssetUnpacker = value; }
 			get
 				{
 				ReadFromRegistry();
-				return _PropAssetUnpacker;
+				return _AssetUnpacker;
 				}
 			}
 
-		public static String FileCompare
+		public static string FileCompare
 			{
-			set { _PropFileCompare = value; }
+			set { _FileCompare = value; }
 			get
 				{
 				ReadFromRegistry();
-				return _PropFileCompare;
+				return _FileCompare;
 				}
 			}
 
-		public static String SevenZip
+		public static string SevenZip
 			{
-			set { _PropSevenZip = value; }
+			set { _SevenZip = value; }
 			get
 				{
 				ReadFromRegistry();
-				return _PropSevenZip;
+				return _SevenZip;
 				}
 			}
 
-		public static Boolean DeveloperMode
+		public static bool DeveloperMode
 			{
-			set { _PropDeveloperMode = value; }
+			set { _DeveloperMode = value; }
 			get
 				{
 				if (AllowDevMode
 					) // this allows to prevent reading the DevMode option from the registry, forcing devmode to false
 					{
 					ReadFromRegistry();
-					return _PropDeveloperMode;
+					return _DeveloperMode;
 					}
 				else
 					{
@@ -301,24 +297,24 @@ namespace ToolkitForTSW
     public static bool UseAdvancedSettings { get; set; }
     public static bool LimitSoundVolumes { get; set; }
 
-    public static Boolean TestMode
+    public static bool TestMode
 			{
-			set { _PropTestMode = value; }
+			set { _TestMode = value; }
 			get
 				{
 				ReadFromRegistry();
-				return _PropTestMode;
+				return _TestMode;
 				}
 			}
 
-		public static Boolean PropDeveloperMode1
+		public static bool DeveloperMode1
 			{
-			get { return _PropDeveloperMode; }
+			get { return _DeveloperMode; }
 
-			set { _PropDeveloperMode = value; }
+			set { _DeveloperMode = value; }
 			}
 
-		public static String Installer { get; set; } = String.Empty;
+		public static string Installer { get; set; } = string.Empty;
 
 
 		#endregion
@@ -330,9 +326,9 @@ namespace ToolkitForTSW
 
 		// try to guess the correct user for screenshots by having a look at the file system.
 
-		public static void GuessUserId(String SteamProgramPath)
+		public static void GuessUserId(string SteamProgramPath)
 			{
-			String BasePath = SteamProgramPath + "\\userdata";
+      string BasePath = SteamProgramPath + "\\userdata";
 			if (Directory.Exists(BasePath))
 				{
 				DirectoryInfo Basedir = new DirectoryInfo(BasePath);
@@ -340,14 +336,14 @@ namespace ToolkitForTSW
 
 				foreach (var Dir in Dirinfo)
 					{
-					if (String.CompareOrdinal(Dir.Name, _PropSteamUserId) == 0)
+					if (string.CompareOrdinal(Dir.Name, _SteamUserId) == 0)
 						return; // found, nothing to do
 					}
 
 				foreach (var Dir in Dirinfo)
 					{
-					_PropSteamUserId = Dir.Name;
-					AppKey.SetValue("SteamUserId", _PropSteamUserId,
+					_SteamUserId = Dir.Name;
+					AppKey.SetValue("SteamUserId", _SteamUserId,
 						RegistryValueKind.String); // set it in the registry right away.
 					return; // pick the first one
 					}
@@ -365,6 +361,7 @@ namespace ToolkitForTSW
 			BackupFolder = TSWToolsFolder + "Backup\\";
 			TemplateFolder= TSWToolsFolder + "Templates\\";
 			ScenarioFolder= TSWToolsFolder + "Scenarios\\";
+      ThumbnailFolder = TSWToolsFolder + "Thumbnails\\";
 			try
 				{
 				Directory.CreateDirectory(ManualsFolder);
@@ -377,7 +374,8 @@ namespace ToolkitForTSW
 				Directory.CreateDirectory(BackupFolder);
         Directory.CreateDirectory(TemplateFolder);
         Directory.CreateDirectory(ScenarioFolder);
-        }
+        Directory.CreateDirectory(ThumbnailFolder);
+				}
 			catch (Exception E)
 				{
 				Log.Trace("Error creating directories because " + E.Message, LogEventType.Error);
@@ -410,33 +408,33 @@ namespace ToolkitForTSW
 				SteamKey = Registry.CurrentUser.CreateSubKey(SteamKeyString, true);
 				}
 
-			_InstallDirectory = (String) AppKey.GetValue("InstallDirectory", "");
-			_PropTrainSimWorldDirectory = (String) AppKey.GetValue("TrainSimWorldDirectory", "");
-			String DefaultSteamProgramPath = (String) AppKey.GetValue("SteamPath", "");
-			_PropSteamProgramDirectory =
-				(String) AppKey.GetValue("SteamProgramDirectory", DefaultSteamProgramPath);
-			_PropSteamUserId = (String) AppKey.GetValue("SteamUserId", "");
-			_PropTSWToolsFolder = (String) AppKey.GetValue("TSWToolsFolder", "");
+			_InstallDirectory = (string) AppKey.GetValue("InstallDirectory", "");
+			_TrainSimWorldDirectory = (string) AppKey.GetValue("TrainSimWorldDirectory", "");
+      string DefaultSteamProgramPath = (string) AppKey.GetValue("SteamPath", "");
+			_SteamProgramDirectory =
+				(string) AppKey.GetValue("SteamProgramDirectory", DefaultSteamProgramPath);
+			_SteamUserId = (string) AppKey.GetValue("SteamUserId", "");
+			_TSWToolsFolder = (string) AppKey.GetValue("TSWToolsFolder", "");
 
-			_PropTextEditor = (String) AppKey.GetValue("TextEditor", "");
-			_PropXmlEditor = (String) AppKey.GetValue("XMLEditor", "");
-			_PropUnpacker = (String) AppKey.GetValue("Unpacker", "");
-			_PropAssetUnpacker = (String) AppKey.GetValue("UAssetUnpacker", "");
-			_PropFileCompare = (String) AppKey.GetValue("FileCompare", "");
+			_TextEditor = (string) AppKey.GetValue("TextEditor", "");
+			_XmlEditor = (string) AppKey.GetValue("XMLEditor", "");
+			_Unpacker = (string) AppKey.GetValue("Unpacker", "");
+			_AssetUnpacker = (string) AppKey.GetValue("UAssetUnpacker", "");
+			_FileCompare = (string) AppKey.GetValue("FileCompare", "");
 
-			_PropSevenZip = (String) AppKey.GetValue("7Zip", "");
+			_SevenZip = (string) AppKey.GetValue("7Zip", "");
 
-			//PropTestMode = ((int)AppKey.GetValue("TestMode", 0) == 1);
-			_PropTestMode = false;
-			_PropIsInitialized = ((Int32) AppKey.GetValue("Initialized", 0) == 1);
+			//TestMode = ((int)AppKey.GetValue("TestMode", 0) == 1);
+			_TestMode = false;
+			_IsInitialized = ((int) AppKey.GetValue("Initialized", 0) == 1);
 
 			if (!AllowDevMode)
 				{
-				_PropDeveloperMode = ((Int32) AppKey.GetValue("DeveloperMode", 0) == 1);
+				_DeveloperMode = ((int) AppKey.GetValue("DeveloperMode", 0) == 1);
 				}
 
-			UseAdvancedSettings = (Int32)AppKey.GetValue("UseAdvancedSettings", 1)==1;
-      LimitSoundVolumes = (Int32)AppKey.GetValue("LimitSoundVolumes", 1)==1;
+			UseAdvancedSettings = (int)AppKey.GetValue("UseAdvancedSettings", 1)==1;
+      LimitSoundVolumes = (int)AppKey.GetValue("LimitSoundVolumes", 1)==1;
 			}
 
 		public static void WriteToRegistry()
@@ -446,30 +444,34 @@ namespace ToolkitForTSW
 				AppKey = OpenRegistry();
 				}
 
-			AppKey.SetValue("TrainSimWorldDirectory", _PropTrainSimWorldDirectory,
+			AppKey.SetValue("TrainSimWorldDirectory", _TrainSimWorldDirectory,
 				RegistryValueKind.String);
-			AppKey.SetValue("SteamProgramDirectory", _PropSteamProgramDirectory,
+			AppKey.SetValue("SteamProgramDirectory", _SteamProgramDirectory,
 				RegistryValueKind.String);
-			AppKey.SetValue("SteamUserId", _PropSteamUserId, RegistryValueKind.String);
-			AppKey.SetValue("TSWToolsFolder", _PropTSWToolsFolder, RegistryValueKind.String);
-			AppKey.SetValue("TextEditor", _PropTextEditor, RegistryValueKind.String);
-			AppKey.SetValue("XMLEditor", _PropXmlEditor, RegistryValueKind.String);
-			AppKey.SetValue("Unpacker", _PropUnpacker, RegistryValueKind.String);
-			AppKey.SetValue("UAssetUnpacker", _PropAssetUnpacker, RegistryValueKind.String);
-			AppKey.SetValue("7Zip", _PropSevenZip, RegistryValueKind.String);
-			AppKey.SetValue("FileCompare", _PropFileCompare, RegistryValueKind.String);
-			// AppKey.SetValue("TestMode", PropTestMode, RegistryValueKind.DWord);
-			AppKey.SetValue("DeveloperMode", _PropDeveloperMode, RegistryValueKind.DWord);
-			AppKey.SetValue("Initialized", _PropIsInitialized, RegistryValueKind.DWord);
+			AppKey.SetValue("SteamUserId", _SteamUserId, RegistryValueKind.String);
+			AppKey.SetValue("TSWToolsFolder", _TSWToolsFolder, RegistryValueKind.String);
+			AppKey.SetValue("TextEditor", _TextEditor, RegistryValueKind.String);
+			AppKey.SetValue("XMLEditor", _XmlEditor, RegistryValueKind.String);
+			AppKey.SetValue("Unpacker", _Unpacker, RegistryValueKind.String);
+			AppKey.SetValue("UAssetUnpacker", _AssetUnpacker, RegistryValueKind.String);
+			AppKey.SetValue("7Zip", _SevenZip, RegistryValueKind.String);
+			AppKey.SetValue("FileCompare", _FileCompare, RegistryValueKind.String);
+			// AppKey.SetValue("TestMode", TestMode, RegistryValueKind.DWord);
+			AppKey.SetValue("DeveloperMode", _DeveloperMode, RegistryValueKind.DWord);
+			AppKey.SetValue("Initialized", _IsInitialized, RegistryValueKind.DWord);
 			AppKey.SetValue("UseAdvancedSettings", UseAdvancedSettings, RegistryValueKind.DWord);
       AppKey.SetValue("LimitSoundVolumes", LimitSoundVolumes, RegistryValueKind.DWord);
 			}
 
-		public static Boolean GetNotFirstRun()
+		public static bool GetNotFirstRun()
 			{
 			var AppKey2 = OpenRegistry();
-			NotFirstRun = ((Int32) AppKey2.GetValue("NotFirstRun", 0) == 1);
-			return NotFirstRun;
+      if (AppKey2 != null)
+        {
+        NotFirstRun = (int) AppKey2.GetValue("NotFirstRun", 0) == 1;
+        }
+
+      return NotFirstRun;
 			}
 
 		public static void SetNotFirstRun()
@@ -484,9 +486,9 @@ namespace ToolkitForTSW
 			AppKey2.SetValue("NotFirstRun", false, RegistryValueKind.DWord);
 			}
 
-		public static void UpdateTSWToolsDirectory(String InitialInstallDirectory)
+		public static void UpdateTSWToolsDirectory(string InitialInstallDirectory)
 			{
-			if (String.CompareOrdinal(InitialInstallDirectory, TSWToolsFolder) != 0)
+			if (string.CompareOrdinal(InitialInstallDirectory, TSWToolsFolder) != 0)
 				{
 				// try moving files
 				if (!Directory.Exists(TSWToolsFolder) && Directory.Exists(InitialInstallDirectory))

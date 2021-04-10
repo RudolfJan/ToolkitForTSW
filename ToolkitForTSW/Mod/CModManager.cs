@@ -272,7 +272,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private static String StripModDir(String Input)
+    public static String StripModDir(String Input)
 			{
 			if (Input.StartsWith(CTSWOptions.ModsFolder))
 				{

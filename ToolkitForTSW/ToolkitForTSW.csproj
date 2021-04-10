@@ -24,6 +24,10 @@
       <PackagePath></PackagePath>
     </None>
     <Page Remove="Backup\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="CDatabase.cs" />
   </ItemGroup>  
 
 <ItemGroup>
@@ -44,6 +48,8 @@
     <None Remove="Images\safe.png" />
     <None Remove="Images\wand.png" />
     <None Remove="SQL\CreateTables.sql" />
+    <None Remove="SQL\ImportCategories.csv" />
+    <None Remove="SQL\ImportTags.csv" />
     <None Remove="SQL\RouteDataImport.csv" />
   </ItemGroup>
 
@@ -87,6 +93,12 @@
     <Content Include="SQL\CreateTables.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\ImportCategories.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\ImportTags.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQL\RouteDataImport.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -97,8 +109,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\mirzaevolution\ThumbnailSharp\ThumbnailSharp\ThumbnailSharp.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\Filter.Library.WPF\Filter.Library.WPF.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\Filter.Library\Filter.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Logging.Library\Logging.Library.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\Screenshots.Library.WPF\Screenshots.Library.WPF.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\Screenshots.Library\Screenshots.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\SQLiteDatabase.Library\SQLiteDatabase.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Styles.Library\Styles.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Utilities.Library\Utilities.Library.csproj" />

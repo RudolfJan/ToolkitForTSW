@@ -43,7 +43,7 @@
           <ColumnDefinition />
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Style="{StaticResource DefaultBorder}">
+        <Border Grid.Column="0" Width="300" Style="{StaticResource DefaultBorder}">
           <StackPanel>
             <userControls:FileInputBox Name="ArchiveFileTextBox" LabelText="Archive path" LabelWidth="60"
                 Filter="archive files (rar, 7z, zip, pak)|*.zip;*.7z;*.rar;*.pak|All files (*.*)|*.*"  
@@ -80,10 +80,8 @@
                               ItemsSource="{Binding Source={StaticResource LiveryTypesEnum}}"
                               Text="{Binding ModType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                               />
-							<CheckBox Name="IsInstalledCheckBox"
-                              IsChecked="{Binding IsInstalled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IntConverter}}">
-								Is activated
-							</CheckBox>
+							<CheckBox x:Name="IsInstalledCheckBox"
+                              IsChecked="{Binding IsInstalled, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Activate mod"/>
 						</WrapPanel>
 						<userControls:LabelTextBox x:Name="DescriptionTextBox" LabelText="Description" LabelWidth="80"
                                               Style="{StaticResource MultiLineLabelTextBox}"

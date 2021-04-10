@@ -55,10 +55,17 @@ namespace ToolkitForTSW
       {
       PakInstaller.PakFileList.Clear();
       PakInstaller.DocumentsList.Clear();
-      PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName), PakInstaller.PakFileList, ".pak");
-      PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName), PakInstaller.DocumentsList, ".txt");
-      PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName), PakInstaller.DocumentsList, ".pdf");
-      PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName), PakInstaller.DocumentsList, ".docx");
+      if (!string.IsNullOrEmpty(ArchiveFileTextBox.FileName))
+        {
+        PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName),
+          PakInstaller.PakFileList, ".pak");
+        PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName),
+          PakInstaller.DocumentsList, ".txt");
+        PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName),
+          PakInstaller.DocumentsList, ".pdf");
+        PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName),
+          PakInstaller.DocumentsList, ".docx");
+        }
       }
 
     private void OnPakFileListDataGridSelectionChanged(Object Sender, SelectionChangedEventArgs E)
