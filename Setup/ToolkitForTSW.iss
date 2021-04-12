@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ToolkitForTSW"
-#define MyAppVersion "0.71 beta"
+#define MyAppVersion "0.8 beta"
 #define MyAppPublisher "Holland Hiking"
 #define MyAppURL "http://www.hollandhiking.nl/trainsimulator"
 #define MyAppExeName "ToolkitForTSW.exe"
@@ -33,7 +33,7 @@ SolidCompression=yes
 WizardImageFile=Inputfiles\NoCopy\Setup.bmp
 WizardImageBackColor=clInfoBk
 WizardImageStretch=False
-AppCopyright=2017/2020 Rudolf Heijink
+AppCopyright=2017/2021 Rudolf Heijink
 DisableWelcomePage=no    
 DisableDirPage=no
 
