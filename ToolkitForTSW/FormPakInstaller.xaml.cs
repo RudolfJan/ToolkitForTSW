@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using ToolkitForTSW.Mod;
 
 namespace ToolkitForTSW
   {
@@ -54,10 +55,17 @@ namespace ToolkitForTSW
       {
       PakInstaller.PakFileList.Clear();
       PakInstaller.DocumentsList.Clear();
-      PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName), PakInstaller.PakFileList, ".pak");
-      PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName), PakInstaller.DocumentsList, ".txt");
-      PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName), PakInstaller.DocumentsList, ".pdf");
-      PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName), PakInstaller.DocumentsList, ".docx");
+      if (!string.IsNullOrEmpty(ArchiveFileTextBox.FileName))
+        {
+        PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName),
+          PakInstaller.PakFileList, ".pak");
+        PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName),
+          PakInstaller.DocumentsList, ".txt");
+        PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName),
+          PakInstaller.DocumentsList, ".pdf");
+        PakInstaller.GetArchivedFiles(new FileInfo(ArchiveFileTextBox.FileName),
+          PakInstaller.DocumentsList, ".docx");
+        }
       }
 
     private void OnPakFileListDataGridSelectionChanged(Object Sender, SelectionChangedEventArgs E)
@@ -67,38 +75,9 @@ namespace ToolkitForTSW
 
     private void OnInstallToSetsButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var ArchiveFile = ArchiveFileTextBox.FileName;
-      var InstallDirectory = ((CDirTreeItem) FileTreeView.SelectedItem).Path;
-      var FileEntry = (CFilePresenter) PakFileListDataGrid.SelectedItem;
-      if (!(String.IsNullOrEmpty(ArchiveFile) && String.IsNullOrEmpty(InstallDirectory) && FileEntry != null))
-        {
-        PakInstaller.InstallPakFile(ArchiveFile, InstallDirectory, FileEntry, false);
-        PakInstaller.Result +=
-          Log.Trace("Pak " + FileEntry?.Name + "Installed");
-        }
-      else
-        {
-        PakInstaller.Result +=
-          Log.Trace("Invalid input for PakInstaller.InstallPakfile", LogEventType.Error);
-        }
-      }
-
-    private void OnInstallToGameButtonClicked(Object Sender, RoutedEventArgs E)
-      {
-      var ArchiveFile = ArchiveFileTextBox.FileName;
-      var InstallDirectory = CTSWOptions.TrainSimWorldDirectory + @"TS2Prototype\Content\DLC\";
-      var FileEntry = (CFilePresenter) PakFileListDataGrid.SelectedItem;
-      if (!(String.IsNullOrEmpty(ArchiveFile) && String.IsNullOrEmpty(InstallDirectory) && FileEntry != null))
-        {
-        PakInstaller.InstallPakFile(ArchiveFile, InstallDirectory, FileEntry, true);
-        PakInstaller.Result +=
-          Log.Trace("Pak " + FileEntry?.Name + "Installed");
-        }
-      else
-        {
-        PakInstaller.Result +=
-          Log.Trace("Invalid input for PakInstaller.InstallPakfile", LogEventType.Error);
-        }
+      PakInstaller.InstallDirectory = ((CDirTreeItem) FileTreeView.SelectedItem).Path;
+      // var ArchiveFile = PakInstaller.ArchiveFile;
+      PakInstaller.InstallMod();
       }
 
     private void OnAddDirButtonClicked(Object Sender, RoutedEventArgs E)
@@ -143,6 +122,11 @@ namespace ToolkitForTSW
           return;
           }
         }
+      }
+
+    private void OnClearButtonClicked(object Sender, RoutedEventArgs E)
+      {
+      PakInstaller.ClearInstallData();
       }
     }
   }

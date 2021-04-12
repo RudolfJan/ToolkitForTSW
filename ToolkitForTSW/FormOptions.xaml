@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToolkitForTSW"
         xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        xmlns:views="clr-namespace:Screenshots.Library.WPF.Views;assembly=Screenshots.Library.WPF"
+        xmlns:views1="clr-namespace:Filter.Library.WPF.Views;assembly=Filter.Library.WPF"
         mc:Ignorable="d"
         Title="ToolkitForTSW Options" 
         Style="{StaticResource AllWindows}">
@@ -112,7 +114,13 @@
 					</StackPanel>
 				</Border>
 			</TabItem>
+			<TabItem Header="Collections">
+				<views:ScreenshotCollectionMaintenanceView Name="CollectionsView"/>
+			</TabItem>
+			<TabItem Header="Tags">
+				<views1:TagsMaintenanceView Name="TagsView"/>
 
+			</TabItem>
 			<TabItem Header="Other">
 				<Border Style="{StaticResource DefaultBorder}">
 					<StackPanel>

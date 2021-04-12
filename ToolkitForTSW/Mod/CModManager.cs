@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.Mod
   {
   public enum ModTypesEnum
 
@@ -272,7 +272,7 @@ namespace ToolkitForTSW
         }
       }
 
-    private static String StripModDir(String Input)
+    public static String StripModDir(String Input)
 			{
 			if (Input.StartsWith(CTSWOptions.ModsFolder))
 				{
@@ -363,6 +363,12 @@ namespace ToolkitForTSW
     public static string UpdateModTable(FileInfo F, Boolean IsInstalled=false)
       {
       var mod = ModDataAccess.UpsertMod(StripModDir(F.FullName));
+      return "";
+      }
+
+    public static string UpdateModTable(ModModel mod)
+      {
+      ModDataAccess.UpsertMod(mod);
       return "";
       }
 

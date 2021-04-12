@@ -8,7 +8,7 @@ using System.Xml.XPath;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.Mod
   {
  public class CModSet : Notifier
     {

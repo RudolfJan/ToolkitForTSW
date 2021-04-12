@@ -18,3 +18,6 @@
 "MarseilleAvignon","LGV Marseille-Avingnon","LGV","/MarseilleAvignon_Route_Gameplay/ScenarioDesigner/LGV_SDA.LGV_SDA"
 "TorontoIndustrial","Oakville Subdivision","OSD","/TorontoIndustrial_Route_Gameplay/ScenarioDesigner/TOR_SDA.TOR_SDA"
 "LondonFaversham","Southeastern Highspeed","SEH","/LondonFaversham_Route_Gameplay/ScenarioDesigner/SEH_SDA.SEH_SDA"
+"MunichAugsburg","Hauptstrecke Münich-Augsburg","HMA","/MunichAugsburg_Route_Gameplay/ScenarioDesigner/MAG_SDA.MAG_SDA"
+"ArosaLine","Arosalinie","ARL","/ArosaLine_Route_Gameplay/ScenarioDesigner/ARL_SDA.ARL_SDA"
+"ElkhornStPaul","Clinchfield","CRR","/ElkhornStPaul_Route_Gameplay/ScenarioDesigner/CRR_SDA.CRR_SDA"

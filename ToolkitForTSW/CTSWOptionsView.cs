@@ -90,7 +90,7 @@ Installation folder for Steam program
       }
 
     /*
-    Path th prefeered editor for XML files
+    Path th preferred editor for XML files
     */
     private String _XMLEditor = String.Empty;
 

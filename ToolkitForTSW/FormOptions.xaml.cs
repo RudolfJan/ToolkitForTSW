@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Filter.Library.WPF.ViewModels;
+using Filter.Library.WPF.Views;
+using Screenshots.Library.WPF.ViewModels;
+using System;
 using System.Windows;
+using System.Windows.Data;
 
 namespace ToolkitForTSW
 {
@@ -15,6 +19,10 @@ namespace ToolkitForTSW
 			InitializeComponent();
 			OptionsView = new CTSWOptionsView();
 			DataContext = OptionsView;
+      TagsView.TagAndCategoryData= new TagAndCategoryViewModel();
+      TagsView.DataContext = TagsView.TagAndCategoryData;
+      CollectionsView.ScreenshotCollectionManager= new ScreenshotCollectionViewModel();
+      CollectionsView.DataContext = CollectionsView.ScreenshotCollectionManager;
       SetControlStates();
       }
 

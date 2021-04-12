@@ -6,9 +6,11 @@
         xmlns:local="clr-namespace:ToolkitForTSW"
         
         xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        xmlns:core="clr-namespace:System;assembly=System.Runtime"
+        xmlns:mod="clr-namespace:ToolkitForTSW.Mod"
         mc:Ignorable="d"
         Style="{StaticResource AllWindows}"
-        Title="Pak Installer">
+        Title="Mod Installer">
 
   <Window.Resources>
     <HierarchicalDataTemplate DataType="{x:Type local:CDirectoryItem}" ItemsSource="{Binding DirectoryItems}">
@@ -24,7 +26,15 @@
         <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
       </WrapPanel>
     </DataTemplate>
-  </Window.Resources>
+
+	  <ObjectDataProvider x:Key="LiveryTypesEnum"
+	                      MethodName="GetValues"
+	                      ObjectType="{x:Type core:Enum}">
+		  <ObjectDataProvider.MethodParameters>
+			  <x:Type Type="mod:ModTypesEnum" />
+		  </ObjectDataProvider.MethodParameters>
+	  </ObjectDataProvider>
+	</Window.Resources>
 
 <ScrollViewer>
     <StackPanel>
@@ -33,27 +43,58 @@
           <ColumnDefinition />
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Style="{StaticResource DefaultBorder}">
+        <Border Grid.Column="0" Width="300" Style="{StaticResource DefaultBorder}">
           <StackPanel>
             <userControls:FileInputBox Name="ArchiveFileTextBox" LabelText="Archive path" LabelWidth="60"
                 Filter="archive files (rar, 7z, zip, pak)|*.zip;*.7z;*.rar;*.pak|All files (*.*)|*.*"  
                 CheckPathExists="True" 
                 FileDialogType="OpenFile" 
                 RestoreDirectory="False" 
+                FileName="{Binding ArchiveFile, Mode=TwoWay}"
                 Title="Open archive" FileNameChanged="OnArchiveFileTextBoxFileNameChanged" >
             </userControls:FileInputBox>
-          <DataGrid Name="PakFileListDataGrid" Style="{StaticResource DefaultDataGrid}" MinHeight="200"
-             ItemsSource="{Binding PakFileList}" AutoGenerateColumns="False" SelectionChanged="OnPakFileListDataGridSelectionChanged" >
+          <DataGrid Name="PakFileListDataGrid" 
+                    Style="{StaticResource DataGridReadOnly}" 
+                    MinHeight="150"
+										ItemsSource="{Binding PakFileList}" 
+										SelectionChanged="OnPakFileListDataGridSelectionChanged"
+                    SelectedItem="{Binding FileEntry}">
             <DataGrid.Columns>
               <DataGridTextColumn x:Name="PakNameColumn"  Header="Pak name"  Width="180"  Binding="{Binding Name}" SortMemberPath="PakNameColumn" />
             </DataGrid.Columns>
           </DataGrid>
-            <WrapPanel>
-            <Button Name="InstallToSetsButton" Style="{StaticResource DefaultButton}" Click="OnInstallToSetsButtonClicked" >Install</Button>
+						<userControls:LabelTextBox x:Name="ModNameTextBox" LabelText="Name" LabelWidth="80"
+                                              TextBoxText="{Binding ModName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                               />
+
+						<userControls:LabelTextBox x:Name="DLCNameTextBox" LabelText="DLC Name" LabelWidth="80"
+                                              TextBoxText="{Binding DLCName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                               />
+
+						<userControls:LabelTextBox x:Name="SourceTextBox" LabelText="Source" LabelWidth="80"
+                                              TextBoxText="{Binding ModSource, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              />
+						<WrapPanel>
+							<TextBlock Width="72" Style="{StaticResource DefaultTextBlock}">Mod Type</TextBlock>
+							<ComboBox Name="LiveryComboBox" Width="80"
+                              ItemsSource="{Binding Source={StaticResource LiveryTypesEnum}}"
+                              Text="{Binding ModType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              />
+							<CheckBox x:Name="IsInstalledCheckBox"
+                              IsChecked="{Binding IsInstalled, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Activate mod"/>
+						</WrapPanel>
+						<userControls:LabelTextBox x:Name="DescriptionTextBox" LabelText="Description" LabelWidth="80"
+                                              Style="{StaticResource MultiLineLabelTextBox}"
+                                              TextBoxText="{Binding ModDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              TextBoxBackGround="{StaticResource TextBoxBackground}"
+                                              />
+						<WrapPanel>
+							<Button Name="ClearButton" Style="{StaticResource ButtonNarrow}" Click="OnClearButtonClicked" >Clear</Button>
+							<Button Name="InstallToSetsButton" Style="{StaticResource ButtonNarrow}" Click="OnInstallToSetsButtonClicked" >Install</Button>
 							<TextBlock>Select directory to enable Install button</TextBlock>
 
             </WrapPanel>
-            <DataGrid Name="DocumentationDataGrid" Style="{StaticResource DefaultDataGrid}" MinHeight="200"
+            <DataGrid Name="DocumentationDataGrid" Style="{StaticResource DefaultDataGrid}" MinHeight="100"
                       ItemsSource="{Binding DocumentsList}" AutoGenerateColumns="False" SelectionChanged="OnDocumentationDataGridSelectionChanged" MouseUp="DocumentationDataGrid_MouseUp" >
               <DataGrid.Columns>
                 <DataGridTextColumn x:Name="DocColumn"  Header="Document"  Width="180"  Binding="{Binding Name}" SortMemberPath="DocColumn" />
