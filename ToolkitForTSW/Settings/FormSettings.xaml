@@ -1,10 +1,10 @@
-﻿<Window x:Class="ToolkitForTSW.FormSettings"
+﻿<Window x:Class="ToolkitForTSW.Settings.FormSettings"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
-        xmlns:local="clr-namespace:ToolkitForTSW"
+        xmlns:local="clr-namespace:ToolkitForTSW.Settings"
         xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
         mc:Ignorable="d"
         Style="{StaticResource AllWindows}"
@@ -604,6 +604,70 @@
 								</StackPanel>
 							</Border>
 						</TabItem>
+						<TabItem Header="Experimental">
+							<Border Style="{StaticResource ThinBorder}" VerticalAlignment="Stretch">
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<StackPanel Grid.Column="0">
+										
+
+									<TextBlock Style="{StaticResource TextBlockHeader}">
+							Worksets
+									</TextBlock>
+									<DataGrid Name="WorkSetsDatagrid"
+											ItemsSource="{Binding SettingsExperimental.EngineIniWorkSetList}"
+											SelectedItem="{Binding SettingsExperimental.SelectedWorkSet}"
+											Style="{StaticResource DataGridReadOnly}"
+											Height="200"
+										  SelectionChanged="WorkSetsDatagrid_SelectionChanged"
+											>
+										<DataGrid.Columns>
+											<DataGridTextColumn Header="Name" Width="160"  Binding="{Binding WorkSetName}"/>
+										</DataGrid.Columns>
+									</DataGrid>
+									<Button Name="EditWorkSets" Style="{StaticResource ButtonDefault}" Click="EditWorkSets_Click">Edit Workset</Button>
+
+									</StackPanel>
+									<StackPanel Grid.Column="1" VerticalAlignment="Center">
+										<Button Name="AddWorkSet" Style="{StaticResource ButtonImage}" Click="AddWorkSet_Click">
+											<Image Source="../Images/RightArrow.ico"/>
+										</Button>
+										<Button Name="RemoveWorkSet" Style="{StaticResource ButtonImage}" Click="RemoveWorkSet_Click">
+											<Image Source="../Images/LeftArrow.ico"/>
+										</Button>
+									</StackPanel>
+									<StackPanel Grid.Column="2">
+										<TextBlock Style="{StaticResource TextBlockHeader}">
+							Selected Settings
+										</TextBlock>
+										<DataGrid Name="ValuesDatagrid"
+											ItemsSource="{Binding SettingsExperimental.ValueList}"
+											SelectedItem="{Binding SettingsExperimental.SelectedValue}"
+											Style="{StaticResource DataGridDefault}"
+											Height="300"
+											CanUserAddRows="False"
+											CanUserDeleteRows="False"
+										  SelectionChanged="ValuesDatagrid_SelectionChanged"
+											AutoGenerateColumns="False"
+											>
+											<DataGrid.Columns>
+												<DataGridTextColumn Header="Ws" Width="80"  Binding="{Binding WorkSetName}" IsReadOnly="True"/>
+												<DataGridTextColumn Header="Setting" Width="200"  Binding="{Binding SettingName}" IsReadOnly="True"/>
+												<DataGridTextColumn Header="Value" Width="50"  Binding="{Binding SettingValue}"/>
+											</DataGrid.Columns>
+										</DataGrid>
+
+									</StackPanel>
+								</Grid>
+								
+								
+							</Border>
+					 </TabItem>
 					</TabControl>
 				</StackPanel>
 			</Border>
@@ -635,7 +699,7 @@
 			<Border Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource DefaultBorder}">
 				<DockPanel>
 					<userControls:ResultsTextBox x:Name="ResultsTextBox" MinWidth="700"
-                                        Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Result}" Source="Images/page_delete.png"/>
+                                        Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Result}" Source="../Images/page_delete.png"/>
 					<Button Name="OKButton" Style="{StaticResource OKButton}" DockPanel.Dock="Right" VerticalAlignment="Bottom"
                   Click="OnOKButtonClicked">
 						Close

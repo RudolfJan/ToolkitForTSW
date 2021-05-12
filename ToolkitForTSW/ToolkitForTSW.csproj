@@ -48,6 +48,8 @@
     <None Remove="Images\safe.png" />
     <None Remove="Images\wand.png" />
     <None Remove="SQL\CreateTables.sql" />
+    <None Remove="SQL\EngineIniSettingsList.csv" />
+    <None Remove="SQL\EngineIniTables.sql" />
     <None Remove="SQL\ImportCategories.csv" />
     <None Remove="SQL\ImportTags.csv" />
     <None Remove="SQL\RouteDataImport.csv" />
@@ -91,6 +93,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SQL\CreateTables.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\EngineIniSettingsList.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\EngineIniTables.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SQL\ImportCategories.csv">

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SavCrackerTest.Models
+namespace SavCracker.Library.Models
 	{
 	public enum PropertyTypeEnum
 		{
@@ -15,9 +15,13 @@ namespace SavCrackerTest.Models
 		SoftObjectProperty,
 		GuidProperty,
 		TimeSpanProperty,
+		DateTimeProperty,
 		SoftObjectPathProperty,
-		Empty
-		}
+		Empty,
+    TextProperty,
+    LinearColourProperty,
+    MapProperty
+    }
 	public class SavPropertyModel
 		{
 		public int Position { get; set; }

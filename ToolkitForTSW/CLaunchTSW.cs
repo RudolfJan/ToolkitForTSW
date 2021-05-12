@@ -3,6 +3,7 @@ using Styles.Library.Helpers;
 using System;
 using System.IO;
 using ToolkitForTSW.Mod;
+using ToolkitForTSW.Settings;
 
 namespace ToolkitForTSW
   {

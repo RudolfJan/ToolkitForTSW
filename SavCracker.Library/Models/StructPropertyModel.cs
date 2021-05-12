@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SavCrackerTest.Models
+namespace SavCracker.Library.Models
 	{
 	public enum StructureTypeEnum
 		{
@@ -10,8 +10,11 @@ namespace SavCrackerTest.Models
 		Guid,
 		TimeSpan,
 		SoftObjectPath,
-		EmbeddedObject
-		}
+		EmbeddedObject,
+    DateTime,
+    LinearColour,
+    MapProperty
+    }
 	public class StructPropertyModel: SavPropertyModel
 		{
 		public int ContentLength { get; set; }

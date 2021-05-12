@@ -3,8 +3,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using ToolkitForTSW.EngineIniSettings;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.Settings
   {
   /// <summary>
   /// Interaction logic for FormSettings.xaml
@@ -36,6 +37,8 @@ namespace ToolkitForTSW
       // View distance also is an advanced setting with a larger range.
       ViewDistanceComboBox.IsEnabled = UseAdvancedSettingsCheckBox.IsChecked == false;
       DeleteSaveSetButton.IsEnabled = SettingFilesDataGrid.SelectedItem != null;
+      AddWorkSet.IsEnabled= SettingsManager?.SettingsExperimental?.SelectedWorkSet!=null;
+      RemoveWorkSet.IsEnabled = SettingsManager?.SettingsExperimental?.SelectedWorkSet != null;
       }
 
     private void OnOKButtonClicked(Object Sender, RoutedEventArgs E)
@@ -120,6 +123,8 @@ namespace ToolkitForTSW
     private void OnLoadSaveSetSettingsButtonClicked(Object Sender, RoutedEventArgs E)
       {
       SettingsManager.LoadSaveSet();
+      ValuesDatagrid.Items.Refresh();
+      SetControlStates();
       }
 
     private void OnUpdateSaveSetButtonClicked(Object Sender, RoutedEventArgs E)
@@ -247,6 +252,34 @@ namespace ToolkitForTSW
       var dir = ((DirectoryInfo)SettingFilesDataGrid.SelectedItem);
       dir.Delete(true);
       SettingsManager.GetSavedSettings();
+      }
+
+    private void EditWorkSets_Click(object sender, RoutedEventArgs e)
+      {
+      var form= new EngineIniView();
+      form.ShowDialog();
+      }
+
+    private void WorkSetsDatagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+      SetControlStates();
+      }
+
+    private void RemoveWorkSet_Click(object sender, RoutedEventArgs e)
+      {
+      SettingsManager.SettingsExperimental.RemoveWorkSet();
+      ValuesDatagrid.Items.Refresh();
+      }
+
+    private void AddWorkSet_Click(object sender, RoutedEventArgs e)
+      {
+      SettingsManager.SettingsExperimental.AddWorkSet();
+      ValuesDatagrid.Items.Refresh();
+      }
+
+    private void ValuesDatagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+
       }
     }
   }

@@ -1,5 +1,6 @@
 ﻿using Filter.Library.Filters.DataAccess;
 using Logging.Library;
+using SavCracker.Library;
 using Screenshots.Library.Logic;
 using Screenshots.Library.WPF.ViewModels;
 using SQLiteDatabase.Library;
@@ -53,7 +54,9 @@ namespace ToolkitForTSW
         MoveMods();
         InitScreenshotManagerSettings();
         }
-			}
+
+      // LiveryCracker cracker = new LiveryCracker(); // DEBUG
+      }
 
     public static void MoveMods()
       {
@@ -73,6 +76,7 @@ namespace ToolkitForTSW
 			var databasePath=$"{CTSWOptions.TSWToolsFolder}TSWTools.db";
 			var connectionString = $"Data Source = {databasePath}; Version = 3;";
 			DbManager.InitDatabase(connectionString, databasePath, factory);
+			EngineIniSettingDataAccess.ImportEngineIniSettingsFromCsv("SQL\\EngineIniSettingsList.csv");
       InitScreenshotManagerDatabase();
 			var version = DbManager.GetCurrentVersion();
       if (version.VersionNr < 3) // old database version ois not compatible

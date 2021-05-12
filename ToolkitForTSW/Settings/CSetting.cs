@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.Settings
   {
   public enum SectionEnum
     {

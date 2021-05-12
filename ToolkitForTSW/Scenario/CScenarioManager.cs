@@ -1,5 +1,5 @@
 ﻿using SavCracker.Library;
-using SavCrackerTest.Models;
+using SavCracker.Library.Models;
 using Styles.Library.Helpers;
 using System.Collections.Generic;
 using System.IO;
@@ -67,7 +67,7 @@ namespace ToolkitForTSW
 
     public CScenarioManager()
       {
-      SavCrackerTest.SavCracker.RouteList = RouteDataAccess.GetSavCrackerRouteList();
+      SavCracker.Library.SavCracker.RouteList = RouteDataAccess.GetSavCrackerRouteList();
       BuildScenarioList();
       }
 
@@ -90,7 +90,7 @@ namespace ToolkitForTSW
         var Scenario = new CScenario
           {
           ScenarioFile = file,
-          Cracker = new SavCrackerTest.SavCracker(file.FullName)
+          Cracker = new SavCracker.Library.SavCracker(file.FullName)
           };
         Scenario.Cracker.ParseScenario();
         Scenario.SavScenario = Scenario.Cracker.Scenario;

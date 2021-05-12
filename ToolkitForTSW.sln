@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screenshots.Library", "..\R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screenshots.Library.WPF", "..\RudolfLibraries\Screenshots.Library.WPF\Screenshots.Library.WPF.csproj", "{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gvas.Library", "Gvas.Library\Gvas.Library.csproj", "{EB99AEB0-76DE-4C43-B7BD-D5F1A0F4849D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB99AEB0-76DE-4C43-B7BD-D5F1A0F4849D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB99AEB0-76DE-4C43-B7BD-D5F1A0F4849D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB99AEB0-76DE-4C43-B7BD-D5F1A0F4849D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB99AEB0-76DE-4C43-B7BD-D5F1A0F4849D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using ToolkitForTSW;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.Settings
   {
   public class CSettingsUser: CSetting
     {

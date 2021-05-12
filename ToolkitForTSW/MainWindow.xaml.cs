@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows;
 using ToolkitForTSW;
 using ToolkitForTSW.Mod;
+using ToolkitForTSW.Settings;
 
 namespace ToolkitForTSW
 	{

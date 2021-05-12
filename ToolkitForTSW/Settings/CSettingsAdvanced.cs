@@ -2,7 +2,7 @@
 using System.Globalization;
 
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.Settings
   {
   public class CSettingsAdvanced : CSetting
 

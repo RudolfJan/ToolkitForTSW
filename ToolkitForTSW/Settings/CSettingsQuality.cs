@@ -3,7 +3,7 @@ using System.Globalization;
 
 
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.Settings
   {
   public class CSettingsQuality : CSetting
     {

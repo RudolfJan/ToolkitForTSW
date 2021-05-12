@@ -10,6 +10,7 @@ namespace ToolkitForTSW.DataAccess
     public int CreateStructures()
       {
       DbManager.CreateStructureElementFromFile("SQL\\CreateTables.sql");
+      DbManager.CreateStructureElementFromFile("SQL\\EngineIniTables.sql");
       return 0;
       }
     }

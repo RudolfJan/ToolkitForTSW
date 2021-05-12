@@ -1,4 +1,4 @@
-﻿using SavCrackerTest.Models;
+﻿using SavCracker.Library.Models;
 using System;
 
 namespace SavCracker.Library
@@ -6,7 +6,7 @@ namespace SavCracker.Library
   public class SavScenarioLogic
     {
 
-    public static void BuildSavScenario(SavScenarioModel savScenario, SavCrackerTest.SavCracker cracker)
+    public static void BuildSavScenario(SavScenarioModel savScenario, SavCracker cracker)
       {
       foreach (var property in cracker.SavDataList)
         {

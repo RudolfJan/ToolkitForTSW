@@ -1,13 +1,12 @@
 ﻿using Logging.Library;
 using SavCracker.Library;
 using SavCracker.Library.Models;
-using SavCrackerTest.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Utilities.Library.TextHelpers;
 
-namespace SavCrackerTest
+namespace SavCracker.Library
   {
   public class SavCracker
     {
@@ -135,6 +134,10 @@ namespace SavCrackerTest
             {
             return ExtractStringProperty(propertyName);
             }
+          case "TextProperty":
+            {
+            return ExtractTextProperty(propertyName);
+            }
         case "BoolProperty":
             {
             return ExtractBoolProperty(propertyName);
@@ -152,8 +155,95 @@ namespace SavCrackerTest
             {
             return ExtractSoftObjectProperty(propertyName);
             }
+        case "MapProperty":
+            {
+            return ExtractMapProperty(propertyName);
+            }
+        default:
+            {
+            Log.Trace($"Unknown PropertyType found {propertyTypeString} at location {Position}");
+            return null;
+            }
         }
-      return null;
+      }
+
+ 
+
+    public PropertyTypeEnum GetArrayElementType(string propertyTypeString)
+      {
+      switch (propertyTypeString)
+        {
+        case "NameProperty":
+            {
+            return PropertyTypeEnum.NameProperty;
+            }
+        case "StrProperty":
+            {
+            return PropertyTypeEnum.StringProperty;
+            }
+        case "BoolProperty":
+            {
+            return PropertyTypeEnum.BoolProperty;
+            }
+        case "StructProperty":
+            {
+            return PropertyTypeEnum.StructProperty;
+            }
+        case "ArrayProperty":
+            {
+            return PropertyTypeEnum.ArrayProperty;
+            }
+        case "SoftObjectProperty":
+            {
+            return PropertyTypeEnum.SoftObjectProperty;
+            }
+        }
+      return PropertyTypeEnum.Undefined;
+      }
+
+
+    private StructureTypeEnum GetStructureType(string structureTypeTypeString)
+      {
+      switch (structureTypeTypeString)
+        {
+        case "Guid":
+            {
+            return StructureTypeEnum.Guid;
+            }
+        case "Timespan":
+            {
+            return StructureTypeEnum.TimeSpan;
+            }
+        case "DateTime":
+            {
+            return StructureTypeEnum.DateTime;
+            }
+        case "SoftObjectPath":
+            {
+            return StructureTypeEnum.SoftObjectPath;
+            }
+        case "ScenarioDesignService":
+        case "ScenarioDesignFormation":
+        case "ReskinSave":
+        case "DTGReskinEntry":
+        case "DTGReskinChannelData":
+            {
+            return StructureTypeEnum.EmbeddedObject;
+            }
+        case "DTGReskinDecal":
+            {
+            // Note: tested with empy object!
+            return StructureTypeEnum.EmbeddedObject;
+            }
+        case "LinearColor":
+            {
+            return StructureTypeEnum.LinearColour;
+            }
+        default:
+            {
+            return StructureTypeEnum.Undefined;
+            }
+        }
       }
 
     private SavPropertyModel ExtractSoftObjectProperty(string propertyName)
@@ -174,14 +264,14 @@ namespace SavCrackerTest
       return output;
       }
 
-    private SavPropertyModel ExtractArrayProperty(string propertyName)
+    public SavPropertyModel ExtractArrayProperty(string propertyName)
       {
       var output = new ArrayPropertyModel
         {
         PropertyType = PropertyTypeEnum.ArrayProperty,
-        ContentLength = GetInt(),
-        IndexValue = GetInt()
         };
+      output.ContentLength = GetInt();
+      output.IndexValue = GetInt();
       var element = GrabStringElement();
       var elementTypeString = GetStringFromElement(element);
       output.ElementType = GetArrayElementType(elementTypeString);
@@ -244,12 +334,30 @@ namespace SavCrackerTest
             output.PayLoad.Add(t);
             break;
             }
+        case StructureTypeEnum.DateTime:
+            {
+            var t = ExtractDateTime();
+            output.PayLoad.Add(t);
+            break;
+            }
         case StructureTypeEnum.SoftObjectPath:
             {
             var p = ExtractSoftObjectPath();
             output.PayLoad.Add(p);
             break;
             }
+        case StructureTypeEnum.LinearColour:
+            {
+            var p = ExtractLinearColour();
+            output.PayLoad.Add(p);
+            break;
+            }
+        //case StructureTypeEnum.MapProperty:
+        //    {
+        //    var p = ExtractMapProperty();
+        //    output.PayLoad.Add(p);
+        //    break;
+        //    }
         case StructureTypeEnum.EmbeddedObject:
             {
             int structPosition = Position;
@@ -264,6 +372,39 @@ namespace SavCrackerTest
       return output;
       }
 
+    private LinearColourPropertyModel ExtractLinearColour()
+      {
+      var g = new LinearColourPropertyModel
+        {
+        PropertyName = "LinearColour",
+        Position = Position,
+        PropertyType = PropertyTypeEnum.LinearColourProperty,
+        };
+      g.ColourBytes= new byte[16];
+      System.Array.ConstrainedCopy(Data, Position, g.ColourBytes, 0, 16);
+      Position += 16;
+      return g;
+      }
+
+    private SavPropertyModel ExtractMapProperty(string propertyName)
+      {
+
+      var output = new MapPropertyModel
+        {
+        PropertyType = PropertyTypeEnum.MapProperty,
+        PropertyName = propertyName,
+        ContentLength = GetInt(),
+        IndexValue = GetInt()
+        };
+      //SkipCode(1); //skip terminator here
+      //var element = GrabStringElement();
+      //output.Key = GetStringFromElement(element);
+      // get value
+      //var element2 = GrabStringElement();
+      //output.Value = GetStringFromElement(element2);
+      //SkipCode(4);
+      return output;
+      }
     private StringPropertyModel ExtractSoftObjectPath()
       {
       var p = new StringPropertyModel
@@ -291,6 +432,19 @@ namespace SavCrackerTest
       return t;
       }
 
+    private DateTimePropertyModel ExtractDateTime()
+      {
+      var dateTimeElement = GrabCodeElement(8);
+      var t = new DateTimePropertyModel
+        {
+        PropertyName = "DateTime",
+        PropertyType = PropertyTypeEnum.DateTimeProperty,
+        TimeValue = BitConverter.ToUInt64(dateTimeElement.Data, 0) / 10000000
+        };
+      t.DateTimeData= DateTime.FromBinary((long)t.TimeValue);
+      t.TimeString = t.DateTimeData.ToLongTimeString();
+      return t;
+      }
     private GuidPropertyModel ExtractGuidProperty()
       {
       var g = new GuidPropertyModel
@@ -330,6 +484,20 @@ namespace SavCrackerTest
       return output;
       }
 
+    private SavPropertyModel ExtractTextProperty(string propertyName)
+      {
+      var output = new StringPropertyModel
+        {
+        PropertyType = PropertyTypeEnum.TextProperty,
+        PropertyName = propertyName,
+        ContentLength = GetInt(),
+        IndexValue = GetInt()
+        };
+      SkipCode(9); // no idea what this code is doinh here  sequence 00 02 00 00 00 FF 01 00 00 00
+      SkipCode(1); //skip terminator here
+      output.Value = GetString();
+      return output;
+      }
 
     private SavPropertyModel ExtractNameProperty(string propertyName)
       {
@@ -345,40 +513,9 @@ namespace SavCrackerTest
       return output;
       }
 
-    public PropertyTypeEnum GetArrayElementType(string propertyTypeString)
-      {
-      switch (propertyTypeString)
-        {
-        case "NameProperty":
-            {
-            return PropertyTypeEnum.NameProperty;
-            }
-        case "StrProperty":
-            {
-            return PropertyTypeEnum.StringProperty;
-            }
-        case "BoolProperty":
-            {
-            return PropertyTypeEnum.BoolProperty;
-            }
-        case "StructProperty":
-            {
-            return PropertyTypeEnum.StructProperty;
-            }
-        case "ArrayProperty":
-            {
-            return PropertyTypeEnum.ArrayProperty;
-            }
-        case "SoftObjectProperty":
-            {
-            return PropertyTypeEnum.SoftObjectProperty;
-            }
-        }
-      return PropertyTypeEnum.Undefined;
-      }
+   
 
-
-    private int GetInt()
+    public int GetInt()
       {
       var position = Position;
       var element = GrabCodeElement(4);
@@ -390,43 +527,26 @@ namespace SavCrackerTest
       return output;
       }
 
-    private string GetString()
+    public short GetShort()
+      {
+      var position = Position;
+      var element = GrabCodeElement(2);
+      if (!BitConverter.IsLittleEndian)
+        {
+        Array.Reverse(element.Data);
+        }
+      short output = BitConverter.ToInt16(element.Data, 0);
+      return output;
+      }
+
+    public string GetString()
       {
       var element = GrabStringElement();
       return GetStringFromElement(element);
       }
 
-    private StructureTypeEnum GetStructureType(string structureTypeTypeString)
-      {
-
-      switch (structureTypeTypeString)
-        {
-        case "Guid":
-            {
-            return StructureTypeEnum.Guid;
-            }
-        case "Timespan":
-            {
-            return StructureTypeEnum.TimeSpan;
-
-            }
-        case "SoftObjectPath":
-            {
-            return StructureTypeEnum.SoftObjectPath;
-            }
-        case "ScenarioDesignService":
-        case "ScenarioDesignFormation":
-            {
-            return StructureTypeEnum.EmbeddedObject;
-            }
-        default:
-            {
-            return StructureTypeEnum.Undefined;
-            }
-        }
-      }
-
-    private Guid GetGuid()
+  
+    public Guid GetGuid()
       {
       var position = Position;
       var element = GrabGuidElement();

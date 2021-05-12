@@ -1,8 +1,8 @@
 ﻿using Styles.Library.Helpers;
 using System;
 
-namespace ToolkitForTSW
-{
+namespace ToolkitForTSW.Settings
+	{
 	public class CSettingsGamePlay : CSetting
 		{
 		#region Properties

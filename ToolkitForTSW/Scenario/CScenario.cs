@@ -1,4 +1,4 @@
-﻿using SavCrackerTest.Models;
+﻿using SavCracker.Library.Models;
 using Styles.Library.Helpers;
 using System.IO;
 
@@ -7,7 +7,7 @@ namespace ToolkitForTSW
   public class CScenario : Notifier
     {
     public FileInfo ScenarioFile { get; set; }
-    public SavCrackerTest.SavCracker Cracker { get; set; }
+    public SavCracker.Library.SavCracker Cracker { get; set; }
     private SavScenarioModel _savScenario;
 
     public SavScenarioModel SavScenario
