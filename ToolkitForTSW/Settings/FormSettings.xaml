@@ -661,7 +661,9 @@
 												<DataGridTextColumn Header="Value" Width="50"  Binding="{Binding SettingValue}"/>
 											</DataGrid.Columns>
 										</DataGrid>
-
+										<TextBox Text="{Binding SettingsExperimental.SelectedValue.SettingDescription, Mode=TwoWay}"
+														 Style="{StaticResource TextBoxMultiLine}" Height="150" Width="330"
+														 IsReadOnly="True"/>
 									</StackPanel>
 								</Grid>
 								

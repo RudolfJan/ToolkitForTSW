@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ToolkitForTSW.DataAccess;
+using Utilities.Library;
 
 namespace ToolkitForTSW
   {
@@ -73,7 +74,7 @@ namespace ToolkitForTSW
 
     public void ScenarioDelete(CScenario toBeDeleted)
       {
-      CApps.DeleteSingleFile(toBeDeleted.ScenarioFile.FullName);
+      FileHelpers.DeleteSingleFile(toBeDeleted.ScenarioFile.FullName);
       ScenarioDataAccess.DeleteScenario(toBeDeleted.SavScenario.ScenarioGuid); // remove from database if it is there 
       BuildScenarioList();
       SelectedSavScenario = null; // TODO refresh works but this feels clumsy ...

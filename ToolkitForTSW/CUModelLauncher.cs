@@ -1,7 +1,7 @@
 ﻿using Styles.Library.Helpers;
 using System;
 using System.Collections.ObjectModel;
-
+using Utilities.Library.TextHelpers;
 
 namespace ToolkitForTSW
 {
@@ -94,7 +94,7 @@ namespace ToolkitForTSW
 		public CUModelLauncher()
 			{
 			BuildCommandList();
-			PathSettings = "-path=" + CApps.QuoteFilename(CTSWOptions.UnpackFolder) + " -out=" + CApps.QuoteFilename(CTSWOptions.UnpackFolder +
+			PathSettings = "-path=" + TextHelper.QuoteFilename(CTSWOptions.UnpackFolder) + " -out=" + TextHelper.QuoteFilename(CTSWOptions.UnpackFolder +
 			               "UnpackedAssets\\")+" ";
 			FileTree = new CTreeItemProvider();
 			TreeItems = FileTree.GetItems(CTSWOptions.UnpackFolder);
@@ -120,8 +120,8 @@ Compatibility options:
 		public void BuildPath(String Path)
 			{
 			Package = System.IO.Path.GetFileName(Path);
-			var MyPath = CApps.QuoteFilename(System.IO.Path.GetDirectoryName(Path));
-			PathSettings = "-path=" + MyPath + " -out=" + CApps.QuoteFilename(CTSWOptions.UnpackFolder +
+			var MyPath = TextHelper.QuoteFilename(System.IO.Path.GetDirectoryName(Path));
+			PathSettings = "-path=" + MyPath + " -out=" + TextHelper.QuoteFilename(CTSWOptions.UnpackFolder +
                      "UnpackedAssets")+" ";
 		}
 

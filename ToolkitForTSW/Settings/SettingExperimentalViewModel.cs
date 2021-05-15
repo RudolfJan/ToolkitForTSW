@@ -79,6 +79,11 @@ namespace ToolkitForTSW.Settings
           };
         if ( ValueList.Where(x => x.SettingId == setting.Id).Count() ==0)
           {
+					var description = EngineIniSettingDataAccess.GetEngineIniSettingDescriptionById(value.SettingId);
+					if(!string.IsNullOrEmpty(description))
+            {
+						value.SettingDescription=description;
+            }
 					ValueList.Add(value);
           }
 				}
@@ -172,7 +177,17 @@ namespace ToolkitForTSW.Settings
                 SettingName = fields[3],
                 SettingValue = fields[4]
                 };
-              ValueList.Add(value);
+							// Do some sanity checks
+							var description= EngineIniSettingDataAccess.GetEngineIniSettingDescriptionById(value.SettingId);
+							if(description!=null)
+								{
+								// check if the value is still part of a workset
+								var check= EngineIniWorkSetConnectorDataAccess.CheckEngineIniSettingsInWorkSet(value.SettingId,value.WorkSetId);
+								if(check>0)
+									{value.SettingDescription=description;
+									ValueList.Add(value);
+									}
+								}
 							}
 						}
 					}

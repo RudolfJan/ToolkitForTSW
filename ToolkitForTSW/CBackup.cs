@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using Utilities.Library;
 
 namespace ToolkitForTSW
   {
@@ -217,7 +218,7 @@ namespace ToolkitForTSW
         {
         var Source = SourceBase + Folder;
         var Target = TargetBase + Folder;
-        CApps.CopyDir(Source, Target, true);
+        FileHelpers.CopyDir(Source, Target, true);
         }
       }
 
@@ -225,7 +226,7 @@ namespace ToolkitForTSW
     public void RestoreBackup(String Source)
       {
       var Target = CTSWOptions.GameSaveLocation;
-      CApps.CopyDir(Source, Target, true);
+      FileHelpers.CopyDir(Source, Target, true);
       }
 
     public void DeleteBackup(String Source)

@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
+using Utilities.Library.Zip;
 
 namespace ToolkitForTSW.Mod
   {
@@ -306,23 +307,23 @@ namespace ToolkitForTSW.Mod
 
     public void GetRwpArchivedFiles(string archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType)
       {
-      CApps.ListZipFiles(ArchiveFile, out var FileReport);
-      var Skip = 16;
-      if (string.Compare(Path.GetExtension(archiveFile), ".rar", StringComparison.Ordinal) == 0 ||
-          string.Compare(Path.GetExtension(archiveFile), ".7z", StringComparison.Ordinal) == 0)
-        {
-        Skip = 19;
-        }
+      SevenZipLib.ListFilesInArchive(ArchiveFile, out var FileReport,true);
+      //var Skip = 16;
+      //if (string.Compare(Path.GetExtension(archiveFile), ".rar", StringComparison.Ordinal) == 0 ||
+      //    string.Compare(Path.GetExtension(archiveFile), ".7z", StringComparison.Ordinal) == 0)
+      //  {
+      //  Skip = 19;
+      //  }
 
       var Reader = new StringReader(FileReport);
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-      var MetaData = "";
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-      for (var I = 0; I < Skip; I++) // tricky!
-        {
-        // ReSharper disable once RedundantAssignment debugging, do not remove this
-        MetaData = Reader.ReadLine() + "\r\n";
-        }
+//#pragma warning disable IDE0059 // Unnecessary assignment of a value
+//      var MetaData = "";
+//#pragma warning restore IDE0059 // Unnecessary assignment of a value
+//      for (var I = 0; I < Skip; I++) // tricky!
+//        {
+//        // ReSharper disable once RedundantAssignment debugging, do not remove this
+//        MetaData = Reader.ReadLine() + "\r\n";
+//        }
 
       var Done = false;
       while (!Done)
@@ -396,7 +397,7 @@ namespace ToolkitForTSW.Mod
                 // Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
                 return;
                 }
-              CApps.SevenZipExtractSingle(ArchiveFile, InstallDirectory, FileEntry.FullName);
+              SevenZipLib.ExtractSingle(ArchiveFile, InstallDirectory, FileEntry.FullName);
               // Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
               return;
               }

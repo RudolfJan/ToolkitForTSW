@@ -1,6 +1,7 @@
 ﻿using SQLiteDatabase.Library;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ToolkitForTSW.Models;
 
@@ -12,6 +13,15 @@ namespace ToolkitForTSW.DataAccess
       {
       var sql = "SELECT * FROM EngineIniWorkSetConnectors";
       return DbAccess.LoadData<EngineIniWorkSetConnectorModel, dynamic>(sql, new { });
+      }
+
+    public static int CheckEngineIniSettingsInWorkSet(int settingId, int worksetId)
+      {
+      var sql = "SELECT Count() " +
+        "FROM EngineIniWorkSetConnectors " +
+        "WHERE EngineIniWorkSetConnectors.SettingId = @settingId " +
+        "AND EngineIniWorkSetConnectors.EngineIniWorkSetId= @worksetId;";
+      return DbAccess.LoadData<int, dynamic>(sql, new { settingId, worksetId }).First();
       }
 
     public static int InsertEngineIniWorkSetConnector(EngineIniWorkSetConnectorModel workSetConnector)

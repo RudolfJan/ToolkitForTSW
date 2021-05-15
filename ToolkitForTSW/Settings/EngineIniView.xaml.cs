@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ToolkitForTSW.EngineIniSettings
+namespace ToolkitForTSW.Settings
   {
 
   public partial class EngineIniView

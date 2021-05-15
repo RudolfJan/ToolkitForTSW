@@ -1,4 +1,5 @@
 ﻿using Logging.Library;
+using Utilities.Library;
 using SavCracker.Library.Models;
 using Styles.Library.Helpers;
 using System;
@@ -60,7 +61,7 @@ namespace ToolkitForTSW
       File.WriteAllText($"{fileBase}.html",output);
       var targetFilePath= $"{CTSWOptions.ScenarioFolder}{Path.GetFileName(ScenarioFilePath)}";
       File.Copy(ScenarioFilePath,targetFilePath,true);
-      CApps.DeleteSingleFile($"{fileBase}.zip");
+      FileHelpers.DeleteSingleFile($"{fileBase}.zip");
       using (ZipArchive archive = ZipFile.Open($"{fileBase}.zip", ZipArchiveMode.Create))
         {
         archive.CreateEntryFromFile(targetFilePath, Path.GetFileName(ScenarioFilePath));

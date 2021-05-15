@@ -10,6 +10,7 @@ using System.IO;
 using System.Windows.Controls;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
+using Utilities.Library;
 
 namespace ToolkitForTSW.Mod
   {
@@ -228,7 +229,7 @@ namespace ToolkitForTSW.Mod
           if (!String.IsNullOrEmpty(filePath))
             {
             FilePath = CTSWOptions.TrainSimWorldDirectory + @"TS2Prototype\Content\DLC\" + filePath;
-            CApps.DeleteSingleFile(filePath);
+            FileHelpers.DeleteSingleFile(filePath);
             X.IsInstalled=false;
             }
           }
@@ -309,7 +310,7 @@ namespace ToolkitForTSW.Mod
 			{
 			var filePath = new FileInfo(CTSWOptions.TrainSimWorldDirectory +
 			                            "TS2Prototype\\Content\\DLC\\" + SelectedMod.FileName);
-			Result += CApps.DeleteSingleFile(filePath.FullName);
+			Result += FileHelpers.DeleteSingleFile(filePath.FullName);
 	    SelectedMod.IsInstalled=false;
       if (InEditMode)
         {
@@ -380,7 +381,7 @@ namespace ToolkitForTSW.Mod
         }
       var PakPath = SelectedMod.FilePath;
       var source = CTSWOptions.ModsFolder + PakPath;
-      CApps.DeleteSingleFile(source);
+      FileHelpers.DeleteSingleFile(source);
       ModDataAccess.DeleteMod(SelectedMod.Id);
       if (InEditMode)
         {

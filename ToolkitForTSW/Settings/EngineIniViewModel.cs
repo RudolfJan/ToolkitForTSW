@@ -6,7 +6,7 @@ using System.Text;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
 
-namespace ToolkitForTSW.EngineIniSettings
+namespace ToolkitForTSW.Settings
   {
   public class EngineIniViewModel: Notifier
     {

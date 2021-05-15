@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using ToolkitForTSW.DataAccess;
+using Utilities.Library;
 using Utilities.Library.Filters.DataAccess;
 using DatabaseFactory = ToolkitForTSW.DataAccess.DatabaseFactory;
 
@@ -52,7 +53,9 @@ namespace ToolkitForTSW
 				CTSWOptions.CreateDirectories();
 				CTSWOptions.CopyManuals();
         MoveMods();
-        InitScreenshotManagerSettings();
+				EngineIniSettingDataAccess.ImportEngineIniSettingsFromCsv("SQL\\EngineIniSettingsList.csv");
+				EngineIniSettingDataAccess.ImportDescriptionsFromExcel("SQL\\AnnotatedSettingsList.xlsx");
+				InitScreenshotManagerSettings();
         }
 
       // LiveryCracker cracker = new LiveryCracker(); // DEBUG
@@ -65,7 +68,7 @@ namespace ToolkitForTSW
       var source = destination.Replace("Mods", "Liveries");
       if (Directory.Exists(source))
         {
-        CApps.CopyDir(source, destination, true);
+				FileHelpers.CopyDir(source, destination, true);
         MessageBox.Show($"You can now safely remove the Liveries folder {source}");
         }
       }
@@ -76,7 +79,6 @@ namespace ToolkitForTSW
 			var databasePath=$"{CTSWOptions.TSWToolsFolder}TSWTools.db";
 			var connectionString = $"Data Source = {databasePath}; Version = 3;";
 			DbManager.InitDatabase(connectionString, databasePath, factory);
-			EngineIniSettingDataAccess.ImportEngineIniSettingsFromCsv("SQL\\EngineIniSettingsList.csv");
       InitScreenshotManagerDatabase();
 			var version = DbManager.GetCurrentVersion();
       if (version.VersionNr < 3) // old database version ois not compatible

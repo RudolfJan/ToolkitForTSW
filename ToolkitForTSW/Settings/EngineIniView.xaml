@@ -1,9 +1,10 @@
-﻿<Window x:Class="ToolkitForTSW.EngineIniSettings.EngineIniView"
+﻿<Window x:Class="ToolkitForTSW.Settings.EngineIniView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ToolkitForTSW.EngineIniSettings" xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        xmlns:local="clr-namespace:ToolkitForTSW.Settings" 
+				xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
 				mc:Ignorable="d"
 				Style="{StaticResource AllWindows}"
         Title="Enginie Ini Settings Collector">
@@ -63,7 +64,7 @@
 											SelectionChanged="EngineIniSettingsDatagrid_SelectionChanged"
 											>
 							<DataGrid.Columns>
-								<DataGridTextColumn Header="Name" Width="180"  Binding="{Binding SettingName}"/>
+								<DataGridTextColumn Header="Name" Width="240"  Binding="{Binding SettingName}"/>
 							</DataGrid.Columns>
 						</DataGrid>
 						<userControls:LabelTextBox Name="Filter" LabelText="Filter" TextBoxText="{Binding Filter, Mode=TwoWay}" TextChanged="Filter_TextChanged"/>
@@ -92,7 +93,7 @@
 											SelectionChanged="SelectedWorkSetDatagrid_SelectionChanged"
 											>
 							<DataGrid.Columns>
-								<DataGridTextColumn Header="Name" Width="180"  Binding="{Binding SettingName}"/>
+								<DataGridTextColumn Header="Name" Width="240"  Binding="{Binding SettingName}"/>
 							</DataGrid.Columns>
 						</DataGrid>
 

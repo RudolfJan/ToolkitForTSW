@@ -3,13 +3,10 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using ToolkitForTSW.EngineIniSettings;
 
 namespace ToolkitForTSW.Settings
   {
-  /// <summary>
-  /// Interaction logic for FormSettings.xaml
-  /// </summary>
+ 
   public partial class FormSettings
     {
     public CSettingsManager SettingsManager { get; set; }

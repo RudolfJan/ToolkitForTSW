@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
+using Utilities.Library;
+using Utilities.Library.Zip;
 using MessageBox = System.Windows.MessageBox;
 
 namespace ToolkitForTSW
@@ -423,7 +425,7 @@ namespace ToolkitForTSW
 			_FileCompare = (string) AppKey.GetValue("FileCompare", "");
 
 			_SevenZip = (string) AppKey.GetValue("7Zip", "");
-
+			SevenZipLib.InitZip(_SevenZip);
 			//TestMode = ((int)AppKey.GetValue("TestMode", 0) == 1);
 			_TestMode = false;
 			_IsInitialized = ((int) AppKey.GetValue("Initialized", 0) == 1);
@@ -435,6 +437,7 @@ namespace ToolkitForTSW
 
 			UseAdvancedSettings = (int)AppKey.GetValue("UseAdvancedSettings", 1)==1;
       LimitSoundVolumes = (int)AppKey.GetValue("LimitSoundVolumes", 1)==1;
+
 			}
 
 		public static void WriteToRegistry()
@@ -500,7 +503,7 @@ namespace ToolkitForTSW
 
 				if (Directory.Exists(TSWToolsFolder) && Directory.Exists(InitialInstallDirectory))
 					{
-					CApps.CopyDir(InitialInstallDirectory, TSWToolsFolder, true);
+					FileHelpers.CopyDir(InitialInstallDirectory, TSWToolsFolder, true);
 					SetNotFirstRun();
 					return;
 					}

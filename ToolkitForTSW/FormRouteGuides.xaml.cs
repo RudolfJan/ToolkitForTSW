@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Utilities.Library.TextHelpers;
 
 namespace ToolkitForTSW
 	{
@@ -33,7 +34,7 @@ namespace ToolkitForTSW
 
 		private void OnOpenGuideButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var SelectedFile = CApps.DoubleQuotes(((CDirTreeItem) FileTreeView.SelectedItem).Path);
+      var SelectedFile = TextHelper.DoubleQuotes(((CDirTreeItem) FileTreeView.SelectedItem).Path);
 			MainData.Result+= CApps.OpenGenericFile(SelectedFile);
       }
 
