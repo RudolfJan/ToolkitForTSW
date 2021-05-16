@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using ToolkitForTSW.Backups;
 using ToolkitForTSW.DataAccess;
 using Utilities.Library;
 using Utilities.Library.Filters.DataAccess;
@@ -56,6 +57,14 @@ namespace ToolkitForTSW
 				EngineIniSettingDataAccess.ImportEngineIniSettingsFromCsv("SQL\\EngineIniSettingsList.csv");
 				EngineIniSettingDataAccess.ImportDescriptionsFromExcel("SQL\\AnnotatedSettingsList.xlsx");
 				InitScreenshotManagerSettings();
+
+				// Make a backup when required
+				if(CTSWOptions.AutoBackup)
+					{
+					var backup= new CBackup();
+					backup.MakeDailyBackup();
+					}
+
         }
 
       // LiveryCracker cracker = new LiveryCracker(); // DEBUG

@@ -30,6 +30,9 @@
 						<userControls:FileInputBox LabelText="ToolkitForTSW folder" Style="{StaticResource OptionsOpenFile}"
                                         FileDialogType="BrowseDir" FileName="{Binding TSWToolsFolder, Mode=TwoWay}"
                                         ToolTip="This folder is where all data ToolkitForTSW is working with will be stored" />
+						<userControls:FileInputBox LabelText="Backup folder" Style="{StaticResource OptionsOpenFile}"
+                                        FileDialogType="BrowseDir" FileName="{Binding BackupFolder, Mode=TwoWay}"
+                                        ToolTip="This folder is where ToolkitForTSW data backups will be stored" />
 						<userControls:FileInputBox LabelText="Text editor" Style="{StaticResource OptionsOpenFile}"
                                         InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
                                         FileName="{Binding TextEditor, Mode=TwoWay}" CheckFileExists="True"
@@ -130,6 +133,7 @@
 						                            HorizontalAlignment="Left" ToolTip="To obtain the Steam screenshots, ToolkitForTSW needs the steam Id. If it is guessed wrong, provide it here"/>
             <CheckBox Name="ÜseAdvancedSettingsCheckBox" IsChecked="{Binding UseAdvancedSettings}">Use advanced settings by default</CheckBox>
             <CheckBox  Name="LimitSoundVolumesCheckBox" IsChecked="{Binding LimitSoundVolumes}">Limit sound volumes by default</CheckBox>
+						<CheckBox  Name="MakeBackupOnStartCheckBox" IsChecked="{Binding AutoBackup}">Make data backup when starting ToolkitForTSW</CheckBox>
 					</StackPanel>
 				</Border>
 			</TabItem>

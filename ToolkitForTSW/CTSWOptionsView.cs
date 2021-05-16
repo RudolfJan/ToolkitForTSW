@@ -89,6 +89,17 @@ Installation folder for Steam program
         }
       }
 
+    private string _BackupFolder;
+    public string BackupFolder
+      {
+      get { return _BackupFolder; }
+      set
+        {
+        _BackupFolder = value;
+        OnPropertyChanged("BackupFolder");
+        }
+      }
+
     /*
     Path th preferred editor for XML files
     */
@@ -193,6 +204,22 @@ Installation folder for Steam program
         OnPropertyChanged("LimitSoundVolumes");
         }
       }
+
+    /*
+    Make a backup when starting ToolkitForTSW
+    */
+    private bool _AutoBackup;
+    public bool AutoBackup
+      {
+      get { return _AutoBackup; }
+      set
+        {
+        _AutoBackup = value;
+        OnPropertyChanged("AutoBackup");
+        }
+      }
+
+
 
     private int RouteId { get; set; } = 0;
 
@@ -306,6 +333,7 @@ Installation folder for Steam program
       TrainSimWorldDirectory = CTSWOptions.TrainSimWorldDirectory;
       TrainSimWorldProgram = TrainSimWorldDirectory + "TS2Prototype.exe";
       TSWToolsFolder = CTSWOptions.TSWToolsFolder;
+      BackupFolder= CTSWOptions.BackupFolder;
       XMLEditor = CTSWOptions.XmlEditor;
       TextEditor = CTSWOptions.TextEditor;
       SevenZip = CTSWOptions.SevenZip;
@@ -313,6 +341,7 @@ Installation folder for Steam program
       UAssetUnpacker = CTSWOptions.UAssetUnpacker;
       UseAdvancedSettings = CTSWOptions.UseAdvancedSettings;
       LimitSoundVolumes = CTSWOptions.LimitSoundVolumes;
+      AutoBackup= CTSWOptions.AutoBackup;
       RouteList = new ObservableCollection<RouteModel>(RouteDataAccess.GetAllRoutes());
       }
 
@@ -323,6 +352,7 @@ Installation folder for Steam program
       TrainSimWorldDirectory = Path.GetDirectoryName(TrainSimWorldProgram);
       CTSWOptions.TrainSimWorldDirectory = FixEndSlash(TrainSimWorldDirectory);
       CTSWOptions.TSWToolsFolder = FixEndSlash(TSWToolsFolder);
+      CTSWOptions.BackupFolder= FixEndSlash(BackupFolder);
       CTSWOptions.XmlEditor = XMLEditor;
       CTSWOptions.TextEditor = TextEditor;
       CTSWOptions.SevenZip = SevenZip;
@@ -330,6 +360,7 @@ Installation folder for Steam program
       CTSWOptions.UAssetUnpacker = UAssetUnpacker;
       CTSWOptions.UseAdvancedSettings = UseAdvancedSettings;
       CTSWOptions.LimitSoundVolumes = LimitSoundVolumes;
+      CTSWOptions.AutoBackup= AutoBackup;
       CTSWOptions.WriteToRegistry();
       CTSWOptions.CreateDirectories();
       CTSWOptions.CopyManuals();
