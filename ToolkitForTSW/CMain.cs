@@ -126,12 +126,12 @@ namespace ToolkitForTSW
 
 		public void OpenManual()
 			{
-			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "ToolkitForTSW Manual.pdf");
+			Result += ProcessHelper.OpenGenericFile(CTSWOptions.ManualsFolder + "ToolkitForTSW Manual.pdf");
 			}
 
 		public void OpenStartersGuide()
 			{
-			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "TSW2 Starters guide.pdf");
+			Result += ProcessHelper.OpenGenericFile(CTSWOptions.ManualsFolder + "TSW2 Starters guide.pdf");
 			}
 		}
 	}

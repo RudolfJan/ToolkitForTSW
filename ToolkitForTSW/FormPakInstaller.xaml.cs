@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using ToolkitForTSW.Mod;
+using Utilities.Library;
 using Utilities.Library.Zip;
 
 namespace ToolkitForTSW
@@ -115,7 +116,7 @@ namespace ToolkitForTSW
           var FilePresenter = ((CFilePresenter) DocumentationDataGrid.SelectedItem);
           SevenZipLib.ExtractSingle(ArchiveFileTextBox.FileName, CTSWOptions.TempFolder,
             FilePresenter.FullName);
-          CApps.OpenGenericFile(CTSWOptions.TempFolder + FilePresenter.FullName);
+          ProcessHelper.OpenGenericFile(CTSWOptions.TempFolder + FilePresenter.FullName);
           }
         catch (Exception)
           {
