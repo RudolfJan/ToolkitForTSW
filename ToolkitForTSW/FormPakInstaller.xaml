@@ -4,30 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToolkitForTSW"
-        
+        xmlns:views="clr-namespace:TreeBuilders.Library.Wpf;assembly=TreeBuilders.Library.Wpf"
         xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
         xmlns:core="clr-namespace:System;assembly=System.Runtime"
         xmlns:mod="clr-namespace:ToolkitForTSW.Mod"
         mc:Ignorable="d"
         Style="{StaticResource AllWindows}"
         Title="Mod Installer">
-
-  <Window.Resources>
-    <HierarchicalDataTemplate DataType="{x:Type local:CDirectoryItem}" ItemsSource="{Binding DirectoryItems}">
-      <WrapPanel>
-        <Image Source="Images/folder.png"/>
-        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
-      </WrapPanel>
-    </HierarchicalDataTemplate>
-
-    <DataTemplate DataType="{x:Type local:CFileItem}">
-      <WrapPanel>
-        <Image Source="Images/wand.png"/>
-        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
-      </WrapPanel>
-    </DataTemplate>
-
-	  <ObjectDataProvider x:Key="LiveryTypesEnum"
+	<Window.Resources>
+	<ObjectDataProvider x:Key="LiveryTypesEnum"
 	                      MethodName="GetValues"
 	                      ObjectType="{x:Type core:Enum}">
 		  <ObjectDataProvider.MethodParameters>
@@ -104,14 +89,15 @@
         </Border>
         <Border Grid.Column="1" Style="{StaticResource DefaultBorder}">
           <StackPanel>
-            <TreeView Name="FileTreeView"
+						<views:FileTreeView x:Name="FileTreeViewControl" Height="400" Width="420"/>
+            <!--<TreeView Name="FileTreeView"
                       Height="300" MinWidth="300"
                       Margin="{StaticResource DefaultMargin}"
                       ItemsSource="{Binding TreeItems}"
                       ScrollViewer.CanContentScroll="True"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      SelectedItemChanged="OnFileTreeViewSelectedItemChanged" />
+                      SelectedItemChanged="OnFileTreeViewSelectedItemChanged" />-->
 
             <userControls:LabelTextBox Name="NewDirTextBox" LabelText="New directory name" LabelWidth="100"
                                         Style="{StaticResource DefaultLabelTextBox}" TextChanged="OnNewDirTextBoxTextChanged" />

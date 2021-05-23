@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
+using TreeBuilders.Library.Wpf;
 using Utilities.Library.Zip;
 
 namespace ToolkitForTSW.Mod
@@ -45,27 +46,15 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private CTreeItemProvider _FileTree;
+    private FileTreeViewModel _FileTree;
 
-    public CTreeItemProvider FileTree
+    public FileTreeViewModel FileTree
       {
       get => _FileTree;
       set
         {
         _FileTree = value;
         OnPropertyChanged("FileTree");
-        }
-      }
-
-    private ObservableCollection<CDirTreeItem> _TreeItems;
-
-    public ObservableCollection<CDirTreeItem> TreeItems
-      {
-      get => _TreeItems;
-      set
-        {
-        _TreeItems = value;
-        OnPropertyChanged("TreeItems");
         }
       }
 
@@ -213,8 +202,8 @@ namespace ToolkitForTSW.Mod
     public void FillPakDirList()
       {
       var Dir = new DirectoryInfo(CTSWOptions.ModsFolder);
-      FileTree = new CTreeItemProvider();
-      TreeItems = FileTree.GetDirItems(Dir.FullName);
+      FileTree = new FileTreeViewModel(Dir.FullName, true);
+      OnPropertyChanged("FileTree");
       }
 
     public void GetArchivedFiles(FileInfo archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType = "")
@@ -349,25 +338,25 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    public void AddDirectory(CDirTreeItem TreeItem, string DirName, bool AsChild)
+    public void AddDirectory(TreeNodeModel TreeItem, string DirName, bool AsChild)
       {
       try
         {
         string Path;
         if (AsChild)
           {
-          Path = TreeItem.Path + "\\" + DirName;
+          Path = TreeItem.Root + "\\" + DirName;
           Directory.CreateDirectory(Path);
           }
         else
           {
-          if (TreeItem?.Path == null)
+          if (TreeItem?.Root == null)
             {
             Path = CTSWOptions.ModsFolder + DirName;
             }
           else
             {
-            Path = TreeItem.Path + "\\..\\" + DirName;
+            Path = TreeItem.Root + "\\..\\" + DirName;
             }
 
           Directory.CreateDirectory(Path);
@@ -413,10 +402,12 @@ namespace ToolkitForTSW.Mod
               }
           }
         }
+      
       }
 
     public void InstallMod()
       {
+      InstallDirectory= FileTree.SelectedTreeNode.Root.FullName;
       if (InstallDirectory == null)
         {
         Result +=

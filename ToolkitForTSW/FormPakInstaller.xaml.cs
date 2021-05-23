@@ -21,8 +21,14 @@ namespace ToolkitForTSW
       {
       InitializeComponent();
       PakInstaller = new CPakInstaller();
+
       DataContext = PakInstaller;
       PakInstaller.Result += "PakInstaller initialized\r\n";
+      FileTreeViewControl.FolderImage = "Images\\folder.png";
+      FileTreeViewControl.FileImage = "Images\\file_extension_doc.png";
+      FileTreeViewControl.SetImages();
+      FileTreeViewControl.Tree = PakInstaller.FileTree;
+      FileTreeViewControl.DataContext = PakInstaller.FileTree;
 
       // https://gitlab.com/Syroot/KnownFolders/blob/master/src/Syroot.KnownFolders.Scratchpad/Program.cs
 
@@ -34,12 +40,12 @@ namespace ToolkitForTSW
     private void SetControlStates()
       {
       InstallToSetsButton.IsEnabled = PakFileListDataGrid.SelectedItem != null &&
-                                      FileTreeView.SelectedItem != null;
+                                      PakInstaller.FileTree?.SelectedFileNode != null;
       AddDirButton.IsEnabled =
         NewDirTextBox.TextBoxText != null && NewDirTextBox.TextBoxText.Length > 2;
       AddChildButton.IsEnabled = NewDirTextBox.TextBoxText != null &&
                                  NewDirTextBox.TextBoxText.Length > 2 &&
-                                 FileTreeView.SelectedItem != null;
+                                 PakInstaller.FileTree?.SelectedFileNode != null;
       }
 
     private void OnOKButtonClicked(Object Sender, RoutedEventArgs E)
@@ -77,23 +83,21 @@ namespace ToolkitForTSW
 
     private void OnInstallToSetsButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      PakInstaller.InstallDirectory = ((CDirTreeItem) FileTreeView.SelectedItem).Path;
-      // var ArchiveFile = PakInstaller.ArchiveFile;
       PakInstaller.InstallMod();
       }
 
     private void OnAddDirButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var TreeItem = (CDirTreeItem) FileTreeView.SelectedItem;
-      PakInstaller.AddDirectory(TreeItem, NewDirTextBox.TextBoxText, false);
-      FileTreeView.Items.Refresh();
+      PakInstaller.AddDirectory(PakInstaller.FileTree.SelectedTreeNode, NewDirTextBox.TextBoxText, false);
+      FileTreeViewControl.Tree = PakInstaller.FileTree;
+      FileTreeViewControl.DataContext = PakInstaller.FileTree;
       }
 
     private void OnAddChildButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var TreeItem = (CDirTreeItem) FileTreeView.SelectedItem;
-      PakInstaller.AddDirectory(TreeItem, NewDirTextBox.TextBoxText, true);
-      FileTreeView.Items.Refresh();
+      PakInstaller.AddDirectory(PakInstaller.FileTree.SelectedTreeNode, NewDirTextBox.TextBoxText, true);
+      FileTreeViewControl.Tree = PakInstaller.FileTree;
+      FileTreeViewControl.DataContext = PakInstaller.FileTree;
       }
 
     private void OnNewDirTextBoxTextChanged(Object Sender, RoutedEventArgs E)

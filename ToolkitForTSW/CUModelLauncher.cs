@@ -1,6 +1,7 @@
 ﻿using Styles.Library.Helpers;
 using System;
 using System.Collections.ObjectModel;
+using TreeBuilders.Library.Wpf;
 using Utilities.Library.TextHelpers;
 
 namespace ToolkitForTSW
@@ -43,8 +44,9 @@ namespace ToolkitForTSW
 				}
 			}
 
-		private CTreeItemProvider _FileTree;
-		public CTreeItemProvider FileTree
+
+		private FileTreeViewModel _FileTree;
+		public FileTreeViewModel FileTree
 			{
 			get => _FileTree;
 			set
@@ -54,16 +56,7 @@ namespace ToolkitForTSW
 				}
 			}
 
-		private ObservableCollection<CDirTreeItem> _TreeItems;
-		public ObservableCollection<CDirTreeItem> TreeItems
-			{
-			get => _TreeItems;
-			set
-				{
-				_TreeItems = value;
-				OnPropertyChanged("TreeItems");
-				}
-			}
+	
 
 		private String _Results;
 
@@ -96,8 +89,7 @@ namespace ToolkitForTSW
 			BuildCommandList();
 			PathSettings = "-path=" + TextHelper.QuoteFilename(CTSWOptions.UnpackFolder) + " -out=" + TextHelper.QuoteFilename(CTSWOptions.UnpackFolder +
 			               "UnpackedAssets\\")+" ";
-			FileTree = new CTreeItemProvider();
-			TreeItems = FileTree.GetItems(CTSWOptions.UnpackFolder);
+			FileTree = new FileTreeViewModel(CTSWOptions.UnpackFolder);
 		}
 		/*
 

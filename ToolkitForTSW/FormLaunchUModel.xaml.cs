@@ -16,13 +16,18 @@ namespace ToolkitForTSW
 			InitializeComponent();
 			UModelLauncher = new CUModelLauncher();
 			DataContext = UModelLauncher;
+			FileTreeViewControl.FolderImage = "Images\\folder.png";
+			FileTreeViewControl.FileImage = "Images\\file_extension_doc.png";
+			FileTreeViewControl.SetImages();
+			
+			FileTreeViewControl.Tree = UModelLauncher.FileTree;
+			FileTreeViewControl.DataContext = UModelLauncher.FileTree;
 			SetControlStates();
 			}
 
 		private void SetControlStates()
 			{
 			AddCommandButton.IsEnabled = UModelCommandsDataGrid.SelectedItem != null;
-			AddFilesButton.IsEnabled = FileTreeView.SelectedItem != null;
 			}
 
 		private void OnOKButtonClicked(Object Sender, RoutedEventArgs E)
@@ -50,15 +55,13 @@ namespace ToolkitForTSW
 			UModelLauncher.CommandLine += Command + " ";
 			}
 
-		private void OnFileTreeViewSelectedItemChanged(Object Sender, RoutedPropertyChangedEventArgs<Object> E)
-		{
-		SetControlStates();
-		}
-
 		private void OnAddFilesButtonClicked(Object Sender, RoutedEventArgs E)
 			{
-			var Path= ((CDirTreeItem)FileTreeView.SelectedItem).Path;
-			UModelLauncher.BuildPath(Path);
+			if(FileTreeViewControl.Tree.SelectedFileNode!=null)
+				{
+				var Path= FileTreeViewControl.Tree.SelectedFileNode.FileEntry.FullName;
+				UModelLauncher.BuildPath(Path);
+				}
 			}
 	}
 	}
