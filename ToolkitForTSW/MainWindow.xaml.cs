@@ -78,7 +78,7 @@ namespace ToolkitForTSW
 
 		private void OnViewUnpackedPaksButtonClicked(Object Sender, RoutedEventArgs E)
 			{
-			ProcessHelper.OpenFolder(CTSWOptions.UnpackFolder);
+			ProcessHelper.OpenFolder(TSWOptions.UnpackFolder);
 			}
 
 		private void OnUModelLauncherButtonClicked(Object Sender, RoutedEventArgs E)
@@ -149,7 +149,7 @@ namespace ToolkitForTSW
 
 		private void OnRouteGuidesButtonClicked(Object Sender, RoutedEventArgs E)
 			{
-			var Form = new FormRouteGuides(CTSWOptions.ManualsFolder+"RouteGuides\\");
+			var Form = new FormRouteGuides(TSWOptions.ManualsFolder+"RouteGuides\\");
 			Form.Show();
 			}
 

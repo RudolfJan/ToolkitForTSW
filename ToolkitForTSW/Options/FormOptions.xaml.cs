@@ -12,12 +12,12 @@ namespace ToolkitForTSW
     /// </summary>
     public partial class FormOptions : Window
 		{
-		CTSWOptionsView OptionsView { get; set; }
+		OptionsViewModel OptionsView { get; set; }
 
 		public FormOptions()
 			{
 			InitializeComponent();
-			OptionsView = new CTSWOptionsView();
+			OptionsView = new OptionsViewModel();
 			DataContext = OptionsView;
       TagsView.TagAndCategoryData= new TagAndCategoryViewModel();
       TagsView.DataContext = TagsView.TagAndCategoryData;

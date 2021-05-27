@@ -54,7 +54,7 @@ namespace ToolkitForTSW
 			{
 			var FileDialog = new SaveFileDialog
 				{
-				InitialDirectory = CTSWOptions.TempFolder,
+				InitialDirectory = TSWOptions.TempFolder,
 				RestoreDirectory = true,
 				Title = "Save log file",
 				Filter = "Text file (*.txt)|*.txt|All files (*.*)|*.*"

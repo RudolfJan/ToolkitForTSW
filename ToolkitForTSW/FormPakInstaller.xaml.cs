@@ -118,9 +118,9 @@ namespace ToolkitForTSW
         try
           {
           var FilePresenter = ((CFilePresenter) DocumentationDataGrid.SelectedItem);
-          SevenZipLib.ExtractSingle(ArchiveFileTextBox.FileName, CTSWOptions.TempFolder,
+          SevenZipLib.ExtractSingle(ArchiveFileTextBox.FileName, TSWOptions.TempFolder,
             FilePresenter.FullName);
-          ProcessHelper.OpenGenericFile(CTSWOptions.TempFolder + FilePresenter.FullName);
+          ProcessHelper.OpenGenericFile(TSWOptions.TempFolder + FilePresenter.FullName);
           }
         catch (Exception)
           {

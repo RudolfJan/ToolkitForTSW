@@ -107,7 +107,7 @@ namespace ToolkitForTSW.Settings
         }
       }
 
-    private Boolean _LimitVolume= CTSWOptions.LimitSoundVolumes;
+    private Boolean _LimitVolume= TSWOptions.LimitSoundVolumes;
 
     public Boolean LimitVolume
       {

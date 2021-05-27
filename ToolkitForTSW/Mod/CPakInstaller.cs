@@ -201,7 +201,7 @@ namespace ToolkitForTSW.Mod
 
     public void FillPakDirList()
       {
-      var Dir = new DirectoryInfo(CTSWOptions.ModsFolder);
+      var Dir = new DirectoryInfo(TSWOptions.ModsFolder);
       FileTree = new FileTreeViewModel(Dir.FullName, true);
       OnPropertyChanged("FileTree");
       }
@@ -352,7 +352,7 @@ namespace ToolkitForTSW.Mod
           {
           if (TreeItem?.Root == null)
             {
-            Path = CTSWOptions.ModsFolder + DirName;
+            Path = TSWOptions.ModsFolder + DirName;
             }
           else
             {

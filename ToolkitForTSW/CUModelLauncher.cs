@@ -87,9 +87,9 @@ namespace ToolkitForTSW
 		public CUModelLauncher()
 			{
 			BuildCommandList();
-			PathSettings = "-path=" + TextHelper.QuoteFilename(CTSWOptions.UnpackFolder) + " -out=" + TextHelper.QuoteFilename(CTSWOptions.UnpackFolder +
+			PathSettings = "-path=" + TextHelper.QuoteFilename(TSWOptions.UnpackFolder) + " -out=" + TextHelper.QuoteFilename(TSWOptions.UnpackFolder +
 			               "UnpackedAssets\\")+" ";
-			FileTree = new FileTreeViewModel(CTSWOptions.UnpackFolder);
+			FileTree = new FileTreeViewModel(TSWOptions.UnpackFolder);
 		}
 		/*
 
@@ -113,7 +113,7 @@ Compatibility options:
 			{
 			Package = System.IO.Path.GetFileName(Path);
 			var MyPath = TextHelper.QuoteFilename(System.IO.Path.GetDirectoryName(Path));
-			PathSettings = "-path=" + MyPath + " -out=" + TextHelper.QuoteFilename(CTSWOptions.UnpackFolder +
+			PathSettings = "-path=" + MyPath + " -out=" + TextHelper.QuoteFilename(TSWOptions.UnpackFolder +
                      "UnpackedAssets")+" ";
 		}
 

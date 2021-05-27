@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using ToolkitForTSW.Backups;
 using ToolkitForTSW.DataAccess;
+using ToolkitForTSW.Options;
 using Utilities.Library;
 using Utilities.Library.Filters.DataAccess;
 using DatabaseFactory = ToolkitForTSW.DataAccess.DatabaseFactory;
@@ -33,47 +34,56 @@ namespace ToolkitForTSW
 
     public CMain()
 			{
-      var InitialInstallDirectory = CTSWOptions.TSWToolsFolder;
+			TSWOptions.ReadFromRegistry();
+			var InitialInstallDirectory = TSWOptions.ToolkitForTSWFolder;
       InitDatabase(); // must be done before trying to get options to avoid exception
-			while (!CTSWOptions.GetNotFirstRun())
+			while (!TSWOptions.GetNotFirstRun())
 				{
 				MessageBox.Show(@"Please complete the configuration before you proceed", @"Set configuration",
 					MessageBoxButton.OK,MessageBoxImage.Asterisk);
-				CTSWOptions.ReadFromRegistry();
+				TSWOptions.ReadFromRegistry();
 				var Form = new FormOptions();
 				Form.ShowDialog();
 				if (Form.DialogResult == true)
 					{
-					CTSWOptions.WriteToRegistry();
-					CTSWOptions.UpdateTSWToolsDirectory(InitialInstallDirectory);
+					TSWOptions.WriteToRegistry();
+					TSWOptions.UpdateTSWToolsDirectory(InitialInstallDirectory);
 					}
 				}
-			if (CTSWOptions.TSWToolsFolder.Length > 1)
+			if (TSWOptions.ToolkitForTSWFolder.Length > 1)
 				{
         InitDatabase(); // TODO Need to do this again, in case the data folder is changed, maybe make it inmutable?
-				CTSWOptions.CreateDirectories();
-				CTSWOptions.CopyManuals();
+				TSWOptions.CreateDirectories();
+				TSWOptions.CopyManuals();
         MoveMods();
 				EngineIniSettingDataAccess.ImportEngineIniSettingsFromCsv("SQL\\EngineIniSettingsList.csv");
 				EngineIniSettingDataAccess.ImportDescriptionsFromExcel("SQL\\AnnotatedSettingsList.xlsx");
 				InitScreenshotManagerSettings();
 
 				// Make a backup when required
-				if(CTSWOptions.AutoBackup)
+				if(TSWOptions.AutoBackup)
 					{
 					var backup= new CBackup();
 					backup.MakeDailyBackup();
 					}
 
         }
-
-      // LiveryCracker cracker = new LiveryCracker(); // DEBUG
-      }
+			var optionsChecker= new CheckOptionsReporter();
+			optionsChecker.BuildOptionsCheckReport();
+			if(!optionsChecker.OptionsCheckStatus)
+				{ 
+			MessageBox.Show($"Options not all set correctly\r\n{optionsChecker.OptionsCheckReport}", 
+					@"There are issues with your settings",
+					MessageBoxButton.OK, 
+					MessageBoxImage.Warning);
+				}
+			// LiveryCracker cracker = new LiveryCracker(); // DEBUG
+			}
 
     public static void MoveMods()
       {
 			// Move Mods to proper directory
-      var destination = CTSWOptions.ModsFolder;
+      var destination = TSWOptions.ModsFolder;
       var source = destination.Replace("Mods", "Liveries");
       if (Directory.Exists(source))
         {
@@ -85,7 +95,7 @@ namespace ToolkitForTSW
 		public void InitDatabase()
       {
       var factory = new DatabaseFactory();
-			var databasePath=$"{CTSWOptions.TSWToolsFolder}TSWTools.db";
+			var databasePath=$"{TSWOptions.ToolkitForTSWFolder}TSWTools.db";
 			var connectionString = $"Data Source = {databasePath}; Version = 3;";
 			DbManager.InitDatabase(connectionString, databasePath, factory);
       InitScreenshotManagerDatabase();
@@ -111,7 +121,7 @@ namespace ToolkitForTSW
 
     private void InitScreenshotManagerSettings()
       {
-      ImageManager.ThumbnailBasePath= CTSWOptions.ThumbnailFolder;
+      ImageManager.ThumbnailBasePath= TSWOptions.ThumbnailFolder;
 
 			// TODO make this settable in the options
       ScreenshotManagerViewModel.ScreenshotsPerPage = 20;
@@ -126,12 +136,12 @@ namespace ToolkitForTSW
 
 		public void OpenManual()
 			{
-			Result += ProcessHelper.OpenGenericFile(CTSWOptions.ManualsFolder + "ToolkitForTSW Manual.pdf");
+			Result += ProcessHelper.OpenGenericFile(TSWOptions.ManualsFolder + "ToolkitForTSW Manual.pdf");
 			}
 
 		public void OpenStartersGuide()
 			{
-			Result += ProcessHelper.OpenGenericFile(CTSWOptions.ManualsFolder + "TSW2 Starters guide.pdf");
+			Result += ProcessHelper.OpenGenericFile(TSWOptions.ManualsFolder + "TSW2 Starters guide.pdf");
 			}
 		}
 	}

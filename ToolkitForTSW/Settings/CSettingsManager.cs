@@ -165,7 +165,7 @@ namespace ToolkitForTSW.Settings
     /*
 		if true used advanced settings, otherwise do not write them to output
 		*/
-    private Boolean _UseAdvanced = CTSWOptions.UseAdvancedSettings;
+    private Boolean _UseAdvanced = TSWOptions.UseAdvancedSettings;
     public Boolean UseAdvanced
       {
       get { return _UseAdvanced; }
@@ -308,7 +308,7 @@ namespace ToolkitForTSW.Settings
       SettingsScreen = new CSettingsScreen(this); // Must be here to init video modes in time
       SettingsExperimental = new SettingExperimentalViewModel();
       SavedUserSettingsList = new ObservableCollection<DirectoryInfo>();
-      UseAdvanced = CTSWOptions.UseAdvancedSettings;
+      UseAdvanced = TSWOptions.UseAdvancedSettings;
       GetSavedSettings();
       }
 
@@ -349,21 +349,21 @@ namespace ToolkitForTSW.Settings
 
     public FileInfo GetInGameSettingsLocation()
       {
-      var MyPath = CTSWOptions.GameSaveLocation;
+      var MyPath = TSWOptions.GameSaveLocation;
       MyPath += @"Saved\Config\WindowsNoEditor\GameUserSettings.ini";
       return new FileInfo(MyPath);
       }
 
     public FileInfo GetInGameEngineIniLocation()
       {
-      var MyPath = CTSWOptions.GameSaveLocation;
+      var MyPath = TSWOptions.GameSaveLocation;
       MyPath += @"Saved\Config\WindowsNoEditor\Engine.ini";
       return new FileInfo(MyPath);
       }
 
     public void GetSavedSettings()
       {
-      String Path = CTSWOptions.OptionsSetDir;
+      String Path = TSWOptions.OptionsSetDir;
       DirectoryInfo SavedSettingsDir = new DirectoryInfo(Path);
       DirectoryInfo[] SavedSets = SavedSettingsDir.GetDirectories("*", SearchOption.TopDirectoryOnly);
       SavedUserSettingsList.Clear();
@@ -407,7 +407,7 @@ namespace ToolkitForTSW.Settings
         return; // failed, should never happen
         }
 
-      var Path = CTSWOptions.OptionsSetDir + SaveSetName + "\\"; // Warning order is important here
+      var Path = TSWOptions.OptionsSetDir + SaveSetName + "\\"; // Warning order is important here
       var SettingsFile = new FileInfo(Path + "GameUserSettings.ini");
       var EngineIniFile = new FileInfo(Path + "Engine.ini");
       GetSavedSettings();
@@ -492,7 +492,7 @@ namespace ToolkitForTSW.Settings
         return; // failed, should never happen
         }
 
-      var Path = CTSWOptions.OptionsSetDir + SaveSetName + "\\"; // Warning order is important here
+      var Path = TSWOptions.OptionsSetDir + SaveSetName + "\\"; // Warning order is important here
       if (!Directory.Exists(Path))
         {
         var Dir = Directory.CreateDirectory(Path);
@@ -520,7 +520,7 @@ namespace ToolkitForTSW.Settings
           if (EngineIni)
             {
             WriteSection(Writer, SectionEnum.Core);
-            if (CTSWOptions.UseAdvancedSettings)
+            if (TSWOptions.UseAdvancedSettings)
               {
               WriteSection(Writer, SectionEnum.System);
               }

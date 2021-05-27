@@ -118,7 +118,7 @@ namespace ToolkitForTSW
         Result+=CApps.LaunchUrl(RadioUrl, true);
         }
 
-      var TSWProgram = new FileInfo(CTSWOptions.SteamProgramDirectory + "Steam.exe");
+      var TSWProgram = new FileInfo(TSWOptions.SteamProgramDirectory + "Steam.exe");
       Result += CApps.ExecuteFile(TSWProgram, "steam://rungameid/1282590");
       }
     }

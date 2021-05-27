@@ -82,7 +82,7 @@ namespace ToolkitForTSW
 
     public void BuildScenarioList()
       {
-      var Path=  $"{CTSWOptions.GameSaveLocation}Saved\\SaveGames\\";
+      var Path=  $"{TSWOptions.GameSaveLocation}Saved\\SaveGames\\";
       DirectoryInfo DirInfo = new DirectoryInfo(Path);
       ScenarioList.Clear();
       var files = DirInfo.GetFiles("USD_*.sav", SearchOption.TopDirectoryOnly);

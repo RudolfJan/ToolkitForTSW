@@ -145,7 +145,7 @@ namespace ToolkitForTSW
 
 		public Boolean CheckFile()
 			{
-			var CheckPath = CTSWOptions.ModsFolder + "\\" + FullName;
+			var CheckPath = TSWOptions.ModsFolder + "\\" + FullName;
 			if (CheckPath.EndsWith("//"))
 				{
 				return false; //Directory

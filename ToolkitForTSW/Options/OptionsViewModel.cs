@@ -4,20 +4,34 @@ using System.Collections.ObjectModel;
 using System.IO;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
+using ToolkitForTSW.Options;
 
 namespace ToolkitForTSW
   {
   // local copy of all options, to allow explicit saving them
-  public class CTSWOptionsView : Notifier
+  public class OptionsViewModel : Notifier
     {
     #region Properties
+
+    private CheckOptionsModel _CheckOptions = new CheckOptionsModel();
+    public CheckOptionsModel CheckOptions
+      {
+      get { return _CheckOptions; }
+      set
+        {
+        _CheckOptions = value;
+        OnPropertyChanged("CheckOptions");
+        }
+      }
+
+
 
     /*
 Installation folder for Steam program
 */
-    private String _SteamProgramDirectory = String.Empty;
+    private string _SteamProgramDirectory = string.Empty;
 
-    public String SteamProgramDirectory
+    public string SteamProgramDirectory
       {
       get { return _SteamProgramDirectory; }
       set
@@ -30,13 +44,13 @@ Installation folder for Steam program
     /*
     UserId for steam, needed to retrieve screenshots
     */
-    private String _SteamUserId = String.Empty;
+    private string _SteamUserId = string.Empty;
 
-    public String SteamUserId
+    public string SteamUserId
       {
       get { return _SteamUserId; }
       set
-        {
+      {
         _SteamUserId = value;
         OnPropertyChanged("SteamUserId");
         }
@@ -45,9 +59,9 @@ Installation folder for Steam program
     /*
     Installation directory for TSW
     */
-    private String _TrainSimWorldDirectory = String.Empty;
+    private string _TrainSimWorldDirectory = string.Empty;
 
-    public String TrainSimWorldDirectory
+    public string TrainSimWorldDirectory
       {
       get { return _TrainSimWorldDirectory; }
       set
@@ -60,11 +74,11 @@ Installation folder for Steam program
     /*
 		Installation directory for TSW
 		*/
-    private String _TrainSimWorldProgram = String.Empty;
+    private string _TrainSimWorldProgram = string.Empty;
 
-    public String TrainSimWorldProgram
+    public string TrainSimWorldProgram
       {
-      get { return _TrainSimWorldDirectory; }
+      get { return _TrainSimWorldProgram; }
       set
         {
         _TrainSimWorldProgram = value;
@@ -72,20 +86,18 @@ Installation folder for Steam program
         }
       }
 
-
-
     /*
 		Data folder for TSWTools
 		*/
-    private String _TSWToolsFolder = String.Empty;
+    private string _toolkitForTSWFolder = string.Empty;
 
-    public String TSWToolsFolder
+    public string ToolkitForTSWFolder
       {
-      get { return _TSWToolsFolder; }
+      get { return _toolkitForTSWFolder; }
       set
         {
-        _TSWToolsFolder = value;
-        OnPropertyChanged("TSWToolsFolder");
+        _toolkitForTSWFolder = value;
+        OnPropertyChanged("ToolkitForTSWFolder");
         }
       }
 
@@ -103,9 +115,9 @@ Installation folder for Steam program
     /*
     Path th preferred editor for XML files
     */
-    private String _XMLEditor = String.Empty;
+    private string _XMLEditor = string.Empty;
 
-    public String XMLEditor
+    public string XMLEditor
       {
       get { return _XMLEditor; }
       set
@@ -118,9 +130,9 @@ Installation folder for Steam program
     /*
     Path to preferred TextEditor
     */
-    private String _TextEditor = String.Empty;
+    private string _TextEditor = string.Empty;
 
-    public String TextEditor
+    public string TextEditor
       {
       get { return _TextEditor; }
       set
@@ -133,9 +145,9 @@ Installation folder for Steam program
     /*
     Path to preferred unpacker for .pak files
     */
-    private String _Unpacker = String.Empty;
+    private string _Unpacker = string.Empty;
 
-    public String Unpacker
+    public string Unpacker
       {
       get { return _Unpacker; }
       set
@@ -148,9 +160,9 @@ Installation folder for Steam program
     /*
     Path to preferred UAsset Unpacker
     */
-    private String _UAssetUnpacker = String.Empty;
+    private string _UAssetUnpacker = string.Empty;
 
-    public String UAssetUnpacker
+    public string UAssetUnpacker
       {
       get { return _UAssetUnpacker; }
       set
@@ -163,9 +175,9 @@ Installation folder for Steam program
     /*
     Path to 7Zip program
     */
-    private String _SevenZip = String.Empty;
+    private string _SevenZip = string.Empty;
 
-    public String SevenZip
+    public string SevenZip
       {
       get { return _SevenZip; }
       set
@@ -312,13 +324,11 @@ Installation folder for Steam program
       }
 
 
-
-
     #endregion
 
     #region Constructor
 
-    public CTSWOptionsView()
+    public OptionsViewModel()
       {
       LoadOptions();
       }
@@ -327,43 +337,43 @@ Installation folder for Steam program
 
     public void LoadOptions()
       {
-      CTSWOptions.ReadFromRegistry();
-      SteamProgramDirectory = CTSWOptions.SteamProgramDirectory;
-      SteamUserId = CTSWOptions.SteamUserId;
-      TrainSimWorldDirectory = CTSWOptions.TrainSimWorldDirectory;
+      TSWOptions.ReadFromRegistry();
+      SteamProgramDirectory = TSWOptions.SteamProgramDirectory;
+      SteamUserId = TSWOptions.SteamUserId;
+      TrainSimWorldDirectory = TSWOptions.TrainSimWorldDirectory;
       TrainSimWorldProgram = TrainSimWorldDirectory + "TS2Prototype.exe";
-      TSWToolsFolder = CTSWOptions.TSWToolsFolder;
-      BackupFolder= CTSWOptions.BackupFolder;
-      XMLEditor = CTSWOptions.XmlEditor;
-      TextEditor = CTSWOptions.TextEditor;
-      SevenZip = CTSWOptions.SevenZip;
-      Unpacker = CTSWOptions.Unpacker;
-      UAssetUnpacker = CTSWOptions.UAssetUnpacker;
-      UseAdvancedSettings = CTSWOptions.UseAdvancedSettings;
-      LimitSoundVolumes = CTSWOptions.LimitSoundVolumes;
-      AutoBackup= CTSWOptions.AutoBackup;
+      ToolkitForTSWFolder = TSWOptions.ToolkitForTSWFolder;
+      BackupFolder= TSWOptions.BackupFolder;
+      XMLEditor = TSWOptions.XmlEditor;
+      TextEditor = TSWOptions.TextEditor;
+      SevenZip = TSWOptions.SevenZip;
+      Unpacker = TSWOptions.Unpacker;
+      UAssetUnpacker = TSWOptions.UAssetUnpacker;
+      UseAdvancedSettings = TSWOptions.UseAdvancedSettings;
+      LimitSoundVolumes = TSWOptions.LimitSoundVolumes;
+      AutoBackup= TSWOptions.AutoBackup;
       RouteList = new ObservableCollection<RouteModel>(RouteDataAccess.GetAllRoutes());
       }
 
     public void SaveOptions()
       {
-      CTSWOptions.SteamProgramDirectory = FixEndSlash(SteamProgramDirectory);
-      CTSWOptions.SteamUserId = SteamUserId;
+      TSWOptions.SteamProgramDirectory = FixEndSlash(SteamProgramDirectory);
+      TSWOptions.SteamUserId = SteamUserId;
       TrainSimWorldDirectory = Path.GetDirectoryName(TrainSimWorldProgram);
-      CTSWOptions.TrainSimWorldDirectory = FixEndSlash(TrainSimWorldDirectory);
-      CTSWOptions.TSWToolsFolder = FixEndSlash(TSWToolsFolder);
-      CTSWOptions.BackupFolder= FixEndSlash(BackupFolder);
-      CTSWOptions.XmlEditor = XMLEditor;
-      CTSWOptions.TextEditor = TextEditor;
-      CTSWOptions.SevenZip = SevenZip;
-      CTSWOptions.Unpacker = Unpacker;
-      CTSWOptions.UAssetUnpacker = UAssetUnpacker;
-      CTSWOptions.UseAdvancedSettings = UseAdvancedSettings;
-      CTSWOptions.LimitSoundVolumes = LimitSoundVolumes;
-      CTSWOptions.AutoBackup= AutoBackup;
-      CTSWOptions.WriteToRegistry();
-      CTSWOptions.CreateDirectories();
-      CTSWOptions.CopyManuals();
+      TSWOptions.TrainSimWorldDirectory = FixEndSlash(TrainSimWorldDirectory);
+      TSWOptions.ToolkitForTSWFolder = FixEndSlash(ToolkitForTSWFolder);
+      TSWOptions.BackupFolder= FixEndSlash(BackupFolder);
+      TSWOptions.XmlEditor = XMLEditor;
+      TSWOptions.TextEditor = TextEditor;
+      TSWOptions.SevenZip = SevenZip;
+      TSWOptions.Unpacker = Unpacker;
+      TSWOptions.UAssetUnpacker = UAssetUnpacker;
+      TSWOptions.UseAdvancedSettings = UseAdvancedSettings;
+      TSWOptions.LimitSoundVolumes = LimitSoundVolumes;
+      TSWOptions.AutoBackup= AutoBackup;
+      TSWOptions.WriteToRegistry();
+      TSWOptions.CreateDirectories();
+      TSWOptions.CopyManuals();
       }
 
     #region RouteEditor
@@ -437,7 +447,7 @@ Installation folder for Steam program
 
 
 
-    private static String FixEndSlash(String Input)
+    private static string FixEndSlash(string Input)
       {
       if (!Input.EndsWith("\\"))
         {

@@ -16,7 +16,7 @@ namespace ToolkitForTSW
       {
       return EditGenericTextFile(XmlFile,
           false,
-          CTSWOptions.XmlEditor,
+          TSWOptions.XmlEditor,
           Log.Trace(
               "XMLFile edited\r\nWARNING: the contents of this screen may be invalid until you finished editing the XML File! You may need to refresh the contents manually using the refresh button",
               LogEventType.Message)
@@ -25,7 +25,7 @@ namespace ToolkitForTSW
 
     public static String EditTextFile(String Filepath)
       {
-      return EditGenericTextFile(Filepath, true, CTSWOptions.TextEditor);
+      return EditGenericTextFile(Filepath, true, TSWOptions.TextEditor);
       }
 
     private static String EditGenericTextFile(String Filepath, bool create_if_not_exists, String Editor, String ReturnMsg = "")
@@ -49,7 +49,7 @@ namespace ToolkitForTSW
           string FileName;
           if (Editor.Length > 0)
             {
-            FileName = CTSWOptions.XmlEditor;
+            FileName = TSWOptions.XmlEditor;
             }
           else
             {
@@ -83,7 +83,7 @@ namespace ToolkitForTSW
         String OutputDescription)
       {
       var Result = String.Empty;
-      if (CTSWOptions.FileCompare.Length == 0)
+      if (TSWOptions.FileCompare.Length == 0)
         {
         return Log.Trace("File Compare Tool not set in Options", LogEventType.Error);
         }
@@ -91,7 +91,7 @@ namespace ToolkitForTSW
         {
         string process_arguments = TextHelper.QuoteFilename(InputFile) + " " + TextHelper.QuoteFilename(OutputFile) + " /dl \"" + InputDescription +
             "\" /dr \"" + OutputDescription + "\"";
-        ProcessHelper.RunProcess(CTSWOptions.FileCompare, process_arguments, WindowStyle: ProcessWindowStyle.Maximized);
+        ProcessHelper.RunProcess(TSWOptions.FileCompare, process_arguments, WindowStyle: ProcessWindowStyle.Maximized);
         }
       catch (Exception E)
         {
@@ -105,7 +105,7 @@ namespace ToolkitForTSW
       String Result = String.Empty;
       try
         {
-        string FileName = CTSWOptions.Unpacker;
+        string FileName = TSWOptions.Unpacker;
         string Arguments = "\"" + InputFile + "\" -extract " + TextHelper.QuoteFilename(OutputDirectory);
         Result += ProcessHelper.RunProcess(FileName, Arguments, WaitForExit: true, ContinuousOutput: true, WindowStyle: ProcessWindowStyle.Hidden, CreateNoWindow: true, RedirectStandardOutput: true);
         return "";
@@ -119,14 +119,14 @@ namespace ToolkitForTSW
     public static String UnPackAsset(String CommandLine)
       {
       var Result = String.Empty;
-      if (CTSWOptions.UAssetUnpacker.Length == 0)
+      if (TSWOptions.UAssetUnpacker.Length == 0)
         {
         Result += Log.Trace("UAsset Unpacker location is not set in options", LogEventType.Error);
         return Result;
         }
       try
         {
-        string FileName = CTSWOptions.UAssetUnpacker;
+        string FileName = TSWOptions.UAssetUnpacker;
         return ProcessHelper.RunProcess(FileName, CommandLine, WaitForExit: true, WindowStyle: ProcessWindowStyle.Hidden, CreateNoWindow: true, RedirectStandardOutput: true);
         }
       catch (Exception E)

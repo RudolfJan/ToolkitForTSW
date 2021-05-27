@@ -159,8 +159,8 @@ namespace ToolkitForTSW.Settings
         SettingsManager.UseAdvanced = false;
         }
       SetControlStates();
-      CTSWOptions.UseAdvancedSettings = SettingsManager.UseAdvanced;
-      CTSWOptions.WriteToRegistry();
+      TSWOptions.UseAdvancedSettings = SettingsManager.UseAdvanced;
+      TSWOptions.WriteToRegistry();
       }
 
     private void OnMasterVolumeChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

@@ -34,7 +34,7 @@ namespace ToolkitForTSW
 		public CInputMapperList()
 			{
 			InputMapperList=new ObservableCollection<CInputMapper>();
-			var InputMapperFile = CTSWOptions.UnpackFolder +
+			var InputMapperFile = TSWOptions.UnpackFolder +
 			                      "TS2Prototype-WindowsNoEditor.pak\\TS2Prototype\\Config\\DefaultInput.ini";
 			if (!File.Exists(InputMapperFile))
 				{
