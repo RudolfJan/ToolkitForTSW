@@ -28,6 +28,7 @@ namespace ToolkitForTSW
 			FileTreeViewControl.FileImage = "Images\\file_extension_doc.png";
 			FileTreeViewControl.SetImages();
 			Tree = new FileTreeViewModel(rootFolder);
+			FileTreeBuilder.RenameFilesToUnquoted(Tree.FileTree);
 			FileTreeViewControl.Tree = Tree;
 			FileTreeViewControl.DataContext = Tree;
 			SetControlStates();
