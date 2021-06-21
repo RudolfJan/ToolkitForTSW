@@ -65,7 +65,7 @@ namespace ToolkitForTSW.Options
       get 
         {
         return !string.IsNullOrEmpty(TSWOptions.TrainSimWorldDirectory) 
-          && Directory.Exists(TSWOptions.TrainSimWorldDirectory); 
+          && File.Exists(TSWOptions.TrainSimWorldDirectory+"TS2prototype.exe"); 
         }
       }
 

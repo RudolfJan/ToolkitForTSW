@@ -49,7 +49,7 @@ namespace ToolkitForTSW
     public static string ThumbnailFolder { get; set; }
     public static bool NotFirstRun { get; set; }
 
-    public static string Version { get; } = "Version 0.8 beta";
+    public static string Version { get; } = "Version 0.9 beta";
 
     public static string GetGameSaveLocation()
       {
@@ -432,9 +432,8 @@ namespace ToolkitForTSW
       Unpacker = (string)AppKey.GetValue("Unpacker", "");
       UAssetUnpacker = (string)AppKey.GetValue("UAssetUnpacker", "");
       FileCompare = (string)AppKey.GetValue("FileCompare", "");
-
       SevenZip = (string)AppKey.GetValue("7Zip", "");
-      SevenZipLib.InitZip(_SevenZip);
+          
       //TestMode = ((int)AppKey.GetValue("TestMode", 0) == 1);
       TestMode = false;
       IsInitialized = ((int)AppKey.GetValue("Initialized", 0) == 1);
@@ -460,9 +459,9 @@ namespace ToolkitForTSW
         {
         GuessUserId();
         }
-      AppKey.SetValue("TrainSimWorldDirectory", _TrainSimWorldDirectory,
+      AppKey.SetValue("TrainSimWorldDirectory", TrainSimWorldDirectory,
         RegistryValueKind.String);
-      AppKey.SetValue("SteamProgramDirectory", _SteamProgramDirectory,
+      AppKey.SetValue("SteamProgramDirectory", SteamProgramDirectory,
         RegistryValueKind.String);
       AppKey.SetValue("SteamUserId", SteamUserId, RegistryValueKind.String);
       AppKey.SetValue("TSWToolsFolder", ToolkitForTSWFolder, RegistryValueKind.String);

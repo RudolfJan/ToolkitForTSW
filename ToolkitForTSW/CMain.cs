@@ -14,6 +14,7 @@ using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Options;
 using Utilities.Library;
 using Utilities.Library.Filters.DataAccess;
+using Utilities.Library.Zip;
 using DatabaseFactory = ToolkitForTSW.DataAccess.DatabaseFactory;
 
 namespace ToolkitForTSW
@@ -35,8 +36,8 @@ namespace ToolkitForTSW
     public CMain()
 			{
 			TSWOptions.ReadFromRegistry();
-			var InitialInstallDirectory = TSWOptions.ToolkitForTSWFolder;
-      InitDatabase(); // must be done before trying to get options to avoid exception
+			var InitialInstallDirectory = TSWOptions.ToolkitForTSWFolder; //Is always set by the installer
+      InitDatabase();
 			while (!TSWOptions.GetNotFirstRun())
 				{
 				MessageBox.Show(@"Please complete the configuration before you proceed", @"Set configuration",
@@ -52,7 +53,7 @@ namespace ToolkitForTSW
 				}
 			if (TSWOptions.ToolkitForTSWFolder.Length > 1)
 				{
-        InitDatabase(); // TODO Need to do this again, in case the data folder is changed, maybe make it inmutable?
+				// Do not initialise Database again, should not need to do that.
 				TSWOptions.CreateDirectories();
 				TSWOptions.CopyManuals();
         MoveMods();
@@ -65,9 +66,18 @@ namespace ToolkitForTSW
 					{
 					var backup= new CBackup();
 					backup.MakeDailyBackup();
-					}
+          }
 
         }
+      try
+        {
+				SevenZipLib.InitZip(TSWOptions.SevenZip);
+				}
+			catch(Exception ex)
+        {
+				Log.Trace("Failed to initialize SevenZip functions, probably 7Zip program is not installed",ex);
+        }
+      
 			var optionsChecker= new CheckOptionsReporter();
 			optionsChecker.BuildOptionsCheckReport();
 			if(!optionsChecker.OptionsCheckStatus)
@@ -97,16 +107,22 @@ namespace ToolkitForTSW
       var factory = new DatabaseFactory();
 			var databasePath=$"{TSWOptions.ToolkitForTSWFolder}TSWTools.db";
 			var connectionString = $"Data Source = {databasePath}; Version = 3;";
+			DbManager.CurrentDatabaseVersion=4;
+			DbManager.DatabaseVersionDescription= "Added experimentatl settings";
 			DbManager.InitDatabase(connectionString, databasePath, factory);
-      InitScreenshotManagerDatabase();
+			// TODO check process logic very carefully to make sure you set the version correct and execute the proper update procedure.
 			var version = DbManager.GetCurrentVersion();
-      if (version.VersionNr < 3) // old database version ois not compatible
+      if (version.VersionNr < 3) // old database version is not compatible
         {
         DbManager.DeleteDatabase(); 
         DbManager.InitDatabase(connectionString, databasePath, factory);
+				version = DbManager.GetCurrentVersion();
 				}
-			DbManager.UpdateDatabaseVersionNumber(3, "Refactoring DbAccess");
-      version = DbManager.GetCurrentVersion();
+			else
+        {
+				DbManager.UpdateDatabaseVersionNumber(DbManager.CurrentDatabaseVersion, DbManager.DatabaseVersionDescription);
+        }
+			InitScreenshotManagerDatabase();
       RouteDataAccess.InitRouteForSavCracker("SQL\\RouteDataImport.csv");
 			Log.Trace($"Created database {databasePath} Version={version.VersionNr} {version.Description}");
 			}

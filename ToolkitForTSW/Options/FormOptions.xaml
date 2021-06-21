@@ -56,7 +56,7 @@
 									LabelText="TSW2 program" Style="{StaticResource OptionsOpenFile}"
                   InitialDirectory="C:\Program Files (x86)\Steam\steamapps\common\Train Sim World 2\WindowsNoEditor"
                   Filter="exe files (*.exe)|*.exe"
-                  FileName="{Binding TrainSimWorldDirectory, Mode=TwoWay}" CheckFileExists="True"
+                  FileName="{Binding TrainSimWorldProgram, Mode=TwoWay}" CheckFileExists="True"
                   ToolTip="Here you need to tell where the TSW executable is installed" Loaded="FileInputBox_Loaded" />
 
 							<Border Grid.Row="1" Grid.Column="1"
