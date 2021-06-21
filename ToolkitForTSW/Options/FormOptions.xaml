@@ -1,0 +1,257 @@
+﻿<Window x:Class="ToolkitForTSW.FormOptions"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToolkitForTSW"
+        xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        xmlns:views="clr-namespace:Screenshots.Library.WPF.Views;assembly=Screenshots.Library.WPF"
+        xmlns:views1="clr-namespace:Filter.Library.WPF.Views;assembly=Filter.Library.WPF"
+        mc:Ignorable="d"
+        Title="ToolkitForTSW Options" 
+        Style="{StaticResource AllWindows}">
+	<StackPanel>
+		<TabControl>
+			<TabItem Header="File locations">
+				<Border  Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<Label Style="{StaticResource BorderHeaderLabel}">File locations</Label>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="400"/>
+								<ColumnDefinition Width="30"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+
+							<userControls:FileInputBox Grid.Row="0" Grid.Column="0"
+																				 x:Name="SteamProgramFolderFileInput" 
+																				  LabelText="Steam program folder"
+                                        Style="{StaticResource OptionsOpenFile}"
+                                        InitialDirectory="C:\Program Files (x86)\Steam" FileDialogType="BrowseDir"
+                                        FileName="{Binding SteamProgramDirectory, Mode=TwoWay}"
+                                        FileNameChanged="OnSteamProgramFolderFileInputChanged"
+                                        ToolTip="TYou need to tell ToolkitForTSW where you installed Steam" />
+							<Border Grid.Row="0" Grid.Column="1"
+									Style="{StaticResource ColorRectangleBig}" 
+									Background="{Binding CheckOptions.SteamFolderOK, 
+									Converter={StaticResource BoolToColorConverter}, 
+									ConverterParameter=SeaGreen;OrangeRed;1.0, 
+									Mode=OneWay, 
+									NotifyOnSourceUpdated=True, 
+									UpdateSourceTrigger=PropertyChanged}"/>
+
+							<userControls:FileInputBox Grid.Row="1"
+									LabelText="TSW2 program" Style="{StaticResource OptionsOpenFile}"
+                  InitialDirectory="C:\Program Files (x86)\Steam\steamapps\common\Train Sim World 2\WindowsNoEditor"
+                  Filter="exe files (*.exe)|*.exe"
+                  FileName="{Binding TrainSimWorldProgram, Mode=TwoWay}" CheckFileExists="True"
+                  ToolTip="Here you need to tell where the TSW executable is installed" Loaded="FileInputBox_Loaded" />
+
+							<Border Grid.Row="1" Grid.Column="1"
+									Style="{StaticResource ColorRectangleBig}" 
+									Background="{Binding CheckOptions.TSW2ProgramOK, 
+									Converter={StaticResource BoolToColorConverter}, 
+									ConverterParameter=SeaGreen;OrangeRed;1.0, 
+									Mode=OneWay, 
+									NotifyOnSourceUpdated=True, 
+									UpdateSourceTrigger=PropertyChanged}"/>
+
+							<userControls:FileInputBox Grid.Row="2"
+									LabelText="ToolkitForTSW folder" Style="{StaticResource OptionsOpenFile}"
+                  FileDialogType="BrowseDir" FileName="{Binding ToolkitForTSWFolder, Mode=TwoWay}"
+                  ToolTip="This folder is where all data ToolkitForTSW is working with will be stored" />
+							<Border Grid.Row="2" Grid.Column="1"
+									Style="{StaticResource ColorRectangleBig}" 
+									Background="{Binding CheckOptions.ToolkitFolderOK, 
+									Converter={StaticResource BoolToColorConverter}, 
+									ConverterParameter=SeaGreen;OrangeRed;1.0, 
+									Mode=OneWay, 
+									NotifyOnSourceUpdated=True, 
+									UpdateSourceTrigger=PropertyChanged}"/>
+
+							<userControls:FileInputBox Grid.Row="3"
+									LabelText="Backup folder" Style="{StaticResource OptionsOpenFile}"
+                  FileDialogType="BrowseDir" FileName="{Binding BackupFolder, Mode=TwoWay}"
+                  ToolTip="This folder is where ToolkitForTSW data backups will be stored" />
+							<Border Grid.Row="3" Grid.Column="1"
+									Style="{StaticResource ColorRectangleBig}" 
+									Background="{Binding CheckOptions.BackupFolderOK, 
+									Converter={StaticResource BoolToColorConverter}, 
+									ConverterParameter=SeaGreen;OrangeRed;1.0, 
+									Mode=OneWay, 
+									NotifyOnSourceUpdated=True, 
+									UpdateSourceTrigger=PropertyChanged}"/>
+
+							<userControls:FileInputBox Grid.Row="4"
+									LabelText="Text editor" Style="{StaticResource OptionsOpenFile}"
+                  InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
+                  FileName="{Binding TextEditor, Mode=TwoWay}" CheckFileExists="True"
+                  ToolTip="Choose your favourite text editor, mine is Notepad++ (freeware)" />
+							<Border Grid.Row="4" Grid.Column="1"
+									Style="{StaticResource ColorRectangleBig}" 
+									Background="{Binding CheckOptions.TextEditorOK, 
+									Converter={StaticResource BoolToColorConverter}, 
+									ConverterParameter=SeaGreen;OrangeRed;1.0, 
+									Mode=OneWay, 
+									NotifyOnSourceUpdated=True, 
+									UpdateSourceTrigger=PropertyChanged}"/>
+							
+							<userControls:FileInputBox Grid.Row="5"
+									LabelText="Unreal unpack" Style="{StaticResource OptionsOpenFile}"
+                  InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
+                  FileName="{Binding Unpacker, Mode=TwoWay}" CheckFileExists="True"
+                  ToolTip="You will not be able to do a lot if you did not install the Unreal unpacker tool. See the ToolkitForTSW manual for details" />
+							<Border Grid.Row="5" Grid.Column="1"
+									Style="{StaticResource ColorRectangleBig}" 
+									Background="{Binding CheckOptions.UnrealOK, 
+									Converter={StaticResource BoolToColorConverter}, 
+									ConverterParameter=SeaGreen;OrangeRed;1.0, 
+									Mode=OneWay, 
+									NotifyOnSourceUpdated=True, 
+									UpdateSourceTrigger=PropertyChanged}"/>
+							
+							<userControls:FileInputBox Grid.Row="6"
+									LabelText="UAsset unpack" Style="{StaticResource OptionsOpenFile}"
+                  InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
+                  FileName="{Binding UAssetUnpacker, Mode=TwoWay}" CheckFileExists="True" 
+									ToolTip="Set here the location of the UModel application"/>
+							<Border Grid.Row="6" Grid.Column="1"
+									Style="{StaticResource ColorRectangleBig}" 
+									Background="{Binding CheckOptions.UmodelOK, 
+									Converter={StaticResource BoolToColorConverter}, 
+									ConverterParameter=SeaGreen;OrangeRed;1.0, 
+									Mode=OneWay, 
+									NotifyOnSourceUpdated=True, 
+									UpdateSourceTrigger=PropertyChanged}"/>
+							
+							<userControls:FileInputBox Grid.Row="7"
+									LabelText="7Zip" Style="{StaticResource OptionsOpenFile}"
+                  InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
+                  FileName="{Binding SevenZip, Mode=TwoWay}" CheckFileExists="True" 
+									ToolTip="7Zip will be used a lot for various purposes"/>
+							<Border Grid.Row="7" Grid.Column="1"
+									Style="{StaticResource ColorRectangleBig}" 
+									Background="{Binding CheckOptions.SevenZipOK, 
+									Converter={StaticResource BoolToColorConverter}, 
+									ConverterParameter=SeaGreen;OrangeRed;1.0, 
+									Mode=OneWay, 
+									NotifyOnSourceUpdated=True, 
+									UpdateSourceTrigger=PropertyChanged}"/>
+							
+						</Grid>
+
+					</StackPanel>
+				</Border>
+			</TabItem>
+			<TabItem Header="Routes">
+				<Border Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<StackPanel Grid.Column="0">
+								<TextBlock Style="{StaticResource TextBlockHeader}" HorizontalAlignment="Center">Routes</TextBlock>
+								<DataGrid Name="RoutesDataGrid" Style="{StaticResource DataGridReadOnly}"
+													ItemsSource="{Binding RouteList}"
+													SelectedItem="{Binding SelectedRoute}"
+													SelectionChanged="RouteListSelectedItemChanged"
+								          Height="300">
+									<DataGrid.Columns>
+										<DataGridTextColumn Header="Abbrev" Width="40" Binding="{Binding RouteAbbrev }"/>
+										<DataGridTextColumn Header="Name" Width="150" Binding="{Binding RouteName }"/>
+									</DataGrid.Columns>
+								</DataGrid>
+								<WrapPanel>
+									<Button Name="RouteEditButton" Style="{StaticResource ButtonDefault}" Click="OnEditRoute"
+									        >Edit</Button>
+									<Button Name="RouteDeleteButton" Style="{StaticResource ButtonDefault}" Click="OnDeleteRoute">Delete</Button>
+									<Button Name="RouteLoaderButton" Style="{StaticResource ButtonDefault}" 
+									        ToolTip="Load predefined route data, will NOT overwrite your data" Click="OnLoadRouteList">Load list</Button>
+
+								</WrapPanel>
+
+							</StackPanel>
+							<StackPanel Grid.Column="1">
+								<TextBlock Style="{StaticResource TextBlockHeader}" HorizontalAlignment="Center">Editor</TextBlock>
+								<userControls:LabelTextBox Name="RouteNameTextBox" LabelText="Route name"   
+								                           TextBoxText="{Binding RouteName, Mode=TwoWay}"
+								                           Style="{StaticResource LabelTextBoxDefault}"
+								                           LabelWidth="80" Width="200"/>
+								<userControls:LabelTextBox Name="RouteAbbreviationTextBox" LabelText="Abbreviation"   
+								                           TextBoxText="{Binding RouteAbbrev, Mode=TwoWay}"
+																					 Style="{StaticResource LabelTextBoxDefault}"
+								                           LabelWidth="80" Width="200" TextChanged="OnAbbrevTextChanged" />
+								<userControls:LabelTextBox Name="ScenarioPlannerNameTextBox" LabelText="SP name" 
+								                           ToolTip="RouteName as used inside the Scenario Planner"  
+								                           TextBoxText="{Binding ScenarioPlannerRouteName, Mode=TwoWay}"
+								                           Style="{StaticResource LabelTextBoxDefault}"
+								                           LabelWidth="80" Width="200"/>
+								<userControls:LabelTextBox Name="ScenarioPlannerStringTextBox" LabelText="RouteString" 
+																					 ToolTip="String that represents this route in the scenario planner .sav file"
+								                           TextBoxText="{Binding ScenarioPlannerRouteString, Mode=TwoWay}"
+								                           Style="{StaticResource LabelTextBoxDefault}"
+								                           LabelWidth="80" Width="200"/>
+								<TextBlock Style="{StaticResource TextBlockDefault}">Description</TextBlock>
+
+								<TextBox Name="RouteDescriptionTextBox"  
+								                           Text="{Binding RouteDescription, Mode=TwoWay}"
+								                           Style="{StaticResource TextBoxMultiLine}"
+								                           Width="190" Height="100"/>
+								<WrapPanel>
+									<Button Name="RouteSaveButton" Style="{StaticResource ButtonDefault}" Width="90" Click="OnSaveRoute">Save</Button>
+									<Button Name="RouteClearButton" Style="{StaticResource ButtonDefault}" Width="90" Click="OnClearRoute">Clear</Button>
+								</WrapPanel>
+							</StackPanel>
+						</Grid>
+
+					</StackPanel>
+				</Border>
+			</TabItem>
+			<TabItem Header="Collections">
+				<views:ScreenshotCollectionMaintenanceView Name="CollectionsView"/>
+			</TabItem>
+			<TabItem Header="Tags">
+				<views1:TagsMaintenanceView Name="TagsView"/>
+
+			</TabItem>
+			<TabItem Header="Other">
+				<Border Style="{StaticResource DefaultBorder}">
+					<StackPanel>
+						<Label Style="{StaticResource BorderHeaderLabel}">Other settings</Label>
+						<userControls:LabelTextBox LabelText="Steam user key" LabelWidth="100"
+						                            TextBoxText="{Binding SteamUserId, Mode=TwoWay}" Width="220"
+						                            HorizontalAlignment="Left" ToolTip="To obtain the Steam screenshots, ToolkitForTSW needs the steam Id. If it is guessed wrong, provide it here"/>
+						<CheckBox Name="ÜseAdvancedSettingsCheckBox" IsChecked="{Binding UseAdvancedSettings}">Use advanced settings by default</CheckBox>
+						<CheckBox  Name="LimitSoundVolumesCheckBox" IsChecked="{Binding LimitSoundVolumes}">Limit sound volumes by default</CheckBox>
+						<CheckBox  Name="MakeBackupOnStartCheckBox" IsChecked="{Binding AutoBackup}">Make data backup when starting ToolkitForTSW</CheckBox>
+					</StackPanel>
+				</Border>
+			</TabItem>
+		</TabControl>
+		<Border MinWidth="400" Style="{StaticResource DefaultBorder}">
+			<StackPanel>
+				<userControls:ResultsTextBox Style="{StaticResource DefaultResultsTextBox}" Source="../Images/page_delete.png"/>
+			</StackPanel>
+		</Border>
+		<WrapPanel HorizontalAlignment="Right">
+			<Button Name="CancelButton" Style="{StaticResource CancelButton}"  Click="OnCancelButtonClicked">Cancel</Button>
+			<Button Name="OKButton" Style="{StaticResource OKButton}" Click="OnOKButtonClicked">Save</Button>
+		</WrapPanel>
+
+	</StackPanel>
+</Window>

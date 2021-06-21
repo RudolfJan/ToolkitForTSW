@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SavCrackerTest.Models
-	{
+namespace SavCracker.Library.Models
+  {
 	public class SoftObjectPropertyModel: SavPropertyModel
 		{
 		public string Value { get; set; }

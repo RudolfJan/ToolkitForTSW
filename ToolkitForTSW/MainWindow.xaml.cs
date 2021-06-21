@@ -3,7 +3,10 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using ToolkitForTSW;
+using ToolkitForTSW.Backups;
 using ToolkitForTSW.Mod;
+using ToolkitForTSW.Settings;
+using Utilities.Library;
 
 namespace ToolkitForTSW
 	{
@@ -75,7 +78,7 @@ namespace ToolkitForTSW
 
 		private void OnViewUnpackedPaksButtonClicked(Object Sender, RoutedEventArgs E)
 			{
-			CApps.OpenFolder(CTSWOptions.UnpackFolder);
+			ProcessHelper.OpenFolder(TSWOptions.UnpackFolder);
 			}
 
 		private void OnUModelLauncherButtonClicked(Object Sender, RoutedEventArgs E)
@@ -146,7 +149,7 @@ namespace ToolkitForTSW
 
 		private void OnRouteGuidesButtonClicked(Object Sender, RoutedEventArgs E)
 			{
-			var Form = new FormRouteGuides(MainData);
+			var Form = new FormRouteGuides(TSWOptions.ManualsFolder+"RouteGuides\\");
 			Form.Show();
 			}
 

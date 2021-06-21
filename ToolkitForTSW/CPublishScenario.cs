@@ -1,5 +1,6 @@
 ﻿using Logging.Library;
-using SavCrackerTest.Models;
+using Utilities.Library;
+using SavCracker.Library.Models;
 using Styles.Library.Helpers;
 using System;
 using System.Collections.Generic;
@@ -48,8 +49,8 @@ namespace ToolkitForTSW
 
     public void CreateDocumentFile()
       {
-      var fileBase = $"{CTSWOptions.ScenarioFolder}{SavScenario.RouteAbbreviation}-{SavScenario.ScenarioName}";
-      var templateList = GetTemplates(CTSWOptions.TemplateFolder);
+      var fileBase = $"{TSWOptions.ScenarioFolder}{SavScenario.RouteAbbreviation}-{SavScenario.ScenarioName}";
+      var templateList = GetTemplates(TSWOptions.TemplateFolder);
       if (templateList.Count < 1)
         {
         Log.Trace("No template found, cannot create scenario documentation");
@@ -58,9 +59,9 @@ namespace ToolkitForTSW
       var template = File.ReadAllText(templateList[0].FullName);
       var output = CreateDocumentString(template);
       File.WriteAllText($"{fileBase}.html",output);
-      var targetFilePath= $"{CTSWOptions.ScenarioFolder}{Path.GetFileName(ScenarioFilePath)}";
+      var targetFilePath= $"{TSWOptions.ScenarioFolder}{Path.GetFileName(ScenarioFilePath)}";
       File.Copy(ScenarioFilePath,targetFilePath,true);
-      CApps.DeleteSingleFile($"{fileBase}.zip");
+      FileHelpers.DeleteSingleFile($"{fileBase}.zip");
       using (ZipArchive archive = ZipFile.Open($"{fileBase}.zip", ZipArchiveMode.Create))
         {
         archive.CreateEntryFromFile(targetFilePath, Path.GetFileName(ScenarioFilePath));

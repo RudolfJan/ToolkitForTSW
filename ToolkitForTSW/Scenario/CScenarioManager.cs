@@ -1,10 +1,11 @@
 ﻿using SavCracker.Library;
-using SavCrackerTest.Models;
+using SavCracker.Library.Models;
 using Styles.Library.Helpers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ToolkitForTSW.DataAccess;
+using Utilities.Library;
 
 namespace ToolkitForTSW
   {
@@ -67,13 +68,13 @@ namespace ToolkitForTSW
 
     public CScenarioManager()
       {
-      SavCrackerTest.SavCracker.RouteList = RouteDataAccess.GetSavCrackerRouteList();
+      SavCracker.Library.SavCracker.RouteList = RouteDataAccess.GetSavCrackerRouteList();
       BuildScenarioList();
       }
 
     public void ScenarioDelete(CScenario toBeDeleted)
       {
-      CApps.DeleteSingleFile(toBeDeleted.ScenarioFile.FullName);
+      FileHelpers.DeleteSingleFile(toBeDeleted.ScenarioFile.FullName);
       ScenarioDataAccess.DeleteScenario(toBeDeleted.SavScenario.ScenarioGuid); // remove from database if it is there 
       BuildScenarioList();
       SelectedSavScenario = null; // TODO refresh works but this feels clumsy ...
@@ -81,7 +82,7 @@ namespace ToolkitForTSW
 
     public void BuildScenarioList()
       {
-      var Path=  $"{CTSWOptions.GameSaveLocation}Saved\\SaveGames\\";
+      var Path=  $"{TSWOptions.GameSaveLocation}Saved\\SaveGames\\";
       DirectoryInfo DirInfo = new DirectoryInfo(Path);
       ScenarioList.Clear();
       var files = DirInfo.GetFiles("USD_*.sav", SearchOption.TopDirectoryOnly);
@@ -90,7 +91,7 @@ namespace ToolkitForTSW
         var Scenario = new CScenario
           {
           ScenarioFile = file,
-          Cracker = new SavCrackerTest.SavCracker(file.FullName)
+          Cracker = new SavCracker.Library.SavCracker(file.FullName)
           };
         Scenario.Cracker.ParseScenario();
         Scenario.SavScenario = Scenario.Cracker.Scenario;

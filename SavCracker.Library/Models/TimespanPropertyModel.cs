@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SavCrackerTest.Models
+namespace SavCracker.Library.Models
   {
   public class TimespanPropertyModel: SavPropertyModel
     {

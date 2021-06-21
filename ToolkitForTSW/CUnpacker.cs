@@ -65,7 +65,7 @@ Unpacking in progress
 		// No slash after DirName, can be DLC or PAK
 		public void LoadPakList(String DirName)
 			{
-			var DirectoryName = CTSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\" + DirName + "\\";
+			var DirectoryName = TSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\" + DirName + "\\";
 			try
 				{
 				var Dir = new DirectoryInfo(DirectoryName);
@@ -98,7 +98,7 @@ Unpacking in progress
 			List<Task> TaskList = new List<Task>();
 			try
 				{
-				String[] AllPaks = Directory.GetFiles(CTSWOptions.TrainSimWorldDirectory + "\\TS2Prototype\\Content\\" + PakDir,
+				String[] AllPaks = Directory.GetFiles(TSWOptions.TrainSimWorldDirectory + "\\TS2Prototype\\Content\\" + PakDir,
 					"*.pak");
 				Result += "Found " + AllPaks.Length.ToString() + " paks\r\n";
 				foreach (String Pak in AllPaks)
@@ -106,7 +106,7 @@ Unpacking in progress
 					String Destination = Pak.Substring(Pak.LastIndexOf("\\", StringComparison.Ordinal));
 					Result += "Unpack started " + Path.GetFileName(Pak) + "\r\n";
 					Result += Result;
-					Destination = CTSWOptions.UnpackFolder+   Destination;
+					Destination = TSWOptions.UnpackFolder+   Destination;
 					Directory.CreateDirectory(Destination);
 					Busy=true;
 					var MyTask = Task.Run(() => CApps.UnPack(Pak, Destination));
@@ -144,7 +144,7 @@ public String UnpackSelected(ObservableCollection<FileInfo> SelectedPaks)
 					String Destination = Pak.FullName.Substring(Pak.FullName.LastIndexOf("\\", StringComparison.Ordinal));
 					Result += "Unpack started " + Path.GetFileName(Pak.FullName) + "\r\n";
 					Result += Result;
-					Destination = CTSWOptions.UnpackFolder + Destination;
+					Destination = TSWOptions.UnpackFolder + Destination;
 					Directory.CreateDirectory(Destination);
 					Busy=true;
 					var MyTask = Task.Run(() => CApps.UnPack(Pak.FullName, Destination));
@@ -178,7 +178,7 @@ public String UnpackSelected(ObservableCollection<FileInfo> SelectedPaks)
 				{
 				String Destination = Pak.Substring(Pak.LastIndexOf("\\", StringComparison.Ordinal));
 				Result += "Unpack started " + Path.GetFileName(Pak) + "\r\n";
-				Destination = CTSWOptions.UnpackFolder + Destination;
+				Destination = TSWOptions.UnpackFolder + Destination;
 				Directory.CreateDirectory(Destination);
 				Busy=true;
 				MyTask = Task.Run(() => CApps.UnPack(Pak, Destination));

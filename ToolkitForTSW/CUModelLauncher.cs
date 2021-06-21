@@ -1,7 +1,8 @@
 ﻿using Styles.Library.Helpers;
 using System;
 using System.Collections.ObjectModel;
-
+using TreeBuilders.Library.Wpf;
+using Utilities.Library.TextHelpers;
 
 namespace ToolkitForTSW
 {
@@ -43,8 +44,9 @@ namespace ToolkitForTSW
 				}
 			}
 
-		private CTreeItemProvider _FileTree;
-		public CTreeItemProvider FileTree
+
+		private FileTreeViewModel _FileTree;
+		public FileTreeViewModel FileTree
 			{
 			get => _FileTree;
 			set
@@ -54,16 +56,7 @@ namespace ToolkitForTSW
 				}
 			}
 
-		private ObservableCollection<CDirTreeItem> _TreeItems;
-		public ObservableCollection<CDirTreeItem> TreeItems
-			{
-			get => _TreeItems;
-			set
-				{
-				_TreeItems = value;
-				OnPropertyChanged("TreeItems");
-				}
-			}
+	
 
 		private String _Results;
 
@@ -94,10 +87,9 @@ namespace ToolkitForTSW
 		public CUModelLauncher()
 			{
 			BuildCommandList();
-			PathSettings = "-path=" + CApps.QuoteFilename(CTSWOptions.UnpackFolder) + " -out=" + CApps.QuoteFilename(CTSWOptions.UnpackFolder +
+			PathSettings = "-path=" + TextHelper.QuoteFilename(TSWOptions.UnpackFolder) + " -out=" + TextHelper.QuoteFilename(TSWOptions.UnpackFolder +
 			               "UnpackedAssets\\")+" ";
-			FileTree = new CTreeItemProvider();
-			TreeItems = FileTree.GetItems(CTSWOptions.UnpackFolder);
+			FileTree = new FileTreeViewModel(TSWOptions.UnpackFolder);
 		}
 		/*
 
@@ -120,8 +112,8 @@ Compatibility options:
 		public void BuildPath(String Path)
 			{
 			Package = System.IO.Path.GetFileName(Path);
-			var MyPath = CApps.QuoteFilename(System.IO.Path.GetDirectoryName(Path));
-			PathSettings = "-path=" + MyPath + " -out=" + CApps.QuoteFilename(CTSWOptions.UnpackFolder +
+			var MyPath = TextHelper.QuoteFilename(System.IO.Path.GetDirectoryName(Path));
+			PathSettings = "-path=" + MyPath + " -out=" + TextHelper.QuoteFilename(TSWOptions.UnpackFolder +
                      "UnpackedAssets")+" ";
 		}
 

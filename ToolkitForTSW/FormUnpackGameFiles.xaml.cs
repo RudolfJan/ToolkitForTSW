@@ -41,7 +41,7 @@ namespace ToolkitForTSW
 
     private void OnUnpackCoreButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var PakName = CTSWOptions.TrainSimWorldDirectory +
+      var PakName = TSWOptions.TrainSimWorldDirectory +
                     "TS2Prototype\\Content\\Paks\\TS2Prototype-WindowsNoEditor.pak";
       Unpacker.UnpackFile(PakName);
       }

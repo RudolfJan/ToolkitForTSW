@@ -12,9 +12,18 @@ Installation instructions:
 - Make sure to set all required options
 - You need to specify a location for the datafiles during the install process. If you specify antoher loaction than for a previous version, your datafiles will NOT be copied automatically to the new location.
 
-See the manual for details.
+See the manual for details. You can find the manual in the ToolkitForTSW datafolder.
 
 Version history:
+
+Version 0.9:
+- Automatic backups
+- Experimentatl settings
+- Revised RouteGuides window
+- Bug fixes and refactoring
+
+Version 08:
+- Screenshot manager totally revised
 
 Version 0.71
 - Fixed an issue with the installation procedure

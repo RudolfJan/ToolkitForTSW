@@ -6,6 +6,8 @@ using System.IO;
 using System.IO.Compression;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
+using TreeBuilders.Library.Wpf;
+using Utilities.Library.Zip;
 
 namespace ToolkitForTSW.Mod
   {
@@ -44,27 +46,15 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private CTreeItemProvider _FileTree;
+    private FileTreeViewModel _FileTree;
 
-    public CTreeItemProvider FileTree
+    public FileTreeViewModel FileTree
       {
       get => _FileTree;
       set
         {
         _FileTree = value;
         OnPropertyChanged("FileTree");
-        }
-      }
-
-    private ObservableCollection<CDirTreeItem> _TreeItems;
-
-    public ObservableCollection<CDirTreeItem> TreeItems
-      {
-      get => _TreeItems;
-      set
-        {
-        _TreeItems = value;
-        OnPropertyChanged("TreeItems");
         }
       }
 
@@ -211,9 +201,9 @@ namespace ToolkitForTSW.Mod
 
     public void FillPakDirList()
       {
-      var Dir = new DirectoryInfo(CTSWOptions.ModsFolder);
-      FileTree = new CTreeItemProvider();
-      TreeItems = FileTree.GetDirItems(Dir.FullName);
+      var Dir = new DirectoryInfo(TSWOptions.ModsFolder);
+      FileTree = new FileTreeViewModel(Dir.FullName, true);
+      OnPropertyChanged("FileTree");
       }
 
     public void GetArchivedFiles(FileInfo archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType = "")
@@ -306,23 +296,23 @@ namespace ToolkitForTSW.Mod
 
     public void GetRwpArchivedFiles(string archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType)
       {
-      CApps.ListZipFiles(ArchiveFile, out var FileReport);
-      var Skip = 16;
-      if (string.Compare(Path.GetExtension(archiveFile), ".rar", StringComparison.Ordinal) == 0 ||
-          string.Compare(Path.GetExtension(archiveFile), ".7z", StringComparison.Ordinal) == 0)
-        {
-        Skip = 19;
-        }
+      SevenZipLib.ListFilesInArchive(ArchiveFile, out var FileReport,true);
+      //var Skip = 16;
+      //if (string.Compare(Path.GetExtension(archiveFile), ".rar", StringComparison.Ordinal) == 0 ||
+      //    string.Compare(Path.GetExtension(archiveFile), ".7z", StringComparison.Ordinal) == 0)
+      //  {
+      //  Skip = 19;
+      //  }
 
       var Reader = new StringReader(FileReport);
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-      var MetaData = "";
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-      for (var I = 0; I < Skip; I++) // tricky!
-        {
-        // ReSharper disable once RedundantAssignment debugging, do not remove this
-        MetaData = Reader.ReadLine() + "\r\n";
-        }
+//#pragma warning disable IDE0059 // Unnecessary assignment of a value
+//      var MetaData = "";
+//#pragma warning restore IDE0059 // Unnecessary assignment of a value
+//      for (var I = 0; I < Skip; I++) // tricky!
+//        {
+//        // ReSharper disable once RedundantAssignment debugging, do not remove this
+//        MetaData = Reader.ReadLine() + "\r\n";
+//        }
 
       var Done = false;
       while (!Done)
@@ -348,25 +338,25 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    public void AddDirectory(CDirTreeItem TreeItem, string DirName, bool AsChild)
+    public void AddDirectory(TreeNodeModel TreeItem, string DirName, bool AsChild)
       {
       try
         {
         string Path;
         if (AsChild)
           {
-          Path = TreeItem.Path + "\\" + DirName;
+          Path = TreeItem.Root + "\\" + DirName;
           Directory.CreateDirectory(Path);
           }
         else
           {
-          if (TreeItem?.Path == null)
+          if (TreeItem?.Root == null)
             {
-            Path = CTSWOptions.ModsFolder + DirName;
+            Path = TSWOptions.ModsFolder + DirName;
             }
           else
             {
-            Path = TreeItem.Path + "\\..\\" + DirName;
+            Path = TreeItem.Root + "\\..\\" + DirName;
             }
 
           Directory.CreateDirectory(Path);
@@ -396,7 +386,7 @@ namespace ToolkitForTSW.Mod
                 // Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
                 return;
                 }
-              CApps.SevenZipExtractSingle(ArchiveFile, InstallDirectory, FileEntry.FullName);
+              SevenZipLib.ExtractSingle(ArchiveFile, InstallDirectory, FileEntry.FullName);
               // Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
               return;
               }
@@ -412,10 +402,12 @@ namespace ToolkitForTSW.Mod
               }
           }
         }
+      
       }
 
     public void InstallMod()
       {
+      InstallDirectory= FileTree.SelectedTreeNode.Root.FullName;
       if (InstallDirectory == null)
         {
         Result +=

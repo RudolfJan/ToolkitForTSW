@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SavCrackerTest.Models
+namespace SavCracker.Library.Models
 	{
 	public class ArrayPropertyModel : SavPropertyModel
 		{

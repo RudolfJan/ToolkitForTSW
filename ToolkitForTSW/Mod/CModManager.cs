@@ -10,6 +10,7 @@ using System.IO;
 using System.Windows.Controls;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
+using Utilities.Library;
 
 namespace ToolkitForTSW.Mod
   {
@@ -227,8 +228,8 @@ namespace ToolkitForTSW.Mod
           var filePath = X.FileName;
           if (!String.IsNullOrEmpty(filePath))
             {
-            FilePath = CTSWOptions.TrainSimWorldDirectory + @"TS2Prototype\Content\DLC\" + filePath;
-            CApps.DeleteSingleFile(filePath);
+            FilePath = TSWOptions.TrainSimWorldDirectory + @"TS2Prototype\Content\DLC\" + filePath;
+            FileHelpers.DeleteSingleFile(filePath);
             X.IsInstalled=false;
             }
           }
@@ -237,7 +238,7 @@ namespace ToolkitForTSW.Mod
 
     private void GetPakFiles()
 			{
-			var BaseDir = new DirectoryInfo(CTSWOptions.ModsFolder);
+			var BaseDir = new DirectoryInfo(TSWOptions.ModsFolder);
 			FileInfo[] Files = BaseDir.GetFiles("*.pak", SearchOption.AllDirectories);
 			PakFilesList.Clear();
       AvailableModList.Clear();
@@ -252,7 +253,7 @@ namespace ToolkitForTSW.Mod
     private void GetInstalledPakFiles()
 			{
 			var BaseDir =
-				new DirectoryInfo(CTSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\DLC");
+				new DirectoryInfo(TSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\DLC");
 			FileInfo[] Files = BaseDir.GetFiles("*.pak", SearchOption.AllDirectories);
 			foreach (var F in Files)
         {
@@ -274,9 +275,9 @@ namespace ToolkitForTSW.Mod
 
     public static String StripModDir(String Input)
 			{
-			if (Input.StartsWith(CTSWOptions.ModsFolder))
+			if (Input.StartsWith(TSWOptions.ModsFolder))
 				{
-				return Input.Substring(CTSWOptions.ModsFolder.Length);
+				return Input.Substring(TSWOptions.ModsFolder.Length);
 				}
 			return String.Empty;
 			}
@@ -284,9 +285,9 @@ namespace ToolkitForTSW.Mod
     public void ActivatePak()
       {
       var PakPath = SelectedMod.FilePath;
-			var source = CTSWOptions.ModsFolder + PakPath;
+			var source = TSWOptions.ModsFolder + PakPath;
 			var fileName = Path.GetFileName(source);
-			var destination = CTSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\DLC\\" +
+			var destination = TSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\DLC\\" +
 			                  fileName;
 			try
 				{
@@ -307,9 +308,9 @@ namespace ToolkitForTSW.Mod
 
 		public void DeactivatePak()
 			{
-			var filePath = new FileInfo(CTSWOptions.TrainSimWorldDirectory +
+			var filePath = new FileInfo(TSWOptions.TrainSimWorldDirectory +
 			                            "TS2Prototype\\Content\\DLC\\" + SelectedMod.FileName);
-			Result += CApps.DeleteSingleFile(filePath.FullName);
+			Result += FileHelpers.DeleteSingleFile(filePath.FullName);
 	    SelectedMod.IsInstalled=false;
       if (InEditMode)
         {
@@ -320,9 +321,9 @@ namespace ToolkitForTSW.Mod
     public static string ActivateMod(ModModel mod)
       {
       var PakPath = mod.FilePath;
-      var source = CTSWOptions.ModsFolder + PakPath;
+      var source = TSWOptions.ModsFolder + PakPath;
       var fileName = Path.GetFileName(source);
-      var destination = CTSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\DLC\\" +
+      var destination = TSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\DLC\\" +
                         fileName;
       try
         {
@@ -379,8 +380,8 @@ namespace ToolkitForTSW.Mod
         DeactivatePak();
         }
       var PakPath = SelectedMod.FilePath;
-      var source = CTSWOptions.ModsFolder + PakPath;
-      CApps.DeleteSingleFile(source);
+      var source = TSWOptions.ModsFolder + PakPath;
+      FileHelpers.DeleteSingleFile(source);
       ModDataAccess.DeleteMod(SelectedMod.Id);
       if (InEditMode)
         {

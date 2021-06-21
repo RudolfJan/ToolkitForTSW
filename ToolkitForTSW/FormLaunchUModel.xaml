@@ -4,41 +4,31 @@
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             xmlns:local="clr-namespace:ToolkitForTSW"
-                            
+                            xmlns:views="clr-namespace:TreeBuilders.Library.Wpf;assembly=TreeBuilders.Library.Wpf"
                             xmlns:windowSizing="clr-namespace:UISupport.Library.WindowSizing;assembly=Styles.Library"
-                            xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
-                            mc:Ignorable="d"
+                            xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library" 
+														xmlns:Style="clr-namespace:Styles.Library.Converters;assembly=Styles.Library"
+														mc:Ignorable="d"
                             Style="{StaticResource AllWindows}"
                             Title="Launch UModel">
 
-  <Window.Resources>
-    <HierarchicalDataTemplate DataType="{x:Type local:CDirectoryItem}" ItemsSource="{Binding DirectoryItems}">
-      <WrapPanel>
-        <Image Source="Images/folder.png" />
-        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
-      </WrapPanel>
-    </HierarchicalDataTemplate>
-
-    <DataTemplate DataType="{x:Type local:CFileItem}">
-      <WrapPanel>
-        <Image Source="Images/safe.png" />
-        <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
-      </WrapPanel>
-    </DataTemplate>
-  </Window.Resources>
-
-  <ScrollViewer>
+	<Window.Resources>
+		<Style:NullToBoolConverter x:Key="NullConverter"/>
+	</Window.Resources>
+	
+	<ScrollViewer>
     <StackPanel>
       <Grid>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="300" />
-          <ColumnDefinition Width="300" />
-          <ColumnDefinition />
+          <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="auto" />
+					<ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Style="{StaticResource DefaultBorder}" MinHeight="300" MaxHeight="500">
+        <Border Grid.Column="0" Style="{StaticResource DefaultBorder}"  Height="500">
           <StackPanel>
             <TextBlock Style="{StaticResource HeaderTextBlock}">Commands</TextBlock>
-            <DataGrid Name="UModelCommandsDataGrid" Style="{StaticResource DefaultDataGrid}" MinHeight="250"
+            <DataGrid Name="UModelCommandsDataGrid" Style="{StaticResource DefaultDataGrid}" Height="420" Width="300"
                       ItemsSource="{Binding UModelCommandList}" HorizontalScrollBarVisibility="Visible" 
                       SelectionChanged="OnUModelCommandsDataGridSelectionChanged" AutoGenerateColumns="False">
 							<DataGrid.Columns>
@@ -71,20 +61,13 @@
         <Border Grid.Column="1" Style="{StaticResource DefaultBorder}">
           <StackPanel>
             <TextBlock Style="{StaticResource HeaderTextBlock}">Files</TextBlock>
-
-            <TreeView Name="FileTreeView"
-                      Height="300"
-                      Margin="{StaticResource DefaultMargin}"
-                      ItemsSource="{Binding TreeItems}"
-                      ScrollViewer.CanContentScroll="True"
-                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      SelectedItemChanged="OnFileTreeViewSelectedItemChanged" />
-            <Button Name="AddFilesButton" Style="{StaticResource DefaultButton}"
-                    ToolTip="Add selected files to Command Line" Click="OnAddFilesButtonClicked">
-              Add files
-            </Button>
-          </StackPanel>
+						<views:FileTreeView x:Name="FileTreeViewControl" Height="400" Width="300"/>
+						<Button Name="AddFilesButton" Style="{StaticResource DefaultButton}"
+                    ToolTip="Add selected files to Command Line" Click="OnAddFilesButtonClicked"
+										IsEnabled="{Binding FileTree.SelectedFileNode, Converter={StaticResource NullConverter}, NotifyOnSourceUpdated=True}">
+							Add files
+						</Button>
+					</StackPanel>
         </Border>
         <Border Grid.Column="2" Style="{StaticResource DefaultBorder}">
           <StackPanel>

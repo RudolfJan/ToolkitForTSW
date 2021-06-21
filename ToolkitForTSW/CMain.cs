@@ -1,5 +1,6 @@
 ﻿using Filter.Library.Filters.DataAccess;
 using Logging.Library;
+using SavCracker.Library;
 using Screenshots.Library.Logic;
 using Screenshots.Library.WPF.ViewModels;
 using SQLiteDatabase.Library;
@@ -8,8 +9,12 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using ToolkitForTSW.Backups;
 using ToolkitForTSW.DataAccess;
+using ToolkitForTSW.Options;
+using Utilities.Library;
 using Utilities.Library.Filters.DataAccess;
+using Utilities.Library.Zip;
 using DatabaseFactory = ToolkitForTSW.DataAccess.DatabaseFactory;
 
 namespace ToolkitForTSW
@@ -30,39 +35,69 @@ namespace ToolkitForTSW
 
     public CMain()
 			{
-      var InitialInstallDirectory = CTSWOptions.TSWToolsFolder;
-      InitDatabase(); // must be done before trying to get options to avoid exception
-			while (!CTSWOptions.GetNotFirstRun())
+			TSWOptions.ReadFromRegistry();
+			var InitialInstallDirectory = TSWOptions.ToolkitForTSWFolder; //Is always set by the installer
+      InitDatabase();
+			while (!TSWOptions.GetNotFirstRun())
 				{
 				MessageBox.Show(@"Please complete the configuration before you proceed", @"Set configuration",
 					MessageBoxButton.OK,MessageBoxImage.Asterisk);
-				CTSWOptions.ReadFromRegistry();
+				TSWOptions.ReadFromRegistry();
 				var Form = new FormOptions();
 				Form.ShowDialog();
 				if (Form.DialogResult == true)
 					{
-					CTSWOptions.WriteToRegistry();
-					CTSWOptions.UpdateTSWToolsDirectory(InitialInstallDirectory);
+					TSWOptions.WriteToRegistry();
+					TSWOptions.UpdateTSWToolsDirectory(InitialInstallDirectory);
 					}
 				}
-			if (CTSWOptions.TSWToolsFolder.Length > 1)
+			if (TSWOptions.ToolkitForTSWFolder.Length > 1)
 				{
-        InitDatabase(); // TODO Need to do this again, in case the data folder is changed, maybe make it inmutable?
-				CTSWOptions.CreateDirectories();
-				CTSWOptions.CopyManuals();
+				// Do not initialise Database again, should not need to do that.
+				TSWOptions.CreateDirectories();
+				TSWOptions.CopyManuals();
         MoveMods();
-        InitScreenshotManagerSettings();
+				EngineIniSettingDataAccess.ImportEngineIniSettingsFromCsv("SQL\\EngineIniSettingsList.csv");
+				EngineIniSettingDataAccess.ImportDescriptionsFromExcel("SQL\\AnnotatedSettingsList.xlsx");
+				InitScreenshotManagerSettings();
+
+				// Make a backup when required
+				if(TSWOptions.AutoBackup)
+					{
+					var backup= new CBackup();
+					backup.MakeDailyBackup();
+          }
+
         }
+      try
+        {
+				SevenZipLib.InitZip(TSWOptions.SevenZip);
+				}
+			catch(Exception ex)
+        {
+				Log.Trace("Failed to initialize SevenZip functions, probably 7Zip program is not installed",ex);
+        }
+      
+			var optionsChecker= new CheckOptionsReporter();
+			optionsChecker.BuildOptionsCheckReport();
+			if(!optionsChecker.OptionsCheckStatus)
+				{ 
+			MessageBox.Show($"Options not all set correctly\r\n{optionsChecker.OptionsCheckReport}", 
+					@"There are issues with your settings",
+					MessageBoxButton.OK, 
+					MessageBoxImage.Warning);
+				}
+			// LiveryCracker cracker = new LiveryCracker(); // DEBUG
 			}
 
     public static void MoveMods()
       {
 			// Move Mods to proper directory
-      var destination = CTSWOptions.ModsFolder;
+      var destination = TSWOptions.ModsFolder;
       var source = destination.Replace("Mods", "Liveries");
       if (Directory.Exists(source))
         {
-        CApps.CopyDir(source, destination, true);
+				FileHelpers.CopyDir(source, destination, true);
         MessageBox.Show($"You can now safely remove the Liveries folder {source}");
         }
       }
@@ -70,18 +105,24 @@ namespace ToolkitForTSW
 		public void InitDatabase()
       {
       var factory = new DatabaseFactory();
-			var databasePath=$"{CTSWOptions.TSWToolsFolder}TSWTools.db";
+			var databasePath=$"{TSWOptions.ToolkitForTSWFolder}TSWTools.db";
 			var connectionString = $"Data Source = {databasePath}; Version = 3;";
+			DbManager.CurrentDatabaseVersion=4;
+			DbManager.DatabaseVersionDescription= "Added experimentatl settings";
 			DbManager.InitDatabase(connectionString, databasePath, factory);
-      InitScreenshotManagerDatabase();
+			// TODO check process logic very carefully to make sure you set the version correct and execute the proper update procedure.
 			var version = DbManager.GetCurrentVersion();
-      if (version.VersionNr < 3) // old database version ois not compatible
+      if (version.VersionNr < 3) // old database version is not compatible
         {
         DbManager.DeleteDatabase(); 
         DbManager.InitDatabase(connectionString, databasePath, factory);
+				version = DbManager.GetCurrentVersion();
 				}
-			DbManager.UpdateDatabaseVersionNumber(3, "Refactoring DbAccess");
-      version = DbManager.GetCurrentVersion();
+			else
+        {
+				DbManager.UpdateDatabaseVersionNumber(DbManager.CurrentDatabaseVersion, DbManager.DatabaseVersionDescription);
+        }
+			InitScreenshotManagerDatabase();
       RouteDataAccess.InitRouteForSavCracker("SQL\\RouteDataImport.csv");
 			Log.Trace($"Created database {databasePath} Version={version.VersionNr} {version.Description}");
 			}
@@ -96,7 +137,7 @@ namespace ToolkitForTSW
 
     private void InitScreenshotManagerSettings()
       {
-      ImageManager.ThumbnailBasePath= CTSWOptions.ThumbnailFolder;
+      ImageManager.ThumbnailBasePath= TSWOptions.ThumbnailFolder;
 
 			// TODO make this settable in the options
       ScreenshotManagerViewModel.ScreenshotsPerPage = 20;
@@ -111,12 +152,12 @@ namespace ToolkitForTSW
 
 		public void OpenManual()
 			{
-			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "ToolkitForTSW Manual.pdf");
+			Result += ProcessHelper.OpenGenericFile(TSWOptions.ManualsFolder + "ToolkitForTSW Manual.pdf");
 			}
 
 		public void OpenStartersGuide()
 			{
-			Result += CApps.OpenGenericFile(CTSWOptions.ManualsFolder + "TSW2 Starters guide.pdf");
+			Result += ProcessHelper.OpenGenericFile(TSWOptions.ManualsFolder + "TSW2 Starters guide.pdf");
 			}
 		}
 	}

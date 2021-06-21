@@ -1,7 +1,8 @@
 ﻿using SavCracker.Library;
-using SavCrackerTest.Models;
+using SavCracker.Library.Models;
 using System.Windows;
 using System.Windows.Controls;
+using Utilities.Library;
 
 namespace ToolkitForTSW
   {
@@ -78,7 +79,7 @@ namespace ToolkitForTSW
 
     private void OnHexButtonClicked(object sender, RoutedEventArgs e)
       {
-      CApps.OpenGenericFile(ScenarioManager.SelectedSavScenario.ScenarioFile.FullName);
+      ProcessHelper.OpenGenericFile(ScenarioManager.SelectedSavScenario.ScenarioFile.FullName);
       }
     }
   }

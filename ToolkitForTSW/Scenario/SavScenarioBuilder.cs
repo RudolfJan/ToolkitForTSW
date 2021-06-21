@@ -1,5 +1,5 @@
 ﻿using Logging.Library;
-using SavCrackerTest.Models;
+using SavCracker.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,9 +16,9 @@ namespace ToolkitForTSW.Scenario
       {
       if (isTest)
         {
-        return $"{CTSWOptions.GameSaveLocation}Saved\\SaveGames\\TestScenario.sav";
+        return $"{TSWOptions.GameSaveLocation}Saved\\SaveGames\\TestScenario.sav";
         }
-      return $"{CTSWOptions.GameSaveLocation}Saved\\SaveGames\\USD_{scenarioGuid.ToString().ToUpper()}.sav";
+      return $"{TSWOptions.GameSaveLocation}Saved\\SaveGames\\USD_{scenarioGuid.ToString().ToUpper()}.sav";
       }
 
     // https://stackoverflow.com/questions/5958495/append-data-to-byte-array/5958537

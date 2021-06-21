@@ -1,5 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using TreeBuilders.Library.Wpf;
+
 
 namespace ToolkitForTSW
 	{
@@ -8,34 +19,26 @@ namespace ToolkitForTSW
 	/// </summary>
 	public partial class FormRouteGuides
 		{
-		public CRouteGuideManager RouteGuideManager { get; set; }
-    public CMain MainData { get; set; }
+		public FileTreeViewModel Tree { get; set; }
 
-    public FormRouteGuides(CMain MyMainData)
+		public FormRouteGuides(string rootFolder)
 			{
 			InitializeComponent();
-      MainData = MyMainData;
-			RouteGuideManager = new CRouteGuideManager();
-			RouteGuideManager.FillRouteGuidesList();
-			DataContext = RouteGuideManager;
+			FileTreeViewControl.FolderImage = "Images\\folder.png";
+			FileTreeViewControl.FileImage = "Images\\file_extension_doc.png";
+			FileTreeViewControl.SetImages();
+			Tree = new FileTreeViewModel(rootFolder);
+			FileTreeBuilder.RenameFilesToUnquoted(Tree.FileTree);
+			FileTreeViewControl.Tree = Tree;
+			FileTreeViewControl.DataContext = Tree;
 			SetControlStates();
 			}
 
-		private void SetControlStates()
+
+    private void SetControlStates()
 			{
-			OpenGuideButton.IsEnabled = FileTreeView.SelectedItem != null;
 			}
 
-		private void OnFileTreeViewSelectedItemChanged(Object Sender, RoutedPropertyChangedEventArgs<Object> E)
-			{
-			SetControlStates();
-			}
-
-		private void OnOpenGuideButtonClicked(Object Sender, RoutedEventArgs E)
-      {
-      var SelectedFile = CApps.DoubleQuotes(((CDirTreeItem) FileTreeView.SelectedItem).Path);
-			MainData.Result+= CApps.OpenGenericFile(SelectedFile);
-      }
 
 		private void OnOKButtonClicked(Object Sender, RoutedEventArgs E)
 			{

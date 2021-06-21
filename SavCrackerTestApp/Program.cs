@@ -13,7 +13,7 @@ namespace SavCrackerTestApp
     static void Main(string[] args)
       {
       var factory = new DatabaseFactory();
-      var databasePath = $"{CTSWOptions.TSWToolsFolder}TSWTools.db";
+      var databasePath = $"{TSWOptions.ToolkitForTSWFolder}TSWTools.db";
       var connectionString = $"Data Source = {databasePath}; Version = 3;";
       DbManager.InitDatabase(connectionString, databasePath, factory);
       CScenarioManager ScenarioManager = new CScenarioManager();
