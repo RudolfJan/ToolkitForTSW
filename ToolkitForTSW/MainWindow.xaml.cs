@@ -7,6 +7,9 @@ using ToolkitForTSW.Backups;
 using ToolkitForTSW.Mod;
 using ToolkitForTSW.Settings;
 using Utilities.Library;
+using Utilities.Library.Wpf;
+using Utilities.Library.Wpf.ViewModels;
+using Utilities.Library.Wpf.Views;
 
 namespace ToolkitForTSW
 	{
@@ -133,7 +136,11 @@ namespace ToolkitForTSW
 
     private void OnAboutButtonClicked(Object Sender, RoutedEventArgs E)
 			{
-			var Form = new FormAbout();
+			// https://social.msdn.microsoft.com/Forums/en-US/7f58c338-6ffc-4ee8-943e-ef7f70f97111/wpf-about-box?forum=wpf
+
+			var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+			var about = new AboutViewModel(currentAssembly, "1.0", "../../Images/AboutPicture.png", "https://www.hollandhiking.nl/trainsimulator");
+			var Form = new AboutView(about);
 			Form.Show();
 			}
 

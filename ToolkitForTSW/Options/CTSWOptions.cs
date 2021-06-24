@@ -2,8 +2,10 @@
 using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using ToolkitForTSW.Options;
+using Utilities.About;
 using Utilities.Library;
 using Utilities.Library.Zip;
 using MessageBox = System.Windows.MessageBox;
@@ -12,6 +14,9 @@ namespace ToolkitForTSW
   {
   public class TSWOptions
     {
+    private static Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+    private static AboutModel AboutData = new AboutModel();
+
     // Number of read only constants, that depend on the version
     public static bool AllowDevMode = false; // set to false to completely disable DevMode for users
 
@@ -151,8 +156,10 @@ namespace ToolkitForTSW
       {
       get
         {
-        _RegkeyString = "software\\" + AssemblyInfoProvider.AssemblyCompany + "\\" +
-                            AssemblyInfoProvider.AssemblyProduct;
+        AboutData.CurrentAssembly= currentAssembly;
+       
+        _RegkeyString = "software\\" + AboutData.Company + "\\" +
+                            AboutData.Product;
         return _RegkeyString;
         }
       }

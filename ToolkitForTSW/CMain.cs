@@ -35,9 +35,12 @@ namespace ToolkitForTSW
 
     public CMain()
 			{
+
+			// https://docs.microsoft.com/en-us/dotnet/desktop/wpf/app-development/how-to-add-a-splash-screen-to-a-wpf-application?view=netframeworkdesktop-4.8
+
 			TSWOptions.ReadFromRegistry();
 			var InitialInstallDirectory = TSWOptions.ToolkitForTSWFolder; //Is always set by the installer
-      InitDatabase();
+			InitDatabase();
 			while (!TSWOptions.GetNotFirstRun())
 				{
 				MessageBox.Show(@"Please complete the configuration before you proceed", @"Set configuration",
