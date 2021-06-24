@@ -8,11 +8,13 @@
     <UseWPF>true</UseWPF>
     <Company>Holland Hiking</Company>
     <Authors>Rudolf Heijink</Authors>
-    <Version>0.7.0</Version>
+    <Version>7</Version>
     <PackageProjectUrl>https://github.com/RudolfJan/ToolkitForTSW</PackageProjectUrl>
     <Copyright>(C) 2020/2021 Rudolf Heijink</Copyright>
     <ApplicationIcon>Images\LuaCreator.ico</ApplicationIcon>
-    <PackageLicenseFile>License information.pdf</PackageLicenseFile>
+    <PackageLicenseFile></PackageLicenseFile>
+    <AssemblyVersion>0.9.0.0</AssemblyVersion>
+    <FileVersion>0.9.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,10 +22,6 @@
     <EmbeddedResource Remove="Backup\**" />
     <None Remove="Backup\**" />
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="..\Manual\License information.pdf">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
     <Page Remove="Backup\**" />
   </ItemGroup>
 
@@ -48,6 +46,8 @@
     <None Remove="Images\resultset_previous.png" />
     <None Remove="Images\RightArrow.ico" />
     <None Remove="Images\safe.png" />
+    <None Remove="Images\SplashScreen.jpg" />
+    <None Remove="Images\SplashScreen.png" />
     <None Remove="Images\wand.png" />
     <None Remove="SQL\AnnotatedSettingsList.xlsx" />
     <None Remove="SQL\CreateTables.sql" />
@@ -95,6 +95,9 @@
     <Content Include="Images\safe.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <SplashScreen Include="Images\SplashScreen.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </SplashScreen>
     <Content Include="Images\wand.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -135,6 +138,7 @@
     <ProjectReference Include="..\..\RudolfLibraries\SQLiteDatabase.Library\SQLiteDatabase.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Styles.Library\Styles.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\TreeBuilders.Library.Wpf\TreeBuilders.Library.Wpf.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\Utilities.Library.Wpf\Utilities.Library.Wpf.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Utilities.Library\Utilities.Library.csproj" />
     <ProjectReference Include="..\SavCracker.Library\SavCracker.Library.csproj" />
   </ItemGroup>
@@ -144,6 +148,12 @@
     <Resource Include="Images\arrow_up.png" />
     <Resource Include="Images\LeftArrow.ico" />
     <Resource Include="Images\RightArrow.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Images\Thumbs.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 
