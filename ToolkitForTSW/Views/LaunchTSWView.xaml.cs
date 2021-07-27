@@ -1,25 +1,22 @@
 ﻿using System;
-using System.Data;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using ToolkitForTSW.Mod;
 using ToolkitForTSW.Models;
+using ToolkitForTSW.ViewModels;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.Views
   {
-  /// <summary>
-  /// Interaction logic for FormLaunchTSW.xaml
-  /// </summary>
-  public partial class FormLaunchTSW
+  public partial class LaunchTSWView
     {
-    public CLaunchTSW LaunchTSW { get; set; }
+    public LaunchTSWViewModel LaunchTSW { get; set; }
 
-    public FormLaunchTSW()
+    public LaunchTSWView()
       {
       InitializeComponent();
 
-      LaunchTSW = new CLaunchTSW();
+      LaunchTSW = new LaunchTSWViewModel();
       DataContext = LaunchTSW;
       }
  

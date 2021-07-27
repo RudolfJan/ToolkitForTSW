@@ -1,4 +1,4 @@
-﻿<windowSizing:SizableWindow x:Class="ToolkitForTSW.FormInputMapperManager"
+﻿<windowSizing:SizableWindow x:Class="ToolkitForTSW.Views.KeyBindingView"
                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,7 +11,7 @@
                             Title="Input Mappings">
 	<ScrollViewer>
 		<StackPanel>
-			<Label Style="{StaticResource ListBoxHeader}">Standard key mapping</Label>
+			<TextBlock Style="{StaticResource TextBlockHeader}">Standard key mapping</TextBlock>
 			<DataGrid Name="KeyMappingDataGrid" Style="{StaticResource DefaultDataGrid}" ItemsSource="{Binding InputMapperList}"
 			          MinHeight="300" MaxHeight="450" AutoGenerateColumns="False">
 				<DataGrid.Columns>
@@ -27,10 +27,9 @@
 
 				</DataGrid.Columns>
 			</DataGrid>
-			<userControls:ResultsTextBox x:Name="ResultsTextBox" Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Results}" Source="Images/page_delete.png"/>
+			<userControls:ResultsTextBox x:Name="ResultsTextBox" Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Result}" Source="../Images/page_delete.png"/>
 
-			<Button Name="OKButton" Style="{StaticResource OKButton}" HorizontalAlignment="Right"
-			        Click="OnOKButtonClicked">
+			<Button Name="Close" Style="{StaticResource OKButton}" HorizontalAlignment="Right">
 				Close
 			</Button>
 		</StackPanel>

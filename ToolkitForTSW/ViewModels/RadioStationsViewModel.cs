@@ -1,15 +1,14 @@
-﻿using Styles.Library.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Media;
+using System.Threading.Tasks;
+using Caliburn.Micro;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.ViewModels
   {
 
-  public class CRailwayRadioStationManager : Notifier
+  public class RadioStationsViewModel : Screen
     {
     private List<RadioStationModel> _RadioStationList;
     public List<RadioStationModel> RadioStationList
@@ -18,7 +17,7 @@ namespace ToolkitForTSW
       set
         {
         _RadioStationList = value;
-        OnPropertyChanged("RadioStationList");
+        NotifyOfPropertyChange(() => RadioStationList);
         }
       }
 
@@ -29,7 +28,10 @@ namespace ToolkitForTSW
       set
         {
         _SelectedRadioStation = value;
-        OnPropertyChanged("SelectedRadioStation");
+        NotifyOfPropertyChange(() => SelectedRadioStation);
+        NotifyOfPropertyChange(() => CanDeleteRadioStation);
+        NotifyOfPropertyChange(() => CanEditRadioStation);
+        NotifyOfPropertyChange(() => CanTestUrl);
         }
       }
 
@@ -42,7 +44,9 @@ namespace ToolkitForTSW
       set
         {
         _Url = value;
-        OnPropertyChanged("Url");
+        NotifyOfPropertyChange(() => Url);
+        NotifyOfPropertyChange(() => CanSaveRadioStation);
+        NotifyOfPropertyChange(() => CanTestUrl);
         }
       }
 
@@ -53,7 +57,8 @@ namespace ToolkitForTSW
       set
         {
         _RouteName = value;
-        OnPropertyChanged("RouteName");
+        NotifyOfPropertyChange(() => RouteName);
+        NotifyOfPropertyChange(() => CanSaveRadioStation);
         }
       }
 
@@ -64,7 +69,7 @@ namespace ToolkitForTSW
       set
         {
         _Description = value;
-        OnPropertyChanged("Description");
+        NotifyOfPropertyChange(() => Description);
         }
       }
 
@@ -77,11 +82,11 @@ namespace ToolkitForTSW
       set
         {
         _Result = value;
-        OnPropertyChanged("Result");
+        NotifyOfPropertyChange(() => Result);
         }
       }
 
-    public CRailwayRadioStationManager()
+    public RadioStationsViewModel()
       {
       Initialize();
       }
@@ -89,6 +94,14 @@ namespace ToolkitForTSW
     public void Initialize()
       {
       RadioStationList = RadioStationDataAccess.GetAllRadioStations();
+      }
+
+    public bool CanSaveRadioStation
+      {
+      get
+        {
+        return Url?.Length > 1 && RouteName?.Length > 2;
+        }
       }
 
     // Note: FieldList must have format  Field="Value", Field2="Value2"
@@ -108,41 +121,71 @@ namespace ToolkitForTSW
         }
       else
         {
-        SelectedRadioStation.Url=Url;
-        SelectedRadioStation.RouteName=RouteName;
-        SelectedRadioStation.Description=Description;
+        SelectedRadioStation.Url = Url;
+        SelectedRadioStation.RouteName = RouteName;
+        SelectedRadioStation.Description = Description;
         RadioStationDataAccess.UpdateRadioStation(SelectedRadioStation);
         }
-
+      RadioStationList = RadioStationDataAccess.GetAllRadioStations();
+      NotifyOfPropertyChange(() => RadioStationList);
       ClearRadioStation();
+      }
+
+    public bool CanEditRadioStation
+      {
+      get
+        {
+        return SelectedRadioStation != null;
+        }
       }
 
     public void EditRadioStation()
       {
-      Url=SelectedRadioStation.Url;
-      RouteName=SelectedRadioStation.RouteName;
+      Url = SelectedRadioStation.Url;
+      RouteName = SelectedRadioStation.RouteName;
       Description = SelectedRadioStation.Description;
-      _radioStationId= SelectedRadioStation.Id;
+      _radioStationId = SelectedRadioStation.Id;
       }
 
     public void ClearRadioStation()
       {
-      Url=string.Empty;
+      Url = string.Empty;
       RouteName = string.Empty;
       Description = string.Empty;
       _radioStationId = 0;
-      SelectedRadioStation=null;
+      SelectedRadioStation = null;
+      }
+    public bool CanDeleteRadioStation
+      {
+      get
+        {
+        return SelectedRadioStation != null;
+        }
       }
 
     public void DeleteRadioStation()
       {
       RadioStationDataAccess.DeleteRadioStation(SelectedRadioStation.Id);
       RadioStationList.Remove(SelectedRadioStation);
+      RadioStationList = RadioStationDataAccess.GetAllRadioStations();
+      NotifyOfPropertyChange(() => RadioStationList);
       }
 
-    internal void TestUrl()
+    public bool CanTestUrl
+      {
+      get
+        {
+        return SelectedRadioStation != null && SelectedRadioStation.Url.Length > 4;
+        }
+      }
+    public void TestUrl()
       {
       CApps.LaunchUrl(SelectedRadioStation.Url, true);
+      }
+
+    public async Task Close()
+      {
+      await TryCloseAsync();
       }
     }
   }

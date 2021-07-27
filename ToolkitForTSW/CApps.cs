@@ -1,7 +1,7 @@
-﻿using Logging.Library;
-using System;
+﻿using System;
 using System.Diagnostics; // needed for Process class
 using System.IO;
+using Logging.Library;
 using Utilities.Library;
 using Utilities.Library.TextHelpers;
 

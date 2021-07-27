@@ -5,8 +5,8 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using ToolkitForTSW.Options;
-using Utilities.About;
 using Utilities.Library;
+using Utilities.Library.Wpf.Models;
 using Utilities.Library.Zip;
 using MessageBox = System.Windows.MessageBox;
 
@@ -54,7 +54,8 @@ namespace ToolkitForTSW
     public static string ThumbnailFolder { get; set; }
     public static bool NotFirstRun { get; set; }
 
-    public static string Version { get; } = "Version 0.9 beta";
+    public static string Version { get; } = "1.0";
+
 
     public static string GetGameSaveLocation()
       {

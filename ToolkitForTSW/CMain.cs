@@ -9,9 +9,9 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using ToolkitForTSW.Backups;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Options;
+using ToolkitForTSW.ViewModels;
 using Utilities.Library;
 using Utilities.Library.Filters.DataAccess;
 using Utilities.Library.Zip;
@@ -67,7 +67,7 @@ namespace ToolkitForTSW
 				// Make a backup when required
 				if(TSWOptions.AutoBackup)
 					{
-					var backup= new CBackup();
+					var backup= new BackupViewModel();
 					backup.MakeDailyBackup();
           }
 
@@ -153,14 +153,5 @@ namespace ToolkitForTSW
       Task.Factory.StartNew(ImageManager.LoadNewImagesForAllCollectionsAsync);
 			}
 
-		public void OpenManual()
-			{
-			Result += ProcessHelper.OpenGenericFile(TSWOptions.ManualsFolder + "ToolkitForTSW Manual.pdf");
-			}
-
-		public void OpenStartersGuide()
-			{
-			Result += ProcessHelper.OpenGenericFile(TSWOptions.ManualsFolder + "TSW2 Starters guide.pdf");
-			}
 		}
 	}
