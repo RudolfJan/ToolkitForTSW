@@ -1,4 +1,4 @@
-﻿<Window x:Class="ToolkitForTSW.FormLaunchTSW"
+﻿<Window x:Class="ToolkitForTSW.Views.LaunchTSWView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -71,7 +71,7 @@
 						</Grid.ColumnDefinitions>
 
 						<StackPanel Grid.Column="0">
-							<userControls:ResultsTextBox HorizontalAlignment="Stretch" TextHeight="125" Text="{Binding Result}" Style="{StaticResource DefaultResultsTextBox}" Source="Images/page_delete.png"/>
+							<userControls:ResultsTextBox HorizontalAlignment="Stretch" TextHeight="125" Text="{Binding Result}" Style="{StaticResource DefaultResultsTextBox}" Source="../Images/page_delete.png"/>
 						</StackPanel>
 						<StackPanel Grid.Column="1">
 

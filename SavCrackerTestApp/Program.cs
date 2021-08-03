@@ -4,6 +4,7 @@ using System.IO;
 using ToolkitForTSW;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Scenario;
+using ToolkitForTSW.ViewModels;
 using Utilities.Library.TextHelpers;
 
 namespace SavCrackerTestApp
@@ -12,23 +13,23 @@ namespace SavCrackerTestApp
     {
     static void Main(string[] args)
       {
-      var factory = new DatabaseFactory();
-      var databasePath = $"{TSWOptions.ToolkitForTSWFolder}TSWTools.db";
-      var connectionString = $"Data Source = {databasePath}; Version = 3;";
-      DbManager.InitDatabase(connectionString, databasePath, factory);
-      CScenarioManager ScenarioManager = new CScenarioManager();
-      foreach (var scenario in ScenarioManager.ScenarioList)
-        {
-        CScenarioEdit clone = new CScenarioEdit
-          {
-          Scenario = scenario,
-          ScenarioGuid = scenario.SavScenario.ScenarioGuid,
-          ScenarioName = scenario.SavScenario.ScenarioName
-          };
-        var testFile= SavScenarioBuilder.GetClonedScenarioFileName(clone.ScenarioGuid.ToString(),true);
-        SavScenarioBuilder.Build(scenario);
-        CompareBinaryFiles(clone.Scenario.ScenarioFile.FullName, testFile,scenario);
-        }
+      //var factory = new DatabaseFactory();
+      //var databasePath = $"{TSWOptions.ToolkitForTSWFolder}TSWTools.db";
+      //var connectionString = $"Data Source = {databasePath}; Version = 3;";
+      //DbManager.InitDatabase(connectionString, databasePath, factory);
+      //ScenarioManagerViewModel ScenarioManager = new ScenarioManagerViewModel();
+      //foreach (var scenario in ScenarioManager.ScenarioList)
+      //  {
+      //  ScenarioEditViewModel clone = new ScenarioEditViewModel
+      //    {
+      //    Scenario = scenario,
+      //    ScenarioGuid = scenario.SavScenario.ScenarioGuid,
+      //    ScenarioName = scenario.SavScenario.ScenarioName
+      //    };
+      //  var testFile= SavScenarioBuilder.GetClonedScenarioFileName(clone.ScenarioGuid.ToString(),true);
+      //  SavScenarioBuilder.Build(scenario);
+      //  CompareBinaryFiles(clone.Scenario.ScenarioFile.FullName, testFile,scenario);
+      //  }
       }
 
     public static bool CompareBinaryFiles(string filename1, string filename2, CScenario scenario)

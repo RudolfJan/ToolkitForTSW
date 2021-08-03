@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToolkitForTSW
 	{
-	public class CInputMapper
+	public class InputMapperModel
 		{
 		public String InputType { get; set; } = String.Empty;
 		public String Identifier { get; set; } = String.Empty;
@@ -14,7 +14,7 @@ namespace ToolkitForTSW
 		public CKey Key { get; set; } = null;
 		public Boolean Found { get; set; } = false;
 
-		public CInputMapper()
+		public InputMapperModel()
 			{
 			}
 

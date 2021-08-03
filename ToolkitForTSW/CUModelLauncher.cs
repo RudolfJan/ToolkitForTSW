@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using TreeBuilders.Library.Wpf;
+using TreeBuilders.Library.Wpf.ViewModels;
 using Utilities.Library.TextHelpers;
 
 namespace ToolkitForTSW

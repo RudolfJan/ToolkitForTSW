@@ -1,4 +1,5 @@
-﻿using SavCracker.Library;
+﻿using Caliburn.Micro;
+using SavCracker.Library;
 using SavCracker.Library.Models;
 using Styles.Library.Helpers;
 using System;
@@ -7,16 +8,21 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel.Description;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 using ToolkitForTSW.DataAccess;
+using ToolkitForTSW.DialogServices;
 using ToolkitForTSW.Models;
 using ToolkitForTSW.Scenario;
 using Utilities.Library.TextHelpers;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.ViewModels
   {
-
-  public class CScenarioEdit : Notifier
+ 
+  public class ScenarioEditViewModel : Screen
     {
+    private readonly IDialogService _dialogService;
+
     private CScenario _scenario;
     public CScenario Scenario
       {
@@ -27,7 +33,7 @@ namespace ToolkitForTSW
       set
         {
         _scenario = value;
-        OnPropertyChanged("Scenario");
+       NotifyOfPropertyChange(()=>Scenario);
         }
       }
 
@@ -38,7 +44,8 @@ namespace ToolkitForTSW
       set
         {
         _ScenarioName = value;
-        OnPropertyChanged("ScenarioName");
+        NotifyOfPropertyChange(() =>Scenario);
+        NotifyOfPropertyChange(() => CanSaveCopy);
         }
       }
 
@@ -49,7 +56,7 @@ namespace ToolkitForTSW
       set
         {
         _ScenarioGuid = value;
-        OnPropertyChanged("ScenarioGuid");
+        NotifyOfPropertyChange(() =>ScenarioGuid);
         }
       }
 
@@ -60,7 +67,7 @@ namespace ToolkitForTSW
       set
         {
         _ScenarioStartTime = value;
-        OnPropertyChanged("ScenarioStartTime");
+        NotifyOfPropertyChange(() => ScenarioStartTime);
         }
       }
 
@@ -71,7 +78,7 @@ namespace ToolkitForTSW
       set
         {
         _ServiceName = value;
-        OnPropertyChanged("ServiceName");
+        NotifyOfPropertyChange(() =>ServiceName);
         }
       }
 
@@ -82,7 +89,7 @@ namespace ToolkitForTSW
       set
         {
         _ServiceStartTime = value;
-        OnPropertyChanged("ServiceStartTime");
+        NotifyOfPropertyChange(() =>ServiceStartTime);
         }
       }
 
@@ -93,7 +100,7 @@ namespace ToolkitForTSW
       set
         {
         _StartLocation = value;
-        OnPropertyChanged("StartLocation");
+        NotifyOfPropertyChange(() =>StartLocation);
         }
       }
 
@@ -104,7 +111,7 @@ namespace ToolkitForTSW
       set
         {
         _EndLocation = value;
-        OnPropertyChanged("EndLocation");
+        NotifyOfPropertyChange(() =>EndLocation);
         }
       }
 
@@ -115,7 +122,7 @@ namespace ToolkitForTSW
       set
         {
         _EngineString = value;
-        OnPropertyChanged("EngineString");
+        NotifyOfPropertyChange(() =>EngineString);
         }
       }
 
@@ -126,7 +133,7 @@ namespace ToolkitForTSW
       set
         {
         _ConsistString = value;
-        OnPropertyChanged("ConsistString");
+        NotifyOfPropertyChange(() =>ConsistString);
         }
       }
 
@@ -137,7 +144,7 @@ namespace ToolkitForTSW
       set
         {
         _LiveryIdentifier = value;
-        OnPropertyChanged("LiveryIdentifier");
+        NotifyOfPropertyChange(() =>LiveryIdentifier);
         }
       }
 
@@ -148,18 +155,18 @@ namespace ToolkitForTSW
       set
         {
         _OffTheRailsMode = value;
-        OnPropertyChanged("OffTheRailsMode");
+        NotifyOfPropertyChange(() =>OffTheRailsMode);
         }
       }
 
-    private List<SavServiceModel> _ServicesList;
-    public List<SavServiceModel> ServicesList
+    private BindableCollection<SavServiceModel> _ServicesList;
+    public BindableCollection<SavServiceModel> ServicesList
       {
       get { return _ServicesList; }
       set
         {
         _ServicesList = value;
-        OnPropertyChanged("ServicesList");
+        NotifyOfPropertyChange(() =>ServicesList);
         }
       }
 
@@ -170,7 +177,10 @@ namespace ToolkitForTSW
       set
         {
         _SelectedService = value;
-        OnPropertyChanged("SelectedService");
+        NotifyOfPropertyChange(() =>SelectedService);
+        NotifyOfPropertyChange(()=> CanServiceEdit);
+        NotifyOfPropertyChange(() => CanServiceDelete);
+        NotifyOfPropertyChange(() => CanServiceClone);
         }
       }
 
@@ -181,7 +191,7 @@ namespace ToolkitForTSW
       set
         {
         _IsPlayerService = value;
-        OnPropertyChanged("IsPlayerService");
+        NotifyOfPropertyChange(() =>IsPlayerService);
         }
       }
 
@@ -192,18 +202,18 @@ namespace ToolkitForTSW
       set
         {
         _IsPassengerService = value;
-        OnPropertyChanged("IsPassengerService");
+        NotifyOfPropertyChange(() =>IsPassengerService);
         }
       }
 
-    private List<string> _StopPointsList;
-    public List<string> StopPointsList
+    private BindableCollection<string> _StopPointsList;
+    public BindableCollection<string> StopPointsList
       {
       get { return _StopPointsList; }
       set
         {
         _StopPointsList = value;
-        OnPropertyChanged("StopPointsList");
+        NotifyOfPropertyChange(() =>StopPointsList);
         }
       }
 
@@ -214,7 +224,7 @@ namespace ToolkitForTSW
       set
         {
         _IsStopLocationListChanged = value;
-        OnPropertyChanged("IsStopLocationListChanged");
+        NotifyOfPropertyChange(() =>IsStopLocationListChanged);
         }
       }
 
@@ -226,7 +236,7 @@ namespace ToolkitForTSW
       set
         {
         _StopLocation = value;
-        OnPropertyChanged("StopLocation");
+        NotifyOfPropertyChange(() =>StopLocation);
         }
       }
 
@@ -237,7 +247,11 @@ namespace ToolkitForTSW
       set
         {
         _SelectedStopLocation = value;
-        OnPropertyChanged("SelectedStopLocation");
+        NotifyOfPropertyChange(() =>SelectedStopLocation); 
+        NotifyOfPropertyChange(() => CanEditStopLocation);
+        NotifyOfPropertyChange(() => CanDeleteStopLocation);
+        NotifyOfPropertyChange(() => CanMoveUpStopPoint);
+        NotifyOfPropertyChange(() => CanMoveDownStopPoint);
         }
       }
 
@@ -247,20 +261,31 @@ namespace ToolkitForTSW
 
     #region ScenarioEditHandlers
 
-    public void ScenarioEdit()
+    public ScenarioEditViewModel(IDialogService dialogService)
+      {
+
+      _dialogService= dialogService;
+      }
+
+    public void Initialize()
       {
       // ScenarioName = Scenario.SavScenario.ScenarioName;
       ScenarioGuid = Guid.NewGuid();
       ScenarioStartTime = GetPlayerServiceStartTimeText(Scenario.SavScenario.SavServiceList);
       OffTheRailsMode = Scenario.SavScenario.RulesDisabledMode;
       IsToolkitCreated= (ScenarioDataAccess.GetScenarioByGuid(Scenario.SavScenario.ScenarioGuid)!=null);
-      ServicesList = new List<SavServiceModel>();
+      ServicesList = new BindableCollection<SavServiceModel>();
       foreach (var service in Scenario.SavScenario.SavServiceList)
         {
         ServicesList.Add(service);
         }
       }
 
+    protected override void OnViewLoaded(object view)
+      {
+      base.OnViewLoaded(view);
+      Initialize();
+      }
 
     public static string GetPlayerServiceStartTimeText(List<SavServiceModel> savServiceList)
       {
@@ -297,6 +322,13 @@ namespace ToolkitForTSW
         }
       }
 
+    public bool CanServiceEdit
+      {
+      get
+        {
+        return SelectedService!=null;
+        }
+      }
     public void ServiceEdit()
       {
       ServiceName = SelectedService.ServiceName;
@@ -308,24 +340,42 @@ namespace ToolkitForTSW
       EngineString = SelectedService.EngineString;
       ConsistString = SelectedService.ConsistString;
       LiveryIdentifier = SelectedService.LiveryIdentifier;
-      StopPointsList = new List<string>();
+      StopPointsList = new BindableCollection<string>();
       foreach(var stopPoint in SelectedService.StopLocationList)
         {
         StopPointsList.Add(stopPoint);
         }
+      NotifyOfPropertyChange(() => SelectedService.StopLocationList);
+      NotifyOfPropertyChange(() => ServicesList);
       }
 
+    public bool CanServiceClone
+      {
+      get
+        {
+        return SelectedService != null;
+        }
+      }
     public void ServiceClone()
       {
       var newService = new SavServiceModel(SelectedService);
       newService.ServiceName= $"Copy - { newService.ServiceName}";
       newService.ServiceGuid = Guid.NewGuid();
       ServicesList.Add(newService);
+      NotifyOfPropertyChange(() => ServicesList);
       }
 
+    public bool CanServiceDelete
+      {
+      get
+        {
+        return SelectedService != null;
+        }
+      }
     public void ServiceDelete()
       {
       ServicesList.Remove(SelectedService);
+      NotifyOfPropertyChange(()=>ServicesList);
       }
 
     public void ServiceSave()
@@ -403,6 +453,14 @@ namespace ToolkitForTSW
     #endregion
 
     #region StopPoints
+
+    public bool CanMoveUpStopPoint
+      {
+      get
+        {
+        return SelectedStopLocation!=null;
+        }
+      }
     public void MoveUpStopPoint()
       {
       if (SelectedStopLocation == null)
@@ -418,9 +476,16 @@ namespace ToolkitForTSW
         StopPointsList[ix - 1] = currentLocation;
         IsStopLocationListChanged = true;
         }
-      OnPropertyChanged("StopPointsList");
+      NotifyOfPropertyChange(()=> StopPointsList);
       }
 
+    public bool CanMoveDownStopPoint
+      {
+      get
+        {
+        return SelectedStopLocation != null;
+        }
+      }
     public void MoveDownStopPoint()
       {
       if (SelectedStopLocation == null)
@@ -437,8 +502,17 @@ namespace ToolkitForTSW
         IsStopLocationListChanged = true;
         }
 
-      OnPropertyChanged("StopPointsList");
+      NotifyOfPropertyChange(() => StopPointsList);
       }
+
+    public bool CanEditStopLocation
+      {
+      get
+        {
+        return SelectedStopLocation != null;
+        }
+      }
+
 
     public void EditStopLocation()
       {
@@ -451,13 +525,20 @@ namespace ToolkitForTSW
       SelectedStopLocation=null;
       }
 
+    public bool CanDeleteStopLocation
+      {
+      get
+        {
+        return SelectedStopLocation != null;
+        }
+      }
     public void DeleteStopLocation()
       {
       StopPointsList.Remove(SelectedStopLocation);
       SelectedStopLocation=null;
       StopLocation = "";
       IsStopLocationListChanged = true;
-      OnPropertyChanged("StopPointsList");
+      NotifyOfPropertyChange(() => StopPointsList);
       }
 
     public void SaveStopLocation()
@@ -472,7 +553,7 @@ namespace ToolkitForTSW
         SelectedStopLocation = StopLocation;
         }
       IsStopLocationListChanged = true;
-      OnPropertyChanged("StopPointsList");
+      NotifyOfPropertyChange(() => StopPointsList);
       }
 
     internal void SaveStopLocationList()
@@ -483,7 +564,7 @@ namespace ToolkitForTSW
         SelectedService.StopLocationList.Add(stopPoint);
         }
       IsStopLocationListChanged = false;
-      OnPropertyChanged("StopPointsList");
+      NotifyOfPropertyChange(() => StopPointsList);
       }
 
     internal void RefreshStopLocationList()
@@ -494,14 +575,23 @@ namespace ToolkitForTSW
         StopPointsList.Add(stopPoint);
         }
       IsStopLocationListChanged = false;
-      OnPropertyChanged("StopPointsList");
+      NotifyOfPropertyChange(() => StopPointsList);
       }
 
     #endregion
 
     #region SaveScenario
 
-    public void SaveCopy()
+    public bool CanSaveCopy
+      {
+      get
+        {
+        return ScenarioName!=null && ScenarioName.Length>3;
+        }
+ 
+      }
+
+    public async Task SaveCopy()
       {
       UpdateScenarioStartTime();
       var newScenario = new CScenario();
@@ -514,7 +604,7 @@ namespace ToolkitForTSW
       newSavScenario.RouteName = Scenario.SavScenario.RouteName;
       newSavScenario.RouteString = Scenario.SavScenario.RouteString;
       newSavScenario.RulesDisabledMode = OffTheRailsMode;
-      newSavScenario.SavServiceList = ServicesList;
+      newSavScenario.SavServiceList = ServicesList.ToList();
       newSavScenario.TargetAsset = Scenario.SavScenario.TargetAsset;
       newScenario.ScenarioFile = new FileInfo(SavScenarioBuilder.GetClonedScenarioFileName(newSavScenario.ScenarioGuid.ToString(),false));
       Scenario=newScenario;
@@ -530,24 +620,48 @@ namespace ToolkitForTSW
         ScenarioDataAccess.InsertScenario(scenarioDb);
         Scenario.IsToolkitCreated=true;
         }
+      _dialogService.Show("Scenario copied, edited and rebuilt successfully", "Save changes as copy", DialogButton.OK, DialogImage.Information);
+      await TryCloseAsync();
       }
 
-    public void SaveOverwrite()
+    public bool CanSaveOverWrite
+      {
+      get
+        {
+        return Scenario?.SavScenario != null && IsToolkitCreated;
+        }
+      }
+
+    public async Task SaveOverWrite()
       {
       UpdateScenarioStartTime();
       var savScenario = Scenario.SavScenario;
-      savScenario.ScenarioName = ScenarioName;
+      if(!string.IsNullOrEmpty(ScenarioName))
+        {
+        savScenario.ScenarioName = ScenarioName;
+        }
       savScenario.ScenarioGuid = ScenarioGuid;
       // savScenario.GlobalElectrificationMode = Scenario.SavScenario.GlobalElectrificationMode;
       savScenario.RouteAbbreviation = Scenario.SavScenario.RouteAbbreviation;
       savScenario.RouteName = Scenario.SavScenario.RouteName;
       savScenario.RouteString = Scenario.SavScenario.RouteString;
       savScenario.RulesDisabledMode = OffTheRailsMode;
-      savScenario.SavServiceList = ServicesList;
+      savScenario.SavServiceList = ServicesList.ToList();
       savScenario.TargetAsset = Scenario.SavScenario.TargetAsset;
       SavScenarioBuilder.Build(Scenario);
+      _dialogService.Show("Scenario overwritten, edited and rebuilt successfully", "Updated scenario", DialogButton.OK, DialogImage.Information);
+      await TryCloseAsync();
       }
 
+    public async Task Cancel()
+      {
+      await TryCloseAsync();
+      }
+
+    public async Task Close()
+      {
+      await TryCloseAsync();
+      }
     #endregion
 
 

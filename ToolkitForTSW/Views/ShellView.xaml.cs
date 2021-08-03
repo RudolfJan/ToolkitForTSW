@@ -3,26 +3,26 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using ToolkitForTSW;
-using ToolkitForTSW.Backups;
 using ToolkitForTSW.Mod;
 using ToolkitForTSW.Settings;
+using TreeBuilders.Library.Wpf;
+using TreeBuilders.Library.Wpf.ViewModels;
+using TreeBuilders.Library.Wpf.Views;
 using Utilities.Library;
 using Utilities.Library.Wpf;
 using Utilities.Library.Wpf.ViewModels;
 using Utilities.Library.Wpf.Views;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.Views
 	{
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow
+	
+	public partial class ShellView: Window
 		{
 		public CMain MainData { get; set; }
 		public Log LogForm;
 		public static LogEventHandler LogEventHandler { get; set; }
 
-		public MainWindow()
+		public ShellView()
 			{
 			InitializeComponent();
 			// trace setup
@@ -44,36 +44,11 @@ namespace ToolkitForTSW
 			Form.ShowDialog();
 			}
 
-		private void OnLogViewButtonClicked(Object Sender, RoutedEventArgs E)
-			{
-			var Form = new FormLogViewer(LogForm);
-			Form.Show();
-			}
-
-		private void OnBackupButtonClicked(Object Sender, RoutedEventArgs E)
-			{
-			var Form = new FormBackup();
-			Form.Show();
-			}
-
-		private void OnKeyBindingButtonClicked(Object Sender, RoutedEventArgs E)
-			{
-			var InputMapperList = new CInputMapperList();
-			var Form = new FormInputMapperManager(InputMapperList);
-			Form.Show();
-			}
-
 		#endregion
 
 		#region Unpack
 
-    private void OnScenarioManager(object sender, RoutedEventArgs e)
-      {
-			var Form= new FormScenarioManager();
-      Form.Show();
-      }
-
-		private void OnUnpackerButtonClicked(Object Sender, RoutedEventArgs E)
+    private void OnUnpackerButtonClicked(Object Sender, RoutedEventArgs E)
 			{
 			var Form = new FormUnpackGameFiles();
 			Form.Show();
@@ -92,12 +67,6 @@ namespace ToolkitForTSW
 		#endregion
 
 		#region Tools
-
-		private void OnLaunchTSWButtonClicked(Object Sender, RoutedEventArgs E)
-			{
-			var Form = new FormLaunchTSW();
-			Form.Show();
-			}
 
 		private void OnScreenshotManagerButtonClicked(Object Sender, RoutedEventArgs E)
 			{
@@ -120,7 +89,7 @@ namespace ToolkitForTSW
 
     private void OnRadioStationsButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var Form= new FormRadioStationManager();
+      var Form= new RadioStationsView();
       Form.Show();
       }
 
@@ -134,44 +103,14 @@ namespace ToolkitForTSW
 
     #region Help
 
-    private void OnAboutButtonClicked(Object Sender, RoutedEventArgs E)
-			{
-			// https://social.msdn.microsoft.com/Forums/en-US/7f58c338-6ffc-4ee8-943e-ef7f70f97111/wpf-about-box?forum=wpf
 
-			var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-			var about = new AboutViewModel(currentAssembly, "1.0", "../../Images/AboutPicture.png", "https://www.hollandhiking.nl/trainsimulator");
-			var Form = new AboutView(about);
-			Form.Show();
-			}
+  
 
-		private void OnManualButtonClicked(Object Sender, RoutedEventArgs E)
-			{
-			MainData.OpenManual();
-			}
-
-		private void OnStartersGuideButtonClicked(Object Sender, RoutedEventArgs E)
-			{
-			MainData.OpenStartersGuide();
-			}
-
-		private void OnRouteGuidesButtonClicked(Object Sender, RoutedEventArgs E)
-			{
-			var Form = new FormRouteGuides(TSWOptions.ManualsFolder+"RouteGuides\\");
-			Form.Show();
-			}
-
+    private void GetRouteGuides_Click(object sender, RoutedEventArgs e)
+      {
+			var form= new RouteGuideView();
+		  form.Show();
+      }
 		#endregion
-
-		#region Closing
-
-		private void OnOkButtonClicked(Object Sender, RoutedEventArgs E)
-			{
-			Close();
-			}
-
-
-    #endregion
-
- 
-    }
+		}
 	}

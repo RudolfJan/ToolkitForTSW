@@ -1,4 +1,4 @@
-﻿<windowSizing:SizableWindow x:Class="ToolkitForTSW.FormScenarioManager"
+﻿<windowSizing:SizableWindow x:Class="ToolkitForTSW.Views.ScenarioManagerView"
                              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -24,7 +24,7 @@
           CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False"
           ItemsSource="{Binding ScenarioList }"
 					SelectedItem="{Binding SelectedSavScenario, NotifyOnSourceUpdated=True}" 
-          Height="385" Width="400" SelectionChanged="OnSelectedScenarioChanged">
+          Height="385" Width="400">
 						<DataGrid.Columns>
 							<DataGridTemplateColumn Header="Scenario">
 								<DataGridTemplateColumn.CellTemplate>
@@ -77,7 +77,7 @@
 					          CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False"
 					          ItemsSource="{Binding SelectedSavScenario.SavScenario.SavServiceList }"
 					          Height="310" Width="300"
-					          SelectedItem="{Binding SelectedSavService, NotifyOnSourceUpdated=True }" SelectionChanged="OnSelectedServiceChanged"
+					          SelectedItem="{Binding SelectedSavService, NotifyOnSourceUpdated=True }"
 					          >
 						<DataGrid.Columns>
 							<DataGridTemplateColumn Header="Services">
@@ -136,11 +136,11 @@
 				</StackPanel>
 			</Grid>
 			<WrapPanel HorizontalAlignment="Right">
-				<Button Name="HexButton" Style="{StaticResource ButtonDefault}" Click="OnHexButtonClicked" >Open in editor</Button>
+				<Button Name="OpenHex" Style="{StaticResource ButtonDefault}">Open in hex editor</Button>
 
-				<Button Name="PublishButton" Style="{StaticResource ButtonDefault}" Click="PublishButton_Click">Publish</Button>
-				<Button Name="EditButton" Style="{StaticResource ButtonDefault}" Click="EditButton_Click">Edit</Button>
-				<Button Name="DeleteButton" Style="{StaticResource ButtonDefault}" Click="DeleteButton_Click">Delete</Button>
+				<Button Name="PublishScenario" Style="{StaticResource ButtonDefault}" >Publish</Button>
+				<Button Name="EditScenario" Style="{StaticResource ButtonDefault}">Edit</Button>
+				<Button Name="DeleteScenario" Style="{StaticResource ButtonDefault}">Delete</Button>
 
 <Button Name="OKButton" Style="{StaticResource ButtonOK}" Click="OnExitButtonClicked">Close</Button>
 			</WrapPanel>

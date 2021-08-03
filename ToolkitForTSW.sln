@@ -56,6 +56,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TreeBuilders.Library.Wpf", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities.Library.Wpf", "..\RudolfLibraries\Utilities.Library.Wpf\Utilities.Library.Wpf.csproj", "{FA36BD88-4037-4B59-99CF-9CEA5EC3788B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging.Library.Wpf", "..\RudolfLibraries\Logging.Library.Wpf\Logging.Library.Wpf.csproj", "{033F742C-8571-45F8-B1A8-621371D9E65A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +120,10 @@ Global
 		{FA36BD88-4037-4B59-99CF-9CEA5EC3788B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA36BD88-4037-4B59-99CF-9CEA5EC3788B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA36BD88-4037-4B59-99CF-9CEA5EC3788B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{033F742C-8571-45F8-B1A8-621371D9E65A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{033F742C-8571-45F8-B1A8-621371D9E65A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{033F742C-8571-45F8-B1A8-621371D9E65A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{033F742C-8571-45F8-B1A8-621371D9E65A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

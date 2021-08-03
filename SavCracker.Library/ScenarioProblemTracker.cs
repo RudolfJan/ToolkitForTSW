@@ -9,8 +9,10 @@ namespace SavCracker.Library
     {
     public static List<string> FindScenarioProblems(SavScenarioModel savScenario)
       {
-      var output = new List<string>();
-      output.Add(HasPlayerService(savScenario.SavServiceList));
+      var output = new List<string>
+        {
+        HasPlayerService(savScenario.SavServiceList)
+        };
       output.AddRange(AIStartTimeCheck(savScenario.SavServiceList));
       output.AddRange(ServiceConfirmationCheck(savScenario.SavServiceList));
       return output;
@@ -71,7 +73,6 @@ namespace SavCracker.Library
 
     private static string HasPlayerService(List<SavServiceModel> savServiceList)
       {
-      var output = string.Empty;
       foreach (var service in savServiceList)
         {
         if (service.IsPlayerService)
@@ -80,7 +81,7 @@ namespace SavCracker.Library
           }
         }
 
-      output = "ERROR Scenario does not have a player service";
+      var output = "ERROR Scenario does not have a player service";
       return output;
       }
     }

@@ -125,6 +125,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
     <PackageReference Include="ClosedXML" Version="0.95.4" />
     <PackageReference Include="Syroot.Windows.IO.KnownFolders" Version="1.2.3" />
   </ItemGroup>
@@ -132,6 +133,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\RudolfLibraries\Filter.Library.WPF\Filter.Library.WPF.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Filter.Library\Filter.Library.csproj" />
+    <ProjectReference Include="..\..\RudolfLibraries\Logging.Library.Wpf\Logging.Library.Wpf.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Logging.Library\Logging.Library.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Screenshots.Library.WPF\Screenshots.Library.WPF.csproj" />
     <ProjectReference Include="..\..\RudolfLibraries\Screenshots.Library\Screenshots.Library.csproj" />
@@ -154,6 +156,10 @@
     <None Update="Images\Thumbs.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Backups\" />
   </ItemGroup>
 
 

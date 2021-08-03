@@ -1,13 +1,14 @@
-﻿using Logging.Library;
+﻿using Caliburn.Micro;
+using Logging.Library;
 using Styles.Library.Helpers;
 using System;
 using System.IO;
 using ToolkitForTSW.Mod;
 using ToolkitForTSW.Settings;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.ViewModels
   {
-  public class CLaunchTSW : Notifier
+  public class LaunchTSWViewModel : Screen
     {
     private Boolean _LaunchRadio;
 
@@ -17,7 +18,7 @@ namespace ToolkitForTSW
       set
         {
         _LaunchRadio = value;
-        OnPropertyChanged("LaunchRadio");
+        NotifyOfPropertyChange(()=>LaunchRadio);
         }
       }
 
@@ -29,7 +30,7 @@ namespace ToolkitForTSW
       set
         {
         _RadioUrl = value;
-        OnPropertyChanged("RadioUrl");
+        NotifyOfPropertyChange(() => RadioUrl);
         }
       }
 
@@ -41,7 +42,7 @@ namespace ToolkitForTSW
       set
         {
         _SettingsManager = value;
-        OnPropertyChanged("Settings");
+        NotifyOfPropertyChange(() => SettingsManager);
         }
       }
 
@@ -53,19 +54,19 @@ namespace ToolkitForTSW
       set
         {
         _modSet = value;
-        OnPropertyChanged("ModSet");
+        NotifyOfPropertyChange(() => ModSet);
         }
       }
 
-    private CRailwayRadioStationManager _RailwayRadioStationManager;
+    private RadioStationsViewModel _RailwayRadioStationManager;
 
-    public CRailwayRadioStationManager RailwayRadioStationManager
+    public RadioStationsViewModel RailwayRadioStationManager
       {
       get { return _RailwayRadioStationManager; }
       set
         {
         _RailwayRadioStationManager = value;
-        OnPropertyChanged("RailwayRadioStationManager");
+        NotifyOfPropertyChange(() => RailwayRadioStationManager);
         }
       }
 
@@ -77,14 +78,14 @@ namespace ToolkitForTSW
       set
         {
         _Result = value;
-        OnPropertyChanged("Result");
+        NotifyOfPropertyChange(() => Result);
         }
       }
 
-    public CLaunchTSW()
+    public LaunchTSWViewModel()
       {
       SettingsManager = new CSettingsManager();
-      RailwayRadioStationManager = new CRailwayRadioStationManager();
+      RailwayRadioStationManager = new RadioStationsViewModel();
       RailwayRadioStationManager.Initialize();
 
 //		RadioUrl = "https://tunein.com/radio/Railroad-Radio-West-Slope-s89688/"; // Default

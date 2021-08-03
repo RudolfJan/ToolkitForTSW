@@ -1,21 +1,23 @@
-﻿using Logging.Library;
+﻿using Caliburn.Micro;
+using Logging.Library;
 using Styles.Library.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.ViewModels
 {
-	public class CInputMapperList : Notifier
+	public class KeyBindingViewModel : Screen
 		{
-		private ObservableCollection<CInputMapper> _InputMapperList;
-		public ObservableCollection<CInputMapper> InputMapperList
+		private BindableCollection<InputMapperModel> _InputMapperList;
+		public BindableCollection<InputMapperModel> InputMapperList
 			{
 			get { return _InputMapperList; }
 			set
 				{
 				_InputMapperList = value;
-				OnPropertyChanged("InputMapperList");
+				NotifyOfPropertyChange(()=>InputMapperList);
 				}
 			}
 
@@ -26,20 +28,20 @@ namespace ToolkitForTSW
 			set
 				{
 				_Result = value;
-				OnPropertyChanged("Result");
+				NotifyOfPropertyChange(()=>Result);
 				}
 			}
 
 
-		public CInputMapperList()
+		public KeyBindingViewModel()
 			{
-			InputMapperList=new ObservableCollection<CInputMapper>();
+			InputMapperList=new BindableCollection<InputMapperModel>();
 			var InputMapperFile = TSWOptions.UnpackFolder +
 			                      "TS2Prototype-WindowsNoEditor.pak\\TS2Prototype\\Config\\DefaultInput.ini";
 			if (!File.Exists(InputMapperFile))
 				{
 				Result += Log.Trace("Cannot open Input mapper file. Did you unpack the core game? " +
-				                     InputMapperFile);
+				                     InputMapperFile,LogEventType.Error);
 				return;
 				}
 
@@ -89,9 +91,9 @@ namespace ToolkitForTSW
 					{
 					String IncreaseInputs = InputLine.Substring(IdentifierEnd + 1, IncInputsEnd - IdentifierEnd - 2);
 					String DecreaseInputs = InputLine.Substring(IncInputsEnd);
-					CInputMapper Inc = new CInputMapper();
+					InputMapperModel Inc = new InputMapperModel();
 					Inc.ParseInputLine(IncreaseInputs, InputType, Identifier);
-					CInputMapper Dec = new CInputMapper();
+					InputMapperModel Dec = new InputMapperModel();
 					Dec.ParseInputLine(DecreaseInputs, InputType, Identifier);
 					InputMapperList.Add(Inc);
 					InputMapperList.Add(Dec);
@@ -99,7 +101,7 @@ namespace ToolkitForTSW
 				else
 					{
 					String IncreaseInputs = InputLine.Substring(IdentifierEnd + 1);
-					CInputMapper Inc = new CInputMapper();
+					InputMapperModel Inc = new InputMapperModel();
 					Inc.ParseInputLine(IncreaseInputs, InputType, Identifier);
 					InputMapperList.Add(Inc);
 					}
@@ -113,11 +115,16 @@ namespace ToolkitForTSW
 				Int32 IdentifierEnd = InputLine.IndexOf(",", StringComparison.Ordinal);
 				String Identifier = InputLine.Substring(29, IdentifierEnd - 30);
 				String ActionPart = InputLine.Substring(IdentifierEnd+1);
-				CInputMapper Inc = new CInputMapper();
+				InputMapperModel Inc = new InputMapperModel();
 				Inc.ParseActionMapping(ActionPart, InputType, Identifier);
 				InputMapperList.Add(Inc);
 				}
 			return Result;
 			}
+
+		public async Task Close()
+      {
+			await TryCloseAsync();
+      }
 		}
 	}

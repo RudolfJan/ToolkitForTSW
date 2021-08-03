@@ -1,4 +1,4 @@
-﻿<Window x:Class="ToolkitForTSW.FormScenarioEdit"
+﻿<Window x:Class="ToolkitForTSW.Views.ScenarioEditView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -44,7 +44,7 @@
 					<userControls:LabelTextBox Name="TargetScenarioNameTextBox" Grid.Row="2" Grid.Column="0" 
 				                           LabelText="Target scenario" LabelWidth="90" Width="350"
 				                           Style="{StaticResource DefaultLabelTextBox}"
-				                            TextChanged="TargetScenarioNameTextBox_OnTextChanged"
+				                           
 				                           >
 						<userControls:LabelTextBox.TextBoxText>
 							<Binding Path="ScenarioName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
@@ -87,7 +87,7 @@
 						<DataGrid Name="ServicesDataGrid" Style="{StaticResource DataGridReadOnly}"
 						          ItemsSource="{Binding ServicesList }"
 						          Height="310" Width="300"
-						          SelectedItem="{Binding SelectedService, NotifyOnSourceUpdated=True }" SelectionChanged="OnSelectedServiceChanged" MouseLeftButtonDown="OnPreviewServicesDataGridMouseDown" 
+						          SelectedItem="{Binding SelectedService, NotifyOnSourceUpdated=True }" MouseLeftButtonDown="OnPreviewServicesDataGridMouseDown" 
 						>
 							<DataGrid.Columns>
 								<DataGridTemplateColumn Header="Services">
@@ -115,9 +115,9 @@
 							</DataGrid.Columns>
 						</DataGrid>
 						<WrapPanel>
-						<Button Name="EditService" Style="{StaticResource ButtonNarrow}" Click="OnServiceEditClicked" >Edit</Button>
-							<Button Name="CloneService" Style="{StaticResource ButtonNarrow}" Click="OnServiceCloneClicked" >Clone</Button>
-							<Button Name="DeleteService" Style="{StaticResource ButtonNarrow}" Click="OnServiceDeleteClicked" >Delete</Button>
+						<Button Name="ServiceEdit" Style="{StaticResource ButtonNarrow}">Edit</Button>
+							<Button Name="ServiceClone" Style="{StaticResource ButtonNarrow}">Clone</Button>
+							<Button Name="ServiceDelete" Style="{StaticResource ButtonNarrow}">Delete</Button>
 						</WrapPanel>
 					</StackPanel>
 					<StackPanel Grid.Column="1" Grid.Row="0">
@@ -156,8 +156,8 @@
 									<TextBox Name="LiveryIdTextBox" Width="100" Style="{StaticResource TextBoxDefault}" Text="{Binding LiveryIdentifier}" HorizontalAlignment="Right"/>
 								</WrapPanel>
 									<WrapPanel>
-										<Button Name="SaveService" Style="{StaticResource ButtonDefault}" Click="OnServiceSaveClicked" >Save</Button>
-										<Button Name="ClearService" Style="{StaticResource ButtonDefault}" Click="OnServiceClearClicked">Clear</Button>
+										<Button Name="ServiceSave" Style="{StaticResource ButtonDefault}">Save</Button>
+										<Button Name="ServiceClear" Style="{StaticResource ButtonDefault}">Clear</Button>
 									</WrapPanel>
 
 								</StackPanel>
@@ -174,22 +174,22 @@
 										          ItemsSource="{Binding StopPointsList, NotifyOnSourceUpdated=True, Mode=TwoWay}"
 										          SelectedItem="{Binding SelectedStopLocation}"
 
-										          Height="200" Width="200" SelectionChanged="OnSelectedStopLocationChanged">
+										          Height="200" Width="200">
 											<DataGrid.Columns>
 												<DataGridTextColumn Header="Stop location" Binding="{Binding}"/>
 											</DataGrid.Columns>
 										</DataGrid>
 										<StackPanel Grid.Column="1">
-											<Button Name="MoveUpButton" Style="{StaticResource ButtonTransparentImage}" Click="MoveUpButtonClicked" >
-													<Image Source="Images/arrow_up.png"/>
+											<Button Name="MoveUpStopPoint" Style="{StaticResource ButtonTransparentImage}">
+													<Image Source="../Images/arrow_up.png"/>
 											</Button>
-											<Button Name="MoveDownButton" Style="{StaticResource ButtonTransparentImage}" Click="MoveDownButtonClicked" >
-												<Image Source="Images/arrow_down.png"/>
+											<Button Name="MoveDownStopPoint" Style="{StaticResource ButtonTransparentImage}">
+												<Image Source="../Images/arrow_down.png"/>
 											</Button>
-											<Button Name="EditStopLocation" Style="{StaticResource ButtonNarrow}" Click="OnEditStopLocationClicked" >Edit</Button>
-											<Button Name="AddStopLocation" Style="{StaticResource ButtonNarrow}" Click="OnAddStopLocationClicked" >Add new</Button>
-											<Button Name="DeleteStopLocation" Style="{StaticResource ButtonNarrow}" Click="OnDeleteStopLocationClicked">Delete</Button>
-											<Button Name="SaveStopLocation" Style="{StaticResource ButtonNarrow}" Click="OnSaveStopLocationClicked" >Save</Button>
+											<Button Name="EditStopLocation" Style="{StaticResource ButtonNarrow}">Edit</Button>
+											<Button Name="AddStopLocation" Style="{StaticResource ButtonNarrow}">Add new</Button>
+											<Button Name="DeleteStopLocation" Style="{StaticResource ButtonNarrow}">Delete</Button>
+											<Button Name="SaveStopLocation" Style="{StaticResource ButtonNarrow}">Save</Button>
 										</StackPanel>
 									</Grid>
 									
@@ -199,8 +199,8 @@
 										<TextBox Name="StopLocationTextBox" Width="200" Style="{StaticResource TextBoxDefault}" Text="{Binding StopLocation}" HorizontalAlignment="Right"/>
 									</WrapPanel>
 									<WrapPanel>
-										<Button Name="AbandonStopLocationChanges" Style="{StaticResource ButtonDefault}" Click="OnCancelStopLocationList" >Cancel</Button>
-										<Button Name="SaveStopLocationChanges" Style="{StaticResource ButtonDefault}" Click="OnSaveStopLocationList"  >Save to service</Button>
+										<Button Name="RefreshStopLocationList" Style="{StaticResource ButtonDefault}">Cancel</Button>
+										<Button Name="SaveStopLocationList" Style="{StaticResource ButtonDefault}">Save to service</Button>
 
 									</WrapPanel>
 								</StackPanel>
@@ -214,9 +214,9 @@
 
 		<StackPanel>
 			<WrapPanel VerticalAlignment="Bottom" HorizontalAlignment="Right">
-				<Button Name="CancelButton" Style="{StaticResource ButtonCancel}" Click="CancelButton_OnClick">Cancel</Button>
-				<Button Name="SaveOverWriteButton" Style="{StaticResource ButtonOK}" Click="SaveOverWriteClicked">Save overwrite</Button>
-				<Button Name="SaveCopyButton" Style="{StaticResource ButtonOK}" Click="SaveCopyClicked">Save copy</Button>
+				<Button Name="Cancel" Style="{StaticResource ButtonCancel}">Cancel</Button>
+				<Button Name="SaveOverWrite" Style="{StaticResource ButtonOK}">Save overwrite</Button>
+				<Button Name="SaveCopy" Style="{StaticResource ButtonOK}">Save copy</Button>
 			</WrapPanel>
 		</StackPanel>
 	</StackPanel>
