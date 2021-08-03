@@ -5,6 +5,9 @@ using System.Windows;
 using ToolkitForTSW;
 using ToolkitForTSW.Mod;
 using ToolkitForTSW.Settings;
+using TreeBuilders.Library.Wpf;
+using TreeBuilders.Library.Wpf.ViewModels;
+using TreeBuilders.Library.Wpf.Views;
 using Utilities.Library;
 using Utilities.Library.Wpf;
 using Utilities.Library.Wpf.ViewModels;
@@ -98,6 +101,16 @@ namespace ToolkitForTSW.Views
 
     #endregion
 
- 
-    }
+    #region Help
+
+
+  
+
+    private void GetRouteGuides_Click(object sender, RoutedEventArgs e)
+      {
+			var form= new RouteGuideView();
+		  form.Show();
+      }
+		#endregion
+		}
 	}

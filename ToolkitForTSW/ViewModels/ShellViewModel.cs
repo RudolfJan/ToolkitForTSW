@@ -88,13 +88,13 @@ namespace ToolkitForTSW.ViewModels
 			ProcessHelper.OpenGenericFile(TSWOptions.ManualsFolder + "TSW2 Starters guide.pdf");
 			}
 
-		public async Task GetRouteGuides()
-      {
-			var path= TSWOptions.ManualsFolder + "RouteGuides\\";
-			var viewmodel = IoC.Get<RouteGuideViewModel>();
-			viewmodel.RootFolder = path;
-			await _windowManager.ShowWindowAsync(viewmodel);
-			}
+		//public async Task GetRouteGuides()
+  //    {
+		//	var path= TSWOptions.ManualsFolder + "RouteGuides\\";
+		//	var viewmodel = IoC.Get<RouteGuideViewModel>();
+		//	viewmodel.RootFolder = path;
+		//	await _windowManager.ShowWindowAsync(viewmodel);
+		//	}
 
 		public async Task Close()
       {

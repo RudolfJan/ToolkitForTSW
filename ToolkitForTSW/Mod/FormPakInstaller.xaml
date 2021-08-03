@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToolkitForTSW"
-        xmlns:views="clr-namespace:TreeBuilders.Library.Wpf;assembly=TreeBuilders.Library.Wpf"
+        xmlns:views="clr-namespace:TreeBuilders.Library.Wpf.Views;assembly=TreeBuilders.Library.Wpf"
         xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
         xmlns:core="clr-namespace:System;assembly=System.Runtime"
         xmlns:mod="clr-namespace:ToolkitForTSW.Mod"

@@ -7,6 +7,7 @@ using System.IO.Compression;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
 using TreeBuilders.Library.Wpf;
+using TreeBuilders.Library.Wpf.ViewModels;
 using Utilities.Library.Zip;
 
 namespace ToolkitForTSW.Mod

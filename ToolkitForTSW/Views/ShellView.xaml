@@ -109,7 +109,8 @@
 							TSW2 Starters guide
 						</Button>
 						<Button Name="GetRouteGuides" Style="{StaticResource WideButton}"
-						        ToolTip="The route guides contain a lot of additional information. Read them here">
+						        ToolTip="The route guides contain a lot of additional information. Read them here"
+                    Click="GetRouteGuides_Click">
 							Route guides
 						</Button>
 					</StackPanel>
