@@ -236,7 +236,25 @@
 						<userControls:LabelTextBox LabelText="Steam user key" LabelWidth="100"
 						                            TextBoxText="{Binding SteamUserId, Mode=TwoWay}" Width="220"
 						                            HorizontalAlignment="Left" ToolTip="To obtain the Steam screenshots, ToolkitForTSW needs the steam Id. If it is guessed wrong, provide it here"/>
-						<CheckBox Name="ÜseAdvancedSettingsCheckBox" IsChecked="{Binding UseAdvancedSettings}">Use advanced settings by default</CheckBox>
+
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <StackPanel Grid.Column="0">
+                <TextBlock Style="{StaticResource TextBlockDefault}">Platform:</TextBlock>
+              </StackPanel>
+              <StackPanel Grid.Column="1">
+                <RadioButton IsChecked="{Binding Path=CurrentPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=NotSet}" Margin="5" Focusable="False" IsHitTestVisible="False" IsEnabled="False">Undefined</RadioButton>
+                <RadioButton IsChecked="{Binding Path=CurrentPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Steam}" Margin="5">Steam</RadioButton>
+                <RadioButton IsChecked="{Binding Path=CurrentPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=EpicGamesStore}" Margin="5">Epic Games Store</RadioButton>
+              </StackPanel>
+            </Grid>
+            
+            
+						<CheckBox Name="ÜseAdvancedSettingsCheckBox" IsChecked="{Binding UseAdvancedSettings}" IsEnabled="False">Use advanced settings by default</CheckBox>
 						<CheckBox  Name="LimitSoundVolumesCheckBox" IsChecked="{Binding LimitSoundVolumes}">Limit sound volumes by default</CheckBox>
 						<CheckBox  Name="MakeBackupOnStartCheckBox" IsChecked="{Binding AutoBackup}">Make data backup when starting ToolkitForTSW</CheckBox>
 					</StackPanel>

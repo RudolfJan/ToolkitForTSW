@@ -5,6 +5,7 @@ using System.IO;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
 using ToolkitForTSW.Options;
+using ToolkitForTSW.Views;
 
 namespace ToolkitForTSW
   {
@@ -231,6 +232,19 @@ Installation folder for Steam program
         }
       }
 
+    private PlatformEnum _currentPlatform= PlatformEnum.NotSet;
+    public PlatformEnum CurrentPlatform
+      {
+      get
+        {
+        return _currentPlatform;
+        }
+      set
+        {
+        _currentPlatform= value;
+        OnPropertyChanged("CurrentPlatform");
+        }
+      }
 
 
     private int RouteId { get; set; } = 0;
@@ -323,7 +337,6 @@ Installation folder for Steam program
         }
       }
 
-
     #endregion
 
     #region Constructor
@@ -352,7 +365,11 @@ Installation folder for Steam program
       UseAdvancedSettings = TSWOptions.UseAdvancedSettings;
       LimitSoundVolumes = TSWOptions.LimitSoundVolumes;
       AutoBackup= TSWOptions.AutoBackup;
+ 
+      
+      CurrentPlatform =TSWOptions.CurrentPlatform;
       RouteList = new ObservableCollection<RouteModel>(RouteDataAccess.GetAllRoutes());
+
       }
 
     public void SaveOptions()
@@ -371,9 +388,17 @@ Installation folder for Steam program
       TSWOptions.UseAdvancedSettings = UseAdvancedSettings;
       TSWOptions.LimitSoundVolumes = LimitSoundVolumes;
       TSWOptions.AutoBackup= AutoBackup;
+      var oldPlatform= TSWOptions.CurrentPlatform;
+      TSWOptions.CurrentPlatform = CurrentPlatform;
+ 
       TSWOptions.WriteToRegistry();
       TSWOptions.CreateDirectories();
       TSWOptions.CopyManuals();
+      if (CurrentPlatform != oldPlatform)
+        {
+        PlatformChangedEventHandler.SetPlatformChangedEvent(new PlatformChangedEventArgs(oldPlatform, CurrentPlatform));
+        }
+
       }
 
     #region RouteEditor

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows;
 using ToolkitForTSW;
 using ToolkitForTSW.Mod;
+using ToolkitForTSW.Options;
 using ToolkitForTSW.Settings;
 using TreeBuilders.Library.Wpf;
 using TreeBuilders.Library.Wpf.ViewModels;

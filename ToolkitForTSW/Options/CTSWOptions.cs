@@ -1,17 +1,23 @@
-﻿using Logging.Library;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using Logging.Library;
+using Microsoft.Win32;
 using ToolkitForTSW.Options;
 using Utilities.Library;
 using Utilities.Library.Wpf.Models;
-using Utilities.Library.Zip;
 using MessageBox = System.Windows.MessageBox;
 
 namespace ToolkitForTSW
   {
+  public enum PlatformEnum
+    {
+    NotSet = 0,
+    Steam = 1,
+    EpicGamesStore = 2
+    }
+
   public class TSWOptions
     {
     private static Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
@@ -54,6 +60,7 @@ namespace ToolkitForTSW
     public static string ThumbnailFolder { get; set; }
     public static bool NotFirstRun { get; set; }
 
+    public static PlatformEnum CurrentPlatform { get; set; } = PlatformEnum.NotSet;
     public static string Version { get; } = "1.0";
 
 
@@ -80,7 +87,7 @@ namespace ToolkitForTSW
 
     private TSWOptions()
       {
-      
+
       }
 
     // accessor for instance
@@ -89,8 +96,7 @@ namespace ToolkitForTSW
       {
       get
         {
-        //ReadFromRegistry();
-        return _instance.Value;
+         return _instance.Value;
         }
       }
 
@@ -134,9 +140,9 @@ namespace ToolkitForTSW
 
     public static string SteamUserId
       {
-      set 
+      set
         {
-        _SteamUserId = value; 
+        _SteamUserId = value;
         }
       get
         {
@@ -157,8 +163,8 @@ namespace ToolkitForTSW
       {
       get
         {
-        AboutData.CurrentAssembly= currentAssembly;
-       
+        AboutData.CurrentAssembly = currentAssembly;
+
         _RegkeyString = "software\\" + AboutData.Company + "\\" +
                             AboutData.Product;
         return _RegkeyString;
@@ -370,6 +376,21 @@ namespace ToolkitForTSW
         }
       }
 
+    // To be used to show the platform to the users
+    public static string GetPlatformDisplayString(PlatformEnum platform)
+      {
+      switch (platform)
+        {
+        case PlatformEnum.NotSet:
+          return "Platform not set";
+        case PlatformEnum.Steam:
+          return "Steam";
+        case PlatformEnum.EpicGamesStore:
+          return "Epic Game Store";
+        }
+      return "Platform unknown";
+      }
+
     public static void CreateDirectories()
       {
       ManualsFolder = ToolkitForTSWFolder + "Manuals\\";
@@ -441,7 +462,13 @@ namespace ToolkitForTSW
       UAssetUnpacker = (string)AppKey.GetValue("UAssetUnpacker", "");
       FileCompare = (string)AppKey.GetValue("FileCompare", "");
       SevenZip = (string)AppKey.GetValue("7Zip", "");
-          
+      var SavedCurrentPlatform= TSWOptions.CurrentPlatform;
+
+      CurrentPlatform =(PlatformEnum)AppKey.GetValue("CurrentPlatform", PlatformEnum.NotSet);
+      if(SavedCurrentPlatform!=CurrentPlatform)
+        {
+        PlatformChangedEventHandler.SetPlatformChangedEvent(new PlatformChangedEventArgs(SavedCurrentPlatform, CurrentPlatform));
+        }
       //TestMode = ((int)AppKey.GetValue("TestMode", 0) == 1);
       TestMode = false;
       IsInitialized = ((int)AppKey.GetValue("Initialized", 0) == 1);
@@ -454,7 +481,9 @@ namespace ToolkitForTSW
       UseAdvancedSettings = (int)AppKey.GetValue("UseAdvancedSettings", 1) == 1;
       LimitSoundVolumes = (int)AppKey.GetValue("LimitSoundVolumes", 1) == 1;
       AutoBackup = (int)AppKey.GetValue("AutoBackup", 0) == 1;
-      }
+
+
+    }
 
     public static void WriteToRegistry()
       {
@@ -463,7 +492,7 @@ namespace ToolkitForTSW
         AppKey = OpenRegistry();
         }
 
-      if(!CheckOptionsModel.SteamIdOk)
+      if (!CheckOptionsModel.SteamIdOk)
         {
         GuessUserId();
         }
@@ -486,6 +515,7 @@ namespace ToolkitForTSW
       AppKey.SetValue("UseAdvancedSettings", UseAdvancedSettings, RegistryValueKind.DWord);
       AppKey.SetValue("LimitSoundVolumes", LimitSoundVolumes, RegistryValueKind.DWord);
       AppKey.SetValue("AutoBackup", AutoBackup, RegistryValueKind.DWord);
+      AppKey.SetValue("CurrentPlatform",CurrentPlatform,RegistryValueKind.DWord);
       }
 
     public static bool GetNotFirstRun()

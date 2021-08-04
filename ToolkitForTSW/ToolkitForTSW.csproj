@@ -48,6 +48,7 @@
     <None Remove="Images\safe.png" />
     <None Remove="Images\SplashScreen.jpg" />
     <None Remove="Images\SplashScreen.png" />
+    <None Remove="Images\Thumbs.db" />
     <None Remove="Images\wand.png" />
     <None Remove="SQL\AnnotatedSettingsList.xlsx" />
     <None Remove="SQL\CreateTables.sql" />
@@ -150,12 +151,6 @@
     <Resource Include="Images\arrow_up.png" />
     <Resource Include="Images\LeftArrow.ico" />
     <Resource Include="Images\RightArrow.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Images\Thumbs.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
