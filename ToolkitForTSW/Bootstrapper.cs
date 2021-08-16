@@ -14,6 +14,7 @@ using Utilities.Library.Wpf.ViewModels;
 using Utilities.Library.Wpf.Models;
 using System.ComponentModel;
 using TreeBuilders.Library.Wpf.ViewModels;
+using System.Diagnostics;
 
 namespace ToolkitForTSW
   {
@@ -24,6 +25,12 @@ namespace ToolkitForTSW
     public Bootstrapper()
       {
       Initialize();
+      StarDebugLogger();
+      }
+
+    [Conditional("DEBUG")]
+    public static void StarDebugLogger()
+      {
       LogManager.GetLog = type => new DebugLogger(type);
       }
 
@@ -81,7 +88,6 @@ namespace ToolkitForTSW
       {
       _container.BuildUp(instance);
       }
-
     }
   }
   

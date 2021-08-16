@@ -41,8 +41,8 @@
                                         Style="{StaticResource OptionsOpenFile}"
                                         InitialDirectory="C:\Program Files (x86)\Steam" FileDialogType="BrowseDir"
                                         FileName="{Binding SteamProgramDirectory, Mode=TwoWay}"
-                                        FileNameChanged="OnSteamProgramFolderFileInputChanged"
                                         ToolTip="TYou need to tell ToolkitForTSW where you installed Steam" />
+              
 							<Border Grid.Row="0" Grid.Column="1"
 									Style="{StaticResource ColorRectangleBig}" 
 									Background="{Binding CheckOptions.SteamFolderOK, 
@@ -53,26 +53,42 @@
 									UpdateSourceTrigger=PropertyChanged}"/>
 
 							<userControls:FileInputBox Grid.Row="1"
-									LabelText="TSW2 program" Style="{StaticResource OptionsOpenFile}"
+									LabelText="TSW2 program (steam)" Style="{StaticResource OptionsOpenFile}"
                   InitialDirectory="C:\Program Files (x86)\Steam\steamapps\common\Train Sim World 2\WindowsNoEditor"
                   Filter="exe files (*.exe)|*.exe"
-                  FileName="{Binding TrainSimWorldProgram, Mode=TwoWay}" CheckFileExists="True"
-                  ToolTip="Here you need to tell where the TSW executable is installed" Loaded="FileInputBox_Loaded" />
+                  FileName="{Binding SteamTrainSimWorldProgram, Mode=TwoWay}" CheckFileExists="True"
+                  ToolTip="Here you need to tell where the Steam TSW executable is installed"/>
 
-							<Border Grid.Row="1" Grid.Column="1"
-									Style="{StaticResource ColorRectangleBig}" 
-									Background="{Binding CheckOptions.TSW2ProgramOK, 
-									Converter={StaticResource BoolToColorConverter}, 
-									ConverterParameter=SeaGreen;OrangeRed;1.0, 
-									Mode=OneWay, 
-									NotifyOnSourceUpdated=True, 
-									UpdateSourceTrigger=PropertyChanged}"/>
+              <Border Grid.Row="1" Grid.Column="1"
+						Style="{StaticResource ColorRectangleBig}" 
+						Background="{Binding CheckOptions.SteamTSW2ProgramOK, 
+						Converter={StaticResource BoolToColorConverter}, 
+						ConverterParameter=SeaGreen;OrangeRed;1.0, 
+						Mode=OneWay, 
+						NotifyOnSourceUpdated=True, 
+						UpdateSourceTrigger=PropertyChanged}"/>
 
-							<userControls:FileInputBox Grid.Row="2"
+              <userControls:FileInputBox Grid.Row="2"
+								LabelText="TSW2 program (EGS)" Style="{StaticResource OptionsOpenFile}"
+                 InitialDirectory="C:\Program Files (x86)\Steam\steamapps\common\Train Sim World 2\WindowsNoEditor"
+                 Filter="exe files (*.exe)|*.exe"
+                 FileName="{Binding EGSTrainSimWorldProgram, Mode=TwoWay}" CheckFileExists="True"
+                 ToolTip="Here you need to tell where the EGS TSW executable is installed" />
+
+              <Border Grid.Row="2" Grid.Column="1"
+								Style="{StaticResource ColorRectangleBig}" 
+								Background="{Binding CheckOptions.EGSTSW2ProgramOK, 
+								Converter={StaticResource BoolToColorConverter}, 
+								ConverterParameter=SeaGreen;OrangeRed;1.0, 
+								Mode=OneWay, 
+								NotifyOnSourceUpdated=True, 
+								UpdateSourceTrigger=PropertyChanged}"/>
+
+              <userControls:FileInputBox Grid.Row="3"
 									LabelText="ToolkitForTSW folder" Style="{StaticResource OptionsOpenFile}"
                   FileDialogType="BrowseDir" FileName="{Binding ToolkitForTSWFolder, Mode=TwoWay}"
                   ToolTip="This folder is where all data ToolkitForTSW is working with will be stored" />
-							<Border Grid.Row="2" Grid.Column="1"
+							<Border Grid.Row="3" Grid.Column="1"
 									Style="{StaticResource ColorRectangleBig}" 
 									Background="{Binding CheckOptions.ToolkitFolderOK, 
 									Converter={StaticResource BoolToColorConverter}, 
@@ -81,11 +97,11 @@
 									NotifyOnSourceUpdated=True, 
 									UpdateSourceTrigger=PropertyChanged}"/>
 
-							<userControls:FileInputBox Grid.Row="3"
+							<userControls:FileInputBox Grid.Row="4"
 									LabelText="Backup folder" Style="{StaticResource OptionsOpenFile}"
                   FileDialogType="BrowseDir" FileName="{Binding BackupFolder, Mode=TwoWay}"
                   ToolTip="This folder is where ToolkitForTSW data backups will be stored" />
-							<Border Grid.Row="3" Grid.Column="1"
+							<Border Grid.Row="4" Grid.Column="1"
 									Style="{StaticResource ColorRectangleBig}" 
 									Background="{Binding CheckOptions.BackupFolderOK, 
 									Converter={StaticResource BoolToColorConverter}, 
@@ -94,12 +110,12 @@
 									NotifyOnSourceUpdated=True, 
 									UpdateSourceTrigger=PropertyChanged}"/>
 
-							<userControls:FileInputBox Grid.Row="4"
+							<userControls:FileInputBox Grid.Row="5"
 									LabelText="Text editor" Style="{StaticResource OptionsOpenFile}"
                   InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
                   FileName="{Binding TextEditor, Mode=TwoWay}" CheckFileExists="True"
-                  ToolTip="Choose your favourite text editor, mine is Notepad++ (freeware)" />
-							<Border Grid.Row="4" Grid.Column="1"
+                  ToolTip="Choose your favorite text editor, mine is Notepad++ (freeware)" />
+							<Border Grid.Row="5" Grid.Column="1"
 									Style="{StaticResource ColorRectangleBig}" 
 									Background="{Binding CheckOptions.TextEditorOK, 
 									Converter={StaticResource BoolToColorConverter}, 
@@ -108,12 +124,12 @@
 									NotifyOnSourceUpdated=True, 
 									UpdateSourceTrigger=PropertyChanged}"/>
 							
-							<userControls:FileInputBox Grid.Row="5"
+							<userControls:FileInputBox Grid.Row="6"
 									LabelText="Unreal unpack" Style="{StaticResource OptionsOpenFile}"
                   InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
                   FileName="{Binding Unpacker, Mode=TwoWay}" CheckFileExists="True"
                   ToolTip="You will not be able to do a lot if you did not install the Unreal unpacker tool. See the ToolkitForTSW manual for details" />
-							<Border Grid.Row="5" Grid.Column="1"
+							<Border Grid.Row="6" Grid.Column="1"
 									Style="{StaticResource ColorRectangleBig}" 
 									Background="{Binding CheckOptions.UnrealOK, 
 									Converter={StaticResource BoolToColorConverter}, 
@@ -122,12 +138,12 @@
 									NotifyOnSourceUpdated=True, 
 									UpdateSourceTrigger=PropertyChanged}"/>
 							
-							<userControls:FileInputBox Grid.Row="6"
+							<userControls:FileInputBox Grid.Row="7"
 									LabelText="UAsset unpack" Style="{StaticResource OptionsOpenFile}"
                   InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
                   FileName="{Binding UAssetUnpacker, Mode=TwoWay}" CheckFileExists="True" 
 									ToolTip="Set here the location of the UModel application"/>
-							<Border Grid.Row="6" Grid.Column="1"
+							<Border Grid.Row="7" Grid.Column="1"
 									Style="{StaticResource ColorRectangleBig}" 
 									Background="{Binding CheckOptions.UmodelOK, 
 									Converter={StaticResource BoolToColorConverter}, 
@@ -136,12 +152,12 @@
 									NotifyOnSourceUpdated=True, 
 									UpdateSourceTrigger=PropertyChanged}"/>
 							
-							<userControls:FileInputBox Grid.Row="7"
+							<userControls:FileInputBox Grid.Row="8"
 									LabelText="7Zip" Style="{StaticResource OptionsOpenFile}"
                   InitialDirectory="C:\Program Files (x86)" Filter="exe files (*.exe)|*.exe"
                   FileName="{Binding SevenZip, Mode=TwoWay}" CheckFileExists="True" 
 									ToolTip="7Zip will be used a lot for various purposes"/>
-							<Border Grid.Row="7" Grid.Column="1"
+							<Border Grid.Row="8" Grid.Column="1"
 									Style="{StaticResource ColorRectangleBig}" 
 									Background="{Binding CheckOptions.SevenZipOK, 
 									Converter={StaticResource BoolToColorConverter}, 
@@ -149,8 +165,21 @@
 									Mode=OneWay, 
 									NotifyOnSourceUpdated=True, 
 									UpdateSourceTrigger=PropertyChanged}"/>
-							
-						</Grid>
+
+              <userControls:FileInputBox Grid.Row="9" LabelText="TrackIR" Style="{StaticResource OptionsOpenFile}" 
+                                         InitialDirectory="C:\Program Files" Filter="exe files (*.exe)|*.exe" FileName="{Binding TrackIRProgram, Mode=TwoWay}" 
+                                         CheckFileExists="True" ToolTip="Set your TrackIR program here, is used in the launcher"/>
+              
+              <Border Grid.Row="9" Grid.Column="1" Style="{StaticResource ColorRectangleBig}" Background="{Binding CheckOptions.TrackIROK, 
+									Converter={StaticResource BoolToColorConverter}, 
+									ConverterParameter=SeaGreen;OrangeRed;1.0, 
+									Mode=OneWay, 
+									NotifyOnSourceUpdated=True, 
+									UpdateSourceTrigger=PropertyChanged}" />
+
+
+
+            </Grid>
 
 					</StackPanel>
 				</Border>
@@ -236,6 +265,9 @@
 						<userControls:LabelTextBox LabelText="Steam user key" LabelWidth="100"
 						                            TextBoxText="{Binding SteamUserId, Mode=TwoWay}" Width="220"
 						                            HorizontalAlignment="Left" ToolTip="To obtain the Steam screenshots, ToolkitForTSW needs the steam Id. If it is guessed wrong, provide it here"/>
+            <userControls:LabelTextBox LabelText="EGS start Url" LabelWidth="100"
+					                            TextBoxText="{Binding EGSTrainSimWorldStarter, Mode=TwoWay}" Width="340"
+					                            HorizontalAlignment="Left" ToolTip="You need to set this if you want to launch TSW2 using Epic Games Store, seen user manual for details"/>
 
             <Grid>
               <Grid.ColumnDefinitions>

@@ -347,23 +347,24 @@ namespace ToolkitForTSW.Settings
 
     #region Filehandling
 
+ 
     public FileInfo GetInGameSettingsLocation()
       {
-      var MyPath = TSWOptions.GameSaveLocation;
+      var MyPath = TSWOptions.GetSaveLocationPath();
       MyPath += @"Saved\Config\WindowsNoEditor\GameUserSettings.ini";
       return new FileInfo(MyPath);
       }
 
     public FileInfo GetInGameEngineIniLocation()
       {
-      var MyPath = TSWOptions.GameSaveLocation;
+      var MyPath = TSWOptions.GetSaveLocationPath();
       MyPath += @"Saved\Config\WindowsNoEditor\Engine.ini";
       return new FileInfo(MyPath);
       }
 
     public void GetSavedSettings()
       {
-      String Path = TSWOptions.OptionsSetDir;
+      String Path = TSWOptions.GetOptionsSetPath();
       DirectoryInfo SavedSettingsDir = new DirectoryInfo(Path);
       DirectoryInfo[] SavedSets = SavedSettingsDir.GetDirectories("*", SearchOption.TopDirectoryOnly);
       SavedUserSettingsList.Clear();
@@ -407,7 +408,7 @@ namespace ToolkitForTSW.Settings
         return; // failed, should never happen
         }
 
-      var Path = TSWOptions.OptionsSetDir + SaveSetName + "\\"; // Warning order is important here
+      var Path = TSWOptions.GetOptionsSetPath() + SaveSetName + "\\"; // Warning order is important here
       var SettingsFile = new FileInfo(Path + "GameUserSettings.ini");
       var EngineIniFile = new FileInfo(Path + "Engine.ini");
       GetSavedSettings();
@@ -492,7 +493,7 @@ namespace ToolkitForTSW.Settings
         return; // failed, should never happen
         }
 
-      var Path = TSWOptions.OptionsSetDir + SaveSetName + "\\"; // Warning order is important here
+      var Path = TSWOptions.GetOptionsSetPath() + SaveSetName + "\\"; // Warning order is important here
       if (!Directory.Exists(Path))
         {
         var Dir = Directory.CreateDirectory(Path);

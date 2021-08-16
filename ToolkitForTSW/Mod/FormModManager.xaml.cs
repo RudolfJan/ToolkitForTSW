@@ -24,16 +24,18 @@ namespace ToolkitForTSW
       //var AllowedHeightFactor = 0.3;
 
       PakfileTextBox.IsEnabled = false;
-      IsInstalledCheckBox.IsEnabled = false;
+      IsInstalledSteamCheckBox.IsEnabled = false;
+      IsInstalledEGSCheckBox.IsEnabled = false;
       SetControlStates();
       }
 
     private void SetControlStates()
       {
       SaveModButton.IsEnabled= ModManager.SelectedMod!=null && ModManager.InEditMode==true;
-      ActivateModButton.IsEnabled= ModManager.SelectedMod != null && ModManager.SelectedMod.IsInstalled==false;
-      DeActivateModButton.IsEnabled = ModManager.SelectedMod != null && ModManager.SelectedMod.IsInstalled == true;
-      AddToSetButton.IsEnabled= ModManager.ModSet.SelectedModSet!=null && ModManager.ModSet.SelectedMod!=null;
+      ActivateSteamModButton.IsEnabled= ModManager.SelectedMod != null && ModManager.SelectedMod.IsInstalledSteam==false && TSWOptions.SteamTrainSimWorldDirectory.Length>0;
+      ActivateEGSModButton.IsEnabled = ModManager.SelectedMod != null && ModManager.SelectedMod.IsInstalledEGS == false && TSWOptions.EGSTrainSimWorldDirectory.Length>0;
+      DeActivateModButton.IsEnabled = ModManager.SelectedMod != null && (ModManager.SelectedMod.IsInstalledSteam == true || ModManager.SelectedMod.IsInstalledEGS == true);
+      AddToSetButton.IsEnabled= (ModManager.ModSet.SelectedModSet!=null || !string.IsNullOrEmpty(ModManager.ModSet.SetName)) && ModManager.ModSet.SelectedMod!=null;
       RemoveFromSetButton.IsEnabled= ModManager.ModSet.SelectedModSet != null && ModManager.ModSet.SelectedModInSet!=null;
       SaveSetButton.IsEnabled = !string.IsNullOrEmpty(ModManager.ModSet.SetName);
       EditSetButton.IsEnabled = ModManager.ModSet.SelectedModSet != null;
@@ -82,13 +84,21 @@ namespace ToolkitForTSW
       SetControlStates();
       }
 
-    private void OnActivatePak(object sender, RoutedEventArgs e)
+    private void OnActivatePakSteam(object sender, RoutedEventArgs e)
       {
-      ModManager.ActivatePak();
+
+      ModManager.ActivatePak(PlatformEnum.Steam);
       AvailablePaksDataGrid.Items.Refresh();
       SetControlStates();
       }
 
+    private void OnActivatePakEGS(object sender, RoutedEventArgs e)
+      {
+
+      ModManager.ActivatePak(PlatformEnum.EpicGamesStore);
+      AvailablePaksDataGrid.Items.Refresh();
+      SetControlStates();
+      }
     private void OnDeactivatePak(object sender, RoutedEventArgs e)
       {
       ModManager.DeactivatePak();

@@ -46,6 +46,8 @@ namespace ToolkitForTSW
       AddChildButton.IsEnabled = NewDirTextBox.TextBoxText != null &&
                                  NewDirTextBox.TextBoxText.Length > 2 &&
                                  PakInstaller.FileTree?.SelectedTreeNode != null;
+      IsInstalledSteamCheckBox.IsEnabled= TSWOptions.SteamTrainSimWorldDirectory.Length>0;
+      IsInstalledSteamCheckBox.IsEnabled = TSWOptions.EGSTrainSimWorldDirectory.Length > 0;
       }
 
     private void OnOKButtonClicked(Object Sender, RoutedEventArgs E)

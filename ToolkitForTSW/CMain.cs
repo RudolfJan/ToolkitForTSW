@@ -70,7 +70,6 @@ namespace ToolkitForTSW
 					var backup= new BackupViewModel();
 					backup.MakeDailyBackup();
           }
-
         }
       try
         {
@@ -110,7 +109,7 @@ namespace ToolkitForTSW
       var factory = new DatabaseFactory();
 			var databasePath=$"{TSWOptions.ToolkitForTSWFolder}TSWTools.db";
 			var connectionString = $"Data Source = {databasePath}; Version = 3;";
-			DbManager.CurrentDatabaseVersion=4;
+			DbManager.CurrentDatabaseVersion=5;
 			DbManager.DatabaseVersionDescription= "Added experimentatl settings";
 			DbManager.InitDatabase(connectionString, databasePath, factory);
 			// TODO check process logic very carefully to make sure you set the version correct and execute the proper update procedure.
@@ -124,6 +123,7 @@ namespace ToolkitForTSW
 			else
         {
 				DbManager.UpdateDatabaseVersionNumber(DbManager.CurrentDatabaseVersion, DbManager.DatabaseVersionDescription);
+
         }
 			InitScreenshotManagerDatabase();
       RouteDataAccess.InitRouteForSavCracker("SQL\\RouteDataImport.csv");
@@ -152,6 +152,5 @@ namespace ToolkitForTSW
       ImageManager.DeleteOrphanImagesFromDatabase();
       Task.Factory.StartNew(ImageManager.LoadNewImagesForAllCollectionsAsync);
 			}
-
 		}
 	}

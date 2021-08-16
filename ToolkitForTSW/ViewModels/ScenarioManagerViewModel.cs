@@ -145,7 +145,7 @@ namespace ToolkitForTSW.ViewModels
 
     public void BuildScenarioList()
       {
-      var Path=  $"{TSWOptions.GameSaveLocation}Saved\\SaveGames\\";
+      var Path=  $"{TSWOptions.GetSaveLocationPath()}Saved\\SaveGames\\";
       DirectoryInfo DirInfo = new DirectoryInfo(Path);
       ScenarioList.Clear();
       var files = DirInfo.GetFiles("USD_*.sav", SearchOption.TopDirectoryOnly);

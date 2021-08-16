@@ -107,7 +107,7 @@ namespace ToolkitForTSW.ViewModels
 		//	await _windowManager.ShowWindowAsync(viewmodel);
 		//	}
 
-		public async Task Close()
+		public async Task CloseForm()
       {
 			await TryCloseAsync();
       }

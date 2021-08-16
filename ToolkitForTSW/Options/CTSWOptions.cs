@@ -20,8 +20,8 @@ namespace ToolkitForTSW
 
   public class TSWOptions
     {
-    private static Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-    private static AboutModel AboutData = new AboutModel();
+    private static readonly Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+    private static readonly AboutModel AboutData = new AboutModel();
 
     // Number of read only constants, that depend on the version
     public static bool AllowDevMode = false; // set to false to completely disable DevMode for users
@@ -38,6 +38,7 @@ namespace ToolkitForTSW
     private static string _SteamProgramDirectory = string.Empty;
     private static string _SteamUserId = string.Empty;
     private static string _Unpacker = string.Empty;
+    private static string _trackIRProgram = string.Empty;
 
     private static string
       _UAssetUnpacker = string.Empty; // Unpack tool for UAsset files, must be UModel 
@@ -48,7 +49,7 @@ namespace ToolkitForTSW
     protected static RegistryKey AppKey = null;
     protected static RegistryKey SteamKey = null;
 
-    // Properties will be initialized programmatically
+    // Properties will be initialized anagrammatically
     public static string ManualsFolder { get; set; }
     public static string ModsFolder { get; set; }
     public static string UnpackFolder { get; set; }
@@ -63,19 +64,12 @@ namespace ToolkitForTSW
     public static PlatformEnum CurrentPlatform { get; set; } = PlatformEnum.NotSet;
     public static string Version { get; } = "1.0";
 
-
-    public static string GetGameSaveLocation()
-      {
-      var MyPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-      MyPath += @"\My Games\TrainSimWorld2\";
-      return MyPath;
-      }
-
     public static string GameSaveLocation
       {
       get
         {
-        return GetGameSaveLocation();
+        return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+         + @"\My Games\TrainSimWorld2\";
         }
       }
 
@@ -106,8 +100,7 @@ namespace ToolkitForTSW
       {
       get
         {
-        return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-               + "\\My Games\\TrainsimWorld2\\Saved\\Screenshots\\WindowsNoEditor";
+        return $"{GetSaveLocationPath()}Saved\\Screenshots\\WindowsNoEditor";
         }
       }
 
@@ -115,8 +108,7 @@ namespace ToolkitForTSW
       {
       get
         {
-        return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-               + "\\My Games\\TrainsimWorld2\\Saved\\Config\\WindowsNoEditor";
+        return $"{GetSaveLocationPath()}Saved\\Config\\WindowsNoEditor";
         }
       }
 
@@ -180,12 +172,36 @@ namespace ToolkitForTSW
         }
       }
 
+    private static string _steamTrainSimWorldDirectory;
+
+    public static string SteamTrainSimWorldDirectory
+      {
+      get { return _steamTrainSimWorldDirectory; }
+      set { _steamTrainSimWorldDirectory = value; }
+      }
+
+    private static string _egsTrainSimWorldDirectory;
+
+    public static string EGSTrainSimWorldDirectory
+      {
+      get { return _egsTrainSimWorldDirectory; }
+      set { _egsTrainSimWorldDirectory = value; }
+      }
+
+
+    private static string _egsTrainSimWorldStarter;
+
+    public static string EGSTrainSimWorldStarter
+      {
+      get { return _egsTrainSimWorldStarter; }
+      set { _egsTrainSimWorldStarter = value; }
+      }
+
     public static string TrainSimWorldDirectory
       {
       set { _TrainSimWorldDirectory = value; }
       get
         {
-        // ReadFromRegistry();
         if (TestMode) // append test folder to default directory if test mode has been selected
           {
           return _TrainSimWorldDirectory;
@@ -273,6 +289,15 @@ namespace ToolkitForTSW
       get
         {
         return _Unpacker;
+        }
+      }
+
+    public static string TrackIRProgram
+      {
+      set { _trackIRProgram = value; }
+      get
+        {
+        return _trackIRProgram;
         }
       }
 
@@ -379,17 +404,46 @@ namespace ToolkitForTSW
     // To be used to show the platform to the users
     public static string GetPlatformDisplayString(PlatformEnum platform)
       {
-      switch (platform)
+      return platform switch
         {
-        case PlatformEnum.NotSet:
-          return "Platform not set";
-        case PlatformEnum.Steam:
-          return "Steam";
-        case PlatformEnum.EpicGamesStore:
-          return "Epic Game Store";
-        }
-      return "Platform unknown";
+          PlatformEnum.NotSet => "Platform not set",
+          PlatformEnum.Steam => "Steam",
+          PlatformEnum.EpicGamesStore => "Epic Game Store",
+          _ => "Platform unknown",
+          };
       }
+
+    // Get Platform name for use as folder name
+    public static string GetPlatformFolderName(PlatformEnum platform)
+      {
+      return platform switch
+        {
+          PlatformEnum.NotSet => "",
+          PlatformEnum.Steam => "Steam",
+          PlatformEnum.EpicGamesStore => "EGS",
+          _ => "",
+          };
+      }
+
+    public static string GetSaveLocationPath()
+      {
+      if(TSWOptions.CurrentPlatform==PlatformEnum.EpicGamesStore)
+        {
+        var location= TSWOptions.GameSaveLocation;
+        if(location.EndsWith("\\"))
+          {
+          location=location.Substring(0, location.Length - 1);
+          }
+        return $"{location}EGS\\";
+        }
+      return TSWOptions.GameSaveLocation;
+      }
+
+    public static string GetOptionsSetPath()
+      {
+      return TSWOptions.OptionsSetDir + TSWOptions.GetPlatformFolderName(TSWOptions.CurrentPlatform) + "\\";
+      }
+
 
     public static void CreateDirectories()
       {
@@ -402,6 +456,16 @@ namespace ToolkitForTSW
       TemplateFolder = ToolkitForTSWFolder + "Templates\\";
       ScenarioFolder = ToolkitForTSWFolder + "Scenarios\\";
       ThumbnailFolder = ToolkitForTSWFolder + "Thumbnails\\";
+      // Unfortunately this does not work and gives security issues
+      //try
+      //  {
+      //  MoveData(BackupFolder, $"{BackupFolder}Steam\\");
+      //  MoveData(OptionsSetDir, $"{OptionsSetDir}Steam\\");
+      //  }
+      //catch(Exception ex)
+      //  {
+      //  Log.Trace("Error moving directories for EGS update because " + ex.Message, LogEventType.Error);
+      //  }
       try
         {
         Directory.CreateDirectory(ManualsFolder);
@@ -411,14 +475,30 @@ namespace ToolkitForTSW
         Directory.CreateDirectory(UnpackFolder);
         Directory.CreateDirectory(AssetUnpackFolder);
         Directory.CreateDirectory(OptionsSetDir);
+        
+        Directory.CreateDirectory(TempFolder);
+        Directory.CreateDirectory($"{OptionsSetDir}Steam\\");
+        Directory.CreateDirectory($"{OptionsSetDir}EGS\\");
         Directory.CreateDirectory(BackupFolder);
+        Directory.CreateDirectory($"{BackupFolder}Steam\\"); // Just in case, order is important!
+        Directory.CreateDirectory($"{BackupFolder}EGS\\");
         Directory.CreateDirectory(TemplateFolder);
         Directory.CreateDirectory(ScenarioFolder);
         Directory.CreateDirectory(ThumbnailFolder);
         }
-      catch (Exception E)
+      catch (Exception ex)
         {
-        Log.Trace("Error creating directories because " + E.Message, LogEventType.Error);
+        Log.Trace("Error creating directories because " + ex.Message, LogEventType.Error);
+        }
+      }
+
+    public static void MoveData(string source, string destination)
+      {
+      // Move Data to proper directory
+  
+      if (Directory.Exists(source)&&!Directory.Exists(destination))
+        {
+        Directory.Move(source, destination);
         }
       }
 
@@ -449,7 +529,7 @@ namespace ToolkitForTSW
         }
 
       InstallDirectory = (string)AppKey.GetValue("InstallDirectory", "");
-      TrainSimWorldDirectory = (string)AppKey.GetValue("TrainSimWorldDirectory", "");
+      
       string DefaultSteamProgramPath = (string)AppKey.GetValue("SteamPath", "");
       SteamProgramDirectory =
         (string)AppKey.GetValue("SteamProgramDirectory", DefaultSteamProgramPath);
@@ -460,6 +540,7 @@ namespace ToolkitForTSW
       XmlEditor = (string)AppKey.GetValue("XMLEditor", "");
       Unpacker = (string)AppKey.GetValue("Unpacker", "");
       UAssetUnpacker = (string)AppKey.GetValue("UAssetUnpacker", "");
+      TrackIRProgram = (string)AppKey.GetValue("TrackIRProgram", "");
       FileCompare = (string)AppKey.GetValue("FileCompare", "");
       SevenZip = (string)AppKey.GetValue("7Zip", "");
       var SavedCurrentPlatform= TSWOptions.CurrentPlatform;
@@ -469,6 +550,17 @@ namespace ToolkitForTSW
         {
         PlatformChangedEventHandler.SetPlatformChangedEvent(new PlatformChangedEventArgs(SavedCurrentPlatform, CurrentPlatform));
         }
+
+      TrainSimWorldDirectory = (string)AppKey.GetValue("TrainSimWorldDirectory", ""); //Deprecated for the registry.
+      SteamTrainSimWorldDirectory = (string)AppKey.GetValue("SteamTrainSimWorldDirectory", "");
+      EGSTrainSimWorldDirectory = (string)AppKey.GetValue("EGSTrainSimWorldDirectory", "");
+      EGSTrainSimWorldStarter = (string)AppKey.GetValue("EGSTrainSimWorldStarter", "");
+      if (SteamTrainSimWorldDirectory.Length==0 && TrainSimWorldDirectory.Length>0)
+        {
+        SteamTrainSimWorldDirectory=TrainSimWorldDirectory;
+        }
+
+
       //TestMode = ((int)AppKey.GetValue("TestMode", 0) == 1);
       TestMode = false;
       IsInitialized = ((int)AppKey.GetValue("Initialized", 0) == 1);
@@ -496,8 +588,7 @@ namespace ToolkitForTSW
         {
         GuessUserId();
         }
-      AppKey.SetValue("TrainSimWorldDirectory", TrainSimWorldDirectory,
-        RegistryValueKind.String);
+ 
       AppKey.SetValue("SteamProgramDirectory", SteamProgramDirectory,
         RegistryValueKind.String);
       AppKey.SetValue("SteamUserId", SteamUserId, RegistryValueKind.String);
@@ -505,8 +596,9 @@ namespace ToolkitForTSW
       AppKey.SetValue("BackupFolder", BackupFolder, RegistryValueKind.String);
       AppKey.SetValue("TextEditor", TextEditor, RegistryValueKind.String);
       AppKey.SetValue("XMLEditor", XmlEditor, RegistryValueKind.String);
-      AppKey.SetValue("Unpacker", _Unpacker, RegistryValueKind.String);
+      AppKey.SetValue("Unpacker", Unpacker, RegistryValueKind.String);
       AppKey.SetValue("UAssetUnpacker", UAssetUnpacker, RegistryValueKind.String);
+      AppKey.SetValue("TrackIRProgram", TrackIRProgram, RegistryValueKind.String);
       AppKey.SetValue("7Zip", SevenZip, RegistryValueKind.String);
       AppKey.SetValue("FileCompare", FileCompare, RegistryValueKind.String);
       // AppKey.SetValue("TestMode", TestMode, RegistryValueKind.DWord);
@@ -516,6 +608,12 @@ namespace ToolkitForTSW
       AppKey.SetValue("LimitSoundVolumes", LimitSoundVolumes, RegistryValueKind.DWord);
       AppKey.SetValue("AutoBackup", AutoBackup, RegistryValueKind.DWord);
       AppKey.SetValue("CurrentPlatform",CurrentPlatform,RegistryValueKind.DWord);
+      AppKey.SetValue("SteamTrainSimWorldDirectory", SteamTrainSimWorldDirectory,
+   RegistryValueKind.String);
+      AppKey.SetValue("EGSTrainSimWorldDirectory", EGSTrainSimWorldDirectory,
+   RegistryValueKind.String);
+      AppKey.SetValue("EGSTrainSimWorldStarter", EGSTrainSimWorldStarter,
+   RegistryValueKind.String);
       }
 
     public static bool GetNotFirstRun()

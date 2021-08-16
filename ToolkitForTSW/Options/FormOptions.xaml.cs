@@ -46,17 +46,7 @@ namespace ToolkitForTSW
 			Close();
 			}
 
-        private void OnSteamProgramFolderFileInputChanged(Object sender, RoutedEventArgs e)
-        {
-				
-        }
-
-    private void FileInputBox_Loaded(object sender, RoutedEventArgs e)
-      {
-
-      }
-
-    private void OnEditRoute(object sender, RoutedEventArgs e)
+     private void OnEditRoute(object sender, RoutedEventArgs e)
       {
       OptionsView.EditRoute();
       SetControlStates();

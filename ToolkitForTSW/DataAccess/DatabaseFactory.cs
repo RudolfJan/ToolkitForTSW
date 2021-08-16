@@ -11,6 +11,10 @@ namespace ToolkitForTSW.DataAccess
       {
       DbManager.CreateStructureElementFromFile("SQL\\CreateTables.sql");
       DbManager.CreateStructureElementFromFile("SQL\\EngineIniTables.sql");
+      if (!DbManager.ColumnExists("Mods", "ModVersion"))
+        {
+        DbManager.CreateStructureElementFromFile("SQL\\AlterModTable.sql");
+        }
       return 0;
       }
     }

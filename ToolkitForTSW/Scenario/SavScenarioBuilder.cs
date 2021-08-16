@@ -16,9 +16,9 @@ namespace ToolkitForTSW.Scenario
       {
       if (isTest)
         {
-        return $"{TSWOptions.GameSaveLocation}Saved\\SaveGames\\TestScenario.sav";
+        return $"{TSWOptions.GetSaveLocationPath()}Saved\\SaveGames\\TestScenario.sav";
         }
-      return $"{TSWOptions.GameSaveLocation}Saved\\SaveGames\\USD_{scenarioGuid.ToString().ToUpper()}.sav";
+      return $"{TSWOptions.GetSaveLocationPath()}Saved\\SaveGames\\USD_{scenarioGuid.ToString().ToUpper()}.sav";
       }
 
     // https://stackoverflow.com/questions/5958495/append-data-to-byte-array/5958537

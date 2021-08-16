@@ -700,7 +700,7 @@
 
 			<Border Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource DefaultBorder}">
 				<DockPanel>
-					<userControls:ResultsTextBox x:Name="ResultsTextBox" MinWidth="700"
+					<userControls:ResultsTextBox x:Name="ResultsTextBox" Width="700"
                                         Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Result}" Source="../Images/page_delete.png"/>
 					<Button Name="OKButton" Style="{StaticResource OKButton}" DockPanel.Dock="Right" VerticalAlignment="Bottom"
                   Click="OnOKButtonClicked">

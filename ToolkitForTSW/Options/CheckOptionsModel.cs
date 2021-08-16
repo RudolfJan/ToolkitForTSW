@@ -32,6 +32,16 @@ namespace ToolkitForTSW.Options
         }
       }
 
+    public static bool TrackIROK
+      {
+      get
+        {
+        // may be either non-existent, but must be valid if it exists
+        return string.IsNullOrEmpty(TSWOptions.TrackIRProgram)
+          || File.Exists(TSWOptions.TrackIRProgram);
+        }
+      }
+
     public static bool BackupFolderOK
       {
       get
@@ -61,11 +71,20 @@ namespace ToolkitForTSW.Options
         }
       }
 
-    public static bool TSW2ProgramOK { 
+    public static bool SteamTSW2ProgramOK { 
       get 
         {
-        return !string.IsNullOrEmpty(TSWOptions.TrainSimWorldDirectory) 
-          && File.Exists(TSWOptions.TrainSimWorldDirectory+"TS2prototype.exe"); 
+        return !string.IsNullOrEmpty(TSWOptions.SteamTrainSimWorldDirectory) 
+          && File.Exists(TSWOptions.SteamTrainSimWorldDirectory+"TS2prototype.exe"); 
+        }
+      }
+
+    public static bool EGSTSW2ProgramOK
+      {
+      get
+        {
+        return !string.IsNullOrEmpty(TSWOptions.EGSTrainSimWorldDirectory)
+          && File.Exists(TSWOptions.EGSTrainSimWorldDirectory + "TS2prototype.exe");
         }
       }
 

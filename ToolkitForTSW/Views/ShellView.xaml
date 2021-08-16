@@ -124,7 +124,7 @@
 					<userControls:ResultsTextBox Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Result}" Source="../Images/page_delete.png"/>
 				</StackPanel>
 			</Border>
-			<Button Name="Close" Style="{StaticResource OKButton}" HorizontalAlignment="Right"
+			<Button Name="CloseForm" Style="{StaticResource OKButton}" HorizontalAlignment="Right"
 			       ToolTip="Close TSW Tools main screen">
 				Close
 			</Button>
