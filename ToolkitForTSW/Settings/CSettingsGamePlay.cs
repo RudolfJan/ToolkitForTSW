@@ -89,6 +89,20 @@ namespace ToolkitForTSW.Settings
 				}
 			}
 
+		private int _cabSwayLevelPercentage;
+		public int CabSwayLevelPercentage
+      {
+			get
+        {
+				return _cabSwayLevelPercentage;
+        }
+			set
+        {
+				_cabSwayLevelPercentage= value;
+				OnPropertyChanged("CabSwayLevelPercentage");
+        }
+      }
+		public double CabSwayLevel { get;set;}
 		#endregion
 
 		public CSettingsGamePlay(CSettingsManager MySettingsManager)
@@ -100,6 +114,8 @@ namespace ToolkitForTSW.Settings
       {
       QuickWalk = GetBooleanValue("QuickWalk", false);
       CabSway = GetBooleanValue("bCameraMotionSwayEnabled", true);
+			CabSwayLevel= GetDoubleValue("CameraMotionSwayLevel",1);
+			CabSwayLevelPercentage=(int)(CabSwayLevel*100);
       ForceFeedback = GetBooleanValue("ForceFeedback", false);
       DisableJunctionDerail = GetBooleanValue("DisableJunctionDerail", false);
 			GetUnits();
@@ -112,6 +128,8 @@ namespace ToolkitForTSW.Settings
 			WriteBooleanValue(CabSway, "bCameraMotionSwayEnabled",SectionEnum.User);
 			WriteBooleanValue(QuickWalk, "QuickWalk",SectionEnum.User);
 			WriteBooleanValue(ForceFeedback, "ForceFeedback",SectionEnum.User);
+			CabSwayLevel= ((double)CabSwayLevelPercentage/100.0);
+			WriteDoubleValue(CabSwayLevel, "CameraMotionSwayLevel",SectionEnum.User);
 			WriteBooleanValue(DisableJunctionDerail, "DisableJunctionDerail",SectionEnum.User);
       WriteGradeSettings();
       WriteMeasurement();

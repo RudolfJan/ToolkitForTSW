@@ -41,8 +41,8 @@ namespace ToolkitForTSW.Settings
   public enum ScreenModeEnum
     {
     [Description("FullScreen")] FullScreen = 0,
-    [Description("Windowd FullScreen")] WindowedFullScreen = 1,
-    [Description("Windowd")] WindowedScreen = 2
+    [Description("Windowed FullScreen")] WindowedFullScreen = 1,
+    [Description("Windowed")] WindowedScreen = 2
     }
 
   public enum QualityEnum
@@ -68,6 +68,21 @@ namespace ToolkitForTSW.Settings
     [Description("TAA")] TAA = 2
     }
 
+  //public enum CrosshairVisibilityEnum
+  //  {
+  //  [Description("Off")] Off = 0,
+  //  [Description("50%")] Fifty = 1,
+  //  [Description("100%")] Hundred = 2,
+  //  [Description("Large")] Large = 3
+  //  }
+
+  public enum CrosshairVisibilityEnum
+    {
+    Off = 0,
+    Fifty = 1,
+    Hundred = 2,
+    Large = 3
+    }
   #endregion
 
   public class CSettingsManager : Notifier
