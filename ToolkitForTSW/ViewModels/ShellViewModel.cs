@@ -1,16 +1,10 @@
-﻿using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using ToolkitForTSW.EventModels;
-using Logging.Library.Wpf;
-using Logging.Library.Wpf.ViewModels;
-using Utilities.Library.Wpf.ViewModels;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 using Logging.Library;
-using static Logging.Library.LogEventHandler;
+using Logging.Library.Wpf.ViewModels;
+using ToolkitForTSW.Options;
 using Utilities.Library;
+using Utilities.Library.Wpf.ViewModels;
 
 namespace ToolkitForTSW.ViewModels
   {
@@ -18,17 +12,34 @@ namespace ToolkitForTSW.ViewModels
     {
     private readonly IEventAggregator _events;
     private readonly IWindowManager _windowManager;
+		
+		private string _currentPlatformText= $"Current platform: {TSWOptions.GetPlatformDisplayString(TSWOptions.CurrentPlatform)}";
+		public string CurrentPlatformText
+      {
+      get { return _currentPlatformText;
+				}
+			set
+        {
+				_currentPlatformText=value;
+				NotifyOfPropertyChange(() => CurrentPlatformText);
+				}
+	    }
 
 		public ShellViewModel(IEventAggregator events, IWindowManager windowManager)
 {
 			_events = events;
 			_windowManager = windowManager;
-
 			_events.SubscribeOnPublishedThread(this);
 			LogEventHandler.LogEvent += OnLogEvent;
-			}
+      PlatformChangedEventHandler.PlatformChanged += PlatformChangedEventHandler_PlatformChanged;
+    }
 
-		protected override void OnViewLoaded(object view)
+    private void PlatformChangedEventHandler_PlatformChanged(object Sender, PlatformChangedEventArgs e)
+      {
+			CurrentPlatformText= $"Current platform: {TSWOptions.GetPlatformDisplayString(TSWOptions.CurrentPlatform)}";
+      }
+
+    protected override void OnViewLoaded(object view)
 			{
 			base.OnViewLoaded(view);
 			// await EditRoutes();
@@ -96,7 +107,7 @@ namespace ToolkitForTSW.ViewModels
 		//	await _windowManager.ShowWindowAsync(viewmodel);
 		//	}
 
-		public async Task Close()
+		public async Task CloseForm()
       {
 			await TryCloseAsync();
       }

@@ -22,17 +22,17 @@ namespace ToolkitForTSW.DataAccess
 
     public static int InsertMod(ModModel mod)
       {
-      var sql = $"INSERT OR IGNORE INTO Mods (ModName, FileName, FilePath, ModDescription, ModImage, ModSource, ModType, DLCName) " +
-                $"VALUES(@ModName, @FileName, @FilePath, @ModDescription, @ModImage, @ModSource, @ModType, @DLCName);{DbAccess.LastRowInsertQuery}";
-      return DbAccess.SaveData<dynamic>(sql, new { mod.ModName, mod.FileName,mod.FilePath, mod.ModDescription, mod.ModImage, mod.ModSource, mod.ModType, mod.DLCName});
+      var sql = $"INSERT OR IGNORE INTO Mods (ModName, FileName, FilePath, ModDescription, ModImage, ModSource, ModType, DLCName, ModVersion) " +
+                $"VALUES(@ModName, @FileName, @FilePath, @ModDescription, @ModImage, @ModSource, @ModType, @DLCName, @ModVersion);{DbAccess.LastRowInsertQuery}";
+      return DbAccess.SaveData<dynamic>(sql, new { mod.ModName, mod.FileName,mod.FilePath, mod.ModDescription, mod.ModImage, mod.ModSource, mod.ModType, mod.DLCName, mod.ModVersion});
       }
 
     public static int UpdateMod(ModModel mod)
       {
       // $"UPDATE OR IGNORE Persons SET FirstName=@FirstName, LastName=@LastName WHERE Id= @Id;
-      var sql = "UPDATE OR IGNORE Mods SET ModName=@ModName, FileName=@FileName, Filepath=@FilePath, ModDescription=@ModDescription, ModImage=@ModImage, ModSource=@ModSource, ModType=@ModType, DLCName= @DLCName " +
+      var sql = "UPDATE OR IGNORE Mods SET ModName=@ModName, FileName=@FileName, Filepath=@FilePath, ModDescription=@ModDescription, ModImage=@ModImage, ModSource=@ModSource, ModType=@ModType, DLCName= @DLCName, ModVersion=@ModVersion " +
                 $"WHERE Id= @Id; {DbAccess.LastRowInsertQuery}";
-      return DbAccess.SaveData<dynamic>(sql, new { mod.ModName, mod.FileName, mod.FilePath, mod.ModDescription, mod.ModImage, mod.ModSource, mod.ModType, mod.DLCName, mod.Id });
+      return DbAccess.SaveData<dynamic>(sql, new { mod.ModName, mod.FileName, mod.FilePath, mod.ModDescription, mod.ModImage, mod.ModSource, mod.ModType, mod.DLCName, mod.ModVersion, mod.Id });
       }
 
     public static ModModel UpsertMod(string filePath)

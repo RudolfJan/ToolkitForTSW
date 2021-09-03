@@ -190,18 +190,16 @@ namespace ToolkitForTSW.ViewModels
     public BackupViewModel()
       {
       BackupSetsList = new BindableCollection<DirectoryInfo>();
-      FillBackupList();
+      BackupPath = $"{TSWOptions.BackupFolder}{TSWOptions.GetPlatformFolderName(TSWOptions.CurrentPlatform)}\\";
+      FillBackupList(BackupPath);
       SetSaveDefault();
-      BackupPath = TSWOptions.BackupFolder;
+      
       }
 
-  
-
-    private void FillBackupList()
+    private void FillBackupList(string backupPath)
       {
       BackupSetsList.Clear();
-      var Path = TSWOptions.BackupFolder;
-      DirectoryInfo DirInfo = new DirectoryInfo(Path);
+      DirectoryInfo DirInfo = new DirectoryInfo(backupPath);
       var Dirs = DirInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
       foreach (var X in Dirs)
         {
@@ -275,8 +273,8 @@ namespace ToolkitForTSW.ViewModels
 
     public void MakeDailyBackup()
       {
-      FillBackupList();
-      var TargetBase = TSWOptions.BackupFolder + CreateBackupSetName() + "\\";
+      FillBackupList(BackupPath);
+      var TargetBase = BackupPath + CreateBackupSetName() + "\\";
       var datePart= TargetBase.Substring(0,TargetBase.Length-6);
       var shouldDo= BackupSetsList.Where(x=>x.FullName.Substring(0, x.FullName.Length - 5)==datePart).FirstOrDefault();
  
@@ -290,16 +288,16 @@ namespace ToolkitForTSW.ViewModels
 
     public void MakeBackup()
       {
-      var SourceBase = TSWOptions.GameSaveLocation;
+      var SourceBase = TSWOptions.GetSaveLocationPath();
       var ToolkitBase= TSWOptions.ToolkitForTSWFolder;
-      var TargetBase = TSWOptions.BackupFolder + CreateBackupSetName() + "\\";
+      var TargetBase = BackupPath + CreateBackupSetName() + "\\";
       BackUpPart(SourceBase, TargetBase, "Saved\\Config\\", SaveConfig);
       BackUpPart(SourceBase, TargetBase, "Saved\\Screenshots\\", SaveScreenShots);
       BackUpPart(SourceBase, TargetBase, "Saved\\LoadingScreens\\", SaveLoadingScreens);
       BackUpPart(SourceBase, TargetBase, "Saved\\Logs\\", SaveLogs);
       BackUpPart(SourceBase, TargetBase, "Saved\\Crashes\\", SaveCrashes);
       BackUpToolkitPart(TSWOptions.ManualsFolder,TargetBase+"ToolKit\\Manuals\\",SaveManuals);
-      BackUpToolkitPart(TSWOptions.OptionsSetDir, TargetBase + "ToolKit\\OptionSets\\", SaveSettings);
+      BackUpToolkitPart(TSWOptions.GetSaveLocationPath(), TargetBase + "ToolKit\\OptionsSets\\", SaveSettings);
       BackUpToolkitPart(TSWOptions.ModsFolder, TargetBase + "ToolKit\\Mods\\", SaveMods);
       BackUpSingleFile(ToolkitBase, TargetBase + "ToolKit\\", "TSWTools.db", SaveDatabase);
       BackupSetsList.Add(new DirectoryInfo(TargetBase));
@@ -358,7 +356,6 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-
     private void BackUpSingleFile(string SourceBase, string TargetBase, string fileName, bool Included)
       {
       if (Included)
@@ -389,15 +386,15 @@ namespace ToolkitForTSW.ViewModels
     public void RestoreBackup()
       {
       var source=SelectedBackupSet.FullName;
-      var target = TSWOptions.GameSaveLocation+"Saved\\";
+      var target = TSWOptions.GetSaveLocationPath() + "Saved\\";
       FileHelpers.CopyDir($"{source}\\Saved\\", target, true);
       RestoreToolkitFiles($"{source}\\Toolkit\\");
       }
 
     public void RestoreToolkitFiles(string source)
       {
-      // var target = CTSWOptions.TSWToolsFolder;
-      var target="D:\\Test\\";
+      var target = TSWOptions.ToolkitForTSWFolder;
+      // var target="D:\\Test\\";
       FileHelpers.CopyDir(source, target, true);
       }
 
@@ -405,9 +402,7 @@ namespace ToolkitForTSW.ViewModels
       {
       var source = SelectedBackupSet.FullName;
       Directory.Delete(source, true);
-      FillBackupList();
+      FillBackupList(BackupPath);
       }
-
-
     }
   }

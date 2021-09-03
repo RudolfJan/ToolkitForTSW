@@ -4,10 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
-using System.Data.SQLite;
 using System.IO;
-using System.Windows.Controls;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
 using Utilities.Library;
@@ -16,23 +13,23 @@ namespace ToolkitForTSW.Mod
   {
   public enum ModTypesEnum
 
-		{
-		[Description("Undefined")] Undefined,
-		[Description("Engine")] Engine,
-		[Description("Wagon")] Wagon,
-		[Description("Consist")] Consist,
-		[Description("Scenery")] Scenery,
-		[Description("Route")] Route,
-		[Description("Scenario")] Scenario,
-		[Description("Service timetable")] Service,
-		[Description("Weather")] Weather,
+    {
+    [Description("Undefined")] Undefined,
+    [Description("Engine")] Engine,
+    [Description("Wagon")] Wagon,
+    [Description("Consist")] Consist,
+    [Description("Scenery")] Scenery,
+    [Description("Route")] Route,
+    [Description("Scenario")] Scenario,
+    [Description("Service timetable")] Service,
+    [Description("Weather")] Weather,
     [Description("Game")] Game,
-		[Description("Other")] Other
-		};
+    [Description("Other")] Other
+    };
 
-	public class CModManager : Notifier
-		{
-    private List<ModModel> _AvailableModList= new List<ModModel>();
+  public class CModManager : Notifier
+    {
+    private List<ModModel> _AvailableModList = new List<ModModel>();
     public List<ModModel> AvailableModList
       {
       get { return _AvailableModList; }
@@ -42,32 +39,32 @@ namespace ToolkitForTSW.Mod
         OnPropertyChanged("AvailableModList");
         }
       }
- 
 
-		/*
+
+    /*
 		List with all (DLC) Pak files. 
 		*/
-		private ObservableCollection<FileInfo> _PakFilesList;
-		public ObservableCollection<FileInfo> PakFilesList
-			{
-			get { return _PakFilesList; }
-			set
-				{
-				_PakFilesList = value;
-				OnPropertyChanged("PakFilesList");
-				}
-			}
+    private ObservableCollection<FileInfo> _PakFilesList;
+    public ObservableCollection<FileInfo> PakFilesList
+      {
+      get { return _PakFilesList; }
+      set
+        {
+        _PakFilesList = value;
+        OnPropertyChanged("PakFilesList");
+        }
+      }
 
-	  private String _Result = String.Empty;
-		public String Result
-			{
-			get { return _Result; }
-			set
-				{
-				_Result = value;
-				OnPropertyChanged("Result");
-				}
-			}
+    private String _Result = String.Empty;
+    public String Result
+      {
+      get { return _Result; }
+      set
+        {
+        _Result = value;
+        OnPropertyChanged("Result");
+        }
+      }
 
     private CModSet _modSet;
     public CModSet ModSet
@@ -80,7 +77,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
- 
+
     private string _modName;
     public string ModName
       {
@@ -89,6 +86,17 @@ namespace ToolkitForTSW.Mod
         {
         _modName = value;
         OnPropertyChanged("ModName");
+        }
+      }
+
+    private string _modVersion;
+    public string ModVersion
+      {
+      get { return _modVersion; }
+      set
+        {
+        _modVersion = value;
+        OnPropertyChanged("ModVersion");
         }
       }
 
@@ -102,7 +110,7 @@ namespace ToolkitForTSW.Mod
         OnPropertyChanged("FilePath");
         }
       }
-   
+
     private string _fileName;
     public string FileName
       {
@@ -181,14 +189,25 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private bool _IsInstalled;
-    public bool IsInstalled
+    private bool _IsInstalledSteam;
+    public bool IsInstalledSteam
       {
-      get { return _IsInstalled; }
+      get { return _IsInstalledSteam; }
       set
         {
-        _IsInstalled = value;
-        OnPropertyChanged("IsInstalled");
+        _IsInstalledSteam = value;
+        OnPropertyChanged("IsInstalledSteam");
+        }
+      }
+
+    private bool _IsInstalledEGS;
+    public bool IsInstalledEGS
+      {
+      get { return _IsInstalledEGS; }
+      set
+        {
+        _IsInstalledEGS = value;
+        OnPropertyChanged("IsInstalledEGS");
         }
       }
 
@@ -205,126 +224,226 @@ namespace ToolkitForTSW.Mod
 
 
     public CModManager()
-			{
-   
-			Initialise();
-			}
+      {
 
-		private void Initialise()
-			{
+      Initialise();
+      }
+
+    private void Initialise()
+      {
       PakFilesList = new ObservableCollection<FileInfo>();
       AvailableModList = ModDataAccess.GetAllMods();
       ModSet = new CModSet(AvailableModList);
       GetPakFiles();
       GetInstalledPakFiles();
-			}
+      }
 
     public void DeactivateAllInstalledPaks()
       {
-			foreach (var X in AvailableModList)
+      foreach (var X in AvailableModList)
         {
-        if (X.IsInstalled)
+        if (X.IsInstalledSteam)
           {
           var filePath = X.FileName;
           if (!String.IsNullOrEmpty(filePath))
             {
-            FilePath = TSWOptions.TrainSimWorldDirectory + @"TS2Prototype\Content\DLC\" + filePath;
+            FilePath = TSWOptions.SteamTrainSimWorldDirectory + @"TS2Prototype\Content\DLC\" + filePath;
             FileHelpers.DeleteSingleFile(filePath);
-            X.IsInstalled=false;
+            X.IsInstalledSteam = false;
+            }
+          }
+        if (X.IsInstalledEGS)
+          {
+          var filePath = X.FileName;
+          if (!String.IsNullOrEmpty(filePath))
+            {
+            FilePath = TSWOptions.EGSTrainSimWorldDirectory + @"TS2Prototype\Content\DLC\" + filePath;
+            FileHelpers.DeleteSingleFile(filePath);
+            X.IsInstalledEGS = false;
             }
           }
         }
       }
 
     private void GetPakFiles()
-			{
-			var BaseDir = new DirectoryInfo(TSWOptions.ModsFolder);
-			FileInfo[] Files = BaseDir.GetFiles("*.pak", SearchOption.AllDirectories);
-			PakFilesList.Clear();
+      {
+      var BaseDir = new DirectoryInfo(TSWOptions.ModsFolder);
+      FileInfo[] Files = BaseDir.GetFiles("*.pak", SearchOption.AllDirectories);
+      PakFilesList.Clear();
       AvailableModList.Clear();
       foreach (var F in Files)
         {
         PakFilesList.Add(F);
-        var mod= ModDataAccess.UpsertMod(StripModDir(F.FullName));
+        var mod = ModDataAccess.UpsertMod(StripModDir(F.FullName));
         AvailableModList.Add(mod);
         }
       }
 
     private void GetInstalledPakFiles()
-			{
-			var BaseDir =
-				new DirectoryInfo(TSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\DLC");
-			FileInfo[] Files = BaseDir.GetFiles("*.pak", SearchOption.AllDirectories);
-			foreach (var F in Files)
+      {
+      if(TSWOptions.SteamProgramDirectory.Length>0)
         {
-        SetInstallationStatus(F);
+        GetInstalledPakFiles(PlatformEnum.Steam);
         }
-			}
+      if(TSWOptions.EGSTrainSimWorldDirectory.Length>0)
+        { 
+        GetInstalledPakFiles(PlatformEnum.EpicGamesStore);
+        }
+      }
 
-    private void SetInstallationStatus(FileInfo f)
+    private void GetInstalledPakFiles(PlatformEnum selectedPlatform)
+      {
+      var BaseDir = GetBaseDir(selectedPlatform);
+      FileInfo[] Files = BaseDir.GetFiles("*.pak", SearchOption.TopDirectoryOnly);
+      foreach (var F in Files)
+        {
+        SetInstallationStatus(F, selectedPlatform);
+        }
+      }
+
+    private static DirectoryInfo GetBaseDir(PlatformEnum selectedPlatform)
+      {
+      DirectoryInfo BaseDir;
+      switch (selectedPlatform)
+        {
+        case PlatformEnum.Steam:
+            {
+            BaseDir = new DirectoryInfo(TSWOptions.SteamTrainSimWorldDirectory + "TS2Prototype\\Content\\DLC");
+            break;
+            }
+        case PlatformEnum.EpicGamesStore:
+            {
+            BaseDir = new DirectoryInfo(TSWOptions.EGSTrainSimWorldDirectory + "TS2Prototype\\Content\\DLC");
+      
+            break;
+            }
+        default:
+            {
+            throw new NotImplementedException("Platform in ModManager not yet supported");
+            }
+        }
+      // If no DLC are installed, this directory is missing. In this case, create it so we can install mods.
+
+      // This also may happen for the Steam version, especially for new players
+      if (!Directory.Exists(BaseDir.FullName))
+        {
+        Directory.CreateDirectory(BaseDir.FullName);
+        }
+      return BaseDir;
+      }
+
+    private void SetInstallationStatus(FileInfo f, PlatformEnum selectedPlatform)
       {
       var fileName = f.Name;
       foreach (var mod in AvailableModList)
         {
         if (string.CompareOrdinal(fileName, mod.FileName) == 0)
           {
-          mod.IsInstalled=true;
+          switch (selectedPlatform)
+            {
+            case PlatformEnum.Steam:
+              mod.IsInstalledSteam = true;
+              return;
+            case PlatformEnum.EpicGamesStore:
+              mod.IsInstalledEGS = true;
+              return;
+            default:
+              throw new NotImplementedException("Platform in ModManager not yet supported");
+            }
           }
         }
       }
 
     public static String StripModDir(String Input)
-			{
-			if (Input.StartsWith(TSWOptions.ModsFolder))
-				{
-				return Input.Substring(TSWOptions.ModsFolder.Length);
-				}
-			return String.Empty;
-			}
- 
+      {
+      if (Input.StartsWith(TSWOptions.ModsFolder))
+        {
+        return Input.Substring(TSWOptions.ModsFolder.Length);
+        }
+      return String.Empty;
+      }
+
     public void ActivatePak()
       {
-      var PakPath = SelectedMod.FilePath;
-			var source = TSWOptions.ModsFolder + PakPath;
-			var fileName = Path.GetFileName(source);
-			var destination = TSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\DLC\\" +
-			                  fileName;
-			try
-				{
-				File.Copy(source, destination, false);
-				var F = new FileInfo(destination);
-        if (InEditMode)
-          {
-          IsInstalled=true;
-          }
-        SelectedMod.IsInstalled=true;
-				}
-			catch (Exception E)
-				{
-				Result += Log.Trace("Failed to install mod pak because " + E.Message,
-					LogEventType.Error);
-				}
-			}
-
-		public void DeactivatePak()
-			{
-			var filePath = new FileInfo(TSWOptions.TrainSimWorldDirectory +
-			                            "TS2Prototype\\Content\\DLC\\" + SelectedMod.FileName);
-			Result += FileHelpers.DeleteSingleFile(filePath.FullName);
-	    SelectedMod.IsInstalled=false;
-      if (InEditMode)
+      if (TSWOptions.SteamProgramDirectory.Length > 0)
         {
-        IsInstalled = false;
+        ActivatePak(PlatformEnum.Steam);
+        }
+      if (TSWOptions.EGSTrainSimWorldDirectory.Length > 0)
+        {
+        ActivatePak(PlatformEnum.EpicGamesStore);
         }
       }
 
-    public static string ActivateMod(ModModel mod)
+    public void ActivatePak(PlatformEnum selectedPlatform)
+      {
+      var PakPath = SelectedMod.FilePath;
+      var source = TSWOptions.ModsFolder + PakPath;
+      var fileName = Path.GetFileName(source);
+      var destination = $"{GetBaseDir(selectedPlatform).FullName}\\{fileName}";
+      try
+        {
+        File.Copy(source, destination, false);
+        var F = new FileInfo(destination);
+        SetInstallationStatus(selectedPlatform,true);
+        }
+      catch (Exception E)
+        {
+        Result += Log.Trace("Failed to install mod pak because " + E.Message,
+          LogEventType.Error);
+        }
+      }
+
+    private void SetInstallationStatus(PlatformEnum selectedPlatform, bool installationStatus)
+      {
+      switch (selectedPlatform)
+        {
+        case PlatformEnum.Steam:
+            {
+            if (InEditMode)
+              {
+              IsInstalledSteam = installationStatus;
+              }
+            SelectedMod.IsInstalledSteam = installationStatus;
+            break;
+            }
+        case PlatformEnum.EpicGamesStore:
+            {
+            if (InEditMode)
+              {
+              IsInstalledEGS = installationStatus;
+              }
+            SelectedMod.IsInstalledEGS = installationStatus;
+            break;
+            }
+        }
+      }
+
+    public void DeactivatePak()
+      {
+      if (TSWOptions.SteamProgramDirectory.Length > 0)
+        {
+        DeactivatePak(PlatformEnum.Steam);
+        }
+      if (TSWOptions.EGSTrainSimWorldDirectory.Length > 0)
+        {
+        DeactivatePak(PlatformEnum.EpicGamesStore);
+        }
+      }
+
+    public void DeactivatePak(PlatformEnum selectedPlatform)
+      {
+      var filePath = $"{GetBaseDir(selectedPlatform).FullName}\\{SelectedMod.FileName}";
+      Result += FileHelpers.DeleteSingleFile(filePath);
+      SetInstallationStatus(selectedPlatform,false);
+      }
+
+    public static string ActivateMod(ModModel mod, PlatformEnum selectedPlatform)
       {
       var PakPath = mod.FilePath;
       var source = TSWOptions.ModsFolder + PakPath;
       var fileName = Path.GetFileName(source);
-      var destination = TSWOptions.TrainSimWorldDirectory + "TS2Prototype\\Content\\DLC\\" +
-                        fileName;
+      var destination = GetBaseDir(selectedPlatform).FullName + fileName;
       try
         {
         File.Copy(source, destination, true);
@@ -343,28 +462,25 @@ namespace ToolkitForTSW.Mod
       ModDescription = SelectedMod.ModDescription;
       ModSource = SelectedMod.ModSource;
       ModType = SelectedMod.ModType;
+      ModVersion=SelectedMod.ModVersion;
       DLCName = SelectedMod.DLCName;
       FileName = SelectedMod.FileName;
-      FilePath=SelectedMod.FilePath;
-      IsInstalled = SelectedMod.IsInstalled;
-      InEditMode=true;
+      FilePath = SelectedMod.FilePath;
+      IsInstalledSteam = SelectedMod.IsInstalledSteam;
+      IsInstalledEGS = SelectedMod.IsInstalledEGS;
+      InEditMode = true;
       }
 
     public void SaveModProperties()
       {
-      SelectedMod.ModName= ModName;
-      SelectedMod.ModDescription=ModDescription;
-      SelectedMod.ModSource= ModSource;
-      SelectedMod.DLCName= DLCName;
-      SelectedMod.ModType=ModType;
+      SelectedMod.ModName = ModName;
+      SelectedMod.ModDescription = ModDescription;
+      SelectedMod.ModSource = ModSource;
+      SelectedMod.DLCName = DLCName;
+      SelectedMod.ModType = ModType;
+      SelectedMod.ModVersion=ModVersion;
       ModDataAccess.UpdateMod(SelectedMod);
       // Note FileName and FilePath should never be updated!
-      }
-
-    public static string UpdateModTable(FileInfo F, Boolean IsInstalled=false)
-      {
-      var mod = ModDataAccess.UpsertMod(StripModDir(F.FullName));
-      return "";
       }
 
     public static string UpdateModTable(ModModel mod)
@@ -375,9 +491,13 @@ namespace ToolkitForTSW.Mod
 
     internal void DeleteMod()
       {
-      if (SelectedMod.IsInstalled)
+      if (SelectedMod.IsInstalledSteam)
         {
-        DeactivatePak();
+        DeactivatePak(PlatformEnum.Steam);
+        }
+      if (SelectedMod.IsInstalledEGS)
+        {
+        DeactivatePak(PlatformEnum.EpicGamesStore);
         }
       var PakPath = SelectedMod.FilePath;
       var source = TSWOptions.ModsFolder + PakPath;
@@ -396,11 +516,13 @@ namespace ToolkitForTSW.Mod
       ModDescription = string.Empty;
       ModSource = string.Empty;
       ModType = ModTypesEnum.Undefined;
+      ModVersion= string.Empty;
       DLCName = string.Empty;
       FileName = string.Empty;
       FilePath = string.Empty;
-      IsInstalled = false;
+      IsInstalledSteam = false;
+      IsInstalledEGS=false;
       InEditMode = false;
       }
-		}
-	}
+    }
+  }

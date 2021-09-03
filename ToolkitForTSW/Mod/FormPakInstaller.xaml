@@ -59,15 +59,18 @@
 						<userControls:LabelTextBox x:Name="SourceTextBox" LabelText="Source" LabelWidth="80"
                                               TextBoxText="{Binding ModSource, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               />
-						<WrapPanel>
+            <WrapPanel>
 							<TextBlock Width="72" Style="{StaticResource DefaultTextBlock}">Mod Type</TextBlock>
 							<ComboBox Name="LiveryComboBox" Width="80"
                               ItemsSource="{Binding Source={StaticResource LiveryTypesEnum}}"
                               Text="{Binding ModType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                               />
-							<CheckBox x:Name="IsInstalledCheckBox"
-                              IsChecked="{Binding IsInstalled, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Activate mod"/>
-						</WrapPanel>
+            </WrapPanel>
+            <WrapPanel>
+							<CheckBox x:Name="IsInstalledSteamCheckBox"
+                              IsChecked="{Binding IsInstalledSteam, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Activate mod Steam"/>
+              <CheckBox x:Name="IsInstalledEGSCheckBox" IsChecked="{Binding IsInstalledEGS, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Activate mod EGS" />
+            </WrapPanel>
 						<userControls:LabelTextBox x:Name="DescriptionTextBox" LabelText="Description" LabelWidth="80"
                                               Style="{StaticResource MultiLineLabelTextBox}"
                                               TextBoxText="{Binding ModDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"

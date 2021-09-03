@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics; // needed for Process class
 using System.IO;
+using System.Windows;
 using Logging.Library;
 using Utilities.Library;
 using Utilities.Library.TextHelpers;
@@ -76,6 +77,11 @@ namespace ToolkitForTSW
     public static String ExecuteFile(String Filepath, String Arguments = "")
       {
       return ProcessHelper.RunProcess(Filepath, Arguments, CreateNoWindow: false);
+      }
+
+    public static String ExecuteFileMinimized(String Filepath, String Arguments = "")
+      {
+      return ProcessHelper.RunProcess(Filepath, Arguments, WindowStyle: ProcessWindowStyle.Minimized, CreateNoWindow: false);
       }
 
     // Start FileCompare Tool

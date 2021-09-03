@@ -12,9 +12,12 @@
 		<StackPanel>
 			<Image Margin="10" Source="../Images/MainWindowImage.png" MaxHeight="250" />
 			<TextBlock FontSize="16" FontWeight="Bold" TextWrapping="Wrap" MaxHeight="60" MaxWidth="500" 
-			           Style="{StaticResource DefaultTextBlock}">
+			           Style="{StaticResource TextBlockDefault}">
 				Important. Use this Toolkit only for TSW2! For TSW2020 download TSWTools, which is a similar program
 			</TextBlock>
+      <TextBlock Foreground="Red"  FontSize="12" FontWeight="Bold"  
+                 Text="{Binding CurrentPlatformText, NotifyOnSourceUpdated=True, Mode=TwoWay}"
+                 Style="{StaticResource TextBlockDefault}"/>
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition />
@@ -121,7 +124,7 @@
 					<userControls:ResultsTextBox Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Result}" Source="../Images/page_delete.png"/>
 				</StackPanel>
 			</Border>
-			<Button Name="Close" Style="{StaticResource OKButton}" HorizontalAlignment="Right"
+			<Button Name="CloseForm" Style="{StaticResource OKButton}" HorizontalAlignment="Right"
 			       ToolTip="Close TSW Tools main screen">
 				Close
 			</Button>

@@ -3,6 +3,7 @@ using Logging.Library;
 using Styles.Library.Helpers;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using ToolkitForTSW.Mod;
 using ToolkitForTSW.Settings;
 
@@ -19,6 +20,35 @@ namespace ToolkitForTSW.ViewModels
         {
         _LaunchRadio = value;
         NotifyOfPropertyChange(()=>LaunchRadio);
+        }
+      }
+
+    private bool _isTrackIRActive=TSWOptions.TrackIRProgram.Length>0;
+
+    public bool IsTrackIRActive
+      {
+      get {
+        return _isTrackIRActive;
+        }
+      set 
+        {
+        _isTrackIRActive=value;
+        NotifyOfPropertyChange(()=>IsTrackIRActive);
+        }
+      }
+
+
+    private DirectoryInfo _selectedOptionsSet;
+    public DirectoryInfo SelectedOptionsSet
+      {
+      get
+        {
+        return _selectedOptionsSet;
+        }
+      set
+        {
+        _selectedOptionsSet=value;
+        NotifyOfPropertyChange(()=>SelectedOptionsSet);
         }
       }
 
@@ -93,16 +123,29 @@ namespace ToolkitForTSW.ViewModels
       ModSet = new CModSet();
       }
 
-    public void LaunchPrograms(DirectoryInfo SaveSet)
+    public void LaunchPrograms()
       {
-      if (SaveSet != null)
+      if (IsTrackIRActive)
         {
         try
           {
-          var SourceFile = SaveSet.FullName + "\\GameUserSettings.ini";
+          Result += CApps.ExecuteFileMinimized(TSWOptions.TrackIRProgram);
+          }
+        catch(Exception ex)
+          {
+          Result += Log.Trace("Failed to launch TrackIR because " + ex.Message,  LogEventType.Error);
+          }
+        }
+
+      if (SelectedOptionsSet != null)
+        {
+        try
+          {
+ 
+          var SourceFile = SelectedOptionsSet.FullName + "\\GameUserSettings.ini";
           var DestinationFile = SettingsManager.GetInGameSettingsLocation().FullName;
           File.Copy(SourceFile, DestinationFile, true);
-          SourceFile = SaveSet.FullName + "\\Engine.ini";
+          SourceFile = SelectedOptionsSet.FullName + "\\Engine.ini";
           DestinationFile = SettingsManager.GetInGameEngineIniLocation().FullName;
           File.Copy(SourceFile, DestinationFile, true);
           }
@@ -119,8 +162,20 @@ namespace ToolkitForTSW.ViewModels
         Result+=CApps.LaunchUrl(RadioUrl, true);
         }
 
-      var TSWProgram = new FileInfo(TSWOptions.SteamProgramDirectory + "Steam.exe");
-      Result += CApps.ExecuteFile(TSWProgram, "steam://rungameid/1282590");
+      if(TSWOptions.CurrentPlatform==PlatformEnum.Steam)
+        {
+        var TSWProgram = new FileInfo(TSWOptions.SteamProgramDirectory + "Steam.exe");
+        Result += CApps.ExecuteFile(TSWProgram, "steam://rungameid/1282590");
+        }
+      if(TSWOptions.CurrentPlatform==PlatformEnum.EpicGamesStore)
+        {
+        Result += CApps.LaunchUrl(TSWOptions.EGSTrainSimWorldStarter,false);
+        }
+      }
+
+    public async Task CloseForm()
+      {
+      await TryCloseAsync();
       }
     }
   }

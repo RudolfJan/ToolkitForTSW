@@ -6,6 +6,7 @@ using System.Text;
 
 namespace ToolkitForTSW
   {
+  
   public class DebugLogger : ILog
     {
     private readonly Type _type;
@@ -23,7 +24,6 @@ namespace ToolkitForTSW
         return;
       Debug.WriteLine("INFO: " + format, args);
       }
-
     public void Warn(string format, params object[] args)
       {
       Debug.WriteLine("WARN: " + format, args);

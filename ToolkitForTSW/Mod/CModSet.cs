@@ -62,12 +62,12 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    internal static void ActivateModSet(ModSetModel modSet)
+    internal static void ActivateModSet(ModSetModel modSet, PlatformEnum selectedPlatform)
       {
       var modsInSet = ModModSetDataAccess.GetAllModsPerModSet(modSet.Id);
       foreach (var mod in modsInSet)
         {
-        CModManager.ActivateMod(mod);
+        CModManager.ActivateMod(mod,selectedPlatform);
         }
       }
 
@@ -93,7 +93,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private String _SetName;
+    private String _SetName=string.Empty;
 
     public String SetName
       {
@@ -105,7 +105,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private String _Description;
+    private String _Description=string.Empty;
 
     public String Description
       {
@@ -185,7 +185,7 @@ namespace ToolkitForTSW.Mod
       newModSet.ModSetDescription = Description;
       if (ModSetId == 0)
         {
-        ModSetDataAccess.InsertModSet(newModSet);
+        ModSetId=ModSetDataAccess.InsertModSet(newModSet);
         ModSetList.Add(newModSet);
         }
       else
@@ -198,12 +198,17 @@ namespace ToolkitForTSW.Mod
       {
       ModSetDataAccess.DeleteModSet(SelectedModSet.Id);
       ModSetList.Remove(SelectedModSet);
+      ModsInSetList.Clear();
       SelectedModSet=null;
-      
       }
 
     internal void AddModToSet()
       {
+      if(SelectedModSet == null)
+        {
+        SaveSet();
+        SelectedModSet= ModSetDataAccess.GetModSetById(ModSetId);
+        }
       ModModSetModel modModSet = new ModModSetModel
         {
         ModId = SelectedMod.Id,
@@ -230,5 +235,4 @@ namespace ToolkitForTSW.Mod
       ModSetId= SelectedModSet.Id;
       }
     }
-
   }

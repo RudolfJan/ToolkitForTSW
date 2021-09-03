@@ -5,6 +5,7 @@ using System.IO;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
 using ToolkitForTSW.Options;
+using ToolkitForTSW.Views;
 
 namespace ToolkitForTSW
   {
@@ -24,6 +25,52 @@ namespace ToolkitForTSW
         }
       }
 
+    private string _steamTrainSimWorldDirectory;
+
+    public string SteamTrainSimWorldDirectory
+      {
+      get { return _steamTrainSimWorldDirectory; }
+      set { _steamTrainSimWorldDirectory = value; 
+        OnPropertyChanged("CheckOptiions.SteamTSW2ProgramOK");
+        OnPropertyChanged("SteamtrainSimWorlDirectory");
+        }
+      }
+
+    private string _steamTrainSimWorldProgram;
+
+    public string SteamTrainSimWorldProgram
+      {
+      get { return _steamTrainSimWorldProgram; }
+      set
+        {
+        _steamTrainSimWorldProgram = value;
+        OnPropertyChanged("CheckOptiions.SteamTSW2ProgramOK");
+        OnPropertyChanged("SteamTrainSimWorlProgram");
+        }
+      }
+
+    private string _egsTrainSimWorldDirectory;
+
+    public string EGSTrainSimWorldDirectory
+      {
+      get { return _egsTrainSimWorldDirectory; }
+      set { _egsTrainSimWorldDirectory = value; }
+      }
+
+    private string _egsTrainSimWorldProgram;
+
+    public string EGSTrainSimWorldProgram
+      {
+      get { return _egsTrainSimWorldProgram; }
+      set { _egsTrainSimWorldProgram = value; }
+      }
+    private string _egsTrainSimWorldStarter;
+
+    public string EGSTrainSimWorldStarter
+      {
+      get { return _egsTrainSimWorldStarter; }
+      set { _egsTrainSimWorldStarter = value; }
+      }
 
 
     /*
@@ -57,7 +104,7 @@ Installation folder for Steam program
       }
 
     /*
-    Installation directory for TSW
+    Installation directory for TSW deprecated
     */
     private string _TrainSimWorldDirectory = string.Empty;
 
@@ -72,7 +119,7 @@ Installation folder for Steam program
       }
 
     /*
-		Installation directory for TSW
+		Installation directory for TSW deprecated
 		*/
     private string _TrainSimWorldProgram = string.Empty;
 
@@ -172,6 +219,18 @@ Installation folder for Steam program
         }
       }
 
+    private string _trackIRProgram = string.Empty;
+
+    public string TrackIRProgram
+      {
+      get { return _trackIRProgram; }
+      set
+        {
+        _trackIRProgram = value;
+        OnPropertyChanged("TrackIRProgram");
+        }
+      }
+
     /*
     Path to 7Zip program
     */
@@ -231,6 +290,19 @@ Installation folder for Steam program
         }
       }
 
+    private PlatformEnum _currentPlatform= PlatformEnum.NotSet;
+    public PlatformEnum CurrentPlatform
+      {
+      get
+        {
+        return _currentPlatform;
+        }
+      set
+        {
+        _currentPlatform= value;
+        OnPropertyChanged("CurrentPlatform");
+        }
+      }
 
 
     private int RouteId { get; set; } = 0;
@@ -323,7 +395,6 @@ Installation folder for Steam program
         }
       }
 
-
     #endregion
 
     #region Constructor
@@ -340,7 +411,6 @@ Installation folder for Steam program
       TSWOptions.ReadFromRegistry();
       SteamProgramDirectory = TSWOptions.SteamProgramDirectory;
       SteamUserId = TSWOptions.SteamUserId;
-      TrainSimWorldDirectory = TSWOptions.TrainSimWorldDirectory;
       TrainSimWorldProgram = TrainSimWorldDirectory + "TS2Prototype.exe";
       ToolkitForTSWFolder = TSWOptions.ToolkitForTSWFolder;
       BackupFolder= TSWOptions.BackupFolder;
@@ -348,10 +418,17 @@ Installation folder for Steam program
       TextEditor = TSWOptions.TextEditor;
       SevenZip = TSWOptions.SevenZip;
       Unpacker = TSWOptions.Unpacker;
+      TrackIRProgram=TSWOptions.TrackIRProgram;
       UAssetUnpacker = TSWOptions.UAssetUnpacker;
       UseAdvancedSettings = TSWOptions.UseAdvancedSettings;
       LimitSoundVolumes = TSWOptions.LimitSoundVolumes;
       AutoBackup= TSWOptions.AutoBackup;
+      EGSTrainSimWorldStarter=TSWOptions.EGSTrainSimWorldStarter;
+      EGSTrainSimWorldDirectory=TSWOptions.EGSTrainSimWorldDirectory;
+      SteamTrainSimWorldDirectory=TSWOptions.SteamTrainSimWorldDirectory;
+      SteamTrainSimWorldProgram = SteamTrainSimWorldDirectory + "TS2Prototype.exe";
+      EGSTrainSimWorldProgram = EGSTrainSimWorldDirectory + "TS2Prototype.exe";
+      CurrentPlatform =TSWOptions.CurrentPlatform;
       RouteList = new ObservableCollection<RouteModel>(RouteDataAccess.GetAllRoutes());
       }
 
@@ -360,20 +437,41 @@ Installation folder for Steam program
       TSWOptions.SteamProgramDirectory = FixEndSlash(SteamProgramDirectory);
       TSWOptions.SteamUserId = SteamUserId;
       TrainSimWorldDirectory = Path.GetDirectoryName(TrainSimWorldProgram);
-      TSWOptions.TrainSimWorldDirectory = FixEndSlash(TrainSimWorldDirectory);
       TSWOptions.ToolkitForTSWFolder = FixEndSlash(ToolkitForTSWFolder);
       TSWOptions.BackupFolder= FixEndSlash(BackupFolder);
       TSWOptions.XmlEditor = XMLEditor;
       TSWOptions.TextEditor = TextEditor;
       TSWOptions.SevenZip = SevenZip;
       TSWOptions.Unpacker = Unpacker;
+      TSWOptions.TrackIRProgram = TrackIRProgram; 
       TSWOptions.UAssetUnpacker = UAssetUnpacker;
       TSWOptions.UseAdvancedSettings = UseAdvancedSettings;
       TSWOptions.LimitSoundVolumes = LimitSoundVolumes;
       TSWOptions.AutoBackup= AutoBackup;
+      TSWOptions.EGSTrainSimWorldStarter=EGSTrainSimWorldStarter;
+      SteamTrainSimWorldDirectory = Path.GetDirectoryName(SteamTrainSimWorldProgram);
+      EGSTrainSimWorldDirectory = Path.GetDirectoryName(EGSTrainSimWorldProgram);
+      TSWOptions.EGSTrainSimWorldDirectory=FixEndSlash(EGSTrainSimWorldDirectory);
+      TSWOptions.SteamTrainSimWorldDirectory=FixEndSlash(SteamTrainSimWorldDirectory);
+
+      var oldPlatform= TSWOptions.CurrentPlatform;
+      TSWOptions.CurrentPlatform = CurrentPlatform;
+      if(CurrentPlatform== PlatformEnum.Steam)
+        {
+        TSWOptions.TrainSimWorldDirectory = SteamTrainSimWorldDirectory;
+        }
+      if (CurrentPlatform == PlatformEnum.EpicGamesStore)
+        {
+        TSWOptions.TrainSimWorldDirectory = EGSTrainSimWorldDirectory;
+        }
+
       TSWOptions.WriteToRegistry();
       TSWOptions.CreateDirectories();
       TSWOptions.CopyManuals();
+      if (CurrentPlatform != oldPlatform)
+        {
+        PlatformChangedEventHandler.SetPlatformChangedEvent(new PlatformChangedEventArgs(oldPlatform, CurrentPlatform));
+        }
       }
 
     #region RouteEditor
@@ -444,7 +542,6 @@ Installation folder for Steam program
       }
 
     #endregion
-
 
 
     private static string FixEndSlash(string Input)

@@ -46,10 +46,10 @@ namespace ToolkitForTSW.Options
       if (!CheckOptionsModel.ToolkitFolderOK)
         {
         OptionsCheckStatus = false;
-        OptionsCheckReport += "ToolkitForTSW datafolder not set correctly\r\n";
+        OptionsCheckReport += "ToolkitForTSW data folder not set correctly\r\n";
         }
 
-      if (!CheckOptionsModel.TSW2ProgramOK)
+      if (!CheckOptionsModel.SteamTSW2ProgramOK || !CheckOptionsModel.EGSTSW2ProgramOK)
         {
         OptionsCheckStatus = false;
         OptionsCheckReport += "TSW Program location is not set correctly\r\n";
@@ -65,6 +65,12 @@ namespace ToolkitForTSW.Options
         {
         OptionsCheckStatus = false;
         OptionsCheckReport += "Unreal unpacker not set correctly\r\n";
+        }
+
+      if (!CheckOptionsModel.TrackIROK)
+        {
+        OptionsCheckStatus = false;
+        OptionsCheckReport += "TrackIR program not set correctly\r\n";
         }
       }
     }

@@ -41,8 +41,8 @@ namespace ToolkitForTSW.Settings
   public enum ScreenModeEnum
     {
     [Description("FullScreen")] FullScreen = 0,
-    [Description("Windowd FullScreen")] WindowedFullScreen = 1,
-    [Description("Windowd")] WindowedScreen = 2
+    [Description("Windowed FullScreen")] WindowedFullScreen = 1,
+    [Description("Windowed")] WindowedScreen = 2
     }
 
   public enum QualityEnum
@@ -68,6 +68,21 @@ namespace ToolkitForTSW.Settings
     [Description("TAA")] TAA = 2
     }
 
+  //public enum CrosshairVisibilityEnum
+  //  {
+  //  [Description("Off")] Off = 0,
+  //  [Description("50%")] Fifty = 1,
+  //  [Description("100%")] Hundred = 2,
+  //  [Description("Large")] Large = 3
+  //  }
+
+  public enum CrosshairVisibilityEnum
+    {
+    Off = 0,
+    Fifty = 1,
+    Hundred = 2,
+    Large = 3
+    }
   #endregion
 
   public class CSettingsManager : Notifier
@@ -347,23 +362,24 @@ namespace ToolkitForTSW.Settings
 
     #region Filehandling
 
+ 
     public FileInfo GetInGameSettingsLocation()
       {
-      var MyPath = TSWOptions.GameSaveLocation;
+      var MyPath = TSWOptions.GetSaveLocationPath();
       MyPath += @"Saved\Config\WindowsNoEditor\GameUserSettings.ini";
       return new FileInfo(MyPath);
       }
 
     public FileInfo GetInGameEngineIniLocation()
       {
-      var MyPath = TSWOptions.GameSaveLocation;
+      var MyPath = TSWOptions.GetSaveLocationPath();
       MyPath += @"Saved\Config\WindowsNoEditor\Engine.ini";
       return new FileInfo(MyPath);
       }
 
     public void GetSavedSettings()
       {
-      String Path = TSWOptions.OptionsSetDir;
+      String Path = TSWOptions.GetOptionsSetPath();
       DirectoryInfo SavedSettingsDir = new DirectoryInfo(Path);
       DirectoryInfo[] SavedSets = SavedSettingsDir.GetDirectories("*", SearchOption.TopDirectoryOnly);
       SavedUserSettingsList.Clear();
@@ -407,7 +423,7 @@ namespace ToolkitForTSW.Settings
         return; // failed, should never happen
         }
 
-      var Path = TSWOptions.OptionsSetDir + SaveSetName + "\\"; // Warning order is important here
+      var Path = TSWOptions.GetOptionsSetPath() + SaveSetName + "\\"; // Warning order is important here
       var SettingsFile = new FileInfo(Path + "GameUserSettings.ini");
       var EngineIniFile = new FileInfo(Path + "Engine.ini");
       GetSavedSettings();
@@ -492,7 +508,7 @@ namespace ToolkitForTSW.Settings
         return; // failed, should never happen
         }
 
-      var Path = TSWOptions.OptionsSetDir + SaveSetName + "\\"; // Warning order is important here
+      var Path = TSWOptions.GetOptionsSetPath() + SaveSetName + "\\"; // Warning order is important here
       if (!Directory.Exists(Path))
         {
         var Dir = Directory.CreateDirectory(Path);

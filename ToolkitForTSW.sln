@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30330.147
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolkitForTSW", "ToolkitForTSW\ToolkitForTSW.csproj", "{B2FE5230-3D35-49BB-B0EA-A34E54BB983B}"
 EndProject
@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		Manual\Drawings manual.pub = Manual\Drawings manual.pub
 		Manual\License information.docx = Manual\License information.docx
 		Manual\License information.pdf = Manual\License information.pdf
+		Setup\Inputfiles\NoCopy\Readme.txt = Setup\Inputfiles\NoCopy\Readme.txt
 		Manual\ToolkitForTSW Manual.docx = Manual\ToolkitForTSW Manual.docx
 		Manual\TSWTools Manual Visio Drawings.vsdx = Manual\TSWTools Manual Visio Drawings.vsdx
 	EndProjectSection
@@ -28,7 +29,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{16B7FFBA-A86C-4DEB-AD87-D4EF9E9804FE}"
 	ProjectSection(SolutionItems) = preProject
+		Setup\Inputfiles\NoCopy\CSXicon.bmp = Setup\Inputfiles\NoCopy\CSXicon.bmp
+		Setup\Inputfiles\NoCopy\Setup.bmp = Setup\Inputfiles\NoCopy\Setup.bmp
 		Setup\ToolkitForTSW.iss = Setup\ToolkitForTSW.iss
+		Setup\Inputfiles\NoCopy\TSW_Cindy_1489778724_00.png = Setup\Inputfiles\NoCopy\TSW_Cindy_1489778724_00.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLiteDatabase.Library", "..\RudolfLibraries\SQLiteDatabase.Library\SQLiteDatabase.Library.csproj", "{84ED9EBC-BE74-40F3-AC15-1A2F4AC4A24F}"

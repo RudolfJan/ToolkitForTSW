@@ -93,7 +93,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private string _modName="";
+    private string _modName = "";
     public string ModName
       {
       get { return _modName; }
@@ -127,7 +127,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private string _modDescription="";
+    private string _modDescription = "";
     public string ModDescription
       {
       get { return _modDescription; }
@@ -149,7 +149,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private string _modSource="";
+    private string _modSource = "";
     public string ModSource
       {
       get { return _modSource; }
@@ -160,7 +160,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private ModTypesEnum _modType=ModTypesEnum.Undefined;
+    private ModTypesEnum _modType = ModTypesEnum.Undefined;
     public ModTypesEnum ModType
       {
       get { return _modType; }
@@ -171,7 +171,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private string _DLCName="";
+    private string _DLCName = "";
     public string DLCName
       {
       get { return _DLCName; }
@@ -182,16 +182,39 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    private bool _IsInstalled;
-    public bool IsInstalled
+    private string _modVersion = "";
+    public string ModVersion
       {
-      get { return _IsInstalled; }
+      get { return _modVersion; }
       set
         {
-        _IsInstalled = value;
-        OnPropertyChanged("IsInstalled");
+        _modVersion = value;
+        OnPropertyChanged("ModVersion");
         }
       }
+
+    private bool _IsInstalledSteam;
+    public bool IsInstalledSteam
+      {
+      get { return _IsInstalledSteam; }
+      set
+        {
+        _IsInstalledSteam = value;
+        OnPropertyChanged("IsInstalledSteam");
+        }
+      }
+
+    private bool _IsInstalledEGS;
+    public bool IsInstalledEGS
+      {
+      get { return _IsInstalledEGS; }
+      set
+        {
+        _IsInstalledEGS = value;
+        OnPropertyChanged("IsInstalledEGS");
+        }
+      }
+
 
     public CPakInstaller()
       {
@@ -297,7 +320,7 @@ namespace ToolkitForTSW.Mod
 
     public void GetRwpArchivedFiles(string archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType)
       {
-      SevenZipLib.ListFilesInArchive(ArchiveFile, out var FileReport,true);
+      SevenZipLib.ListFilesInArchive(archiveFile, out var FileReport, true);
       //var Skip = 16;
       //if (string.Compare(Path.GetExtension(archiveFile), ".rar", StringComparison.Ordinal) == 0 ||
       //    string.Compare(Path.GetExtension(archiveFile), ".7z", StringComparison.Ordinal) == 0)
@@ -306,14 +329,14 @@ namespace ToolkitForTSW.Mod
       //  }
 
       var Reader = new StringReader(FileReport);
-//#pragma warning disable IDE0059 // Unnecessary assignment of a value
-//      var MetaData = "";
-//#pragma warning restore IDE0059 // Unnecessary assignment of a value
-//      for (var I = 0; I < Skip; I++) // tricky!
-//        {
-//        // ReSharper disable once RedundantAssignment debugging, do not remove this
-//        MetaData = Reader.ReadLine() + "\r\n";
-//        }
+      //#pragma warning disable IDE0059 // Unnecessary assignment of a value
+      //      var MetaData = "";
+      //#pragma warning restore IDE0059 // Unnecessary assignment of a value
+      //      for (var I = 0; I < Skip; I++) // tricky!
+      //        {
+      //        // ReSharper disable once RedundantAssignment debugging, do not remove this
+      //        MetaData = Reader.ReadLine() + "\r\n";
+      //        }
 
       var Done = false;
       while (!Done)
@@ -403,12 +426,11 @@ namespace ToolkitForTSW.Mod
               }
           }
         }
-      
       }
 
     public void InstallMod()
       {
-      InstallDirectory= FileTree.SelectedTreeNode.Root.FullName;
+      InstallDirectory = FileTree.SelectedTreeNode.Root.FullName;
       if (InstallDirectory == null)
         {
         Result +=
@@ -434,12 +456,17 @@ namespace ToolkitForTSW.Mod
         DLCName = DLCName,
         FilePath = CModManager.StripModDir(filePath),
         FileName = Path.GetFileName(filePath),
-        IsInstalled = IsInstalled
+        IsInstalledSteam = IsInstalledSteam,
+        IsInstalledEGS = IsInstalledEGS
         };
       ModDataAccess.UpsertMod(mod);
-      if (IsInstalled)
+      if (IsInstalledSteam)
         {
-        CModManager.ActivateMod(mod);
+        CModManager.ActivateMod(mod, PlatformEnum.Steam);
+        }
+      if (IsInstalledEGS)
+        {
+        CModManager.ActivateMod(mod, PlatformEnum.EpicGamesStore);
         }
       }
 
@@ -452,7 +479,9 @@ namespace ToolkitForTSW.Mod
       DLCName = "";
       FileName = "";
       FilePath = "";
-      IsInstalled = false;
+      IsInstalledSteam = false;
+      IsInstalledEGS=false;
+      ModVersion="";
       ArchiveFile = "";
       DocumentsList.Clear();
       PakFileList.Clear();

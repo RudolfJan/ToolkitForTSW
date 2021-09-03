@@ -19,7 +19,8 @@
 				<Border Name="FirstColumn" Grid.Column="0"  Style="{StaticResource DefaultBorder}">
 					<StackPanel>
 						<TextBlock Style="{StaticResource HeaderTextBlock}">Settings collection</TextBlock>
-						<DataGrid Name="SettingFilesDataGrid" MinHeight="300"  Style="{StaticResource DefaultDataGrid}" ItemsSource="{Binding SettingsManager.SavedUserSettingsList}" AutoGenerateColumns="False" SelectionChanged="OnSettingFilesDataGridSelectionChanged" >
+						<DataGrid Name="SettingFilesDataGrid" MinHeight="300"  Style="{StaticResource DefaultDataGrid}" ItemsSource="{Binding SettingsManager.SavedUserSettingsList}" AutoGenerateColumns="False"
+                      SelectedItem="{Binding SelectedOptionsSet}">
 							<DataGrid.Columns>
 								<DataGridTextColumn x:Name="NameColumn"  Header="Set name"  Width="180"  Binding="{Binding Name}" SortMemberPath="NameColumn"/>
 							</DataGrid.Columns>
@@ -47,7 +48,7 @@
 						<DataGrid Name="RadioStationsUrlDataGrid" MinHeight="300"  
                       ItemsSource="{Binding RailwayRadioStationManager.RadioStationList}"
                       Style="{StaticResource DataGridReadOnly}" 
-                      SelectionChanged="OnSettingFilesDataGridSelectionChanged" >
+                      >
 							<DataGrid.Columns>
 								<DataGridTextColumn x:Name="RouteNameColumn"  
 								                    Header="Radio station"  Width="50"  
@@ -74,9 +75,9 @@
 							<userControls:ResultsTextBox HorizontalAlignment="Stretch" TextHeight="125" Text="{Binding Result}" Style="{StaticResource DefaultResultsTextBox}" Source="../Images/page_delete.png"/>
 						</StackPanel>
 						<StackPanel Grid.Column="1">
-
-							<Button Name="LaunchTSWButton" Style="{StaticResource BigOKButton}" HorizontalAlignment="Center" ToolTip="Load selected settings and launch TSW" Click="LaunchTSWButton_Click" >Launch TSW</Button>
-							<Button Name="OKButton" Style="{StaticResource OKButton}" VerticalAlignment="Bottom" ToolTip="Close this window" Click="OKButton_Click" >Close</Button>
+              <CheckBox IsChecked="{Binding IsTrackIRActive}">Use TrackIR</CheckBox>
+							<Button Name="LaunchPrograms" Style="{StaticResource BigOKButton}" HorizontalAlignment="Center" ToolTip="Load selected settings and launch TSW">Launch TSW</Button>
+							<Button Name="CloseForm" Style="{StaticResource OKButton}" VerticalAlignment="Bottom" ToolTip="Close this window">Close</Button>
 						</StackPanel>
 					</Grid>
 				</Border>

@@ -6,12 +6,14 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "ToolkitForTSW/0.7.0": {
+      "ToolkitForTSW/7": {
         "dependencies": {
+          "Caliburn.Micro": "4.0.173",
           "ClosedXML": "0.95.4",
           "Filter.Library": "1.0.0",
           "Filter.Library.WPF": "1.0.0",
           "Logging.Library": "1.0.0",
+          "Logging.Library.Wpf": "1.0.0",
           "SQLiteDatabase.Library": "1.0.0",
           "SavCracker.Library": "1.0.0",
           "Screenshots.Library": "1.0.0",
@@ -19,10 +21,39 @@
           "Styles.Library": "1.0.0",
           "Syroot.Windows.IO.KnownFolders": "1.2.3",
           "TreeBuilders.Library.Wpf": "1.0.0",
-          "Utilities.Library": "1.0.0"
+          "Utilities.Library": "1.0.0",
+          "Utilities.Library.Wpf": "1.0.0"
         },
         "runtime": {
           "ToolkitForTSW.dll": {}
+        }
+      },
+      "Caliburn.Micro/4.0.173": {
+        "dependencies": {
+          "Caliburn.Micro.Core": "4.0.173",
+          "Microsoft.Windows.Compatibility": "5.0.2",
+          "Microsoft.Xaml.Behaviors.Wpf": "1.1.19"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Caliburn.Micro.Platform.Core.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.173.65239"
+          },
+          "lib/netcoreapp3.1/Caliburn.Micro.Platform.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.173.65239"
+          }
+        }
+      },
+      "Caliburn.Micro.Core/4.0.173": {
+        "dependencies": {
+          "System.Runtime.Serialization.Primitives": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Caliburn.Micro.Core.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.173.65239"
+          }
         }
       },
       "ClosedXML/0.95.4": {
@@ -185,6 +216,14 @@
           "System.Speech": "5.0.0",
           "System.Text.Encoding.CodePages": "5.0.0",
           "System.Threading.AccessControl": "5.0.0"
+        }
+      },
+      "Microsoft.Xaml.Behaviors.Wpf/1.1.19": {
+        "runtime": {
+          "lib/netcoreapp3.0/Microsoft.Xaml.Behaviors.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.19.35512"
+          }
         }
       },
       "NETStandard.Library/1.6.1": {
@@ -1171,6 +1210,12 @@
           "System.Runtime.Extensions": "4.3.0"
         }
       },
+      "System.Runtime.Serialization.Primitives/4.3.0": {
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0"
+        }
+      },
       "System.Security.AccessControl/5.0.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "5.0.1",
@@ -1673,6 +1718,16 @@
           "Logging.Library.dll": {}
         }
       },
+      "Logging.Library.Wpf/1.0.0": {
+        "dependencies": {
+          "Caliburn.Micro": "4.0.173",
+          "Logging.Library": "1.0.0",
+          "Styles.Library": "1.0.0"
+        },
+        "runtime": {
+          "Logging.Library.Wpf.dll": {}
+        }
+      },
       "SavCracker.Library/1.0.0": {
         "dependencies": {
           "Logging.Library": "1.0.0",
@@ -1728,6 +1783,7 @@
       },
       "TreeBuilders.Library.Wpf/1.0.0": {
         "dependencies": {
+          "Caliburn.Micro": "4.0.173",
           "Logging.Library": "1.0.0",
           "Styles.Library": "1.0.0",
           "Utilities.Library": "1.0.0"
@@ -1745,14 +1801,38 @@
         "runtime": {
           "Utilities.Library.dll": {}
         }
+      },
+      "Utilities.Library.Wpf/1.0.0": {
+        "dependencies": {
+          "Caliburn.Micro": "4.0.173",
+          "Styles.Library": "1.0.0",
+          "Utilities.Library": "1.0.0"
+        },
+        "runtime": {
+          "Utilities.Library.Wpf.dll": {}
+        }
       }
     }
   },
   "libraries": {
-    "ToolkitForTSW/0.7.0": {
+    "ToolkitForTSW/7": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Caliburn.Micro/4.0.173": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tqX5pOsODLXCU1fYpeQuS2zNn/IYCjsmfHpmA0FBu+876wvbyPmmIrgujkx1XBpTJ/BWM69Uo5jWG3WRSUeXUA==",
+      "path": "caliburn.micro/4.0.173",
+      "hashPath": "caliburn.micro.4.0.173.nupkg.sha512"
+    },
+    "Caliburn.Micro.Core/4.0.173": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Nd4Ka0sqzfPWlZoBdVfC2DxdCjTAHV9BxL0YMyObZa1K/iM1jVAUy1o+MahFDjMy0eenoHjBQj62pfmeIUdOTQ==",
+      "path": "caliburn.micro.core/4.0.173",
+      "hashPath": "caliburn.micro.core.4.0.173.nupkg.sha512"
     },
     "ClosedXML/0.95.4": {
       "type": "package",
@@ -1837,6 +1917,13 @@
       "sha512": "sha512-2imzNvgFenWrUJMr4XKwR9LHy2LZK8VbmUE4Z8hTT9fB0mMisjZjn/1mgLAcn8TE5U7Bjk8zVEwsEttLC1yenA==",
       "path": "microsoft.windows.compatibility/5.0.2",
       "hashPath": "microsoft.windows.compatibility.5.0.2.nupkg.sha512"
+    },
+    "Microsoft.Xaml.Behaviors.Wpf/1.1.19": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5sPWkbqImc2t1aQwIfJcKsUo7tOg1Tr8+6xVzZJB56Nzt4u9NlpcLofgdX/aRYpPKdWDA3U23Akw1KQzU5e82g==",
+      "path": "microsoft.xaml.behaviors.wpf/1.1.19",
+      "hashPath": "microsoft.xaml.behaviors.wpf.1.1.19.nupkg.sha512"
     },
     "NETStandard.Library/1.6.1": {
       "type": "package",
@@ -2489,6 +2576,13 @@
       "path": "system.runtime.numerics/4.3.0",
       "hashPath": "system.runtime.numerics.4.3.0.nupkg.sha512"
     },
+    "System.Runtime.Serialization.Primitives/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
+      "path": "system.runtime.serialization.primitives/4.3.0",
+      "hashPath": "system.runtime.serialization.primitives.4.3.0.nupkg.sha512"
+    },
     "System.Security.AccessControl/5.0.0": {
       "type": "package",
       "serviceable": true,
@@ -2735,6 +2829,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Logging.Library.Wpf/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "SavCracker.Library/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -2766,6 +2865,11 @@
       "sha512": ""
     },
     "Utilities.Library/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Utilities.Library.Wpf/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

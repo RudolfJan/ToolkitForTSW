@@ -215,7 +215,15 @@ namespace ToolkitForTSW.Settings
       SettingsManager.UpdateSetting(key, "False", section);
       }
 
-    public void WriteBooleanValueAsInt(bool value, string key, SectionEnum section)
+    public void WriteDoubleValue(double value, string key, SectionEnum section)
+      {
+      var Culture = CultureInfo.CreateSpecificCulture("en-GB");
+      var tmp= value.ToString(Culture); //DEBUG
+      SettingsManager.UpdateSetting(key, value.ToString(Culture), section);
+      }
+
+
+      public void WriteBooleanValueAsInt(bool value, string key, SectionEnum section)
       {
       if (value)
         {
