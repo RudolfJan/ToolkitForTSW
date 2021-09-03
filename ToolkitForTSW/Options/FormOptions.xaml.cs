@@ -1,24 +1,21 @@
 ﻿using Filter.Library.WPF.ViewModels;
-using Filter.Library.WPF.Views;
 using Screenshots.Library.WPF.ViewModels;
 using System;
 using System.Windows;
-using System.Windows.Data;
 
 namespace ToolkitForTSW
-{
-    /// <summary>
-    /// Interaction logic for FormOptions.xaml
-    /// </summary>
-    public partial class FormOptions : Window
-		{
-		OptionsViewModel OptionsView { get; set; }
+  {
 
-		public FormOptions()
-			{
-			InitializeComponent();
-			OptionsView = new OptionsViewModel();
-			DataContext = OptionsView;
+  public partial class FormOptions : Window
+    {
+    OptionsViewModel OptionsView { get; set; }
+    private bool _canClose=false;
+
+    public FormOptions()
+      {
+      InitializeComponent();
+      OptionsView = new OptionsViewModel();
+      DataContext = OptionsView;
       TagsView.TagAndCategoryData= new TagAndCategoryViewModel();
       TagsView.DataContext = TagsView.TagAndCategoryData;
       CollectionsView.ScreenshotCollectionManager= new ScreenshotCollectionViewModel();
@@ -31,20 +28,19 @@ namespace ToolkitForTSW
       RouteEditButton.IsEnabled= OptionsView.SelectedRoute!=null;
       RouteDeleteButton.IsEnabled = OptionsView.SelectedRoute != null;
       RouteSaveButton.IsEnabled = OptionsView.RouteAbbrev!=null && OptionsView.RouteAbbrev.Length >= 2;
+      OKButton.IsEnabled= _canClose==true;
       }
 
-		private void OnOKButtonClicked(Object sender, RoutedEventArgs e)
-			{
-			DialogResult = true;
-			OptionsView.SaveOptions();
-			Close();
-			}
+    private void OnOKButtonClicked(Object sender, RoutedEventArgs e)
+      {
+      Close();
+      }
 
-		private void OnCancelButtonClicked(Object sender, RoutedEventArgs e)
-			{
-			DialogResult = false;
-			Close();
-			}
+    private void OnCancelButtonClicked(Object sender, RoutedEventArgs e)
+      {
+      DialogResult = false;
+      Close();
+      }
 
      private void OnEditRoute(object sender, RoutedEventArgs e)
       {
@@ -84,5 +80,12 @@ namespace ToolkitForTSW
       {
       SetControlStates();
       }
+
+    private void SaveButton_Click(object sender, RoutedEventArgs e)
+      {
+      _canClose = true;
+      OptionsView.SaveOptions();
+      SetControlStates();
+      }
     }
-	}
+  }

@@ -6,19 +6,27 @@ After installation, please set up the program options before trying to do anythi
 
 Check out https:/www.hollandhiking.nl/trainsimulator for other tools and documentation for TSW and TrainSimulator.
 
+Contact the author using trainsimulator@hollandhiking.nl
+
 Installation instructions:
 - Use the installer to install all tools
 - You will need to download additional free tools
 - Make sure to set all required options
-- You need to specify a location for the datafiles during the install process. If you specify antoher loaction than for a previous version, your datafiles will NOT be copied automatically to the new location.
+- You need to specify a location for the data files during the install process. If you specify another location than for a previous version, your datafiles will NOT be copied automatically to the new location.
 
-See the manual for details. You can find the manual in the ToolkitForTSW datafolder.
+See the manual for details. You can find the manual in the ToolkitForTSW data folder.
 
 Version history:
 
+Version 1.0:
+- Support for Epic Games Platform
+- Splash screen
+- New Rush Hour edition settings
+- Error popup window
+
 Version 0.9:
 - Automatic backups
-- Experimentatl settings
+- Experimental settings
 - Revised RouteGuides window
 - Bug fixes and refactoring
 
@@ -35,13 +43,13 @@ Version 0.7:
 
 Version 0.6:
 - Application renamed to ToolkitForTSW
-- Now supprts TSW2 only
+- Now supports TSW2 only
 - Added Scenario manager tool
 - Settings tool improved and added new TSW2 settings.
 
 Version 0.51:
 - Bug fixes
-- Addes Cab sway setting
+- Adds Cab sway setting
 
 Version 0.5
 - Bug fixes

@@ -22,8 +22,8 @@ namespace ToolkitForTSW.DataAccess
 
     public static int InsertMod(ModModel mod)
       {
-      var sql = $"INSERT OR IGNORE INTO Mods (ModName, FileName, FilePath, ModDescription, ModImage, ModSource, ModType, DLCName, Version) " +
-                $"VALUES(@ModName, @FileName, @FilePath, @ModDescription, @ModImage, @ModSource, @ModType, @DLCName, @Version);{DbAccess.LastRowInsertQuery}";
+      var sql = $"INSERT OR IGNORE INTO Mods (ModName, FileName, FilePath, ModDescription, ModImage, ModSource, ModType, DLCName, ModVersion) " +
+                $"VALUES(@ModName, @FileName, @FilePath, @ModDescription, @ModImage, @ModSource, @ModType, @DLCName, @ModVersion);{DbAccess.LastRowInsertQuery}";
       return DbAccess.SaveData<dynamic>(sql, new { mod.ModName, mod.FileName,mod.FilePath, mod.ModDescription, mod.ModImage, mod.ModSource, mod.ModType, mod.DLCName, mod.ModVersion});
       }
 

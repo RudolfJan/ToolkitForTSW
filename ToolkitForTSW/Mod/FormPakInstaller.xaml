@@ -68,8 +68,8 @@
             </WrapPanel>
             <WrapPanel>
 							<CheckBox x:Name="IsInstalledSteamCheckBox"
-                              IsChecked="{Binding IsInstalledSteam, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Activate mod"/>
-              <CheckBox x:Name="IsInstalledEGSCheckBox" IsChecked="{Binding IsInstalledEGS, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Activate mod" />
+                              IsChecked="{Binding IsInstalledSteam, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Activate mod Steam"/>
+              <CheckBox x:Name="IsInstalledEGSCheckBox" IsChecked="{Binding IsInstalledEGS, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Activate mod EGS" />
             </WrapPanel>
 						<userControls:LabelTextBox x:Name="DescriptionTextBox" LabelText="Description" LabelWidth="80"
                                               Style="{StaticResource MultiLineLabelTextBox}"
