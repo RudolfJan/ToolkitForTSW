@@ -45,7 +45,7 @@ namespace ToolkitForTSW.ViewModels
             .SavScenario));
           NotifyOfPropertyChange(() => ScenarioIssueList);
           }
-        NotifyOfPropertyChange(() => SelectedSavScenario);
+        NotifyOfPropertyChange(() => CanPublishScenario);
         NotifyOfPropertyChange(() => CanEditScenario);
         NotifyOfPropertyChange(() => CanOpenHex);
         }
@@ -143,6 +143,21 @@ namespace ToolkitForTSW.ViewModels
       ProcessHelper.OpenGenericFile(SelectedSavScenario.ScenarioFile.FullName);
       }
 
+    public bool CanPublishScenario
+      {
+      get
+        {
+        return SelectedSavScenario != null;
+        }
+      }
+
+    public void PublishScenario()
+      {
+      var viewmodel = IoC.Get<PublishScenarioViewModel>();
+      viewmodel.Init(SelectedSavScenario.ScenarioFile.FullName, SelectedSavScenario.SavScenario);
+      _windowManager.ShowDialogAsync(viewmodel);
+      }
+
     public void BuildScenarioList()
       {
       var Path=  $"{TSWOptions.GetSaveLocationPath()}Saved\\SaveGames\\";
@@ -165,5 +180,7 @@ namespace ToolkitForTSW.ViewModels
       ScenarioList = new BindableCollection<CScenario>(ScenarioList.OrderBy(x => x.SavScenario.RouteAbbreviation).ToList());
       }
      }
+
+ 
     }
 

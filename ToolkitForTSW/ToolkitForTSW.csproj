@@ -58,6 +58,7 @@
     <None Remove="SQL\ImportCategories.csv" />
     <None Remove="SQL\ImportTags.csv" />
     <None Remove="SQL\RouteDataImport.csv" />
+    <None Remove="Templates\SimpleTemplate.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -98,6 +99,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SQL\AlterModTable.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SimpleTemplate.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <SplashScreen Include="Images\SplashScreen.png">

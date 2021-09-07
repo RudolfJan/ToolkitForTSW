@@ -1,20 +1,18 @@
-﻿using Logging.Library;
-using Utilities.Library;
+﻿using Caliburn.Micro;
+using Logging.Library;
 using SavCracker.Library.Models;
-using Styles.Library.Helpers;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
-using ToolkitForTSW;
+using Utilities.Library;
 
-namespace ToolkitForTSW
+namespace ToolkitForTSW.ViewModels
   {
-  public class CPublishScenario: Notifier
+  public class PublishScenarioViewModel : Screen
+
     {
-    public SavScenarioModel SavScenario{ get; set; }
+    public SavScenarioModel SavScenario { get; set; }
 
     private string _author;
     public string Author
@@ -23,24 +21,37 @@ namespace ToolkitForTSW
       set
         {
         _author = value;
-        OnPropertyChanged("Author");
+        NotifyOfPropertyChange(() => Author);
+        NotifyOfPropertyChange(()=>CanSave);
         }
       }
 
     private string _description;
+    private string _scenarioFilePath;
+
     public string Description
       {
       get { return _description; }
       set
         {
         _description = value;
-        OnPropertyChanged("Description");
+        NotifyOfPropertyChange(() => Description);
+        NotifyOfPropertyChange(() => CanSave);
         }
       }
 
-    public string ScenarioFilePath { get; set; }
+    public string ScenarioFilePath
+      {
+      get { 
+        return _scenarioFilePath; }
+      set
+        {
+        _scenarioFilePath = value;
+        NotifyOfPropertyChange(()=>ScenarioFilePath);
+        }
+      }
 
-  public CPublishScenario(string scenarioFilePath, SavScenarioModel savScenario)
+    public void Init(string scenarioFilePath, SavScenarioModel savScenario)
       {
       SavScenario = savScenario;
       ScenarioFilePath = scenarioFilePath;
@@ -58,9 +69,9 @@ namespace ToolkitForTSW
         }
       var template = File.ReadAllText(templateList[0].FullName);
       var output = CreateDocumentString(template);
-      File.WriteAllText($"{fileBase}.html",output);
-      var targetFilePath= $"{TSWOptions.ScenarioFolder}{Path.GetFileName(ScenarioFilePath)}";
-      File.Copy(ScenarioFilePath,targetFilePath,true);
+      File.WriteAllText($"{fileBase}.html", output);
+      var targetFilePath = $"{TSWOptions.ScenarioFolder}{Path.GetFileName(ScenarioFilePath)}";
+      File.Copy(ScenarioFilePath, targetFilePath, true);
       FileHelpers.DeleteSingleFile($"{fileBase}.zip");
       using (ZipArchive archive = ZipFile.Open($"{fileBase}.zip", ZipArchiveMode.Create))
         {
@@ -72,9 +83,9 @@ namespace ToolkitForTSW
     public static List<FileInfo> GetTemplates(string templateDir)
       {
       var templateList = new List<FileInfo>();
-      DirectoryInfo dir= new DirectoryInfo(templateDir);
+      DirectoryInfo dir = new DirectoryInfo(templateDir);
       FileInfo[] files = dir.GetFiles("*.html", SearchOption.TopDirectoryOnly);
-      foreach ( var file in files)
+      foreach (var file in files)
         {
         templateList.Add(file);
         }
@@ -87,7 +98,7 @@ namespace ToolkitForTSW
       {
       var output = template.Replace("{Author}", Author)
         .Replace("{Description}", Description)
-        .Replace("{Filename}",GetSavFileName(SavScenario))
+        .Replace("{Filename}", GetSavFileName(SavScenario))
         .Replace("{ScenarioName}", SavScenario.ScenarioName)
         .Replace("{RouteName}", SavScenario.RouteName)
         .Replace("{PlayerEngine}", GetPlayerEngine(SavScenario))
@@ -101,18 +112,28 @@ namespace ToolkitForTSW
       var output = string.Empty;
       output = "<table>\n";
 
-      foreach(var service in savScenario.SavServiceList)
+      foreach (var service in savScenario.SavServiceList)
         {
-        output += $"\t<tr>\n\t\t<td>{service.IsPlayerService}</td>\n" +
-                  $"\t\t<td>{service.StartTimeText}</td>\n"+
-                  $"\t\t<td>{service.EngineName}</td>"+
-                  $"\t\t<td>{service.ConsistName}</td>"+
-                  $"\t\t<td>{service.ServiceName}</td>"+
+        output += $"\t<tr>\n\t\t<td>{PrintIsPlayerService(service.IsPlayerService)}</td>\n" +
+                  $"\t\t<td>{service.StartTimeText}</td>\n" +
+                  $"\t\t<td>{service.EngineName}</td>" +
+                  $"\t\t<td>{service.ConsistName}</td>" +
+                  $"\t\t<td>{service.ServiceName}</td>" +
                   "\t<tr>\n";
         }
 
       output += "</table\n";
       return output;
+      }
+
+    public static string PrintIsPlayerService(bool isPlayerService)
+      {
+      if(isPlayerService)
+
+        {
+        return "Player";
+        }
+      return string.Empty;
       }
 
     private string GetPlayerEngine(SavScenarioModel savScenario)
@@ -126,6 +147,24 @@ namespace ToolkitForTSW
         }
 
       return "";
+      }
+
+    public void Cancel()
+      {
+      TryCloseAsync();
+      }
+
+    public bool CanSave
+      {
+      get
+        {
+        return !string.IsNullOrEmpty(Author) && ! string.IsNullOrEmpty(Description);
+        }
+      }
+    public void Save()
+      {
+      CreateDocumentFile();
+      TryCloseAsync();
       }
 
     private string GetSavFileName(SavScenarioModel savScenario)
