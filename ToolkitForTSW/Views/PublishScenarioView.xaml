@@ -1,44 +1,70 @@
-﻿<windowSizing:SizableWindow x:Class="ToolkitForTSW.Views.PublishScenarioView"
-                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                            xmlns:windowSizing="clr-namespace:UISupport.Library.WindowSizing;assembly=Styles.Library"
+﻿<windowSizing:SizableWindow x:Class="ToolkitForTSW.Views.PublishScenarioView" 
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                            xmlns:windowSizing="clr-namespace:UISupport.Library.WindowSizing;assembly=Styles.Library" 
                             xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
-                            mc:Ignorable="d"
-                            WindowStartupLocation="CenterOwner"
-                            Style="{StaticResource AllWindows}"
-                            Title="Publish Scenario" Width="600">
+                            mc:Ignorable="d" 
+                            WindowStartupLocation="CenterOwner" 
+                            Style="{StaticResource AllWindows}" 
+                            Title="Publish Scenario">
   <ScrollViewer>
     <Border Style="{StaticResource BorderDefault}">
       <StackPanel>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0">
           <WrapPanel>
             <TextBlock>Route:</TextBlock>
-            <TextBlock Text="{Binding SavScenario.RouteName}"/>
-          
+            <TextBlock Text="{Binding SavScenario.RouteName}" />
+
           </WrapPanel>
-        <WrapPanel>
-          <TextBlock>Scenario:</TextBlock>
-            <TextBlock Text="{Binding SavScenario.ScenarioName}"/>
-        </WrapPanel>
-        <WrapPanel>
-          
-          <TextBlock>Guid:</TextBlock>
-            <TextBlock Text="{Binding SavScenario.ScenarioGuid}"/>
+          <WrapPanel>
+            <TextBlock>Scenario:</TextBlock>
+            <TextBlock Text="{Binding SavScenario.ScenarioName}" />
+          </WrapPanel>
+          <WrapPanel>
+
+            <TextBlock>Guid:</TextBlock>
+            <TextBlock Text="{Binding SavScenario.ScenarioGuid}" />
           </WrapPanel>
 
-            <userControls:LabelTextBox LabelText="Author" LabelWidth="70" Style="{StaticResource LabelTextBoxDefault}"
-                                         TextBoxText="{Binding Author, Mode=TwoWay}"/>
-        <userControls:LabelTextBox  LabelText="Description" LabelWidth="70" 
-                                    Height="100"
-                                    Style="{StaticResource LabelTextBoxMultiLine}"
-                           TextBoxText="{Binding Description, Mode=TwoWay}"/>
-  
-      <WrapPanel HorizontalAlignment="Right">
-        <Button Name="Cancel" Style="{StaticResource ButtonCancel}" HorizontalAlignment="Right">Cancel</Button>
-        <Button Name="Save" Style="{StaticResource ButtonOK}" HorizontalAlignment="Right">Save</Button>
-      </WrapPanel>
-    </StackPanel>
+          <userControls:LabelTextBox LabelText="Author" LabelWidth="70" Width="230" Style="{StaticResource LabelTextBoxDefault}" TextBoxText="{Binding Author, Mode=TwoWay}" />
+          <userControls:FileInputBox LabelText="Screenshot" FileDialogType="OpenFile" Filter="jpg files (*.jpg)|*.jpg|png files (*.png)|*.png" 
+                                     FileName="{Binding Screenshot1, Mode=TwoWay}" 
+                                     CheckFileExists="True" 
+                                     LabelWidth="70" Width="230" 
+                                     ToolTip="Choose a screenshot" />
+          <userControls:LabelTextBox LabelText="Description" LabelWidth="70" Height="100" Width="300" Style="{StaticResource LabelTextBoxMultiLine}" TextBoxText="{Binding Description, Mode=TwoWay}" />
+
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+          <TextBlock Style="{StaticResource TextBlockHeader}">Publishing templates</TextBlock>
+          <DataGrid Style="{StaticResource DataGridReadOnly}" ItemsSource="{Binding TemplateList}"
+                    SelectedItem="{Binding SelectedTemplate}"
+                    Height="200">
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+            </DataGrid.Columns>
+          </DataGrid>
+        </StackPanel>
+      </Grid>
+        <WrapPanel HorizontalAlignment="Right">
+          <Button x:Name="Cancel" Style="{StaticResource ButtonCancel}">Cancel</Button>
+          <Button x:Name="Save" Style="{StaticResource ButtonOK}">Save</Button>
+         </WrapPanel>
+      </StackPanel>
     </Border>
   </ScrollViewer>
 </windowSizing:SizableWindow>

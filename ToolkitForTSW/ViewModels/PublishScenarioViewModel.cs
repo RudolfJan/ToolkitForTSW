@@ -51,23 +51,64 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
+    private BindableCollection<FileInfo> _templateList;
+    public BindableCollection<FileInfo> TemplateList
+      {
+      get
+        {
+        return _templateList;
+        }
+      set
+        {
+        _templateList= value;
+        NotifyOfPropertyChange(()=>TemplateList);
+        }
+      }
+
+    private FileInfo _selectedTemplate;
+    public FileInfo SelectedTemplate
+      {
+      get {  return _selectedTemplate; }
+      set
+        {
+        _selectedTemplate = value;
+        NotifyOfPropertyChange(() => SelectedTemplate);
+        NotifyOfPropertyChange(() => CanSave);
+        }
+      }
+
+    private string _screenshot1;
+    public string Screenshot1
+      {
+      get
+        {
+        return _screenshot1;
+        }
+      set
+        {
+        _screenshot1 = value;
+        NotifyOfPropertyChange(() => Screenshot1);
+        }
+      }
+
     public void Init(string scenarioFilePath, SavScenarioModel savScenario)
       {
       SavScenario = savScenario;
       ScenarioFilePath = scenarioFilePath;
+      TemplateList = new BindableCollection<FileInfo>(GetTemplates(TSWOptions.TemplateFolder));
+      if (TemplateList.Count < 1)
+        {
+        Log.Trace("No template found, cannot create scenario documentation");
+
+        }
       }
 
 
     public void CreateDocumentFile()
       {
       var fileBase = $"{TSWOptions.ScenarioFolder}{SavScenario.RouteAbbreviation}-{SavScenario.ScenarioName}";
-      var templateList = GetTemplates(TSWOptions.TemplateFolder);
-      if (templateList.Count < 1)
-        {
-        Log.Trace("No template found, cannot create scenario documentation");
-        return;
-        }
-      var template = File.ReadAllText(templateList[0].FullName);
+ 
+      var template = File.ReadAllText(SelectedTemplate.FullName);
       var output = CreateDocumentString(template);
       File.WriteAllText($"{fileBase}.html", output);
       var targetFilePath = $"{TSWOptions.ScenarioFolder}{Path.GetFileName(ScenarioFilePath)}";
@@ -77,6 +118,10 @@ namespace ToolkitForTSW.ViewModels
         {
         archive.CreateEntryFromFile(targetFilePath, Path.GetFileName(ScenarioFilePath));
         archive.CreateEntryFromFile($"{fileBase}.html", $"{SavScenario.RouteAbbreviation}-{SavScenario.ScenarioName}.html");
+        if(Screenshot1 != null)
+          {
+          archive.CreateEntryFromFile(Screenshot1, Path.GetFileName(Screenshot1));
+          }
         }
       }
 
@@ -98,6 +143,7 @@ namespace ToolkitForTSW.ViewModels
       {
       var output = template.Replace("{Author}", Author)
         .Replace("{Description}", Description)
+        .Replace("{Screenshot1}",GetScreenshot(Screenshot1))
         .Replace("{Filename}", GetSavFileName(SavScenario))
         .Replace("{ScenarioName}", SavScenario.ScenarioName)
         .Replace("{RouteName}", SavScenario.RouteName)
@@ -105,6 +151,15 @@ namespace ToolkitForTSW.ViewModels
         .Replace("{ServiceList}", GetServiceList(SavScenario));
 
       return output;
+      }
+
+    private static string GetScreenshot(string screenshot)
+      {
+      if(string.IsNullOrEmpty(screenshot))
+        {
+        return string.Empty;
+        }
+      return $"<img src=\"{Path.GetFileName(screenshot)}\">";
       }
 
     private string GetServiceList(SavScenarioModel savScenario)
@@ -158,7 +213,7 @@ namespace ToolkitForTSW.ViewModels
       {
       get
         {
-        return !string.IsNullOrEmpty(Author) && ! string.IsNullOrEmpty(Description);
+        return !string.IsNullOrEmpty(Author) && ! string.IsNullOrEmpty(Description) && SelectedTemplate!=null;
         }
       }
     public void Save()
