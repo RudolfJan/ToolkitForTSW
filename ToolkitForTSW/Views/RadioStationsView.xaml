@@ -59,7 +59,7 @@
 				<userControls:ResultsTextBox Grid.Column="0"   Style="{StaticResource DefaultResultsTextBox}"
                                     HorizontalAlignment="Stretch"
                                     Text="{Binding Result}" Source="../Images/page_delete.png"/>
-				<Button Name="Close" Grid.Column="1" Style="{StaticResource OKButton}" VerticalAlignment="Bottom">Close</Button>
+				<Button Name="CloseForm" Grid.Column="1" Style="{StaticResource OKButton}" VerticalAlignment="Bottom">Close</Button>
 			</Grid>
 		</StackPanel>
 	</ScrollViewer>

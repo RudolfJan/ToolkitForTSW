@@ -1,49 +1,34 @@
-﻿using Logging.Library;
-using Styles.Library.Helpers;
+﻿using Caliburn.Micro;
+using Logging.Library;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using ToolkitForTSW.DataAccess;
+using ToolkitForTSW.Mod.Models;
 using ToolkitForTSW.Models;
 using Utilities.Library;
 
-namespace ToolkitForTSW.Mod
+namespace ToolkitForTSW.Mod.ViewModels
   {
-  public enum ModTypesEnum
+  public class ModStatusViewModel: Screen, IModTabManager
 
     {
-    [Description("Undefined")] Undefined,
-    [Description("Engine")] Engine,
-    [Description("Wagon")] Wagon,
-    [Description("Consist")] Consist,
-    [Description("Scenery")] Scenery,
-    [Description("Route")] Route,
-    [Description("Scenario")] Scenario,
-    [Description("Service timetable")] Service,
-    [Description("Weather")] Weather,
-    [Description("Game")] Game,
-    [Description("Other")] Other
-    };
-
-  public class CModManager : Notifier
-    {
-    private List<ModModel> _AvailableModList = new List<ModModel>();
-    public List<ModModel> AvailableModList
+    private BindableCollection<ModModel> _AvailableModList = new BindableCollection<ModModel>();
+    public BindableCollection<ModModel> AvailableModList
       {
       get { return _AvailableModList; }
       set
         {
         _AvailableModList = value;
-        OnPropertyChanged("AvailableModList");
+        NotifyOfPropertyChange("AvailableModList");
         }
       }
 
 
     /*
-		List with all (DLC) Pak files. 
-		*/
+    List with all (DLC) Pak files. 
+    */
     private ObservableCollection<FileInfo> _PakFilesList;
     public ObservableCollection<FileInfo> PakFilesList
       {
@@ -51,29 +36,18 @@ namespace ToolkitForTSW.Mod
       set
         {
         _PakFilesList = value;
-        OnPropertyChanged("PakFilesList");
+        NotifyOfPropertyChange("PakFilesList");
         }
       }
 
-    private String _Result = String.Empty;
-    public String Result
-      {
-      get { return _Result; }
-      set
-        {
-        _Result = value;
-        OnPropertyChanged("Result");
-        }
-      }
-
-    private CModSet _modSet;
-    public CModSet ModSet
+    private ModSetViewModel _modSet;
+    public ModSetViewModel ModSet
       {
       get { return _modSet; }
       set
         {
         _modSet = value;
-        OnPropertyChanged("ModSet");
+        NotifyOfPropertyChange("ModSet");
         }
       }
 
@@ -85,7 +59,8 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modName = value;
-        OnPropertyChanged("ModName");
+        NotifyOfPropertyChange(() => ModName);
+        NotifyOfPropertyChange(() => CanSaveModProperties);
         }
       }
 
@@ -96,7 +71,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modVersion = value;
-        OnPropertyChanged("ModVersion");
+        NotifyOfPropertyChange("ModVersion");
         }
       }
 
@@ -107,7 +82,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _filePath = value;
-        OnPropertyChanged("FilePath");
+        NotifyOfPropertyChange("FilePath");
         }
       }
 
@@ -118,7 +93,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _fileName = value;
-        OnPropertyChanged("FileName");
+        NotifyOfPropertyChange("FileName");
         }
       }
 
@@ -129,7 +104,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modDescription = value;
-        OnPropertyChanged("ModDescription");
+        NotifyOfPropertyChange("ModDescription");
         }
       }
 
@@ -140,7 +115,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modImage = value;
-        OnPropertyChanged("ModImage");
+        NotifyOfPropertyChange("ModImage");
         }
       }
 
@@ -151,7 +126,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modSource = value;
-        OnPropertyChanged("ModSource");
+        NotifyOfPropertyChange("ModSource");
         }
       }
 
@@ -162,7 +137,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modType = value;
-        OnPropertyChanged("ModType");
+        NotifyOfPropertyChange("ModType");
         }
       }
 
@@ -173,7 +148,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _DLCName = value;
-        OnPropertyChanged("DLCName");
+        NotifyOfPropertyChange(() => DLCName);
         }
       }
 
@@ -185,7 +160,15 @@ namespace ToolkitForTSW.Mod
       set
         {
         _SelectedMod = value;
-        OnPropertyChanged("SelectedMod");
+        NotifyOfPropertyChange (() => SelectedMod);
+        NotifyOfPropertyChange(() => CanEditModProperties);
+        NotifyOfPropertyChange(() => CanDeleteMod);
+        NotifyOfPropertyChange(() => CanSaveModProperties);
+        NotifyOfPropertyChange(() => CanDeactivateMod);
+        NotifyOfPropertyChange(() => CanActivateSteamMod);
+        NotifyOfPropertyChange(() => CanActivateEGSMod);
+        NotifyOfPropertyChange(() => IsInstalledSteam);
+        NotifyOfPropertyChange(() => IsInstalledEGS);
         }
       }
 
@@ -196,7 +179,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _IsInstalledSteam = value;
-        OnPropertyChanged("IsInstalledSteam");
+        NotifyOfPropertyChange(() => IsInstalledSteam);
         }
       }
 
@@ -207,7 +190,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _IsInstalledEGS = value;
-        OnPropertyChanged("IsInstalledEGS");
+        NotifyOfPropertyChange("IsInstalledEGS");
         }
       }
 
@@ -218,27 +201,29 @@ namespace ToolkitForTSW.Mod
       set
         {
         _InEditMode = value;
-        OnPropertyChanged("InEditMode");
+        NotifyOfPropertyChange("InEditMode");
         }
       }
 
-
-    public CModManager()
+    public ModStatusViewModel()
       {
-
-      Initialise();
+      DisplayName="Mods";
       }
-
-    private void Initialise()
+    
+    public void Initialise(BindableCollection<ModModel> availableModList)
       {
+      AvailableModList = availableModList;
+      if (AvailableModList==null)
+        {
+        throw new Exception("AvailableModList should be filled");
+        }
       PakFilesList = new ObservableCollection<FileInfo>();
-      AvailableModList = ModDataAccess.GetAllMods();
-      ModSet = new CModSet(AvailableModList);
+      
       GetPakFiles();
       GetInstalledPakFiles();
       }
 
-    public void DeactivateAllInstalledPaks()
+    public void DeactivateAllMods()
       {
       foreach (var X in AvailableModList)
         {
@@ -281,12 +266,12 @@ namespace ToolkitForTSW.Mod
 
     private void GetInstalledPakFiles()
       {
-      if(TSWOptions.SteamProgramDirectory.Length>0)
+      if (TSWOptions.SteamProgramDirectory.Length > 0)
         {
         GetInstalledPakFiles(PlatformEnum.Steam);
         }
-      if(TSWOptions.EGSTrainSimWorldDirectory.Length>0)
-        { 
+      if (TSWOptions.EGSTrainSimWorldDirectory.Length > 0)
+        {
         GetInstalledPakFiles(PlatformEnum.EpicGamesStore);
         }
       }
@@ -314,7 +299,7 @@ namespace ToolkitForTSW.Mod
         case PlatformEnum.EpicGamesStore:
             {
             BaseDir = new DirectoryInfo(TSWOptions.EGSTrainSimWorldDirectory + "TS2Prototype\\Content\\DLC");
-      
+
             break;
             }
         default:
@@ -354,46 +339,6 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    public static String StripModDir(String Input)
-      {
-      if (Input.StartsWith(TSWOptions.ModsFolder))
-        {
-        return Input.Substring(TSWOptions.ModsFolder.Length);
-        }
-      return String.Empty;
-      }
-
-    public void ActivatePak()
-      {
-      if (TSWOptions.SteamProgramDirectory.Length > 0)
-        {
-        ActivatePak(PlatformEnum.Steam);
-        }
-      if (TSWOptions.EGSTrainSimWorldDirectory.Length > 0)
-        {
-        ActivatePak(PlatformEnum.EpicGamesStore);
-        }
-      }
-
-    public void ActivatePak(PlatformEnum selectedPlatform)
-      {
-      var PakPath = SelectedMod.FilePath;
-      var source = TSWOptions.ModsFolder + PakPath;
-      var fileName = Path.GetFileName(source);
-      var destination = $"{GetBaseDir(selectedPlatform).FullName}\\{fileName}";
-      try
-        {
-        File.Copy(source, destination, false);
-        var F = new FileInfo(destination);
-        SetInstallationStatus(selectedPlatform,true);
-        }
-      catch (Exception E)
-        {
-        Result += Log.Trace("Failed to install mod pak because " + E.Message,
-          LogEventType.Error);
-        }
-      }
-
     private void SetInstallationStatus(PlatformEnum selectedPlatform, bool installationStatus)
       {
       switch (selectedPlatform)
@@ -419,41 +364,106 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    public void DeactivatePak()
+    public static String StripModDir(String Input)
+      {
+      if (Input.StartsWith(TSWOptions.ModsFolder))
+        {
+        return Input.Substring(TSWOptions.ModsFolder.Length);
+        }
+      return String.Empty;
+      }
+
+    public bool CanActivateSteamMod 
+      { 
+      get
+        {
+        return SelectedMod!=null && TSWOptions.SteamProgramDirectory.Length>10; // This is a simplified check. It will not always work but there is a catchall that checks for existence of the Folder.
+        }
+
+      }
+
+    public void ActivateSteamMod()
+      {
+      ActivateMod(SelectedMod,PlatformEnum.Steam,false);
+      }
+
+    public bool CanActivateEGSMod 
+      { 
+      get
+        {
+        return SelectedMod!=null && TSWOptions.EGSTrainSimWorldDirectory.Length>5;
+        }
+      }
+
+    public void ActivateEGSMod()
+      {
+      ActivateMod(SelectedMod,PlatformEnum.EpicGamesStore,false);
+      }
+
+
+ 
+
+ 
+
+    public bool CanDeactivateMod 
+      { get
+        {
+        return SelectedMod!=null;
+        }
+      }
+
+    public void DeactivateMod()
       {
       if (TSWOptions.SteamProgramDirectory.Length > 0)
         {
-        DeactivatePak(PlatformEnum.Steam);
+        DeactivateMod(PlatformEnum.Steam);
         }
       if (TSWOptions.EGSTrainSimWorldDirectory.Length > 0)
         {
-        DeactivatePak(PlatformEnum.EpicGamesStore);
+        DeactivateMod(PlatformEnum.EpicGamesStore);
         }
       }
 
-    public void DeactivatePak(PlatformEnum selectedPlatform)
+    public void DeactivateMod(PlatformEnum selectedPlatform)
       {
       var filePath = $"{GetBaseDir(selectedPlatform).FullName}\\{SelectedMod.FileName}";
-      Result += FileHelpers.DeleteSingleFile(filePath);
-      SetInstallationStatus(selectedPlatform,false);
+      FileHelpers.DeleteSingleFile(filePath);
+      SetInstallationStatus(selectedPlatform, false);
       }
 
-    public static string ActivateMod(ModModel mod, PlatformEnum selectedPlatform)
+    public static void ActivateMod(ModModel mod, PlatformEnum selectedPlatform, bool overWrite)
       {
       var PakPath = mod.FilePath;
       var source = TSWOptions.ModsFolder + PakPath;
       var fileName = Path.GetFileName(source);
-      var destination = GetBaseDir(selectedPlatform).FullName + fileName;
+      var destination = $"{GetBaseDir(selectedPlatform).FullName}\\{fileName}";
+
       try
         {
-        File.Copy(source, destination, true);
-        return string.Empty;
+        File.Copy(source, destination, overWrite);
+        
+        if(selectedPlatform == PlatformEnum.Steam)
+          {
+          mod.IsInstalledSteam = true;
+          }
+        else
+          {
+          mod.IsInstalledEGS = true;
+          }
         }
       catch (Exception E)
         {
-        return Log.Trace("Failed to install mod pak because " + E.Message,
+        Log.Trace("Failed to install mod pak because " + E.Message,
           LogEventType.Error);
         }
+      }
+
+ 
+    public bool CanEditModProperties { 
+      get
+        {
+        return SelectedMod!=null;
+        } 
       }
 
     public void EditModProperties()
@@ -462,7 +472,7 @@ namespace ToolkitForTSW.Mod
       ModDescription = SelectedMod.ModDescription;
       ModSource = SelectedMod.ModSource;
       ModType = SelectedMod.ModType;
-      ModVersion=SelectedMod.ModVersion;
+      ModVersion = SelectedMod.ModVersion;
       DLCName = SelectedMod.DLCName;
       FileName = SelectedMod.FileName;
       FilePath = SelectedMod.FilePath;
@@ -471,15 +481,32 @@ namespace ToolkitForTSW.Mod
       InEditMode = true;
       }
 
+    public bool CanSaveModProperties { 
+      get
+        {
+        return SelectedMod!=null && ModName?.Length>2;
+        }
+      }
     public void SaveModProperties()
       {
-      SelectedMod.ModName = ModName;
-      SelectedMod.ModDescription = ModDescription;
-      SelectedMod.ModSource = ModSource;
-      SelectedMod.DLCName = DLCName;
-      SelectedMod.ModType = ModType;
-      SelectedMod.ModVersion=ModVersion;
-      ModDataAccess.UpdateMod(SelectedMod);
+      var newMod = new ModModel
+        {
+        ModName = ModName,
+        ModDescription = ModDescription,
+        ModSource = ModSource,
+        DLCName = DLCName,
+        ModType = ModType,
+        ModVersion = ModVersion,
+        Id = SelectedMod.Id,
+        FilePath = SelectedMod.FilePath,
+        FileName = SelectedMod.FileName
+        };
+      ModDataAccess.UpdateMod(newMod);
+      AvailableModList.Remove(SelectedMod);
+      AvailableModList.Add(newMod);
+      SelectedMod=null;
+      NotifyOfPropertyChange(() => SelectedMod);
+      NotifyOfPropertyChange(() => AvailableModList); //TODO check
       // Note FileName and FilePath should never be updated!
       }
 
@@ -489,24 +516,36 @@ namespace ToolkitForTSW.Mod
       return "";
       }
 
-    internal void DeleteMod()
+    public bool CanDeleteMod 
+      { 
+      get
+        {
+        return SelectedMod!=null;
+        }
+      }
+
+    public void DeleteMod()
       {
       if (SelectedMod.IsInstalledSteam)
         {
-        DeactivatePak(PlatformEnum.Steam);
+        DeactivateMod(PlatformEnum.Steam);
         }
       if (SelectedMod.IsInstalledEGS)
         {
-        DeactivatePak(PlatformEnum.EpicGamesStore);
+        DeactivateMod(PlatformEnum.EpicGamesStore);
         }
       var PakPath = SelectedMod.FilePath;
       var source = TSWOptions.ModsFolder + PakPath;
       FileHelpers.DeleteSingleFile(source);
       ModDataAccess.DeleteMod(SelectedMod.Id);
+      AvailableModList.Remove(SelectedMod);
       if (InEditMode)
         {
         ClearEdit();
         }
+      SelectedMod = null;
+      NotifyOfPropertyChange(() => SelectedMod);
+      NotifyOfPropertyChange(() => AvailableModList); //TODO check
       }
 
     public void ClearEdit()
@@ -516,13 +555,17 @@ namespace ToolkitForTSW.Mod
       ModDescription = string.Empty;
       ModSource = string.Empty;
       ModType = ModTypesEnum.Undefined;
-      ModVersion= string.Empty;
+      ModVersion = string.Empty;
       DLCName = string.Empty;
       FileName = string.Empty;
       FilePath = string.Empty;
       IsInstalledSteam = false;
-      IsInstalledEGS=false;
+      IsInstalledEGS = false;
       InEditMode = false;
       }
+
+
+
+
     }
   }

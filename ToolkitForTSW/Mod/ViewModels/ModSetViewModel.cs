@@ -1,27 +1,24 @@
-﻿using Styles.Library.Helpers;
+﻿using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Xml.Linq;
-using System.Xml.XPath;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
 
-namespace ToolkitForTSW.Mod
+namespace ToolkitForTSW.Mod.ViewModels
   {
- public class CModSet : Notifier
+  public class ModSetViewModel : Screen, IModTabManager
     {
     private int ModSetId = 0;
 
-    private List<ModModel> _AvailableModList = new List<ModModel>();
-    public List<ModModel> AvailableModList
+    #region properties
+    private BindableCollection<ModModel> _AvailableModList = new BindableCollection<ModModel>();
+    public BindableCollection<ModModel> AvailableModList
       {
       get { return _AvailableModList; }
       set
         {
         _AvailableModList = value;
-        OnPropertyChanged("AvailableModList");
+        NotifyOfPropertyChange(()=>AvailableModList);
         }
       }
 
@@ -32,7 +29,8 @@ namespace ToolkitForTSW.Mod
       set
         {
         _SelectedMod = value;
-        OnPropertyChanged("SelectedMod");
+        NotifyOfPropertyChange(() => SelectedMod);
+        NotifyOfPropertyChange(() => CanAddToSet);
         }
       }
 
@@ -45,20 +43,21 @@ namespace ToolkitForTSW.Mod
         _SelectedModSet = value;
         if (SelectedModSet != null)
           {
-          ModsInSetList = ModModSetDataAccess.GetAllModsPerModSet(SelectedModSet.Id);
+          ModsInSetList = new BindableCollection<ModModel>(ModModSetDataAccess.GetAllModsPerModSet(SelectedModSet.Id));
           }
-        OnPropertyChanged("SelectedModSet");
+        NotifyOfPropertyChange(() => SelectedModSet);
+        NotifyOfPropertyChange(() => CanAddToSet);
         }
       }
 
-    private List<ModModel> _ModsInSetList = new List<ModModel>();
-    public List<ModModel> ModsInSetList
+    private BindableCollection<ModModel> _ModsInSetList = new BindableCollection<ModModel>();
+    public BindableCollection<ModModel> ModsInSetList
       {
       get { return _ModsInSetList; }
       set
         {
         _ModsInSetList = value;
-        OnPropertyChanged("ModsInSetList");
+        NotifyOfPropertyChange(() => ModsInSetList);
         }
       }
 
@@ -67,7 +66,7 @@ namespace ToolkitForTSW.Mod
       var modsInSet = ModModSetDataAccess.GetAllModsPerModSet(modSet.Id);
       foreach (var mod in modsInSet)
         {
-        CModManager.ActivateMod(mod,selectedPlatform);
+        ModStatusViewModel.ActivateMod(mod,selectedPlatform,true);
         }
       }
 
@@ -78,18 +77,18 @@ namespace ToolkitForTSW.Mod
       set
         {
         _SelectedModInSet = value;
-        OnPropertyChanged("SelectedModInSet");
+        NotifyOfPropertyChange(() => SelectedModInSet);
         }
       }
 
-    private List<ModSetModel> _ModSetList;
-    public List<ModSetModel> ModSetList
+    private BindableCollection<ModSetModel> _ModSetList;
+    public BindableCollection<ModSetModel> ModSetList
       {
       get { return _ModSetList; }
       set
         {
         _ModSetList = value;
-        OnPropertyChanged("ModSetList");
+        NotifyOfPropertyChange(() => ModSetList);
         }
       }
 
@@ -101,7 +100,8 @@ namespace ToolkitForTSW.Mod
       set
         {
         _SetName = value;
-        OnPropertyChanged("SetName");
+        NotifyOfPropertyChange(() => SetName);
+        NotifyOfPropertyChange(() => CanAddToSet);
         }
       }
 
@@ -113,9 +113,29 @@ namespace ToolkitForTSW.Mod
       set
         {
         _Description = value;
-        OnPropertyChanged("Description");
+        NotifyOfPropertyChange(() => Description);
         }
       }
+    #endregion
+
+ #region Initialization
+
+    public ModSetViewModel(BindableCollection<ModModel> availableModList)
+      {
+      DisplayName="Sets";
+      }
+ 
+    public void Initialise(BindableCollection<ModModel> availableModList)
+      {
+      AvailableModList = availableModList;
+      ModSetList = new BindableCollection<ModSetModel>(ModSetDataAccess.GetAllModSets());
+      SelectedModSet =null;
+      SelectedModInSet=null;
+      ModsInSetList.Clear();
+      }
+
+    #endregion
+
 
     internal void CreateModSet()
       {
@@ -129,37 +149,20 @@ namespace ToolkitForTSW.Mod
       ModSetList.Add(modSetModel);
       }
 
-    private String _Result;
+    //RemoveFromSetButton.IsEnabled= ModManager.ModSet.SelectedModSet != null && ModManager.ModSet.SelectedModInSet!=null;
+    //SaveSetButton.IsEnabled = !string.IsNullOrEmpty(ModManager.ModSet.SetName);
+    //EditSetButton.IsEnabled = ModManager.ModSet.SelectedModSet != null;
+    //DeleteSetButton.IsEnabled= ModManager.ModSet.SelectedModSet != null;
 
-    public String Result
+    public bool CanAddToSet
       {
-      get { return _Result; }
-      set
+      get
         {
-        _Result = value;
-        OnPropertyChanged("Result");
+        return (SelectedModSet != null || !string.IsNullOrEmpty(SetName)) && SelectedMod != null;
         }
       }
 
-    public CModSet()
-      {
-      ModSetList = ModSetDataAccess.GetAllModSets();
-      }
-    public CModSet(List<ModModel> availableModList)
-      {
-      AvailableModList = availableModList;
-      ModSetList = ModSetDataAccess.GetAllModSets();
-      }
 
-    public void Initialise()
-      {
-      AvailableModList = ModDataAccess.GetAllMods();
-      ModSetList = ModSetDataAccess.GetAllModSets();
-      SelectedModSet=null;
-      SelectedModInSet=null;
-      ModsInSetList.Clear();
-      }
- 
     internal void Clear()
       {
       SetName=string.Empty;
@@ -191,7 +194,10 @@ namespace ToolkitForTSW.Mod
       else
         {
         ModSetDataAccess.UpdateModSet(newModSet);
+        ModSetList.Remove(newModSet);
+        ModSetList.Add(newModSet);
         }
+      NotifyOfPropertyChange(()=>ModSetList);
       }
 
     internal void DeleteSet()
@@ -200,6 +206,7 @@ namespace ToolkitForTSW.Mod
       ModSetList.Remove(SelectedModSet);
       ModsInSetList.Clear();
       SelectedModSet=null;
+      NotifyOfPropertyChange(() => ModSetList);
       }
 
     internal void AddModToSet()
@@ -219,6 +226,7 @@ namespace ToolkitForTSW.Mod
         {
         ModsInSetList.Add(SelectedMod);
         }
+      NotifyOfPropertyChange(() => ModsInSetList);
       }
 
     internal void RemoveModFromSet()
@@ -226,13 +234,29 @@ namespace ToolkitForTSW.Mod
       ModsInSetList.Remove(SelectedModInSet);
       ModModSetDataAccess.DeleteModFromModSet(SelectedModInSet.Id, SelectedModSet.Id);
       SelectedModInSet=null;
+      NotifyOfPropertyChange(() => ModsInSetList);
       }
 
     internal void EditSet()
       {
       SetName = SelectedModSet.ModSetName;
       Description = SelectedModSet.ModSetDescription;
-      ModSetId= SelectedModSet.Id;
+      ModSetId = SelectedModSet.Id;
       }
+
+    #region ModSets
+    //TODO Stupid, but at the moment I do not know how to invoke the ModSet
+    //methods directly using Caliburn.Micro conventions.
+
+    //AddToSetButton.IsEnabled= (ModSet.SelectedModSet!=null || !string.IsNullOrEmpty(ModSet.SetName)) && ModSet.SelectedMod!=null;
+    //RemoveFromSetButton.IsEnabled= ModManager.ModSet.SelectedModSet != null && ModManager.ModSet.SelectedModInSet!=null;
+    //SaveSetButton.IsEnabled = !string.IsNullOrEmpty(ModManager.ModSet.SetName);
+    //EditSetButton.IsEnabled = ModManager.ModSet.SelectedModSet != null;
+    //DeleteSetButton.IsEnabled= ModManager.ModSet.SelectedModSet != null;
+
+  
+
+ 
+    #endregion
     }
   }

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using TreeBuilders.Library.Wpf;
 using TreeBuilders.Library.Wpf.ViewModels;
 using Utilities.Library.TextHelpers;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace ToolkitForTSW
 {
@@ -90,7 +91,8 @@ namespace ToolkitForTSW
 			BuildCommandList();
 			PathSettings = "-path=" + TextHelper.QuoteFilename(TSWOptions.UnpackFolder) + " -out=" + TextHelper.QuoteFilename(TSWOptions.UnpackFolder +
 			               "UnpackedAssets\\")+" ";
-			FileTree = new FileTreeViewModel(TSWOptions.UnpackFolder);
+			FileTree = new FileTreeViewModel();
+			FileTree.Initialize(TSWOptions.UnpackFolder,false);
 		}
 		/*
 

@@ -29,7 +29,7 @@
 			</DataGrid>
 			<userControls:ResultsTextBox x:Name="ResultsTextBox" Style="{StaticResource DefaultResultsTextBox}" Text="{Binding Result}" Source="../Images/page_delete.png"/>
 
-			<Button Name="Close" Style="{StaticResource OKButton}" HorizontalAlignment="Right">
+			<Button Name="CloseForm" Style="{StaticResource OKButton}" HorizontalAlignment="Right">
 				Close
 			</Button>
 		</StackPanel>

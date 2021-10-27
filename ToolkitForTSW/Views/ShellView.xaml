@@ -77,8 +77,8 @@
 						        Click="OnEditSettingsButtonClicked">
 							Edit TSW2 settings
 						</Button>
-						<Button Style="{StaticResource WideButton}" Name="ModManagerButton"
-						        ToolTip="Add community content mods to the game or remove them" Click="OnModManagerButtonClicked">
+						<Button Style="{StaticResource WideButton}" Name="ManageMods"
+						        ToolTip="Add community content mods to the game or remove them">
 							Manage mods
 						</Button>
             <Button Style="{StaticResource WideButton}" Name="RadioStations" 
@@ -89,8 +89,8 @@
 						        Click="OnScreenshotManagerButtonClicked" ToolTip="View all screenshots in a nice viewer">
 							Screenshot manager
 						</Button>
-            <Button Style="{StaticResource WideButton}" Name="PakInstallerButton"
-                    ToolTip="Install Mods directly from your download" Click="OnPakInstallerButtonClicked" >
+            <Button Style="{StaticResource WideButton}" Name="PakInstaller"
+                    ToolTip="Install Mods directly from your download">
               Mod Installer
             </Button>
           </StackPanel>
@@ -112,8 +112,7 @@
 							TSW2 Starters guide
 						</Button>
 						<Button Name="GetRouteGuides" Style="{StaticResource WideButton}"
-						        ToolTip="The route guides contain a lot of additional information. Read them here"
-                    Click="GetRouteGuides_Click">
+						        ToolTip="The route guides contain a lot of additional information. Read them here">
 							Route guides
 						</Button>
 					</StackPanel>

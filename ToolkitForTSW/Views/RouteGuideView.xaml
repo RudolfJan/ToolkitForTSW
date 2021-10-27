@@ -13,7 +13,7 @@
       <views:FileTreeView  x:Name="FileTreeViewControl" Height="400" Width="420"/>
 			<Border Style="{StaticResource DefaultBorder}">
 				<WrapPanel HorizontalAlignment="Right">
-					<Button Name="Close" Style="{StaticResource OKButton}" Click="Close_Click">Close</Button>
+					<Button Name="CloseForm" Style="{StaticResource OKButton}">Close</Button>
 				</WrapPanel>
 			</Border>
 		</StackPanel>

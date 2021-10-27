@@ -4,13 +4,18 @@ using Styles.Library.Helpers;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Mod;
+using ToolkitForTSW.Mod.ViewModels;
+using ToolkitForTSW.Models;
 using ToolkitForTSW.Settings;
 
 namespace ToolkitForTSW.ViewModels
   {
+
   public class LaunchTSWViewModel : Screen
     {
+    private IWindowManager _windowManager;
     private Boolean _LaunchRadio;
 
     public Boolean LaunchRadio
@@ -76,9 +81,20 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-    private CModSet _modSet;
+    private BindableCollection<ModModel> _AvailableModList = new BindableCollection<ModModel>();
+    public BindableCollection<ModModel> AvailableModList
+      {
+      get { return _AvailableModList; }
+      set
+        {
+        _AvailableModList = value;
+        NotifyOfPropertyChange(() => AvailableModList);
+        }
+      }
 
-    public CModSet ModSet
+    private ModSetViewModel _modSet;
+
+    public ModSetViewModel ModSet
       {
       get { return _modSet; }
       set
@@ -112,15 +128,17 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-    public LaunchTSWViewModel()
+    public LaunchTSWViewModel(IWindowManager  windowManager)
       {
+      _windowManager = windowManager;
       SettingsManager = new CSettingsManager();
       RailwayRadioStationManager = new RadioStationsViewModel();
       RailwayRadioStationManager.Initialize();
 
 //		RadioUrl = "https://tunein.com/radio/Railroad-Radio-West-Slope-s89688/"; // Default
       RadioUrl = String.Empty;
-      ModSet = new CModSet();
+      AvailableModList = new BindableCollection<ModModel>(ModDataAccess.GetAllMods());
+      ModSet = new ModSetViewModel(AvailableModList); //TODO this is maybe not very good code.
       }
 
     public void LaunchPrograms()
@@ -173,9 +191,15 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-    public async Task CloseForm()
+    public Task EditMods()
       {
-      await TryCloseAsync();
+      var viewModel= IoC.Get<ModManagerViewModel>();
+      return _windowManager.ShowDialogAsync(viewModel);
+      }
+
+    public Task CloseForm()
+      {
+      return TryCloseAsync();
       }
     }
   }
