@@ -38,11 +38,11 @@
 						</DataGrid>
 						<WrapPanel>
 							<Button Name="ActivateModsButton" Style="{StaticResource ButtonDefault}" Click="OnActivateSelectedModSet" >Activate mods</Button>
-							<Button Name="SetModsButton" Style="{StaticResource ButtonDefault}"  Click="OnSetModsButtonClicked">Edit mods</Button>
+							<Button Name="EditMods" Style="{StaticResource ButtonDefault}">Edit mods</Button>
 						</WrapPanel>
 					</StackPanel>
 				</Border>
-				<Border Grid.Column="2"  Style="{StaticResource DefaultBorder}">
+				<Border Grid.Column="2"  Style="{StaticResource BorderDefault}">
 					<StackPanel>
 						<TextBlock Style="{StaticResource HeaderTextBlock}">Radio stations</TextBlock>
 						<DataGrid Name="RadioStationsUrlDataGrid" MinHeight="300"  

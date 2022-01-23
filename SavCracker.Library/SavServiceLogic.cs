@@ -14,8 +14,7 @@ namespace SavCracker.Library
           {
           case "Services":
               {
-              var arrayStructElement = arrayElement as StructPropertyModel;
-              if (arrayStructElement == null)
+              if (!(arrayElement is StructPropertyModel arrayStructElement))
                 {
                 break;
                 }

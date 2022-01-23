@@ -171,6 +171,5 @@ namespace ToolkitForTSW
                           "\r\nMake sure to install it at the correct location");
         }
       }
-
      }
   }

@@ -183,9 +183,9 @@ namespace ToolkitForTSW.ViewModels
       CApps.LaunchUrl(SelectedRadioStation.Url, true);
       }
 
-    public async Task Close()
+    public Task CloseForm()
       {
-      await TryCloseAsync();
+      return TryCloseAsync();
       }
     }
   }

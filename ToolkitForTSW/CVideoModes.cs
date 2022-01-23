@@ -31,13 +31,9 @@ namespace ToolkitForTSW
 			_VideoModesList = ListVideoModes();
 			}
 
-		[DllImport("user32.dll")]
+		[DllImport("user32.dll", CharSet = CharSet.Unicode)]
 		private static extern Boolean EnumDisplaySettings(
 												String DeviceName, Int32 ModeNum, ref Devmode DevMode);
-
-		private const Int32 EnumCurrentSettings = -1;
-
-		private const Int32 EnumRegistrySettings = -2;
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct Devmode

@@ -9,6 +9,5 @@ namespace ToolkitForTSW.Views
       {
       InitializeComponent();
       }
-
     }
   }

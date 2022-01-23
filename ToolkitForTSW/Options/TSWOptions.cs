@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Logging.Library;
+using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
-using Logging.Library;
-using Microsoft.Win32;
 using ToolkitForTSW.Options;
 using Utilities.Library;
 using Utilities.Library.Wpf.Models;
@@ -11,20 +11,13 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace ToolkitForTSW
   {
-  public enum PlatformEnum
-    {
-    NotSet = 0,
-    Steam = 1,
-    EpicGamesStore = 2
-    }
-
   public class TSWOptions
     {
     private static readonly Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
     private static readonly AboutModel AboutData = new AboutModel();
 
     // Number of read only constants, that depend on the version
-    public static bool AllowDevMode = false; // set to false to completely disable DevMode for users
+    public static bool AllowDevMode { get; set; } = false; // set to false to completely disable DevMode for users
 
     private static bool _DeveloperMode = false;
     private static bool _TestMode = false;
@@ -46,8 +39,7 @@ namespace ToolkitForTSW
     private static string _ToolkitForTSWFolder = string.Empty;
     private static bool _IsInitialized = false;
 
-    protected static RegistryKey AppKey = null;
-    protected static RegistryKey SteamKey = null;
+    private static RegistryKey AppKey = null;
 
     // Properties will be initialized anagrammatically
     public static string ManualsFolder { get; set; }
@@ -62,7 +54,7 @@ namespace ToolkitForTSW
     public static bool NotFirstRun { get; set; }
 
     public static PlatformEnum CurrentPlatform { get; set; } = PlatformEnum.NotSet;
-    public static string Version { get; } = "1.0";
+    public static string Version { get; } = "1.1";
 
     public static string GameSaveLocation
       {
@@ -90,7 +82,7 @@ namespace ToolkitForTSW
       {
       get
         {
-         return _instance.Value;
+        return _instance.Value;
         }
       }
 
@@ -375,31 +367,7 @@ namespace ToolkitForTSW
       return Registry.CurrentUser.CreateSubKey(RegkeyString, true);
       }
 
-    // try to guess the correct user for screenshots by having a look at the file system.
 
-    public static void GuessUserId()
-      {
-      string BasePath = SteamProgramDirectory + "\\userdata";
-      if (Directory.Exists(BasePath))
-        {
-        DirectoryInfo Basedir = new DirectoryInfo(BasePath);
-        DirectoryInfo[] Dirinfo = Basedir.GetDirectories();
-
-        foreach (var Dir in Dirinfo)
-          {
-          if (string.CompareOrdinal(Dir.Name, SteamUserId) == 0)
-            return; // found, nothing to do
-          }
-
-        foreach (var Dir in Dirinfo)
-          {
-          SteamUserId = Dir.Name;
-          AppKey.SetValue("SteamUserId", SteamUserId,
-            RegistryValueKind.String); // set it in the registry right away.
-          return; // pick the first one
-          }
-        }
-      }
 
     // To be used to show the platform to the users
     public static string GetPlatformDisplayString(PlatformEnum platform)
@@ -427,12 +395,12 @@ namespace ToolkitForTSW
 
     public static string GetSaveLocationPath()
       {
-      if(TSWOptions.CurrentPlatform==PlatformEnum.EpicGamesStore)
+      if (TSWOptions.CurrentPlatform == PlatformEnum.EpicGamesStore)
         {
-        var location= TSWOptions.GameSaveLocation;
-        if(location.EndsWith("\\"))
+        var location = TSWOptions.GameSaveLocation;
+        if (location.EndsWith("\\"))
           {
-          location=location.Substring(0, location.Length - 1);
+          location = location.Substring(0, location.Length - 1);
           }
         return $"{location}EGS\\";
         }
@@ -475,13 +443,13 @@ namespace ToolkitForTSW
         Directory.CreateDirectory(UnpackFolder);
         Directory.CreateDirectory(AssetUnpackFolder);
         Directory.CreateDirectory(OptionsSetDir);
-        
         Directory.CreateDirectory(TempFolder);
         Directory.CreateDirectory($"{OptionsSetDir}Steam\\");
         Directory.CreateDirectory($"{OptionsSetDir}EGS\\");
         Directory.CreateDirectory(BackupFolder);
         Directory.CreateDirectory($"{BackupFolder}Steam\\"); // Just in case, order is important!
         Directory.CreateDirectory($"{BackupFolder}EGS\\");
+        Directory.CreateDirectory($"{BackupFolder}Movies\\");
         Directory.CreateDirectory(TemplateFolder);
         Directory.CreateDirectory(ScenarioFolder);
         Directory.CreateDirectory(ThumbnailFolder);
@@ -495,8 +463,8 @@ namespace ToolkitForTSW
     public static void MoveData(string source, string destination)
       {
       // Move Data to proper directory
-  
-      if (Directory.Exists(source)&&!Directory.Exists(destination))
+
+      if (Directory.Exists(source) && !Directory.Exists(destination))
         {
         Directory.Move(source, destination);
         }
@@ -525,11 +493,10 @@ namespace ToolkitForTSW
       if (AppKey == null)
         {
         AppKey = OpenRegistry();
-        SteamKey = Registry.CurrentUser.CreateSubKey(SteamKeyString, true);
         }
 
       InstallDirectory = (string)AppKey.GetValue("InstallDirectory", "");
-      
+
       string DefaultSteamProgramPath = (string)AppKey.GetValue("SteamPath", "");
       SteamProgramDirectory =
         (string)AppKey.GetValue("SteamProgramDirectory", DefaultSteamProgramPath);
@@ -543,21 +510,19 @@ namespace ToolkitForTSW
       TrackIRProgram = (string)AppKey.GetValue("TrackIRProgram", "");
       FileCompare = (string)AppKey.GetValue("FileCompare", "");
       SevenZip = (string)AppKey.GetValue("7Zip", "");
-      var SavedCurrentPlatform= TSWOptions.CurrentPlatform;
+      var SavedCurrentPlatform = TSWOptions.CurrentPlatform;
 
-      CurrentPlatform =(PlatformEnum)AppKey.GetValue("CurrentPlatform", PlatformEnum.NotSet);
-      if(SavedCurrentPlatform!=CurrentPlatform)
+      CurrentPlatform = (PlatformEnum)AppKey.GetValue("CurrentPlatform", PlatformEnum.NotSet);
+      if (SavedCurrentPlatform != CurrentPlatform)
         {
         PlatformChangedEventHandler.SetPlatformChangedEvent(new PlatformChangedEventArgs(SavedCurrentPlatform, CurrentPlatform));
         }
-
-      TrainSimWorldDirectory = (string)AppKey.GetValue("TrainSimWorldDirectory", ""); //Deprecated for the registry.
       SteamTrainSimWorldDirectory = (string)AppKey.GetValue("SteamTrainSimWorldDirectory", "");
       EGSTrainSimWorldDirectory = (string)AppKey.GetValue("EGSTrainSimWorldDirectory", "");
       EGSTrainSimWorldStarter = (string)AppKey.GetValue("EGSTrainSimWorldStarter", "");
-      if (SteamTrainSimWorldDirectory.Length==0 && TrainSimWorldDirectory.Length>0)
+      if (SteamTrainSimWorldDirectory.Length == 0 && TrainSimWorldDirectory.Length > 0)
         {
-        SteamTrainSimWorldDirectory=TrainSimWorldDirectory;
+        SteamTrainSimWorldDirectory = TrainSimWorldDirectory;
         }
 
 
@@ -574,8 +539,8 @@ namespace ToolkitForTSW
       LimitSoundVolumes = (int)AppKey.GetValue("LimitSoundVolumes", 1) == 1;
       AutoBackup = (int)AppKey.GetValue("AutoBackup", 0) == 1;
 
-
-    }
+      CheckOptionsLogic.Instance.SetAllOptionChecks();
+      }
 
     public static void WriteToRegistry()
       {
@@ -584,11 +549,6 @@ namespace ToolkitForTSW
         AppKey = OpenRegistry();
         }
 
-      if (!CheckOptionsModel.SteamIdOk)
-        {
-        GuessUserId();
-        }
- 
       AppKey.SetValue("SteamProgramDirectory", SteamProgramDirectory,
         RegistryValueKind.String);
       AppKey.SetValue("SteamUserId", SteamUserId, RegistryValueKind.String);
@@ -607,7 +567,7 @@ namespace ToolkitForTSW
       AppKey.SetValue("UseAdvancedSettings", UseAdvancedSettings, RegistryValueKind.DWord);
       AppKey.SetValue("LimitSoundVolumes", LimitSoundVolumes, RegistryValueKind.DWord);
       AppKey.SetValue("AutoBackup", AutoBackup, RegistryValueKind.DWord);
-      AppKey.SetValue("CurrentPlatform",CurrentPlatform,RegistryValueKind.DWord);
+      AppKey.SetValue("CurrentPlatform", CurrentPlatform, RegistryValueKind.DWord);
       AppKey.SetValue("SteamTrainSimWorldDirectory", SteamTrainSimWorldDirectory,
    RegistryValueKind.String);
       AppKey.SetValue("EGSTrainSimWorldDirectory", EGSTrainSimWorldDirectory,

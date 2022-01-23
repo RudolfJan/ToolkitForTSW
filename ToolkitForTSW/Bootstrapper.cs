@@ -1,20 +1,16 @@
 ﻿using Caliburn.Micro;
-using Logging.Library;
+using Logging.Library.Wpf.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using Logging.Library.Wpf.Views;
-using ToolkitForTSW.ViewModels;
-using System.Reflection;
-using System.IO;
-using ToolkitForTSW.DialogServices;
-using Logging.Library.Wpf.ViewModels;
-using Utilities.Library.Wpf.ViewModels;
-using Utilities.Library.Wpf.Models;
-using System.ComponentModel;
-using TreeBuilders.Library.Wpf.ViewModels;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using ToolkitForTSW.DialogServices;
+using ToolkitForTSW.ViewModels;
+using TreeBuilders.Library.Wpf.ViewModels;
+using Utilities.Library.Wpf.Models;
+using Utilities.Library.Wpf.ViewModels;
 
 namespace ToolkitForTSW
   {
@@ -31,7 +27,7 @@ namespace ToolkitForTSW
     [Conditional("DEBUG")]
     public static void StarDebugLogger()
       {
-      LogManager.GetLog = type => new DebugLogger(type);
+      LogManager.GetLog = type => new DebugLog(type);
       }
 
     protected override void Configure()

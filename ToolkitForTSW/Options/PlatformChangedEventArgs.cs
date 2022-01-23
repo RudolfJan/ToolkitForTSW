@@ -14,6 +14,5 @@ namespace ToolkitForTSW.Options
       OldPlatform= oldPlatform;
       NewPlatform= newPlatform;
       }
-          
     }
   }

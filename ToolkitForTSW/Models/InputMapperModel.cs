@@ -59,7 +59,5 @@ namespace ToolkitForTSW
 			Key.ParseKey(InputLine);
 			return Result;
 			}
-
 		}
-
 	}

@@ -1,19 +1,24 @@
-﻿using Logging.Library;
-using Styles.Library.Helpers;
+﻿using Caliburn.Micro;
+using Logging.Library;
 using System;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using ToolkitForTSW.DataAccess;
+using ToolkitForTSW.Mod.Models;
+using ToolkitForTSW.Mod.Views;
 using ToolkitForTSW.Models;
 using TreeBuilders.Library.Wpf;
 using TreeBuilders.Library.Wpf.ViewModels;
 using Utilities.Library.Zip;
 
-namespace ToolkitForTSW.Mod
+namespace ToolkitForTSW.Mod.ViewModels
   {
-  public class CPakInstaller : Notifier
+  public class PakInstallerViewModel : Conductor<object>
     {
+    private PakInstallerView _pakInstallerView = null; // This is a bit dirty but I really need it here to be able to update the contents for Mod Filetree
     private string _ArchiveFile;
     public string ArchiveFile
       {
@@ -21,7 +26,26 @@ namespace ToolkitForTSW.Mod
       set
         {
         _ArchiveFile = value;
-        OnPropertyChanged("ArchiveFile");
+
+        PakFileList.Clear();
+        DocumentsList.Clear();
+        if (!string.IsNullOrEmpty(ArchiveFile))
+          {
+          GetArchivedFiles(new FileInfo(ArchiveFile),
+           PakFileList, ".pak");
+          GetArchivedFiles(new FileInfo(ArchiveFile),
+            DocumentsList, ".txt");
+          GetArchivedFiles(new FileInfo(ArchiveFile),
+            DocumentsList, ".pdf");
+          GetArchivedFiles(new FileInfo(ArchiveFile),
+            DocumentsList, ".docx");
+          var pakList = PakFileList.Where(x => x.Name.EndsWith("pak"));
+          if (pakList.Count() == 1)
+            {
+            FileEntry = pakList.First();
+            }
+          }
+        NotifyOfPropertyChange(nameof(ArchiveFile));
         }
       }
 
@@ -32,7 +56,8 @@ namespace ToolkitForTSW.Mod
       set
         {
         _InstallDirectory = value;
-        OnPropertyChanged("InstallDirectory");
+        NotifyOfPropertyChange(nameof(InstallDirectory));
+        NotifyOfPropertyChange(nameof(CanInstallMod));
         }
       }
 
@@ -43,7 +68,8 @@ namespace ToolkitForTSW.Mod
       set
         {
         _FileEntry = value;
-        OnPropertyChanged("FileEntry");
+        NotifyOfPropertyChange(nameof(FileEntry));
+        NotifyOfPropertyChange(nameof(CanInstallMod));
         }
       }
 
@@ -55,41 +81,31 @@ namespace ToolkitForTSW.Mod
       set
         {
         _FileTree = value;
-        OnPropertyChanged("FileTree");
+        InstallDirectory = FileTree?.SelectedTreeNode?.Root?.FullName;
+        NotifyOfPropertyChange(nameof(FileTree));
+        NotifyOfPropertyChange(() => CanInstallMod);
         }
       }
 
-    private ObservableCollection<CFilePresenter> _PakFileList;
-    public ObservableCollection<CFilePresenter> PakFileList
+    private BindableCollection<CFilePresenter> _PakFileList;
+    public BindableCollection<CFilePresenter> PakFileList
       {
       get { return _PakFileList; }
       set
         {
         _PakFileList = value;
-        OnPropertyChanged("PakFileList");
+        NotifyOfPropertyChange(nameof(PakFileList));
         }
       }
 
-    private ObservableCollection<CFilePresenter> _DocumentsList;
-    public ObservableCollection<CFilePresenter> DocumentsList
+    private BindableCollection<CFilePresenter> _DocumentsList;
+    public BindableCollection<CFilePresenter> DocumentsList
       {
       get { return _DocumentsList; }
       set
         {
         _DocumentsList = value;
-        OnPropertyChanged("DocumentsList");
-        }
-      }
-
-    private string _Result;
-
-    public string Result
-      {
-      get { return _Result; }
-      set
-        {
-        _Result = value;
-        OnPropertyChanged("Result");
+        NotifyOfPropertyChange(nameof(DocumentsList));
         }
       }
 
@@ -100,7 +116,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modName = value;
-        OnPropertyChanged("ModName");
+        NotifyOfPropertyChange(nameof(ModName));
         }
       }
 
@@ -111,7 +127,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _filePath = value;
-        OnPropertyChanged("FilePath");
+        NotifyOfPropertyChange(nameof(FilePath));
         }
       }
 
@@ -123,7 +139,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _fileName = value;
-        OnPropertyChanged("FileName");
+        NotifyOfPropertyChange(nameof(FileName));
         }
       }
 
@@ -134,7 +150,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modDescription = value;
-        OnPropertyChanged("ModDescription");
+        NotifyOfPropertyChange(nameof(ModDescription));
         }
       }
 
@@ -145,7 +161,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modImage = value;
-        OnPropertyChanged("ModImage");
+        NotifyOfPropertyChange(nameof(ModImage));
         }
       }
 
@@ -156,7 +172,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modSource = value;
-        OnPropertyChanged("ModSource");
+        NotifyOfPropertyChange(nameof(ModSource));
         }
       }
 
@@ -167,7 +183,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modType = value;
-        OnPropertyChanged("ModType");
+        NotifyOfPropertyChange(nameof(ModType));
         }
       }
 
@@ -178,7 +194,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _DLCName = value;
-        OnPropertyChanged("DLCName");
+        NotifyOfPropertyChange(nameof(DLCName));
         }
       }
 
@@ -189,7 +205,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _modVersion = value;
-        OnPropertyChanged("ModVersion");
+        NotifyOfPropertyChange(nameof(ModVersion));
         }
       }
 
@@ -200,7 +216,7 @@ namespace ToolkitForTSW.Mod
       set
         {
         _IsInstalledSteam = value;
-        OnPropertyChanged("IsInstalledSteam");
+        NotifyOfPropertyChange(nameof(IsInstalledSteam));
         }
       }
 
@@ -211,31 +227,82 @@ namespace ToolkitForTSW.Mod
       set
         {
         _IsInstalledEGS = value;
-        OnPropertyChanged("IsInstalledEGS");
+        NotifyOfPropertyChange(nameof(IsInstalledEGS));
         }
       }
 
+    public string RootFolder { get; set; } = $"{TSWOptions.ModsFolder}";
+    public string FolderImage { get; } = "..\\Images\\folder.png";
+    public string FileImage { get; } = "..\\Images\\file_extension_doc.png";
 
-    public CPakInstaller()
+    private string _newDirectory;
+
+    public string NewDirectory
       {
-      PakFileList = new ObservableCollection<CFilePresenter>();
-      DocumentsList = new ObservableCollection<CFilePresenter>();
+      get
+        {
+        return _newDirectory;
+        }
+      set
+        {
+        _newDirectory = value;
+        NotifyOfPropertyChange(() => NewDirectory);
+        NotifyOfPropertyChange(() => CanAddDirectory);
+        NotifyOfPropertyChange(() => CanAddDirectoryChild);
+        }
+      }
+
+    public PakInstallerViewModel()
+      {
+      }
+
+    protected override void OnViewLoaded(object view)
+      {
+      base.OnViewLoaded(view);
+      PakFileList = new BindableCollection<CFilePresenter>();
+      DocumentsList = new BindableCollection<CFilePresenter>();
+
+      _pakInstallerView = view as PakInstallerView;
       FillPakDirList();
+      if (string.IsNullOrEmpty(RootFolder))
+        {
+        throw new ArgumentException($"No root folder specified for File Tree viewer");
+        }
+      NotifyOfPropertyChange(nameof(FileTree));
+      }
+
+    public void BuildFileTree()
+      {
+      FileTree = _pakInstallerView.ViewModel;
+      FileTree.RootFolder = RootFolder;
+      _pakInstallerView.FileTreeViewControl.FolderImage = FolderImage;
+      _pakInstallerView.FileTreeViewControl.FileImage = FileImage;
+      _pakInstallerView.FileTreeViewControl.SetImages();
       }
 
     public void FillPakDirList()
       {
-      var Dir = new DirectoryInfo(TSWOptions.ModsFolder);
-      FileTree = new FileTreeViewModel(Dir.FullName, true);
-      OnPropertyChanged("FileTree");
+      if (string.IsNullOrEmpty(RootFolder))
+        {
+        throw new ArgumentException($"No root folder specified for File Tree viewer");
+        }
+      BuildFileTree();
+      FileTree.FileTree = new TreeNodeModel();
+      FileTree.Initialize(RootFolder, false);
+      NotifyOfPropertyChange(nameof(FileTree.FileTree));
       }
 
-    public void GetArchivedFiles(FileInfo archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType = "")
+    public Task CloseForm()
+      {
+      return TryCloseAsync();
+      }
+
+    public void GetArchivedFiles(FileInfo archiveFile, BindableCollection<CFilePresenter> DestinationFileList, string FileType = "")
       {
       var Extension = archiveFile.Extension.ToLower();
       if (DestinationFileList == null)
         {
-        Result += Log.Trace("File presenter is null", LogEventType.Error);
+        Log.Trace("File presenter is null", LogEventType.Error);
         return;
         }
 
@@ -264,16 +331,15 @@ namespace ToolkitForTSW.Mod
             }
         default:
             {
-            Result += Log.Trace("Archive type " + Extension + " is not (yet) supported");
+            Log.Trace("Archive type " + Extension + " is not (yet) supported");
             break;
             }
         }
       }
 
-
     // Show .pak file entry if not in archive
     public void GetNotArchivedPakFile(FileInfo archiveFile,
-      ObservableCollection<CFilePresenter> DestinationFileList)
+      BindableCollection<CFilePresenter> DestinationFileList)
       {
       var FilePresenter =
         new CFilePresenter(archiveFile.FullName, archiveFile.Name, archiveFile.LastWriteTime);
@@ -282,13 +348,13 @@ namespace ToolkitForTSW.Mod
       }
 
     // Show contents of a .zip file
-    public void GetZipArchivedFiles(FileInfo archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType = "")
+    public static void GetZipArchivedFiles(FileInfo archiveFile, BindableCollection<CFilePresenter> DestinationFileList, string FileType = "")
       {
       try
         {
         if (DestinationFileList == null)
           {
-          Result += Log.Trace("File presenter is null", LogEventType.Error);
+          Log.Trace("File presenter is null, report this to the developers", LogEventType.Error);
           return;
           }
         using (var Archive = ZipFile.OpenRead(archiveFile.FullName))
@@ -308,35 +374,20 @@ namespace ToolkitForTSW.Mod
         }
       catch (Exception)
         {
-        Result += Log.Trace("Failed to show file entries for archive " + archiveFile.FullName,
+        Log.Trace("Failed to show file entries for archive " + archiveFile.FullName,
           LogEventType.Error);
         }
       }
 
-    public void GetRwpArchivedFiles(FileInfo archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType = "")
+    public static void GetRwpArchivedFiles(FileInfo archiveFile, BindableCollection<CFilePresenter> DestinationFileList, string FileType = "")
       {
       GetRwpArchivedFiles(archiveFile.FullName, DestinationFileList, FileType);
       }
 
-    public void GetRwpArchivedFiles(string archiveFile, ObservableCollection<CFilePresenter> DestinationFileList, string FileType)
+    public static void GetRwpArchivedFiles(string archiveFile, BindableCollection<CFilePresenter> DestinationFileList, string FileType)
       {
       SevenZipLib.ListFilesInArchive(archiveFile, out var FileReport, true);
-      //var Skip = 16;
-      //if (string.Compare(Path.GetExtension(archiveFile), ".rar", StringComparison.Ordinal) == 0 ||
-      //    string.Compare(Path.GetExtension(archiveFile), ".7z", StringComparison.Ordinal) == 0)
-      //  {
-      //  Skip = 19;
-      //  }
-
       var Reader = new StringReader(FileReport);
-      //#pragma warning disable IDE0059 // Unnecessary assignment of a value
-      //      var MetaData = "";
-      //#pragma warning restore IDE0059 // Unnecessary assignment of a value
-      //      for (var I = 0; I < Skip; I++) // tricky!
-      //        {
-      //        // ReSharper disable once RedundantAssignment debugging, do not remove this
-      //        MetaData = Reader.ReadLine() + "\r\n";
-      //        }
 
       var Done = false;
       while (!Done)
@@ -362,7 +413,7 @@ namespace ToolkitForTSW.Mod
         }
       }
 
-    public void AddDirectory(TreeNodeModel TreeItem, string DirName, bool AsChild)
+    private void AddDirectory(TreeNodeModel TreeItem, string DirName, bool AsChild)
       {
       try
         {
@@ -380,16 +431,17 @@ namespace ToolkitForTSW.Mod
             }
           else
             {
-            Path = TreeItem.Root + "\\..\\" + DirName;
+            Path = TreeItem.Root + "\\" + DirName;
             }
 
           Directory.CreateDirectory(Path);
+          NewDirectory = "";
           FillPakDirList();
           }
         }
       catch (Exception E)
         {
-        Result += Log.Trace("Cannot create directory because " + E.Message, LogEventType.Error);
+        Log.Trace("Cannot create directory because " + E.Message, LogEventType.Error);
         }
       }
 
@@ -397,7 +449,6 @@ namespace ToolkitForTSW.Mod
 
     public void InstallPakFile()
       {
-      // Otherwise, check if there is an installable SelectedFIle
       if (FileEntry != null)
         {
         switch (FileEntry.Extension)
@@ -407,41 +458,53 @@ namespace ToolkitForTSW.Mod
               if (Path.GetExtension(ArchiveFile) == ".pak")
                 {
                 File.Copy(FileEntry.FullName, $"{InstallDirectory}\\{FileEntry.Name}", true);
-                // Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
+                FillPakDirList();
                 return;
                 }
               SevenZipLib.ExtractSingle(ArchiveFile, InstallDirectory, FileEntry.FullName);
-              // Result += CModManager.UpdateModTable(new FileInfo($"{InstallDirectory}\\{FileEntry.Name}"));
+              FillPakDirList();
               return;
               }
           case ".exe:":
               {
-              Result += CApps.ExecuteFile(ArchiveFile);
+              CApps.ExecuteFile(ArchiveFile);
               return;
               }
           default:
               {
-              Result += Log.Trace("No suitable installer found for file " + ArchiveFile);
+              Log.Trace("No suitable installer found for file " + ArchiveFile);
               break;
               }
           }
         }
       }
 
+    public bool CanInstallMod
+      {
+      get
+        {
+        return FileEntry?.FullName.Length > 1;
+        }
+      }
+
     public void InstallMod()
       {
-      InstallDirectory = FileTree.SelectedTreeNode.Root.FullName;
+      InstallDirectory = FileTree?.SelectedTreeNode?.Root?.FullName;
       if (InstallDirectory == null)
         {
-        Result +=
-          Log.Trace("Invalid input for InstallPakfile", LogEventType.Error);
+        MessageBox.Show("You need to select a folder where the mod will installed at the right side of this window",
+        "Select a folder",
+        MessageBoxButton.OK,
+        MessageBoxImage.Error);
+        Log.Trace("Please select a folder in the right pane of this screen", LogEventType.Message);
         return;
         }
 
       InstallPakFile();
       InsertModInDatabase();
-      Result +=
-        Log.Trace("Pak " + FileEntry?.Name + "Installed");
+      Log.Trace("Pak " + FileEntry?.Name + " Installed", LogEventType.InformUser);
+      FillPakDirList();
+      ClearInstallData();
       }
 
     public void InsertModInDatabase()
@@ -454,7 +517,7 @@ namespace ToolkitForTSW.Mod
         ModSource = ModSource,
         ModType = ModType,
         DLCName = DLCName,
-        FilePath = CModManager.StripModDir(filePath),
+        FilePath = ModStatusViewModel.StripModDir(filePath),
         FileName = Path.GetFileName(filePath),
         IsInstalledSteam = IsInstalledSteam,
         IsInstalledEGS = IsInstalledEGS
@@ -462,11 +525,11 @@ namespace ToolkitForTSW.Mod
       ModDataAccess.UpsertMod(mod);
       if (IsInstalledSteam)
         {
-        CModManager.ActivateMod(mod, PlatformEnum.Steam);
+        ModActivator.ActivateMod(mod, PlatformEnum.Steam, false);
         }
       if (IsInstalledEGS)
         {
-        CModManager.ActivateMod(mod, PlatformEnum.EpicGamesStore);
+        ModActivator.ActivateMod(mod, PlatformEnum.EpicGamesStore, false);
         }
       }
 
@@ -480,13 +543,45 @@ namespace ToolkitForTSW.Mod
       FileName = "";
       FilePath = "";
       IsInstalledSteam = false;
-      IsInstalledEGS=false;
-      ModVersion="";
+      IsInstalledEGS = false;
+      ModVersion = "";
       ArchiveFile = "";
       DocumentsList.Clear();
       PakFileList.Clear();
       }
 
+
+
     #endregion Installers
+
+    #region AddDirectory
+    public bool CanAddDirectory
+      {
+      get
+        {
+        return NewDirectory?.Length >= 1 && FileTree.FileTree.Root != null;
+        }
+      }
+
+    public void AddDirectory()
+      {
+      AddDirectory(FileTree.FileTree, NewDirectory, false);
+
+      }
+
+    public bool CanAddDirectoryChild
+      {
+      get
+        {
+        return NewDirectory?.Length >= 1 && FileTree?.SelectedTreeNode?.IsSelected == true;
+        }
+      }
+
+    public void AddDirectoryChild()
+      {
+      AddDirectory(FileTree.SelectedTreeNode, NewDirectory, true);
+      }
+
+    #endregion
     }
   }

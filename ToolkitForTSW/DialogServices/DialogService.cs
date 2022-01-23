@@ -38,12 +38,16 @@ namespace ToolkitForTSW.DialogServices
     // Summary:
     //     The message box contains a symbol consisting of a white X in a circle with a
     //     red background.
+#pragma warning disable CA1069 // Enums values should not be duplicated
     Hand = 16,
+#pragma warning restore CA1069 // Enums values should not be duplicated
     //
     // Summary:
     //     The message box contains a symbol consisting of white X in a circle with a red
     //     background.
+#pragma warning disable CA1069 // Enums values should not be duplicated
     Stop = 16,
+#pragma warning restore CA1069 // Enums values should not be duplicated
     //
     // Summary:
     //     The message box contains a symbol consisting of a question mark in a circle.
@@ -63,7 +67,9 @@ namespace ToolkitForTSW.DialogServices
     // Summary:
     //     The message box contains a symbol consisting of an exclamation point in a triangle
     //     with a yellow background.
+#pragma warning disable CA1069 // Enums values should not be duplicated
     Warning = 48,
+#pragma warning restore CA1069 // Enums values should not be duplicated
     //
     // Summary:
     //     The message box contains a symbol consisting of a lowercase letter i in a circle.
@@ -71,7 +77,9 @@ namespace ToolkitForTSW.DialogServices
     //
     // Summary:
     //     The message box contains a symbol consisting of a lowercase letter i in a circle.
+#pragma warning disable CA1069 // Enums values should not be duplicated
     Information = 64
+#pragma warning restore CA1069 // Enums values should not be duplicated
     }
 
   // http://www.embedded101.com/Blogs/PaoloPatierno/entryid/218/messagebox-from-viewmodel-without-violating-the-pattern-mvvm
@@ -87,21 +95,21 @@ namespace ToolkitForTSW.DialogServices
 
     public DialogResult Show(string messageText, string caption, DialogButton button, DialogImage image)
       {
-      var result=System.Windows.MessageBox.Show(messageText, caption, this.DialogToMessageBoxButton(button), this.DialogToMessageBoxImage(image));
-      return this.MessageBoxToDialogResult(result);
+      var result = System.Windows.MessageBox.Show(messageText, caption, DialogToMessageBoxButton(button), DialogToMessageBoxImage(image));
+      return MessageBoxToDialogResult(result);
       }
 
-    private DialogResult MessageBoxToDialogResult(MessageBoxResult messageBoxResult)
+    private static DialogResult MessageBoxToDialogResult(MessageBoxResult messageBoxResult)
       {
       return (DialogResult)messageBoxResult;
       }
 
-    private MessageBoxButton DialogToMessageBoxButton(DialogButton dialogButton)
+    private static MessageBoxButton DialogToMessageBoxButton(DialogButton dialogButton)
       {
       return (MessageBoxButton)dialogButton;
       }
 
-    private MessageBoxImage DialogToMessageBoxImage(DialogImage dialogImage)
+    private static MessageBoxImage DialogToMessageBoxImage(DialogImage dialogImage)
       {
       return (MessageBoxImage)dialogImage;
       }

@@ -1,14 +1,14 @@
 ﻿
 
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0-windows7.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <Company>Holland Hiking</Company>
     <Authors>Rudolf Heijink</Authors>
-    <Version>7</Version>
+    <Version>1.1.0.0</Version>
     <PackageProjectUrl>https://github.com/RudolfJan/ToolkitForTSW</PackageProjectUrl>
     <Copyright>(C) 2020/2021 Rudolf Heijink</Copyright>
     <ApplicationIcon>Images\LuaCreator.ico</ApplicationIcon>
@@ -33,6 +33,7 @@
     <None Remove="Images\AboutPicture.png" />
     <None Remove="Images\arrow_down.png" />
     <None Remove="Images\arrow_up.png" />
+    <None Remove="Images\cross.png" />
     <None Remove="Images\file_extension_doc.png" />
     <None Remove="Images\folder.png" />
     <None Remove="Images\LeftArrow.ico" />
@@ -63,6 +64,9 @@
 
   <ItemGroup>
     <Content Include="Images\AboutPicture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\cross.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\file_extension_doc.png">
@@ -163,6 +167,21 @@
 
   <ItemGroup>
     <Folder Include="Backups\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 

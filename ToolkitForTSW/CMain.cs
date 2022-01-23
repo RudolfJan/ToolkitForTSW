@@ -40,19 +40,41 @@ namespace ToolkitForTSW
       TSWOptions.ReadFromRegistry();
       var InitialInstallDirectory = TSWOptions.ToolkitForTSWFolder; //Is always set by the installer
       InitDatabase();
-      while (!TSWOptions.GetNotFirstRun())
+      FirstRun(InitialInstallDirectory);
+      FolderAndFileSetup();
+      SevenZipSetup();
+      CheckOptions();
+      // LiveryCracker cracker = new LiveryCracker(); // DEBUG
+      }
+
+    private static void CheckOptions()
+      {
+      CheckOptionsLogic.Instance.SetAllOptionChecks();
+      var optionsChecker = new CheckOptionsReporter();
+      optionsChecker.BuildOptionsCheckReport();
+      if (!optionsChecker.OptionsCheckStatus)
         {
-        MessageBox.Show(@"Please complete the configuration before you proceed", @"Set configuration",
-          MessageBoxButton.OK,MessageBoxImage.Asterisk);
-        TSWOptions.ReadFromRegistry();
-        var Form = new FormOptions();
-        Form.ShowDialog();
-        if (Form.DialogResult == true)
-          {
-          TSWOptions.WriteToRegistry();
-          TSWOptions.UpdateTSWToolsDirectory(InitialInstallDirectory);
-          }
+        MessageBox.Show($"Options not all set correctly\r\n{optionsChecker.OptionsCheckReport}",
+            @"There are issues with your settings",
+            MessageBoxButton.OK,
+            MessageBoxImage.Warning);
         }
+      }
+
+    private static void SevenZipSetup()
+      {
+      try
+        {
+        SevenZipLib.InitZip(TSWOptions.SevenZip);
+        }
+      catch (Exception ex)
+        {
+        Log.Trace("Failed to initialize SevenZip functions, probably 7Zip program is not installed", ex);
+        }
+      }
+
+    private static void FolderAndFileSetup()
+      {
       if (TSWOptions.ToolkitForTSWFolder.Length > 1)
         {
         // Do not initialize Database again, should not need to do that.
@@ -63,33 +85,35 @@ namespace ToolkitForTSW
         EngineIniSettingDataAccess.ImportEngineIniSettingsFromCsv("SQL\\EngineIniSettingsList.csv");
         EngineIniSettingDataAccess.ImportDescriptionsFromExcel("SQL\\AnnotatedSettingsList.xlsx");
         InitScreenshotManagerSettings();
+        MakeBackup();
+        }
+      }
 
-        // Make a backup when required
-        if(TSWOptions.AutoBackup)
+    private static void MakeBackup()
+      {
+      // Make a backup when required
+      if (TSWOptions.AutoBackup)
+        {
+        var backup = new BackupViewModel();
+        backup.MakeDailyBackup();
+        }
+      }
+
+    private static void FirstRun(string InitialInstallDirectory)
+      {
+      while (!TSWOptions.GetNotFirstRun())
+        {
+        MessageBox.Show(@"Please complete the configuration before you proceed", @"Set configuration",
+          MessageBoxButton.OK, MessageBoxImage.Asterisk);
+        TSWOptions.ReadFromRegistry();
+        var Form = new FormOptions();
+        Form.ShowDialog();
+        if (Form.DialogResult == true)
           {
-          var backup= new BackupViewModel();
-          backup.MakeDailyBackup();
+          TSWOptions.WriteToRegistry();
+          TSWOptions.UpdateTSWToolsDirectory(InitialInstallDirectory);
           }
         }
-      try
-        {
-        SevenZipLib.InitZip(TSWOptions.SevenZip);
-        }
-      catch(Exception ex)
-        {
-        Log.Trace("Failed to initialize SevenZip functions, probably 7Zip program is not installed",ex);
-        }
-      
-      var optionsChecker= new CheckOptionsReporter();
-      optionsChecker.BuildOptionsCheckReport();
-      if(!optionsChecker.OptionsCheckStatus)
-        { 
-      MessageBox.Show($"Options not all set correctly\r\n{optionsChecker.OptionsCheckReport}", 
-          @"There are issues with your settings",
-          MessageBoxButton.OK, 
-          MessageBoxImage.Warning);
-        }
-      // LiveryCracker cracker = new LiveryCracker(); // DEBUG
       }
 
     public static void MoveMods()
@@ -117,7 +141,7 @@ namespace ToolkitForTSW
         }
       }
 
-    public void InitDatabase()
+    public static void InitDatabase()
       {
       var factory = new DatabaseFactory();
       var databasePath=$"{TSWOptions.ToolkitForTSWFolder}TSWTools.db";
@@ -143,7 +167,7 @@ namespace ToolkitForTSW
       Log.Trace($"Created database {databasePath} Version={version.VersionNr} {version.Description}");
       }
 
-    private void InitScreenshotManagerDatabase()
+    private static void InitScreenshotManagerDatabase()
       {
       var screenshotFactory = new Screenshots.Library.DataAccess.DatabaseFactory();
       screenshotFactory.CreateStructures();
@@ -151,7 +175,7 @@ namespace ToolkitForTSW
       TagDataAccess.ImportTagsFromCsv("SQL\\ImportTags.csv");
       }
 
-    private void InitScreenshotManagerSettings()
+    private static void InitScreenshotManagerSettings()
       {
       ImageManager.ThumbnailBasePath= TSWOptions.ThumbnailFolder;
 

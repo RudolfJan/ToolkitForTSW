@@ -588,10 +588,9 @@ namespace ToolkitForTSW.ViewModels
         {
         return ScenarioName!=null && ScenarioName.Length>3;
         }
- 
       }
 
-    public async Task SaveCopy()
+    public Task SaveCopy()
       {
       UpdateScenarioStartTime();
       var newScenario = new CScenario();
@@ -621,7 +620,7 @@ namespace ToolkitForTSW.ViewModels
         Scenario.IsToolkitCreated=true;
         }
       _dialogService.Show("Scenario copied, edited and rebuilt successfully", "Save changes as copy", DialogButton.OK, DialogImage.Information);
-      await TryCloseAsync();
+      return TryCloseAsync();
       }
 
     public bool CanSaveOverWrite
@@ -632,7 +631,7 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-    public async Task SaveOverWrite()
+    public Task SaveOverWrite()
       {
       UpdateScenarioStartTime();
       var savScenario = Scenario.SavScenario;
@@ -650,17 +649,17 @@ namespace ToolkitForTSW.ViewModels
       savScenario.TargetAsset = Scenario.SavScenario.TargetAsset;
       SavScenarioBuilder.Build(Scenario);
       _dialogService.Show("Scenario overwritten, edited and rebuilt successfully", "Updated scenario", DialogButton.OK, DialogImage.Information);
-      await TryCloseAsync();
+      return TryCloseAsync();
       }
 
-    public async Task Cancel()
+    public Task Cancel()
       {
-      await TryCloseAsync();
+      return TryCloseAsync();
       }
 
-    public async Task Close()
+    public Task Close()
       {
-      await TryCloseAsync();
+      return TryCloseAsync();
       }
     #endregion
 

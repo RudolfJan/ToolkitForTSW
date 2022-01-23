@@ -75,13 +75,7 @@ namespace ToolkitForTSW.Views
       Form.Show();
       }
 
-    private void OnModManagerButtonClicked(Object Sender, RoutedEventArgs E)
-      {
-      var ModManager = new CModManager();
-      var Form = new FormModManager(ModManager);
-      Form.Show();
-      }
-
+ 
     private void OnEditSettingsButtonClicked(Object Sender, RoutedEventArgs E)
       {
       var Form = new FormSettings();
@@ -93,25 +87,7 @@ namespace ToolkitForTSW.Views
       var Form= new RadioStationsView();
       Form.Show();
       }
-
-    private void OnPakInstallerButtonClicked(Object Sender, RoutedEventArgs E)
-      {
-      var Form=new FormPakInstaller();
-      Form.Show();
-      }
-
     #endregion
 
-    #region Help
-
-
-  
-
-    private void GetRouteGuides_Click(object sender, RoutedEventArgs e)
-      {
-      var form= new RouteGuideView();
-      form.Show();
-      }
-    #endregion
     }
   }

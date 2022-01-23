@@ -122,9 +122,9 @@ namespace ToolkitForTSW.ViewModels
 			return Result;
 			}
 
-		public async Task Close()
+		public Task CloseForm()
       {
-			await TryCloseAsync();
+			return TryCloseAsync();
       }
 		}
 	}

@@ -265,7 +265,7 @@ namespace ToolkitForTSW.ViewModels
       SaveMods=false;
       }
 
-    public string CreateBackupSetName()
+    public static string CreateBackupSetName()
       {
       DateTime Now = DateTime.Now;
       return Now.ToString("yyyy-MM-dd$HHmm");
@@ -306,7 +306,7 @@ namespace ToolkitForTSW.ViewModels
       Result += "Backup succeeded for set " + TargetBase;
       }
 
-    private void SaveScenarioFiles(string sourceBase, string targetBase, bool saveScenarios)
+    private static void SaveScenarioFiles(string sourceBase, string targetBase, bool saveScenarios)
       {
       if (saveScenarios)
         {
@@ -321,7 +321,7 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-    private void SaveSaveGamesFiles(string sourceBase, string targetBase, bool saveSaveGames)
+    private static void SaveSaveGamesFiles(string sourceBase, string targetBase, bool saveSaveGames)
       {
       if (saveSaveGames)
         {
@@ -339,7 +339,7 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-    private void BackUpPart(string SourceBase, string TargetBase, string Folder, bool Included)
+    private static void BackUpPart(string SourceBase, string TargetBase, string Folder, bool Included)
       {
       if (Included)
         {
@@ -348,7 +348,7 @@ namespace ToolkitForTSW.ViewModels
         FileHelpers.CopyDir(Source, Target, true);
         }
       }
-    private void BackUpToolkitPart(string SourceFolder, string TargetBase, bool Included)
+    private static void BackUpToolkitPart(string SourceFolder, string TargetBase, bool Included)
       {
       if (Included)
         {
@@ -356,7 +356,7 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-    private void BackUpSingleFile(string SourceBase, string TargetBase, string fileName, bool Included)
+    private static void BackUpSingleFile(string SourceBase, string TargetBase, string fileName, bool Included)
       {
       if (Included)
         {
@@ -391,7 +391,7 @@ namespace ToolkitForTSW.ViewModels
       RestoreToolkitFiles($"{source}\\Toolkit\\");
       }
 
-    public void RestoreToolkitFiles(string source)
+    public static void RestoreToolkitFiles(string source)
       {
       var target = TSWOptions.ToolkitForTSWFolder;
       // var target="D:\\Test\\";

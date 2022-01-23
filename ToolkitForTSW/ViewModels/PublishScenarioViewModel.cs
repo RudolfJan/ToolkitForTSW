@@ -22,7 +22,7 @@ namespace ToolkitForTSW.ViewModels
         {
         _author = value;
         NotifyOfPropertyChange(() => Author);
-        NotifyOfPropertyChange(()=>CanSave);
+        NotifyOfPropertyChange(() => CanSave);
         }
       }
 
@@ -42,12 +42,14 @@ namespace ToolkitForTSW.ViewModels
 
     public string ScenarioFilePath
       {
-      get { 
-        return _scenarioFilePath; }
+      get
+        {
+        return _scenarioFilePath;
+        }
       set
         {
         _scenarioFilePath = value;
-        NotifyOfPropertyChange(()=>ScenarioFilePath);
+        NotifyOfPropertyChange(() => ScenarioFilePath);
         }
       }
 
@@ -60,15 +62,15 @@ namespace ToolkitForTSW.ViewModels
         }
       set
         {
-        _templateList= value;
-        NotifyOfPropertyChange(()=>TemplateList);
+        _templateList = value;
+        NotifyOfPropertyChange(() => TemplateList);
         }
       }
 
     private FileInfo _selectedTemplate;
     public FileInfo SelectedTemplate
       {
-      get {  return _selectedTemplate; }
+      get { return _selectedTemplate; }
       set
         {
         _selectedTemplate = value;
@@ -107,18 +109,18 @@ namespace ToolkitForTSW.ViewModels
     public void CreateDocumentFile()
       {
       var fileBase = $"{TSWOptions.ScenarioFolder}{SavScenario.RouteAbbreviation}-{SavScenario.ScenarioName}";
- 
+
       var template = File.ReadAllText(SelectedTemplate.FullName);
       var output = CreateDocumentString(template);
       File.WriteAllText($"{fileBase}.html", output);
       var targetFilePath = $"{TSWOptions.ScenarioFolder}{Path.GetFileName(ScenarioFilePath)}";
       File.Copy(ScenarioFilePath, targetFilePath, true);
       FileHelpers.DeleteSingleFile($"{fileBase}.zip");
-      using (ZipArchive archive = ZipFile.Open($"{fileBase}.zip", ZipArchiveMode.Create))
+      using (var archive = ZipFile.Open($"{fileBase}.zip", ZipArchiveMode.Create))
         {
         archive.CreateEntryFromFile(targetFilePath, Path.GetFileName(ScenarioFilePath));
         archive.CreateEntryFromFile($"{fileBase}.html", $"{SavScenario.RouteAbbreviation}-{SavScenario.ScenarioName}.html");
-        if(Screenshot1 != null)
+        if (Screenshot1 != null)
           {
           archive.CreateEntryFromFile(Screenshot1, Path.GetFileName(Screenshot1));
           }
@@ -128,8 +130,8 @@ namespace ToolkitForTSW.ViewModels
     public static List<FileInfo> GetTemplates(string templateDir)
       {
       var templateList = new List<FileInfo>();
-      DirectoryInfo dir = new DirectoryInfo(templateDir);
-      FileInfo[] files = dir.GetFiles("*.html", SearchOption.TopDirectoryOnly);
+      var dir = new DirectoryInfo(templateDir);
+      var files = dir.GetFiles("*.html", SearchOption.TopDirectoryOnly);
       foreach (var file in files)
         {
         templateList.Add(file);
@@ -143,7 +145,7 @@ namespace ToolkitForTSW.ViewModels
       {
       var output = template.Replace("{Author}", Author)
         .Replace("{Description}", Description)
-        .Replace("{Screenshot1}",GetScreenshot(Screenshot1))
+        .Replace("{Screenshot1}", GetScreenshot(Screenshot1))
         .Replace("{Filename}", GetSavFileName(SavScenario))
         .Replace("{ScenarioName}", SavScenario.ScenarioName)
         .Replace("{RouteName}", SavScenario.RouteName)
@@ -155,17 +157,16 @@ namespace ToolkitForTSW.ViewModels
 
     private static string GetScreenshot(string screenshot)
       {
-      if(string.IsNullOrEmpty(screenshot))
+      if (string.IsNullOrEmpty(screenshot))
         {
         return string.Empty;
         }
       return $"<img src=\"{Path.GetFileName(screenshot)}\">";
       }
 
-    private string GetServiceList(SavScenarioModel savScenario)
+    private static string GetServiceList(SavScenarioModel savScenario)
       {
-      var output = string.Empty;
-      output = "<table>\n";
+      var output = "<table>\n";
 
       foreach (var service in savScenario.SavServiceList)
         {
@@ -183,7 +184,7 @@ namespace ToolkitForTSW.ViewModels
 
     public static string PrintIsPlayerService(bool isPlayerService)
       {
-      if(isPlayerService)
+      if (isPlayerService)
 
         {
         return "Player";
@@ -191,7 +192,7 @@ namespace ToolkitForTSW.ViewModels
       return string.Empty;
       }
 
-    private string GetPlayerEngine(SavScenarioModel savScenario)
+    private static string GetPlayerEngine(SavScenarioModel savScenario)
       {
       foreach (var service in savScenario.SavServiceList)
         {
@@ -213,7 +214,7 @@ namespace ToolkitForTSW.ViewModels
       {
       get
         {
-        return !string.IsNullOrEmpty(Author) && ! string.IsNullOrEmpty(Description) && SelectedTemplate!=null;
+        return !string.IsNullOrEmpty(Author) && !string.IsNullOrEmpty(Description) && SelectedTemplate != null;
         }
       }
     public void Save()
@@ -222,9 +223,9 @@ namespace ToolkitForTSW.ViewModels
       TryCloseAsync();
       }
 
-    private string GetSavFileName(SavScenarioModel savScenario)
+    private static string GetSavFileName(SavScenarioModel savScenario)
       {
-      return $"USD_{SavScenario.ScenarioGuid.ToString().ToUpper()}.sav";
+      return $"USD_{savScenario.ScenarioGuid.ToString().ToUpper()}.sav";
       }
     }
   }

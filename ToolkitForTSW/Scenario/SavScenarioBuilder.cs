@@ -93,7 +93,7 @@ namespace ToolkitForTSW.Scenario
 
     private static byte[] BuildNameProperty(string typeName, string payLoad)
       {
-      var typeNameBytes = new byte[0];
+      var typeNameBytes = Array.Empty<byte>();
       if (typeName.Length > 0)
         {
         typeNameBytes = GetStringByteString(typeName);
@@ -257,7 +257,7 @@ namespace ToolkitForTSW.Scenario
 
     private static byte[] BuildServicesPayload(SavScenarioModel savScenario)
       {
-      var payloadContent = new byte[0];
+      var payloadContent = Array.Empty<byte>();
       foreach (var service in savScenario.SavServiceList)
         {
         var serviceContent = BuildServicesPayLoadElement(service); // TODO one or al?
@@ -348,7 +348,7 @@ namespace ToolkitForTSW.Scenario
       var filler2 = new byte[1];
       var liveryCount = 0;
       var arrayIndex = new byte[4];
-      var liveryIdentifierBytes = new byte[0];
+      var liveryIdentifierBytes = Array.Empty<byte>();
       if (service.LiveryIdentifier.Length > 0)
         {
         liveryCount = 1;
@@ -378,7 +378,7 @@ namespace ToolkitForTSW.Scenario
       var arrayElementCount = ConvertIntToBytes(stopLocationList.Count);
       var nameProperty = GetStringByteString("NameProperty");
       var filler = new byte[1];
-      var stopLocations = new byte[0];
+      var stopLocations = Array.Empty<byte>();
       foreach (var stop in stopLocationList)
         {
         var result = GetStringByteString(stop);
@@ -413,7 +413,7 @@ namespace ToolkitForTSW.Scenario
 
     private static byte[] BuildTimeSpan(ulong timeValue)
       {
-      var filler = new byte[0];
+      var filler = Array.Empty<byte>();
       var output = filler
         .Concat(BitConverter.GetBytes(timeValue * 10000000))
         .ToArray();

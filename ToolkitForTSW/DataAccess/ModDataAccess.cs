@@ -17,14 +17,14 @@ namespace ToolkitForTSW.DataAccess
     public static ModModel GetModByFilePath(string path)
       {
       var sql = "SELECT * FROM Mods WHERE FilePath=@path";
-      return DbAccess.LoadData<ModModel, dynamic>(sql, new {path }).FirstOrDefault();
+      return DbAccess.LoadData<ModModel, dynamic>(sql, new { path }).FirstOrDefault();
       }
 
     public static int InsertMod(ModModel mod)
       {
       var sql = $"INSERT OR IGNORE INTO Mods (ModName, FileName, FilePath, ModDescription, ModImage, ModSource, ModType, DLCName, ModVersion) " +
                 $"VALUES(@ModName, @FileName, @FilePath, @ModDescription, @ModImage, @ModSource, @ModType, @DLCName, @ModVersion);{DbAccess.LastRowInsertQuery}";
-      return DbAccess.SaveData<dynamic>(sql, new { mod.ModName, mod.FileName,mod.FilePath, mod.ModDescription, mod.ModImage, mod.ModSource, mod.ModType, mod.DLCName, mod.ModVersion});
+      return DbAccess.SaveData<dynamic>(sql, new { mod.ModName, mod.FileName, mod.FilePath, mod.ModDescription, mod.ModImage, mod.ModSource, mod.ModType, mod.DLCName, mod.ModVersion });
       }
 
     public static int UpdateMod(ModModel mod)
@@ -58,7 +58,7 @@ namespace ToolkitForTSW.DataAccess
         {
         ModDataAccess.InsertMod(mod);
         return mod;
-        };
+        }
       UpdateMod(mod);
       return mod;
       }

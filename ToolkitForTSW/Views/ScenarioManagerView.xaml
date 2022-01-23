@@ -97,7 +97,7 @@
         <Button Name="PublishScenario" Style="{StaticResource ButtonDefault}">Publish</Button>
         <Button Name="EditScenario" Style="{StaticResource ButtonDefault}">Edit</Button>
         <Button Name="DeleteScenario" Style="{StaticResource ButtonDefault}">Delete</Button>
-        <Button Name="Close" Style="{StaticResource ButtonOK}">Close</Button>
+        <Button Name="CloseForm" Style="{StaticResource ButtonOK}">Close</Button>
       </WrapPanel>
     </StackPanel>
   </ScrollViewer>

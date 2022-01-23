@@ -363,14 +363,14 @@ namespace ToolkitForTSW.Settings
     #region Filehandling
 
  
-    public FileInfo GetInGameSettingsLocation()
+    public static FileInfo GetInGameSettingsLocation()
       {
       var MyPath = TSWOptions.GetSaveLocationPath();
       MyPath += @"Saved\Config\WindowsNoEditor\GameUserSettings.ini";
       return new FileInfo(MyPath);
       }
 
-    public FileInfo GetInGameEngineIniLocation()
+    public static FileInfo GetInGameEngineIniLocation()
       {
       var MyPath = TSWOptions.GetSaveLocationPath();
       MyPath += @"Saved\Config\WindowsNoEditor\Engine.ini";

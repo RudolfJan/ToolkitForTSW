@@ -1,0 +1,123 @@
+﻿<Window x:Class="ToolkitForTSW.Mod.Views.PakInstallerView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:cal="http://www.caliburnproject.org"
+        xmlns:core="clr-namespace:System;assembly=System.Runtime" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:ToolkitForTSW" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mod="clr-namespace:ToolkitForTSW.Mod.Models" xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        xmlns:views="clr-namespace:TreeBuilders.Library.Wpf.Views;assembly=TreeBuilders.Library.Wpf" Title="Mod Installer"
+        Style="{StaticResource AllWindows}"
+        mc:Ignorable="d">
+  <Window.Resources>
+    <ObjectDataProvider x:Key="LiveryTypesEnum" MethodName="GetValues"
+                        ObjectType="{x:Type core:Enum}">
+      <ObjectDataProvider.MethodParameters>
+        <x:Type Type="mod:ModTypesEnum" />
+      </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+  </Window.Resources>
+
+  <ScrollViewer>
+    <StackPanel>
+      <Grid MinHeight="300">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Width="300"
+                Style="{StaticResource DefaultBorder}">
+          <StackPanel>
+            <userControls:FileInputBox Name="ArchiveFileTextBox" CheckPathExists="True"
+                                       FileDialogType="OpenFile"
+                                       FileName="{Binding ArchiveFile, Mode=TwoWay}"
+                                       Filter="archive files (rar, 7z, zip, pak)|*.zip;*.7z;*.rar;*.pak|All files (*.*)|*.*" LabelText="Archive path"
+                                       LabelWidth="60" RestoreDirectory="False"
+                                       ToolTip="Locate the archive in which the pak file is located" />
+            <DataGrid Name="PakFileListDataGrid" MinHeight="150"
+                      ItemsSource="{Binding PakFileList}"
+                      SelectedItem="{Binding FileEntry}"
+                      Style="{StaticResource DataGridReadOnly}">
+              <DataGrid.Columns>
+                <DataGridTextColumn x:Name="PakNameColumn" Width="180"
+                                    Binding="{Binding Name}"
+                                    Header="Pak name" SortMemberPath="PakNameColumn" />
+              </DataGrid.Columns>
+            </DataGrid>
+            <userControls:LabelTextBox x:Name="ModNameTextBox" LabelText="Name"
+                                       LabelWidth="80"
+                                       TextBoxText="{Binding ModName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+            <userControls:LabelTextBox x:Name="DLCNameTextBox" LabelText="DLC Name"
+                                       LabelWidth="80"
+                                       TextBoxText="{Binding DLCName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+            <userControls:LabelTextBox x:Name="SourceTextBox" LabelText="Source"
+                                       LabelWidth="80"
+                                       TextBoxText="{Binding ModSource, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            <WrapPanel>
+              <TextBlock Width="72" Style="{StaticResource DefaultTextBlock}">Mod Type</TextBlock>
+              <ComboBox Name="LiveryComboBox" Width="80"
+                        ItemsSource="{Binding Source={StaticResource LiveryTypesEnum}}"
+                        Text="{Binding ModType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            </WrapPanel>
+            <WrapPanel>
+              <CheckBox x:Name="IsInstalledSteamCheckBox" Content="Activate mod Steam"
+                        IsChecked="{Binding IsInstalledSteam, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+              <CheckBox x:Name="IsInstalledEGSCheckBox" Content="Activate mod EGS"
+                        IsChecked="{Binding IsInstalledEGS, Converter={StaticResource IntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </WrapPanel>
+            <userControls:LabelTextBox x:Name="DescriptionTextBox" LabelText="Description"
+                                       LabelWidth="80"
+                                       Style="{StaticResource MultiLineLabelTextBox}"
+                                       TextBoxBackGround="{StaticResource TextBoxBackground}"
+                                       TextBoxText="{Binding ModDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            <WrapPanel>
+              <Button Name="ClearInstallData" Style="{StaticResource ButtonNarrow}">Clear</Button>
+              <Button Name="InstallMod" Style="{StaticResource ButtonNarrow}">Install</Button>
+              <TextBlock TextWrapping="Wrap">Select both a .pak file (above) and a folder (right side of screen to enable install button</TextBlock>
+
+            </WrapPanel>
+            <DataGrid Name="DocumentationDataGrid" MinHeight="100"
+                      AutoGenerateColumns="False"
+                      ItemsSource="{Binding DocumentsList}"
+                      MouseUp="DocumentationDataGrid_MouseUp" SelectionChanged="OnDocumentationDataGridSelectionChanged"
+                      Style="{StaticResource DefaultDataGrid}">
+              <DataGrid.Columns>
+                <DataGridTextColumn x:Name="DocColumn" Width="180"
+                                    Binding="{Binding Name}"
+                                    Header="Document" SortMemberPath="DocColumn" />
+              </DataGrid.Columns>
+            </DataGrid>
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="1" Style="{StaticResource DefaultBorder}">
+          <StackPanel>
+            <views:FileTreeView x:Name="FileTreeViewControl" Width="420"
+                                Height="400" views:NodeSelectionChanged="FileTreeViewControl_NodeSelectionChanged" />
+            <userControls:LabelTextBox LabelText="New directory name" LabelWidth="100"
+                                       Style="{StaticResource DefaultLabelTextBox}"
+                                       TextBoxText="{Binding NewDirectory, Mode=TwoWay}" />
+
+            <WrapPanel>
+              <Button Name="AddDirectory"
+                      Style="{StaticResource DefaultButton}"
+                      ToolTip="Create a new folder in the root folder for mods">
+                Add folder to root
+              </Button>
+              <Button Name="AddDictoryChild"
+                      Style="{StaticResource DefaultButton}"
+                      ToolTip="Select a folder first, then you can add a new folder in this folder">
+                Add folder as child
+              </Button>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+      </Grid>
+      <Border Style="{StaticResource DefaultBorder}">
+        <Button Name="CloseForm" HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Style="{StaticResource OKButton}">
+          Close
+        </Button>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</Window>
