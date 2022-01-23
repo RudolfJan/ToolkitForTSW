@@ -6,7 +6,6 @@
     public ScenarioManagerView()
       {
       InitializeComponent();
-       }
- 
+      }
     }
   }

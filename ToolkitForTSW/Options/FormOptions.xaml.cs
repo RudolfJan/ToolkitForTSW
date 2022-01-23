@@ -9,26 +9,26 @@ namespace ToolkitForTSW
   public partial class FormOptions : Window
     {
     OptionsViewModel OptionsView { get; set; }
-    private bool _canClose=false;
+    private bool _canClose = false;
 
     public FormOptions()
       {
       InitializeComponent();
       OptionsView = new OptionsViewModel();
       DataContext = OptionsView;
-      TagsView.TagAndCategoryData= new TagAndCategoryViewModel();
+      TagsView.TagAndCategoryData = new TagAndCategoryViewModel();
       TagsView.DataContext = TagsView.TagAndCategoryData;
-      CollectionsView.ScreenshotCollectionManager= new ScreenshotCollectionViewModel();
+      CollectionsView.ScreenshotCollectionManager = new ScreenshotCollectionViewModel();
       CollectionsView.DataContext = CollectionsView.ScreenshotCollectionManager;
       SetControlStates();
       }
 
     private void SetControlStates()
       {
-      RouteEditButton.IsEnabled= OptionsView.SelectedRoute!=null;
+      RouteEditButton.IsEnabled = OptionsView.SelectedRoute != null;
       RouteDeleteButton.IsEnabled = OptionsView.SelectedRoute != null;
-      RouteSaveButton.IsEnabled = OptionsView.RouteAbbrev!=null && OptionsView.RouteAbbrev.Length >= 2;
-      OKButton.IsEnabled= _canClose==true;
+      RouteSaveButton.IsEnabled = OptionsView.RouteAbbrev != null && OptionsView.RouteAbbrev.Length >= 2;
+      OKButton.IsEnabled = _canClose == true;
       }
 
     private void OnOKButtonClicked(Object sender, RoutedEventArgs e)
@@ -38,11 +38,11 @@ namespace ToolkitForTSW
 
     private void OnCancelButtonClicked(Object sender, RoutedEventArgs e)
       {
-      DialogResult = false;
-      Close();
+      OptionsView.LoadOptions();
+      SetControlStates();
       }
 
-     private void OnEditRoute(object sender, RoutedEventArgs e)
+    private void OnEditRoute(object sender, RoutedEventArgs e)
       {
       OptionsView.EditRoute();
       SetControlStates();
@@ -86,6 +86,66 @@ namespace ToolkitForTSW
       _canClose = true;
       OptionsView.SaveOptions();
       SetControlStates();
+      }
+
+    private void FindDefaultsButton_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.FindDefaults();
+      }
+
+    private void ClearTrackIr_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.ClearTrackIr();
+      }
+
+    private void Clear7Zip_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.Clear7Zip();
+      }
+
+    private void ClearUmodel_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.ClearUmodel();
+      }
+
+    private void ClearUnreal_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.ClearUnreal();
+      }
+
+    private void ClearTextEditor_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.CleartextEditor();
+      }
+
+    private void RevertButton_Click(object sender, RoutedEventArgs e)
+      {
+
+      }
+
+    private void ClearEGS_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.ClearEGS();
+      }
+
+    private void ClearSteamProgramFolder_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.ClearSteamProgramFolder();
+      }
+
+    private void ClearTSW2Program_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.ClearSteam();
+      }
+
+    private void ClearToolkitFolder_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.ClearToolkitFolder();
+      }
+
+    private void ClearBackupFolder_Click(object sender, RoutedEventArgs e)
+      {
+      OptionsView.ClearBackupFolder();
       }
     }
   }

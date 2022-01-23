@@ -1,22 +1,23 @@
-﻿<UserControl x:Class="ToolkitForTSW.Mod.Views.ModStatusView"
+﻿<UserControl x:Class="ToolkitForTSW.Mod.Views.ModStatusView" 
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:core="clr-namespace:System;assembly=mscorlib"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ToolkitForTSW.Mod.Views" 
-             xmlns:models="clr-namespace:ToolkitForTSW.Mod.Models" 
-             xmlns:core="clr-namespace:System;assembly=mscorlib" xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library" mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800" 
-             Background="White">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:models="clr-namespace:ToolkitForTSW.Mod.Models"
+             xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library" d:DesignHeight="600"
+             d:DesignWidth="800" mc:Ignorable="d"
+             Background="{StaticResource WindowBackground}">
   <UserControl.Resources>
     <!--  Create list of enumeration values  -->
-    <ObjectDataProvider x:Key="LiveryTypesEnum" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider x:Key="LiveryTypesEnum" MethodName="GetValues"
+                        ObjectType="{x:Type core:Enum}">
       <ObjectDataProvider.MethodParameters>
         <x:Type Type="models:ModTypesEnum" />
       </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
   </UserControl.Resources>
-  
+
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto" />
@@ -26,26 +27,38 @@
       <ColumnDefinition Width="Auto" />
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
-    <StackPanel Grid.Column="0" Grid.ColumnSpan="5" Margin="0,0,0,132">
+    <StackPanel Grid.Column="0" Grid.ColumnSpan="5"
+                Margin="0,0,0,132">
       <Border Style="{StaticResource BorderDefault}">
         <StackPanel>
           <TextBlock Style="{StaticResource TextBlockHeader}">Installed packs</TextBlock>
-          <DataGrid Name="AvailablePaksDataGrid" MaxHeight="400" Height="350" Style="{StaticResource DataGridReadOnly}" 
-                    ItemsSource="{Binding AvailableModList}" 
-                    SelectedItem="{Binding SelectedMod}">
+          <DataGrid Name="AvailablePaksDataGrid" Height="350"
+                    Width="300"
+                    ItemsSource="{Binding SelectedAvailableModList}"
+                    SelectedItem="{Binding SelectedMod}"
+                    Style="{StaticResource DataGridReadOnly}">
             <DataGrid.Columns>
               <DataGridTemplateColumn Header="Mod details">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
                     <StackPanel ToolTip="{Binding ModDescription}">
                       <WrapPanel>
-                        <TextBlock Text="{Binding DLCName, UpdateSourceTrigger=PropertyChanged}" Margin="3,0,0,0" FontWeight="Bold" />
-                        <TextBlock Text="{Binding ModName, UpdateSourceTrigger=PropertyChanged}" Margin="3,0,0,0" />
-                        <TextBlock Text="{Binding ModVersion, UpdateSourceTrigger=PropertyChanged}" Margin="3,0,0,0" />
+                        <TextBlock Margin="3,0,0,0" FontWeight="Bold"
+                                   Text="{Binding DLCName, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="3,0,0,0" Text="{Binding ModName, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="3,0,0,0" Text="{Binding ModVersion, UpdateSourceTrigger=PropertyChanged}" />
                       </WrapPanel>
                       <WrapPanel>
-                        <CheckBox IsChecked="{Binding IsInstalledSteam}" IsHitTestVisible="False" Focusable="False">At Steam</CheckBox>
-                        <CheckBox IsChecked="{Binding IsInstalledEGS}" IsHitTestVisible="False" Focusable="False">At EGS</CheckBox>
+                        <CheckBox Focusable="False"
+                                  IsChecked="{Binding IsInstalledSteam}"
+                                  IsHitTestVisible="False">
+                          At Steam
+                        </CheckBox>
+                        <CheckBox Focusable="False"
+                                  IsChecked="{Binding IsInstalledEGS}"
+                                  IsHitTestVisible="False">
+                          At EGS
+                        </CheckBox>
                       </WrapPanel>
                       <TextBlock Text="{Binding FilePath}" />
                     </StackPanel>
@@ -57,50 +70,76 @@
           <WrapPanel>
             <Button Name="EditModProperties" Style="{StaticResource ButtonNarrow}">Edit</Button>
             <Button Name="DeleteMod" Style="{StaticResource ButtonNarrow}">Delete</Button>
-            <Button Name="DeactiveAllMods" Style="{StaticResource ButtonDefault}">Deactivate all</Button>
+            <Button Name="DeactiveAllMods" Style="{StaticResource ButtonDefault}" ToolTip="Deactivate all mods for all platforms.">Deactivate all mods</Button>
+          </WrapPanel>
+          <WrapPanel>
+            <Button Name="ActivateSteamMod"
+                  Style="{StaticResource ButtonDefault}"
+                  ToolTip="Activate selected mod on steam">
+              Activate Steam
+            </Button>
+            <Button Name="ActivateEGSMod"
+                  Style="{StaticResource ButtonDefault}"
+                  ToolTip="Activate selected mod on Epic Games Store">
+              Activate EGS
+            </Button>
+            <Button Name="DeActivateMod"
+                  Style="{StaticResource ButtonDefault}"
+                  ToolTip="Deactivate selected mod">
+              Deactivate
+            </Button>
           </WrapPanel>
         </StackPanel>
       </Border>
     </StackPanel>
-    <Border Grid.Column="5" Style="{StaticResource DefaultBorder}" Margin="5,5,5,137">
+    <Border Grid.Column="5" Margin="5,5,5,137"
+            Style="{StaticResource DefaultBorder}">
       <StackPanel>
-        <userControls:LabelTextBox x:Name="ModNameTextBox" LabelText="Name" LabelWidth="80" 
+        <userControls:LabelTextBox x:Name="ModNameTextBox" LabelText="Name"
+                                   LabelWidth="80"
                                    TextBoxText="{Binding ModName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <userControls:LabelTextBox x:Name="ModVersionTextBox" LabelText="Version" LabelWidth="80" 
+        <userControls:LabelTextBox x:Name="ModVersionTextBox" LabelText="Version"
+                                   LabelWidth="80"
                                    TextBoxText="{Binding ModVersion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <userControls:LabelTextBox x:Name="PakfileTextBox" LabelText="Pak file" LabelWidth="80" 
+        <userControls:LabelTextBox x:Name="PakfileTextBox" LabelText="Pak file"
+                                   LabelWidth="80"
                                    TextBoxText="{Binding FilePath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <userControls:LabelTextBox x:Name="DLCNameTextBox" LabelText="DLC Name" LabelWidth="80" 
+        <userControls:LabelTextBox x:Name="DLCNameTextBox" LabelText="DLC Name"
+                                   LabelWidth="80"
                                    TextBoxText="{Binding DLCName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <userControls:LabelTextBox x:Name="SourceTextBox" LabelText="Source" LabelWidth="80" 
+        <userControls:LabelTextBox x:Name="SourceTextBox" LabelText="Source"
+                                   LabelWidth="80"
                                    TextBoxText="{Binding ModSource, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <WrapPanel>
           <TextBlock Width="72" Style="{StaticResource DefaultTextBlock}">Mod Type</TextBlock>
-          <ComboBox Name="LiveryComboBox" Width="80" 
-                    ItemsSource="{Binding Source={StaticResource LiveryTypesEnum}}" Text="{Binding ModType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-          <CheckBox Name="IsInstalledSteamCheckBox" IsHitTestVisible="False" Focusable="False" IsChecked="{Binding IsInstalledSteam, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IntConverter}}">
+          <ComboBox Name="LiveryComboBox" Width="80"
+                    ItemsSource="{Binding Source={StaticResource LiveryTypesEnum}}"
+                    Text="{Binding ModType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+          <CheckBox Name="IsInstalledSteamCheckBox" Focusable="False"
+                    IsChecked="{Binding IsInstalledSteam, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IntConverter}}"
+                    IsHitTestVisible="False">
             Active (Steam)
           </CheckBox>
-          <CheckBox Name="IsInstalledEGSCheckBox" IsHitTestVisible="False" Focusable="False" IsChecked="{Binding IsInstalledEGS, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IntConverter}}">
+          <CheckBox Name="IsInstalledEGSCheckBox" Focusable="False"
+                    IsChecked="{Binding IsInstalledEGS, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IntConverter}}"
+                    IsHitTestVisible="False">
             Active (EGS)
           </CheckBox>
 
         </WrapPanel>
-        <userControls:LabelTextBox x:Name="DescriptionTextBox" LabelText="Description" LabelWidth="80" Style="{StaticResource MultiLineLabelTextBox}" TextBoxText="{Binding ModDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextBoxBackGround="{StaticResource TextBoxBackground}" />
+        <userControls:LabelTextBox x:Name="DescriptionTextBox" LabelText="Description"
+                                   LabelWidth="80"
+                                   Style="{StaticResource MultiLineLabelTextBox}"
+                                   TextBoxBackGround="{StaticResource TextBoxBackground}"
+                                   TextBoxText="{Binding ModDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <WrapPanel>
-          <Button Name="SaveModProperties" Style="{StaticResource ButtonNarrow}" ToolTip="Update selected available pak">
+          <Button Name="SaveModProperties"
+                  Style="{StaticResource ButtonNarrow}"
+                  ToolTip="Update selected available pak">
             Update
           </Button>
-          <Button Name="ActivateSteamMod" Style="{StaticResource ButtonDefault}" ToolTip="Activate selected pak">
-            Activate Steam
-          </Button>
-          <Button Name="ActivateEGSMod" Style="{StaticResource ButtonDefault}" ToolTip="Activate selected pak">
-            Activate EGS
-          </Button>
-          <Button Name="DeActivateMod" Style="{StaticResource ButtonDefault}" ToolTip="Deactivate selected pak">
-            Deactivate
-          </Button>
+ 
         </WrapPanel>
       </StackPanel>
     </Border>

@@ -77,7 +77,7 @@ namespace ToolkitForTSW.Settings
           SettingId = setting.Id,
           SettingName = setting.SettingName
           };
-        if ( ValueList.Where(x => x.SettingId == setting.Id).Count() ==0)
+        if (!ValueList.Where(x => x.SettingId == setting.Id).Any())
           {
 					var description = EngineIniSettingDataAccess.GetEngineIniSettingDescriptionById(value.SettingId);
 					if(!string.IsNullOrEmpty(description))
@@ -184,7 +184,8 @@ namespace ToolkitForTSW.Settings
 								// check if the value is still part of a workset
 								var check= EngineIniWorkSetConnectorDataAccess.CheckEngineIniSettingsInWorkSet(value.SettingId,value.WorkSetId);
 								if(check>0)
-									{value.SettingDescription=description;
+									{
+									value.SettingDescription = description;
 									ValueList.Add(value);
 									}
 								}

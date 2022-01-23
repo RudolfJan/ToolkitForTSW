@@ -39,10 +39,16 @@
 							View log
 						</Button>
 						<Button Name="BackupTool" Style="{StaticResource WideButton}"
+                                IsEnabled="{Binding Check.Check.BackupFolderOK}"
 						        ToolTip="Make a backup of your saved game data and avoid the risk of loosing progress">
 							Backup save area
 						</Button>
-						<Button Name="ShowKeyBindings" Style="{StaticResource WideButton}"
+            <Button Name="DeleteIntroMovies" Style="{StaticResource WideButton}"
+										IsEnabled="{Binding Check.Check.BackupFolderOK}"
+						        ToolTip="Make a backup of the intro movies and delete them">
+              Delete intro movies
+            </Button>
+            <Button Name="ShowKeyBindings" Style="{StaticResource WideButton}"
 						        ToolTip="View the default key bindings">
 							Key bindings
 						</Button>
@@ -59,11 +65,12 @@
 						</Button>
 						<Button Name="UnpackerButton" Style="{StaticResource WideButton}"
 						        ToolTip="Using the Unreal Unpacker you can unpack the game .pak files here"
+                                IsEnabled="{Binding Check.Check.UnrealOK}"
 						        Click="OnUnpackerButtonClicked">
 							Unpack game files
 						</Button>
 						<Button Name="ViewUnpackedPaksButton" Style="{StaticResource WideButton}"  ToolTip="Browse the unpacked files using explorer" Click="OnViewUnpackedPaksButtonClicked">View unpacked files</Button>
-						<Button Name="UModelLauncherButton" Style="{StaticResource WideButton}"  ToolTip="Explore game files using the UModel tool" Click="OnUModelLauncherButtonClicked" >Launch UModel</Button>
+						<Button Name="UModelLauncherButton" Style="{StaticResource WideButton}" IsEnabled="{Binding Check.Check.UmodelOK}" ToolTip="Explore game files using the UModel tool" Click="OnUModelLauncherButtonClicked" >Launch UModel</Button>
 					</StackPanel>
 				</Border>
 
@@ -107,12 +114,13 @@
 						        ToolTip="My secret tip: read the manual here">
 							ToolkitForTSW manual
 						</Button>
-						<Button Name="GetStartersGuide" Style="{StaticResource WideButton}"
+						<Button Name="GetStartersGuide" Style="{StaticResource WideButton}" 
+                                IsEnabled="{Binding Check.Check.ToolkitFolderOK}"
 						        ToolTip="You go the TSW starters guide included with TSWTools. Read it here!">
 							TSW2 Starters guide
 						</Button>
-						<Button Name="GetRouteGuides" Style="{StaticResource WideButton}"
-						        ToolTip="The route guides contain a lot of additional information. Read them here">
+						<Button Name="GetRouteGuides" Style="{StaticResource WideButton}" 
+                                IsEnabled="{Binding Check.Check.ToolkitFolderOK}" ToolTip="The route guides contain a lot of additional information. Read them here">
 							Route guides
 						</Button>
 					</StackPanel>

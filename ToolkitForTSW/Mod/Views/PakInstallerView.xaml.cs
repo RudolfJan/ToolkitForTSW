@@ -43,7 +43,6 @@ namespace ToolkitForTSW.Mod.Views
     private void OnFileTreeViewSelectedItemChanged(Object Sender,
      RoutedPropertyChangedEventArgs<Object> E)
       {
-
       SetControlStates();
       }
 
@@ -67,7 +66,6 @@ namespace ToolkitForTSW.Mod.Views
           }
         catch (Exception)
           {
-          // ReSharper disable once RedundantJumpStatement
           return;
           }
         }
@@ -76,6 +74,7 @@ namespace ToolkitForTSW.Mod.Views
     private void FileTreeViewControl_NodeSelectionChanged(object sender, RoutedEventArgs e)
       {
       SetControlStates();
+
       }
     }
   }

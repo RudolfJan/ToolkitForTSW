@@ -28,9 +28,11 @@ namespace SavCracker.Library
     private void ReadHeader()
       {
       savCracker.Position = Header.Length; // skip header bytes
-      var header = new HeaderModel();
-      header.SaveGameVersion = savCracker.GetInt();
-      header.PackageVersion = savCracker.GetInt();
+      var header = new HeaderModel
+        {
+        SaveGameVersion = savCracker.GetInt(),
+        PackageVersion = savCracker.GetInt()
+        };
       EngineVersion version;
       version.Major = savCracker.GetShort();
       version.Minor = savCracker.GetShort();
@@ -43,9 +45,11 @@ namespace SavCracker.Library
       var entriesCount = savCracker.GetInt();
       for (int i = 0; i < entriesCount; i++)
         {
-        var entry = new CustomFormatDataEntry();
-        entry.Id = savCracker.GetGuid();
-        entry.Value = savCracker.GetInt();
+        var entry = new CustomFormatDataEntry
+          {
+          Id = savCracker.GetGuid(),
+          Value = savCracker.GetInt()
+          };
         header.CustomFormatList.Add(entry);
         }
       header.SaveGameType = savCracker.GetString();

@@ -37,9 +37,12 @@ namespace ToolkitForTSW.Settings
 		public Boolean CabSway
 			{
 			get { return _CabSway; }
-			set { _CabSway= value;
-				OnPropertyChanged("CabSway");}
-			}
+			set
+        {
+        _CabSway = value;
+				OnPropertyChanged("CabSway");
+        }
+      }
 
 		private GradeUnitsEnum _GradeUnits;
 

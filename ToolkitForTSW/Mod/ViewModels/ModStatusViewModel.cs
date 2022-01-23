@@ -1,8 +1,6 @@
 ﻿using Caliburn.Micro;
-using Logging.Library;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Mod.Models;
@@ -11,32 +9,18 @@ using Utilities.Library;
 
 namespace ToolkitForTSW.Mod.ViewModels
   {
-  public class ModStatusViewModel: Screen, IModTabManager
+  public class ModStatusViewModel : Screen, IModTabManager
 
     {
-    private BindableCollection<ModModel> _AvailableModList = new BindableCollection<ModModel>();
-    public BindableCollection<ModModel> AvailableModList
+    public List<ModModel> AvailableModList { get; set; } = new List<ModModel>();
+    private BindableCollection<ModModel> _SelectedAvailableModList = new BindableCollection<ModModel>();
+    public BindableCollection<ModModel> SelectedAvailableModList
       {
-      get { return _AvailableModList; }
+      get { return _SelectedAvailableModList; }
       set
         {
-        _AvailableModList = value;
-        NotifyOfPropertyChange("AvailableModList");
-        }
-      }
-
-
-    /*
-    List with all (DLC) Pak files. 
-    */
-    private ObservableCollection<FileInfo> _PakFilesList;
-    public ObservableCollection<FileInfo> PakFilesList
-      {
-      get { return _PakFilesList; }
-      set
-        {
-        _PakFilesList = value;
-        NotifyOfPropertyChange("PakFilesList");
+        _SelectedAvailableModList = value;
+        NotifyOfPropertyChange(nameof(SelectedAvailableModList));
         }
       }
 
@@ -47,10 +31,9 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _modSet = value;
-        NotifyOfPropertyChange("ModSet");
+        NotifyOfPropertyChange(nameof(ModSet));
         }
       }
-
 
     private string _modName;
     public string ModName
@@ -71,7 +54,7 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _modVersion = value;
-        NotifyOfPropertyChange("ModVersion");
+        NotifyOfPropertyChange(nameof(ModVersion));
         }
       }
 
@@ -82,7 +65,7 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _filePath = value;
-        NotifyOfPropertyChange("FilePath");
+        NotifyOfPropertyChange(nameof(FilePath));
         }
       }
 
@@ -93,7 +76,7 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _fileName = value;
-        NotifyOfPropertyChange("FileName");
+        NotifyOfPropertyChange(nameof(FileName));
         }
       }
 
@@ -104,7 +87,7 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _modDescription = value;
-        NotifyOfPropertyChange("ModDescription");
+        NotifyOfPropertyChange(nameof(ModDescription));
         }
       }
 
@@ -115,7 +98,7 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _modImage = value;
-        NotifyOfPropertyChange("ModImage");
+        NotifyOfPropertyChange(nameof(ModImage));
         }
       }
 
@@ -126,7 +109,7 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _modSource = value;
-        NotifyOfPropertyChange("ModSource");
+        NotifyOfPropertyChange(nameof(ModSource));
         }
       }
 
@@ -137,7 +120,7 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _modType = value;
-        NotifyOfPropertyChange("ModType");
+        NotifyOfPropertyChange(nameof(ModType));
         }
       }
 
@@ -160,7 +143,8 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _SelectedMod = value;
-        NotifyOfPropertyChange (() => SelectedMod);
+        ClearEditEntry();
+        NotifyOfPropertyChange(() => SelectedMod);
         NotifyOfPropertyChange(() => CanEditModProperties);
         NotifyOfPropertyChange(() => CanDeleteMod);
         NotifyOfPropertyChange(() => CanSaveModProperties);
@@ -190,7 +174,7 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _IsInstalledEGS = value;
-        NotifyOfPropertyChange("IsInstalledEGS");
+        NotifyOfPropertyChange(nameof(IsInstalledEGS));
         }
       }
 
@@ -201,25 +185,23 @@ namespace ToolkitForTSW.Mod.ViewModels
       set
         {
         _InEditMode = value;
-        NotifyOfPropertyChange("InEditMode");
+        NotifyOfPropertyChange(nameof(InEditMode));
         }
       }
 
     public ModStatusViewModel()
       {
-      DisplayName="Mods";
+      DisplayName = "Mods";
       }
-    
-    public void Initialise(BindableCollection<ModModel> availableModList)
+
+    public void Initialise(List<ModModel> availableModList)
       {
       AvailableModList = availableModList;
-      if (AvailableModList==null)
+      if (AvailableModList == null)
         {
         throw new Exception("AvailableModList should be filled");
         }
-      PakFilesList = new ObservableCollection<FileInfo>();
-      
-      GetPakFiles();
+      SelectedAvailableModList = ModManagerViewModel.GetSelectedAvailableMods(AvailableModList);
       GetInstalledPakFiles();
       }
 
@@ -248,20 +230,7 @@ namespace ToolkitForTSW.Mod.ViewModels
             }
           }
         }
-      }
-
-    private void GetPakFiles()
-      {
-      var BaseDir = new DirectoryInfo(TSWOptions.ModsFolder);
-      FileInfo[] Files = BaseDir.GetFiles("*.pak", SearchOption.AllDirectories);
-      PakFilesList.Clear();
-      AvailableModList.Clear();
-      foreach (var F in Files)
-        {
-        PakFilesList.Add(F);
-        var mod = ModDataAccess.UpsertMod(StripModDir(F.FullName));
-        AvailableModList.Add(mod);
-        }
+      SelectedAvailableModList = ModManagerViewModel.GetSelectedAvailableMods(AvailableModList); //refresh
       }
 
     private void GetInstalledPakFiles()
@@ -278,49 +247,18 @@ namespace ToolkitForTSW.Mod.ViewModels
 
     private void GetInstalledPakFiles(PlatformEnum selectedPlatform)
       {
-      var BaseDir = GetBaseDir(selectedPlatform);
-      FileInfo[] Files = BaseDir.GetFiles("*.pak", SearchOption.TopDirectoryOnly);
+      var BaseDir = ModManagerViewModel.GetDLCBaseDir(selectedPlatform);
+      var Files = BaseDir.GetFiles("*.pak", SearchOption.TopDirectoryOnly);
       foreach (var F in Files)
         {
         SetInstallationStatus(F, selectedPlatform);
         }
       }
 
-    private static DirectoryInfo GetBaseDir(PlatformEnum selectedPlatform)
-      {
-      DirectoryInfo BaseDir;
-      switch (selectedPlatform)
-        {
-        case PlatformEnum.Steam:
-            {
-            BaseDir = new DirectoryInfo(TSWOptions.SteamTrainSimWorldDirectory + "TS2Prototype\\Content\\DLC");
-            break;
-            }
-        case PlatformEnum.EpicGamesStore:
-            {
-            BaseDir = new DirectoryInfo(TSWOptions.EGSTrainSimWorldDirectory + "TS2Prototype\\Content\\DLC");
-
-            break;
-            }
-        default:
-            {
-            throw new NotImplementedException("Platform in ModManager not yet supported");
-            }
-        }
-      // If no DLC are installed, this directory is missing. In this case, create it so we can install mods.
-
-      // This also may happen for the Steam version, especially for new players
-      if (!Directory.Exists(BaseDir.FullName))
-        {
-        Directory.CreateDirectory(BaseDir.FullName);
-        }
-      return BaseDir;
-      }
-
     private void SetInstallationStatus(FileInfo f, PlatformEnum selectedPlatform)
       {
       var fileName = f.Name;
-      foreach (var mod in AvailableModList)
+      foreach (var mod in SelectedAvailableModList)
         {
         if (string.CompareOrdinal(fileName, mod.FileName) == 0)
           {
@@ -373,42 +311,45 @@ namespace ToolkitForTSW.Mod.ViewModels
       return String.Empty;
       }
 
-    public bool CanActivateSteamMod 
-      { 
+    public bool CanActivateSteamMod
+      {
       get
         {
-        return SelectedMod!=null && TSWOptions.SteamProgramDirectory.Length>10; // This is a simplified check. It will not always work but there is a catchall that checks for existence of the Folder.
+        return SelectedMod != null && TSWOptions.SteamProgramDirectory.Length > 10; // This is a simplified check. It will not always work but there is a catchall that checks for existence of the Folder.
         }
-
       }
 
     public void ActivateSteamMod()
       {
-      ActivateMod(SelectedMod,PlatformEnum.Steam,false);
+      ModActivator.ActivateMod(SelectedMod, PlatformEnum.Steam, false);
+      SetInstallationStatus(PlatformEnum.Steam, true);
+      SelectedAvailableModList = ModManagerViewModel.GetSelectedAvailableMods(AvailableModList);
+      NotifyOfPropertyChange(() => IsInstalledSteam);
+      NotifyOfPropertyChange(() => SelectedMod);
       }
 
-    public bool CanActivateEGSMod 
-      { 
+    public bool CanActivateEGSMod
+      {
       get
         {
-        return SelectedMod!=null && TSWOptions.EGSTrainSimWorldDirectory.Length>5;
+        return SelectedMod != null && TSWOptions.EGSTrainSimWorldDirectory.Length > 5;
         }
       }
 
     public void ActivateEGSMod()
       {
-      ActivateMod(SelectedMod,PlatformEnum.EpicGamesStore,false);
+      ModActivator.ActivateMod(SelectedMod, PlatformEnum.EpicGamesStore, false);
+      SetInstallationStatus(PlatformEnum.EpicGamesStore, true);
+      SelectedAvailableModList = ModManagerViewModel.GetSelectedAvailableMods(AvailableModList);
+      NotifyOfPropertyChange(() => IsInstalledEGS);
+      NotifyOfPropertyChange(() => SelectedMod);
       }
 
-
- 
-
- 
-
-    public bool CanDeactivateMod 
-      { get
+    public bool CanDeactivateMod
+      {
+      get
         {
-        return SelectedMod!=null;
+        return SelectedMod != null;
         }
       }
 
@@ -416,54 +357,26 @@ namespace ToolkitForTSW.Mod.ViewModels
       {
       if (TSWOptions.SteamProgramDirectory.Length > 0)
         {
-        DeactivateMod(PlatformEnum.Steam);
+        ModActivator.DeactivateMod(SelectedMod, PlatformEnum.Steam);
+        SetInstallationStatus(PlatformEnum.Steam, false);
+        NotifyOfPropertyChange(() => IsInstalledSteam);
         }
       if (TSWOptions.EGSTrainSimWorldDirectory.Length > 0)
         {
-        DeactivateMod(PlatformEnum.EpicGamesStore);
+        ModActivator.DeactivateMod(SelectedMod, PlatformEnum.EpicGamesStore);
+        SetInstallationStatus(PlatformEnum.EpicGamesStore, false);
+        NotifyOfPropertyChange(() => IsInstalledEGS);
         }
+      NotifyOfPropertyChange(() => SelectedMod);
+      SelectedAvailableModList = ModManagerViewModel.GetSelectedAvailableMods(AvailableModList);
       }
 
-    public void DeactivateMod(PlatformEnum selectedPlatform)
+    public bool CanEditModProperties
       {
-      var filePath = $"{GetBaseDir(selectedPlatform).FullName}\\{SelectedMod.FileName}";
-      FileHelpers.DeleteSingleFile(filePath);
-      SetInstallationStatus(selectedPlatform, false);
-      }
-
-    public static void ActivateMod(ModModel mod, PlatformEnum selectedPlatform, bool overWrite)
-      {
-      var PakPath = mod.FilePath;
-      var source = TSWOptions.ModsFolder + PakPath;
-      var fileName = Path.GetFileName(source);
-      var destination = $"{GetBaseDir(selectedPlatform).FullName}\\{fileName}";
-
-      try
-        {
-        File.Copy(source, destination, overWrite);
-        
-        if(selectedPlatform == PlatformEnum.Steam)
-          {
-          mod.IsInstalledSteam = true;
-          }
-        else
-          {
-          mod.IsInstalledEGS = true;
-          }
-        }
-      catch (Exception E)
-        {
-        Log.Trace("Failed to install mod pak because " + E.Message,
-          LogEventType.Error);
-        }
-      }
-
- 
-    public bool CanEditModProperties { 
       get
         {
-        return SelectedMod!=null;
-        } 
+        return SelectedMod != null;
+        }
       }
 
     public void EditModProperties()
@@ -481,10 +394,11 @@ namespace ToolkitForTSW.Mod.ViewModels
       InEditMode = true;
       }
 
-    public bool CanSaveModProperties { 
+    public bool CanSaveModProperties
+      {
       get
         {
-        return SelectedMod!=null && ModName?.Length>2;
+        return SelectedMod != null && ModName?.Length > 2;
         }
       }
     public void SaveModProperties()
@@ -504,9 +418,10 @@ namespace ToolkitForTSW.Mod.ViewModels
       ModDataAccess.UpdateMod(newMod);
       AvailableModList.Remove(SelectedMod);
       AvailableModList.Add(newMod);
-      SelectedMod=null;
+      SelectedAvailableModList = ModManagerViewModel.GetSelectedAvailableMods(AvailableModList);
+      SelectedMod = null;
       NotifyOfPropertyChange(() => SelectedMod);
-      NotifyOfPropertyChange(() => AvailableModList); //TODO check
+      NotifyOfPropertyChange(() => SelectedAvailableModList);
       // Note FileName and FilePath should never be updated!
       }
 
@@ -516,41 +431,34 @@ namespace ToolkitForTSW.Mod.ViewModels
       return "";
       }
 
-    public bool CanDeleteMod 
-      { 
+    public bool CanDeleteMod
+      {
       get
         {
-        return SelectedMod!=null;
+        return SelectedMod != null;
         }
       }
 
     public void DeleteMod()
       {
-      if (SelectedMod.IsInstalledSteam)
-        {
-        DeactivateMod(PlatformEnum.Steam);
-        }
-      if (SelectedMod.IsInstalledEGS)
-        {
-        DeactivateMod(PlatformEnum.EpicGamesStore);
-        }
+      DeactivateMod();
       var PakPath = SelectedMod.FilePath;
       var source = TSWOptions.ModsFolder + PakPath;
       FileHelpers.DeleteSingleFile(source);
       ModDataAccess.DeleteMod(SelectedMod.Id);
-      AvailableModList.Remove(SelectedMod);
+      SelectedAvailableModList.Remove(SelectedMod);
       if (InEditMode)
         {
         ClearEdit();
         }
       SelectedMod = null;
+      SelectedAvailableModList = ModManagerViewModel.GetSelectedAvailableMods(AvailableModList);
       NotifyOfPropertyChange(() => SelectedMod);
-      NotifyOfPropertyChange(() => AvailableModList); //TODO check
+      NotifyOfPropertyChange(() => SelectedAvailableModList);
       }
 
-    public void ClearEdit()
+    public void ClearEditEntry()
       {
-      SelectedMod = null;
       ModName = string.Empty;
       ModDescription = string.Empty;
       ModSource = string.Empty;
@@ -564,8 +472,10 @@ namespace ToolkitForTSW.Mod.ViewModels
       InEditMode = false;
       }
 
-
-
-
+    public void ClearEdit()
+      {
+      SelectedMod = null;
+      ClearEditEntry();
+      }
     }
   }

@@ -45,8 +45,8 @@ namespace ToolkitForTSW.Settings
 
     private void OnLoadActiveGameSettingsClicked(Object Sender, RoutedEventArgs E)
       {
-      SettingsManager.LoadSettingsInDictionary(SettingsManager.GetInGameSettingsLocation(),
-        SettingsManager.GetInGameEngineIniLocation());
+      SettingsManager.LoadSettingsInDictionary(CSettingsManager.GetInGameSettingsLocation(),
+        CSettingsManager.GetInGameEngineIniLocation());
       SettingsManager.Init();
       SettingFilesDataGrid.Items.SortDescriptions.Add(new SortDescription(NameColumn.SortMemberPath,
         ListSortDirection.Ascending));
@@ -86,10 +86,10 @@ namespace ToolkitForTSW.Settings
 
     private void OnSaveSettingsClicked(Object Sender, RoutedEventArgs E)
       {
-      var FileName = SettingsManager.GetInGameSettingsLocation();
+      var FileName = CSettingsManager.GetInGameSettingsLocation();
       SettingsManager.Update();
       SettingsManager.WriteSettingsInDictionary(FileName);
-      FileName = SettingsManager.GetInGameEngineIniLocation();
+      FileName = CSettingsManager.GetInGameEngineIniLocation();
       SettingsManager.WriteSettingsInDictionary(FileName, true);
       SetControlStates();
       }

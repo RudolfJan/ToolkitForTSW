@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Logging.Library;
 using Logging.Library.Wpf.ViewModels;
+using System.Threading.Tasks;
 using ToolkitForTSW.Mod.ViewModels;
 using ToolkitForTSW.Options;
 using Utilities.Library;
@@ -13,31 +13,39 @@ namespace ToolkitForTSW.ViewModels
     {
     private readonly IEventAggregator _events;
     private readonly IWindowManager _windowManager;
-    
-    private string _currentPlatformText= $"Current platform: {TSWOptions.GetPlatformDisplayString(TSWOptions.CurrentPlatform)}";
+
+    private string _currentPlatformText = $"Current platform: {TSWOptions.GetPlatformDisplayString(TSWOptions.CurrentPlatform)}";
     public string CurrentPlatformText
       {
-      get { return _currentPlatformText;
+      get
+        {
+        return _currentPlatformText;
         }
       set
         {
-        _currentPlatformText=value;
+        _currentPlatformText = value;
         NotifyOfPropertyChange(() => CurrentPlatformText);
         }
       }
 
+    public CheckOptionsLogic Check
+      {
+      get;
+      set;
+      } = CheckOptionsLogic.Instance;
+
     public ShellViewModel(IEventAggregator events, IWindowManager windowManager)
-{
+      {
       _events = events;
       _windowManager = windowManager;
       _events.SubscribeOnPublishedThread(this);
       LogEventHandler.LogEvent += OnLogEvent;
       PlatformChangedEventHandler.PlatformChanged += PlatformChangedEventHandler_PlatformChanged;
-    }
+      }
 
     private void PlatformChangedEventHandler_PlatformChanged(object Sender, PlatformChangedEventArgs e)
       {
-      CurrentPlatformText= $"Current platform: {TSWOptions.GetPlatformDisplayString(TSWOptions.CurrentPlatform)}";
+      CurrentPlatformText = $"Current platform: {TSWOptions.GetPlatformDisplayString(TSWOptions.CurrentPlatform)}";
       }
 
     protected override void OnViewLoaded(object view)
@@ -48,7 +56,7 @@ namespace ToolkitForTSW.ViewModels
 
     public Task LogViewer()
       {
-      var viewmodel= IoC.Get<LoggingViewModel>();
+      var viewmodel = IoC.Get<LoggingViewModel>();
       return _windowManager.ShowWindowAsync(viewmodel);
       }
 
@@ -66,7 +74,7 @@ namespace ToolkitForTSW.ViewModels
 
     public Task ManageMods()
       {
-      var viewModel= IoC.Get<ModManagerViewModel>();
+      var viewModel = IoC.Get<ModManagerViewModel>();
       return _windowManager.ShowWindowAsync(viewModel);
       }
 
@@ -75,9 +83,15 @@ namespace ToolkitForTSW.ViewModels
       var backupToolVM = IoC.Get<BackupViewModel>();
       return _windowManager.ShowWindowAsync(backupToolVM);
       }
+
+    public static void DeleteIntroMovies()
+      {
+      IntroMovies.DeleteAllIntroMovies();
+      }
+
     public Task RadioStations()
       {
-      var viewmodel= IoC.Get<RadioStationsViewModel>();
+      var viewmodel = IoC.Get<RadioStationsViewModel>();
       return _windowManager.ShowWindowAsync(viewmodel);
       }
 
@@ -89,7 +103,7 @@ namespace ToolkitForTSW.ViewModels
 
     public Task PakInstaller()
       {
-      var viewmodel= IoC.Get<PakInstallerViewModel>();
+      var viewmodel = IoC.Get<PakInstallerViewModel>();
       return _windowManager.ShowWindowAsync(viewmodel);
       }
     public Task About()
@@ -97,16 +111,16 @@ namespace ToolkitForTSW.ViewModels
       var viewmodel = IoC.Get<AboutViewModel>();
       var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
       // TODO obtain these values from Settings
-      viewmodel.Initialize(currentAssembly,TSWOptions.Version, "../../Images/AboutPicture.png","https://www.hollandhiking.nl/trainsimulator");
+      viewmodel.Initialize(currentAssembly, TSWOptions.Version, "../../Images/AboutPicture.png", "https://www.hollandhiking.nl/trainsimulator");
       return _windowManager.ShowDialogAsync(viewmodel);
       }
 
-    public void GetManual()
+    public static void GetManual()
       {
       ProcessHelper.OpenGenericFile(TSWOptions.ManualsFolder + "ToolkitForTSW Manual.pdf");
       }
 
-    public void GetStartersGuide()
+    public static void GetStartersGuide()
       {
       ProcessHelper.OpenGenericFile(TSWOptions.ManualsFolder + "TSW2 Starters guide.pdf");
       }
@@ -125,7 +139,7 @@ namespace ToolkitForTSW.ViewModels
 
     private void OnLogEvent(object Sender, LogEventArgs args)
       {
-      if (args.EntryClass.EventType == LogEventType.Error || args.EntryClass.EventType == LogEventType.Event)
+      if (args.EntryClass.EventType == LogEventType.Error || args.EntryClass.EventType == LogEventType.InformUser)
         {
         LogCollectionManager.LogEvents.Add(args.EntryClass);
         var message = args.EntryClass.LogEntry;

@@ -1,11 +1,10 @@
 ﻿using Caliburn.Micro;
 using Logging.Library;
-using Styles.Library.Helpers;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using ToolkitForTSW.DataAccess;
-using ToolkitForTSW.Mod;
 using ToolkitForTSW.Mod.ViewModels;
 using ToolkitForTSW.Models;
 using ToolkitForTSW.Settings;
@@ -15,7 +14,7 @@ namespace ToolkitForTSW.ViewModels
 
   public class LaunchTSWViewModel : Screen
     {
-    private IWindowManager _windowManager;
+    private readonly IWindowManager _windowManager;
     private Boolean _LaunchRadio;
 
     public Boolean LaunchRadio
@@ -24,21 +23,22 @@ namespace ToolkitForTSW.ViewModels
       set
         {
         _LaunchRadio = value;
-        NotifyOfPropertyChange(()=>LaunchRadio);
+        NotifyOfPropertyChange(() => LaunchRadio);
         }
       }
 
-    private bool _isTrackIRActive=TSWOptions.TrackIRProgram.Length>0;
+    private bool _isTrackIRActive = TSWOptions.TrackIRProgram.Length > 0;
 
     public bool IsTrackIRActive
       {
-      get {
+      get
+        {
         return _isTrackIRActive;
         }
-      set 
+      set
         {
-        _isTrackIRActive=value;
-        NotifyOfPropertyChange(()=>IsTrackIRActive);
+        _isTrackIRActive = value;
+        NotifyOfPropertyChange(() => IsTrackIRActive);
         }
       }
 
@@ -52,8 +52,8 @@ namespace ToolkitForTSW.ViewModels
         }
       set
         {
-        _selectedOptionsSet=value;
-        NotifyOfPropertyChange(()=>SelectedOptionsSet);
+        _selectedOptionsSet = value;
+        NotifyOfPropertyChange(() => SelectedOptionsSet);
         }
       }
 
@@ -81,14 +81,15 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-    private BindableCollection<ModModel> _AvailableModList = new BindableCollection<ModModel>();
-    public BindableCollection<ModModel> AvailableModList
+    public List<ModModel> AvailableModList { get; set; } = new List<ModModel>();
+    private BindableCollection<ModModel> _SelectedAvailableModList = new BindableCollection<ModModel>();
+    public BindableCollection<ModModel> SelectedAvailableModList
       {
-      get { return _AvailableModList; }
+      get { return _SelectedAvailableModList; }
       set
         {
-        _AvailableModList = value;
-        NotifyOfPropertyChange(() => AvailableModList);
+        _SelectedAvailableModList = value;
+        NotifyOfPropertyChange(() => SelectedAvailableModList);
         }
       }
 
@@ -128,17 +129,18 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-    public LaunchTSWViewModel(IWindowManager  windowManager)
+    public LaunchTSWViewModel(IWindowManager windowManager)
       {
       _windowManager = windowManager;
       SettingsManager = new CSettingsManager();
       RailwayRadioStationManager = new RadioStationsViewModel();
       RailwayRadioStationManager.Initialize();
 
-//		RadioUrl = "https://tunein.com/radio/Railroad-Radio-West-Slope-s89688/"; // Default
+      //		RadioUrl = "https://tunein.com/radio/Railroad-Radio-West-Slope-s89688/"; // Default
       RadioUrl = String.Empty;
-      AvailableModList = new BindableCollection<ModModel>(ModDataAccess.GetAllMods());
-      ModSet = new ModSetViewModel(AvailableModList); //TODO this is maybe not very good code.
+      AvailableModList = ModDataAccess.GetAllMods();
+      ModSet = new ModSetViewModel(); //TODO this is maybe not very good code.
+      ModSet.Initialise(AvailableModList);
       }
 
     public void LaunchPrograms()
@@ -149,9 +151,9 @@ namespace ToolkitForTSW.ViewModels
           {
           Result += CApps.ExecuteFileMinimized(TSWOptions.TrackIRProgram);
           }
-        catch(Exception ex)
+        catch (Exception ex)
           {
-          Result += Log.Trace("Failed to launch TrackIR because " + ex.Message,  LogEventType.Error);
+          Result += Log.Trace("Failed to launch TrackIR because " + ex.Message, LogEventType.Error);
           }
         }
 
@@ -159,12 +161,12 @@ namespace ToolkitForTSW.ViewModels
         {
         try
           {
- 
+
           var SourceFile = SelectedOptionsSet.FullName + "\\GameUserSettings.ini";
-          var DestinationFile = SettingsManager.GetInGameSettingsLocation().FullName;
+          var DestinationFile = CSettingsManager.GetInGameSettingsLocation().FullName;
           File.Copy(SourceFile, DestinationFile, true);
           SourceFile = SelectedOptionsSet.FullName + "\\Engine.ini";
-          DestinationFile = SettingsManager.GetInGameEngineIniLocation().FullName;
+          DestinationFile = CSettingsManager.GetInGameEngineIniLocation().FullName;
           File.Copy(SourceFile, DestinationFile, true);
           }
         catch (Exception E)
@@ -177,23 +179,23 @@ namespace ToolkitForTSW.ViewModels
 
       if (RadioUrl.Length > 0)
         {
-        Result+=CApps.LaunchUrl(RadioUrl, true);
+        Result += CApps.LaunchUrl(RadioUrl, true);
         }
 
-      if(TSWOptions.CurrentPlatform==PlatformEnum.Steam)
+      if (TSWOptions.CurrentPlatform == PlatformEnum.Steam)
         {
         var TSWProgram = new FileInfo(TSWOptions.SteamProgramDirectory + "Steam.exe");
         Result += CApps.ExecuteFile(TSWProgram, "steam://rungameid/1282590");
         }
-      if(TSWOptions.CurrentPlatform==PlatformEnum.EpicGamesStore)
+      if (TSWOptions.CurrentPlatform == PlatformEnum.EpicGamesStore)
         {
-        Result += CApps.LaunchUrl(TSWOptions.EGSTrainSimWorldStarter,false);
+        Result += CApps.LaunchUrl(TSWOptions.EGSTrainSimWorldStarter, false);
         }
       }
 
     public Task EditMods()
       {
-      var viewModel= IoC.Get<ModManagerViewModel>();
+      var viewModel = IoC.Get<ModManagerViewModel>();
       return _windowManager.ShowDialogAsync(viewModel);
       }
 

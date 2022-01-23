@@ -1,109 +1,164 @@
 ﻿using System.IO;
+using Caliburn.Micro;
 
 namespace ToolkitForTSW.Options
   {
-  public class CheckOptionsModel
+  public class CheckOptionsModel: PropertyChangedBase
     {
-    public static bool TextEditorOK
+    private bool _textEditorOK;
+    public bool TextEditorOK
       {
       get
         {
-        return !string.IsNullOrEmpty(TSWOptions.TextEditor) 
-          && File.Exists(TSWOptions.TextEditor);
+        return _textEditorOK;
+        }
+      set
+        {
+        _textEditorOK= value;
+        NotifyOfPropertyChange(()=>TextEditorOK);
         }
       }
 
-    public static bool SevenZipOK
+    private bool _sevenZipOK;
+    public bool SevenZipOK
       {
       get
         {
-        return !string.IsNullOrEmpty(TSWOptions.SevenZip) 
-          && File.Exists(TSWOptions.SevenZip) 
-          && TSWOptions.SevenZip.EndsWith("7z.exe");
+        return _sevenZipOK;
+        }
+      set
+        {
+        _sevenZipOK= value;
+        NotifyOfPropertyChange(()=>SevenZipOK);
         }
       }
 
-    public static bool UnrealOK
+    private bool _unrealOK;
+    public bool UnrealOK
       {
       get
         {
-        return !string.IsNullOrEmpty(TSWOptions.Unpacker) 
-          && File.Exists(TSWOptions.Unpacker);
+        return _unrealOK;
+        }
+      set
+        {
+        _unrealOK= value;
+        NotifyOfPropertyChange(()=> UnrealOK);
         }
       }
 
-    public static bool TrackIROK
+    private bool _trackIROK;
+
+    public bool TrackIROK
       {
       get
         {
-        // may be either non-existent, but must be valid if it exists
-        return string.IsNullOrEmpty(TSWOptions.TrackIRProgram)
-          || File.Exists(TSWOptions.TrackIRProgram);
+        return _trackIROK;
+        }
+      set
+        {
+        _trackIROK= value;
+        NotifyOfPropertyChange(()=>TrackIROK);
+        }
+      }
+    private bool _backupFolderOK;
+
+    public bool BackupFolderOK
+      {
+      get
+        {
+        return _backupFolderOK;
+        
+        }
+      set
+        {
+        _backupFolderOK= value;
+        NotifyOfPropertyChange(()=>BackupFolderOK);
+        }
+      }
+    private bool _umodelOK;
+    public bool UmodelOK
+      {
+      get
+        {
+        return _umodelOK;
+        }
+      set
+        {
+        _umodelOK= value;
+        NotifyOfPropertyChange(()=> UmodelOK);
         }
       }
 
-    public static bool BackupFolderOK
-      {
-      get
-        {
-        return !string.IsNullOrEmpty(TSWOptions.BackupFolder) 
-          && Directory.Exists(TSWOptions.BackupFolder);
-        }
-      }
-    public static bool UmodelOK
-      {
-      get
-        {
-        return !string.IsNullOrEmpty(TSWOptions.UAssetUnpacker) 
-          && File.Exists(TSWOptions.UAssetUnpacker) 
-          && TSWOptions.UAssetUnpacker.EndsWith("exe");
-        }
-      }
-
-    public static bool SteamFolderOK 
+    private bool _steamFolderOK;
+    public bool SteamFolderOK 
       { 
       get
         {
-
-        return !string.IsNullOrEmpty(TSWOptions.SteamProgramDirectory) 
-          && Directory.Exists(TSWOptions.SteamProgramDirectory)
-          && File.Exists(TSWOptions.SteamProgramDirectory+"steam.exe");
+        return _steamFolderOK;
+        }
+      set
+        {
+        _steamFolderOK= value;
+        NotifyOfPropertyChange(()=> SteamFolderOK);
         }
       }
 
-    public static bool SteamTSW2ProgramOK { 
+    private bool _steamTSW2ProgramOK;
+    public bool SteamTSW2ProgramOK { 
       get 
         {
-        return !string.IsNullOrEmpty(TSWOptions.SteamTrainSimWorldDirectory) 
-          && File.Exists(TSWOptions.SteamTrainSimWorldDirectory+"TS2prototype.exe"); 
+        return _steamTSW2ProgramOK;
+        }
+      set
+        {
+        _steamTSW2ProgramOK= value;
+        NotifyOfPropertyChange(()=>SteamTSW2ProgramOK);
         }
       }
 
-    public static bool EGSTSW2ProgramOK
+    private bool _EGSTSW2ProgramOK;
+    public bool EGSTSW2ProgramOK
       {
       get
         {
-        return !string.IsNullOrEmpty(TSWOptions.EGSTrainSimWorldDirectory)
-          && File.Exists(TSWOptions.EGSTrainSimWorldDirectory + "TS2prototype.exe");
+        return _EGSTSW2ProgramOK;
+        
+        }
+      set
+        {
+        _EGSTSW2ProgramOK=value;
+        NotifyOfPropertyChange(()=> EGSTSW2ProgramOK);
         }
       }
 
-    public static  bool ToolkitFolderOK 
+    private bool _toolkitFolderOK;
+    public bool ToolkitFolderOK 
       { 
       get
         {
-        return !string.IsNullOrEmpty(TSWOptions.ToolkitForTSWFolder) 
-          && Directory.Exists(TSWOptions.ToolkitForTSWFolder);
+        return _toolkitFolderOK;
+ 
+        }
+      set
+        {
+        _toolkitFolderOK= value;
+        NotifyOfPropertyChange(()=>ToolkitFolderOK);
         }
       }
 
-    public static bool SteamIdOk 
+    private bool _steamIdOK;
+    public bool SteamIdOk 
       { 
       get
         {
-        return !string.IsNullOrEmpty(TSWOptions.SteamUserId) 
-          &&!string.IsNullOrEmpty(TSWOptions.SavedSteamScreenshots) 
-          && Directory.Exists(TSWOptions.SavedSteamScreenshots);
+        return _steamIdOK;
+        
+        }
+      set
+        {
+        _steamIdOK= value;
+        NotifyOfPropertyChange(()=>SteamIdOk);
         }
       }
     }

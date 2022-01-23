@@ -34,6 +34,5 @@ namespace ToolkitForTSW.DataAccess
       var sql = "DELETE FROM EngineIniWorkSets WHERE Id=@id";
       DbAccess.SaveData<dynamic>(sql, new { id });
       }
-
     }
   }

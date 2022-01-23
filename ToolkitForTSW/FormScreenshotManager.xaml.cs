@@ -19,11 +19,9 @@ namespace ToolkitForTSW
       DataContext = ScreenshotManagerView.ScreenshotManager;
       }
 
-
     private void OnOkButtonClicked(object Sender, RoutedEventArgs E)
       {
       Close();
       }
-
     }
   }

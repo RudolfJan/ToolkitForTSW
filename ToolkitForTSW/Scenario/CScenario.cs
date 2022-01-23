@@ -33,7 +33,6 @@ namespace ToolkitForTSW
         OnPropertyChanged("IsToolkitCreated");
         }
       }
-
     }
   }
 
