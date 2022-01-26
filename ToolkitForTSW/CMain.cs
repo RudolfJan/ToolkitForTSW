@@ -20,18 +20,6 @@ namespace ToolkitForTSW
   {
   public class CMain : Notifier
     {
-    private string _Result = string.Empty;
-
-    public String Result
-      {
-      get { return _Result; }
-      set
-        {
-        _Result = value;
-        OnPropertyChanged("Result");
-        }
-      }
-
     public CMain()
       {
 
@@ -107,9 +95,9 @@ namespace ToolkitForTSW
           MessageBoxButton.OK, MessageBoxImage.Asterisk);
         TSWOptions.ReadFromRegistry();
         var Form = new FormOptions();
-        Form.ShowDialog();
-        if (Form.DialogResult == true)
-          {
+        if (Form.ShowDialog() == true)
+        {
+          TSWOptions.SetNotFirstRun();
           TSWOptions.WriteToRegistry();
           TSWOptions.UpdateTSWToolsDirectory(InitialInstallDirectory);
           }
@@ -132,11 +120,11 @@ namespace ToolkitForTSW
       {
       var destination = TSWOptions.TemplateFolder;
       var source = ".\\Templates\\";
-      if(Directory.Exists(source))
+      if (Directory.Exists(source))
         {
         if (Directory.Exists(destination))
           {
-          FileHelpers.CopyDir(source,destination,true);
+          FileHelpers.CopyDir(source, destination, true);
           }
         }
       }
@@ -144,16 +132,16 @@ namespace ToolkitForTSW
     public static void InitDatabase()
       {
       var factory = new DatabaseFactory();
-      var databasePath=$"{TSWOptions.ToolkitForTSWFolder}TSWTools.db";
+      var databasePath = $"{TSWOptions.ToolkitForTSWFolder}TSWTools.db";
       var connectionString = $"Data Source = {databasePath}; Version = 3;";
-      DbManager.CurrentDatabaseVersion=5;
-      DbManager.DatabaseVersionDescription= "Added experimental settings";
+      DbManager.CurrentDatabaseVersion = 5;
+      DbManager.DatabaseVersionDescription = "Added experimental settings";
       DbManager.InitDatabase(connectionString, databasePath, factory);
       // TODO check process logic very carefully to make sure you set the version correct and execute the proper update procedure.
       var version = DbManager.GetCurrentVersion();
       if (version.VersionNr < 3) // old database version is not compatible
         {
-        DbManager.DeleteDatabase(); 
+        DbManager.DeleteDatabase();
         DbManager.InitDatabase(connectionString, databasePath, factory);
         version = DbManager.GetCurrentVersion();
         }
@@ -177,7 +165,7 @@ namespace ToolkitForTSW
 
     private static void InitScreenshotManagerSettings()
       {
-      ImageManager.ThumbnailBasePath= TSWOptions.ThumbnailFolder;
+      ImageManager.ThumbnailBasePath = TSWOptions.ThumbnailFolder;
 
       // TODO make this settable in the options
       ScreenshotManagerViewModel.ScreenshotsPerPage = 20;

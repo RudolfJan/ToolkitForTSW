@@ -18,6 +18,11 @@ See the manual for details. You can find the manual in the ToolkitForTSW data fo
 
 Version history:
 
+Version 1.1:
+- Added removal tool for ntro videos
+- Options settings improved
+- Mod installer and manager improved
+
 Version 1.0:
 - Support for Epic Games Platform
 - Splash screen
@@ -46,37 +51,3 @@ Version 0.6:
 - Now supports TSW2 only
 - Added Scenario manager tool
 - Settings tool improved and added new TSW2 settings.
-
-Version 0.51:
-- Bug fixes
-- Adds Cab sway setting
-
-Version 0.5
-- Bug fixes
-- Improved behaviour on small screens
-
-Version 0.4:
-- Fixed some bugs
-- Pak installer
-- Livery sets
-- Radio stations collection
-
-Version 0.3
-- New interface
-- Livery manager
-- Settings tool
-
-Version 0.21:
-- Fixed annoying bug in options settings
-- Unpacking pak files now works with multiple threads
-- Busy indicator while unpacking
-- You now can unpack a single .pak file
-
-Version 0.2:
-- Unpack function improved
-- Screenshotmanager improved
-- New function to create multiple settings files
-- Game launcher
-
-Version 0.1
-First public alpha version

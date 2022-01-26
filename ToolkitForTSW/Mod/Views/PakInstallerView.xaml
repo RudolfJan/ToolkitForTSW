@@ -102,7 +102,7 @@
                       ToolTip="Create a new folder in the root folder for mods">
                 Add folder to root
               </Button>
-              <Button Name="AddDictoryChild"
+              <Button Name="AddDirectoryChild"
                       Style="{StaticResource DefaultButton}"
                       ToolTip="Select a folder first, then you can add a new folder in this folder">
                 Add folder as child
