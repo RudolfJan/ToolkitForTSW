@@ -1,5 +1,4 @@
 ﻿using Screenshots.Library.WPF.ViewModels;
-using System;
 using System.Windows;
 
 //	https://github.com/mirzaevolution/ThumbnailSharp

@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ToolkitForTSW.Options
+﻿namespace ToolkitForTSW.Options
   {
   public class CheckOptionsReporter
     {
-    public string OptionsCheckReport { get; set; }= string.Empty;
-    public bool OptionsCheckStatus { get; set; } =false;
+    public string OptionsCheckReport { get; set; } = string.Empty;
+    public bool OptionsCheckStatus { get; set; } = false;
     public void BuildOptionsCheckReport()
       {
-      OptionsCheckStatus=true;
-      OptionsCheckReport=string.Empty;
+      OptionsCheckStatus = true;
+      OptionsCheckReport = string.Empty;
 
-      if(!CheckOptionsLogic.Instance.Check.BackupFolderOK)
+      if (!CheckOptionsLogic.Instance.Check.BackupFolderOK)
         {
         OptionsCheckStatus = false;
         OptionsCheckReport += "";
         OptionsCheckReport += "Backup folder is not set properly\r\n";
         }
-      if(!CheckOptionsLogic.Instance.Check.SevenZipOK)
+      if (!CheckOptionsLogic.Instance.Check.SevenZipOK)
         {
         OptionsCheckStatus = false;
         OptionsCheckReport += "SevenZip program is not set correctly\r\n";
@@ -49,10 +45,15 @@ namespace ToolkitForTSW.Options
         OptionsCheckReport += "ToolkitForTSW data folder not set correctly\r\n";
         }
 
-      if (!CheckOptionsLogic.Instance.Check.SteamTSW2ProgramOK || !CheckOptionsLogic.Instance.Check.EGSTSW2ProgramOK)
+      if (!CheckOptionsLogic.Instance.Check.SteamTSW2ProgramOK)
         {
         OptionsCheckStatus = false;
-        OptionsCheckReport += "TSW Program location is not set correctly\r\n";
+        OptionsCheckReport += "TSW Program location (Steam) is not set correctly\r\n";
+        }
+      if (!CheckOptionsLogic.Instance.Check.EGSTSW2ProgramOK)
+        {
+        OptionsCheckStatus = false;
+        OptionsCheckReport += "TSW Program location (Epic Games Store) is not set correctly\r\n";
         }
 
       if (!CheckOptionsLogic.Instance.Check.UmodelOK)

@@ -13,6 +13,7 @@ using ToolkitForTSW.Models;
 using TreeBuilders.Library.Wpf;
 using TreeBuilders.Library.Wpf.ViewModels;
 using Utilities.Library.Zip;
+using File = System.IO.File;
 
 namespace ToolkitForTSW.Mod.ViewModels
   {
@@ -421,7 +422,6 @@ namespace ToolkitForTSW.Mod.ViewModels
         if (AsChild)
           {
           Path = TreeItem.Root + "\\" + DirName;
-          Directory.CreateDirectory(Path);
           }
         else
           {
@@ -433,11 +433,10 @@ namespace ToolkitForTSW.Mod.ViewModels
             {
             Path = TreeItem.Root + "\\" + DirName;
             }
-
-          Directory.CreateDirectory(Path);
-          NewDirectory = "";
-          FillPakDirList();
           }
+        Directory.CreateDirectory(Path);
+        NewDirectory = "";
+        FillPakDirList();
         }
       catch (Exception E)
         {
@@ -573,12 +572,19 @@ namespace ToolkitForTSW.Mod.ViewModels
       {
       get
         {
-        return NewDirectory?.Length >= 1 && FileTree?.SelectedTreeNode?.IsSelected == true;
+        return NewDirectory?.Length >= 1;
         }
       }
-
     public void AddDirectoryChild()
       {
+      if (FileTree?.SelectedTreeNode?.Root == null)
+        {
+        MessageBox.Show("You need to select the parent folder in folder tree above",
+        "Select parent folder",
+        MessageBoxButton.OK,
+        MessageBoxImage.Error);
+        return;
+        }
       AddDirectory(FileTree.SelectedTreeNode, NewDirectory, true);
       }
 

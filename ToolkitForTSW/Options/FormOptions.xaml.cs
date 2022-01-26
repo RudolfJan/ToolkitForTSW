@@ -33,6 +33,7 @@ namespace ToolkitForTSW
 
     private void OnOKButtonClicked(Object sender, RoutedEventArgs e)
       {
+      DialogResult=true;
       Close();
       }
 
@@ -40,6 +41,8 @@ namespace ToolkitForTSW
       {
       OptionsView.LoadOptions();
       SetControlStates();
+      DialogResult=false;
+      Close();
       }
 
     private void OnEditRoute(object sender, RoutedEventArgs e)

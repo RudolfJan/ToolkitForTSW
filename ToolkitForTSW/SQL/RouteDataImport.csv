@@ -25,5 +25,7 @@
 "HamburgLubeck","Hamburg-Lübeck","HHL","/HamburgLubeck_Route_Gameplay/ScenarioDesigner/HBK_SDA.HBK_SDA"
 "GlasgowCathcart","Cathcart Circle","GCC","/GlasgowCathcart_Route_Gameplay/ScenarioDesigner/GCC_SDA.GCC_SDA"
 "BostonProvidence","Boston Sprinter","BPR","/BostonProvidence_Route_Gameplay/ScenarioDesigner/BPE_ScenarioDesigner.BPE_ScenarioDesigner"
-"DresdenRiesa","Dresden Nahverkehr","DRN",'"/DresdenRiesa_Route_Gameplay/ScenarioDesigner/DRA_ScenarioDesigner.DRA_ScenarioDesigner"
+"DresdenRiesa","Dresden Nahverkehr","DRA",'"/DresdenRiesa_Route_Gameplay/ScenarioDesigner/DRA_ScenarioDesigner.DRA_ScenarioDesigner"
 "LondonBrighton","London Commuter","BML","/LondonBrighton_Route_Gameplay/ScenarioDesigner/LBN_ScenarioDesigner.LBN_ScenarioDesigner"
+"ShermanHill","Sherman Hill","SMH","/ShermanHill_Route_Gameplay/ScenarioDesigner/SMH_ScenarioDesigner.SMH_ScenarioDesigner"
+"PenzanceTruro","West Cornwall Local","WCL","/PenzanceTruro_Route_Gameplay/ScenarioDesigner/PNZ_SDA.PNZ_SDA"
