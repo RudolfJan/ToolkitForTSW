@@ -1,14 +1,22 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using System;
 using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
+using ToolkitForTSW.Settings.Enums;
+using ToolkitForTSW.Settings.EventModels;
 
-
-
-namespace ToolkitForTSW.Settings
+namespace ToolkitForTSW.Settings.ViewModels
   {
-  public class CSettingsQuality : CSetting
+  public class SettingsQualityViewModel : Screen, IHandle<UseAdvancedEvent>
     {
+    private readonly ISetting _setting;
+    private readonly IEventAggregator _events;
 
     #region Properties
+
+
+    public SettingsAdvancedViewModel SettingsAdvanced { get; set; }
 
     private QualityEnum _OverAllQualityLevel;
     public QualityEnum OverAllQualityLevel
@@ -17,7 +25,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _OverAllQualityLevel = value;
-        OnPropertyChanged("OverAllQualityLevel");
+        NotifyOfPropertyChange(nameof(OverAllQualityLevel));
         }
       }
 
@@ -31,7 +39,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _QualityLevel = value;
-        OnPropertyChanged("QualityLevel");
+        NotifyOfPropertyChange(nameof(QualityLevel));
         }
       }
 
@@ -42,7 +50,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _AudioQualityLevel = value;
-        OnPropertyChanged("AudioQualityLevel");
+        NotifyOfPropertyChange(nameof(AudioQualityLevel));
         }
       }
 
@@ -53,7 +61,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _ShadowQuality = value;
-        OnPropertyChanged("ShadowQuality");
+        NotifyOfPropertyChange(nameof(ShadowQuality));
         }
       }
 
@@ -64,7 +72,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _TextureQuality = value;
-        OnPropertyChanged("TextureQuality");
+        NotifyOfPropertyChange(nameof(TextureQuality));
         }
       }
 
@@ -75,7 +83,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _ViewDistanceQuality = value;
-        OnPropertyChanged("ViewDistanceQuality");
+        NotifyOfPropertyChange(nameof(ViewDistanceQuality));
         }
       }
 
@@ -86,7 +94,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _EffectsQuality = value;
-        OnPropertyChanged("EffectsQuality");
+        NotifyOfPropertyChange(nameof(EffectsQuality));
         }
       }
 
@@ -97,11 +105,9 @@ namespace ToolkitForTSW.Settings
       set
         {
         _FoliageQuality = value;
-        OnPropertyChanged("FoliageQuality");
+        NotifyOfPropertyChange(nameof(FoliageQuality));
         }
       }
-
-
 
     private QualityEnum _PostProcessQuality;
     public QualityEnum PostProcessQuality
@@ -110,7 +116,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _PostProcessQuality = value;
-        OnPropertyChanged("PostProcessQuality");
+        NotifyOfPropertyChange(nameof(PostProcessQuality));
         }
       }
 
@@ -121,7 +127,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _AntiAliasingMethod = value;
-        OnPropertyChanged("AntiAliasingMethod");
+        NotifyOfPropertyChange(nameof(AntiAliasingMethod));
         }
       }
 
@@ -132,7 +138,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _MaxFrameRate = value;
-        OnPropertyChanged("MaxFrameRate");
+        NotifyOfPropertyChange(nameof(MaxFrameRate));
         }
       }
 
@@ -143,16 +149,33 @@ namespace ToolkitForTSW.Settings
       set
         {
         _ScreenShotQuality = value;
-        OnPropertyChanged("ScreenShotQuality");
+        NotifyOfPropertyChange(nameof(ScreenShotQuality));
         }
       }
 
+    /*
+if true used advanced settings, otherwise do not write them to output
+*/
+    private Boolean _UseAdvanced = TSWOptions.UseAdvancedSettings;
+    public Boolean UseAdvanced
+      {
+      get { return _UseAdvanced; }
+      set
+        {
+        // Do not write registry here, we do that only in SettingsAdvanced, where you can change this option
+        _UseAdvanced = value;
+        NotifyOfPropertyChange(nameof(UseAdvanced));
+        }
+      }
 
     #endregion
 
-    public CSettingsQuality(CSettingsManager _settingsManager)
+    public SettingsQualityViewModel(ISetting setting, IEventAggregator events)
       {
-      SettingsManager = _settingsManager;
+      _setting = setting;
+      DisplayName = "Quality";
+      _events = events;
+      _events.SubscribeOnPublishedThread(this);
       }
     public void Init()
       {
@@ -163,7 +186,7 @@ namespace ToolkitForTSW.Settings
       EffectsQuality = GetQualityPlusOff("EffectsQuality");
       PostProcessQuality = GetQuality("PostProcessQuality");
       AudioQualityLevel = GetQuality("AudioQualityLevel");
-      MaxFrameRate = GetIntValue("MaxFPS", 0);
+      MaxFrameRate = _setting.GetIntValue("MaxFPS", 0);
       AntiAliasingMethod = GetAntiAliasingMethod("AAMethod");
       ViewDistanceQuality = GetQuality("ViewDistanceQuality");
       }
@@ -171,59 +194,48 @@ namespace ToolkitForTSW.Settings
     public void Update()
       {
       CultureInfo Gb = CultureInfo.CreateSpecificCulture("en-GB");
-      SettingsManager.UpdateSetting("OverallQualityLevel", ((Int32)OverAllQualityLevel).ToString(), SectionEnum.User);
-      SettingsManager.UpdateSetting("TextureQuality", ((Int32)TextureQuality).ToString(), SectionEnum.User);
-      SettingsManager.UpdateSetting("ShadowQuality", ((Int32)ShadowQuality).ToString(), SectionEnum.User);
-      SettingsManager.UpdateSetting("FoliageQuality", ((Int32)FoliageQuality).ToString(), SectionEnum.User);
-      SettingsManager.UpdateSetting("EffectsQuality", ((Int32)EffectsQuality).ToString(), SectionEnum.User);
-      SettingsManager.UpdateSetting("PostProcessQuality", ((Int32)PostProcessQuality).ToString(), SectionEnum.User);
-      SettingsManager.UpdateSetting("AudioQualityLevel", ((Int32)AudioQualityLevel).ToString(), SectionEnum.User);
-      SettingsManager.UpdateSetting("MaxFPS", MaxFrameRate.ToString("0.0000", Gb), SectionEnum.User);
-      SettingsManager.UpdateSetting("AAMethod", ((Int32)AntiAliasingMethod).ToString(), SectionEnum.User);
-      if (SettingsManager.UseAdvanced)
+      _setting.WriteStringValue(((Int32)OverAllQualityLevel).ToString(), "OverallQualityLevel", SectionEnum.User);
+
+      _setting.WriteStringValue(((Int32)TextureQuality).ToString(), "TextureQuality", SectionEnum.User);
+      _setting.WriteStringValue(((Int32)ShadowQuality).ToString(), "ShadowQuality", SectionEnum.User);
+      _setting.WriteStringValue(((Int32)FoliageQuality).ToString(), "FoliageQuality", SectionEnum.User);
+      _setting.WriteStringValue(((Int32)EffectsQuality).ToString(), "EffectsQuality", SectionEnum.User);
+      _setting.WriteStringValue(((Int32)PostProcessQuality).ToString(), "PostProcessQuality", SectionEnum.User);
+      _setting.WriteStringValue(((Int32)AudioQualityLevel).ToString(), "AudioQualityLevel", SectionEnum.User);
+      _setting.WriteStringValue(MaxFrameRate.ToString("0.0000", Gb), "MaxFPS", SectionEnum.User);
+      _setting.WriteStringValue(((Int32)AntiAliasingMethod).ToString(), "AAMethod", SectionEnum.User);
+      if (UseAdvanced)
         {
-        if (SettingsManager.SettingsAdvanced.ViewDistanceScale > 3)
+        if (SettingsAdvanced.ViewDistanceScale > 3)
           {
           ViewDistanceQuality = QualityEnum.Ultra;
           }
         else
           {
-          ViewDistanceQuality = (QualityEnum) SettingsManager.SettingsAdvanced.ViewDistanceScale;
+          ViewDistanceQuality = (QualityEnum)SettingsAdvanced.ViewDistanceScale;
           }
         }
-      SettingsManager.UpdateSetting("ViewDistanceQuality", ((Int32)ViewDistanceQuality).ToString(), SectionEnum.User);
+      _setting.WriteStringValue(((Int32)ViewDistanceQuality).ToString(), "ViewDistanceQuality", SectionEnum.User);
       }
 
+    Task IHandle<UseAdvancedEvent>.HandleAsync(UseAdvancedEvent message, CancellationToken cancellationToken)
+      {
+      UseAdvanced = message.UseAdvanced;
+      return Task.CompletedTask;
+      }
     private QualityEnum GetQuality(String Key)
       {
-      SettingsManager.GetSetting(Key, out var Temp);
-      if (Temp.Length == 0)
-        {
-        return QualityEnum.Medium;
-        }
-      return (QualityEnum)Convert.ToInt32(Temp);
+      return (QualityEnum)_setting.GetIntValue(Key, (int)QualityEnum.Medium);
       }
 
     private QualityPlusOffEnum GetQualityPlusOff(String Key)
       {
-      SettingsManager.GetSetting(Key, out var Temp);
-      if (Temp.Length == 0)
-        {
-        return QualityPlusOffEnum.Medium;
-        }
-      return (QualityPlusOffEnum)Convert.ToInt32(Temp);
+      return (QualityPlusOffEnum)_setting.GetIntValue(Key, (int)QualityPlusOffEnum.Medium);
       }
-
-
 
     private AntiAliasingEnum GetAntiAliasingMethod(String Key)
       {
-      SettingsManager.GetSetting(Key, out var Temp);
-      if (Temp.Length == 0)
-        {
-        return AntiAliasingEnum.Off;
-        }
-      return (AntiAliasingEnum)Convert.ToInt32(Temp);
+      return (AntiAliasingEnum)_setting.GetIntValue(Key, (int)AntiAliasingEnum.Off);
       }
     }
   }

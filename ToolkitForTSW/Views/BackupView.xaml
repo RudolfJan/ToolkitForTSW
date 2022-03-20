@@ -1,91 +1,152 @@
-﻿<Window x:Class="ToolkitForTSW.Views.BackupView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
-        mc:Ignorable="d"
-				Style="{StaticResource AllWindows}"
-        Title="Backup" Width="800">
-	<ScrollViewer>
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition/>
-				<ColumnDefinition Width="200"/>
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition/>
-				<RowDefinition/>
-			</Grid.RowDefinitions>
-			<Border Grid.Column="0" Grid.Row="0" Style="{StaticResource DefaultBorder}">
-				<StackPanel>
-					<TextBlock Style="{StaticResource TextBlockHeader}">Backup sets</TextBlock>
-					<DataGrid Name="BackupSetsDataGrid" MinHeight="340"  
-					          Style="{StaticResource DataGridReadOnly}" 
-										ItemsSource="{Binding BackupSetsList.Item}"
-										SelectedItem="{Binding SelectedBackupSet}"
-					          >
-						<DataGrid.Columns>
-							<DataGridTextColumn Header="Backup Set" Binding="{Binding Name}" SortDirection="Descending"/>
-						</DataGrid.Columns>
-					</DataGrid>
-					<WrapPanel Height="30">
-						<TextBlock Style="{StaticResource TextBlockDefault}">Backup folder: </TextBlock>
-						<TextBlock Style="{StaticResource TextBlockDefault}" Text="{Binding BackupPath}"/>
-					</WrapPanel>
-					<WrapPanel>
-						<Button Name="MakeBackup" Style="{StaticResource ButtonDefault}"
-						        ToolTip="Create a new backup">
-							New backup
-						</Button>
-						<Button Name="RestoreBackup" Style="{StaticResource ButtonDefault}"
-						        ToolTip="Restore selected backup set back into game">
-							Restore
-						</Button>
-						<Button Name="DeleteBackup" Style="{StaticResource ButtonDefault}"
-						        ToolTip="Delete selected backup set">
-							Delete
-						</Button>
-					</WrapPanel>
-				</StackPanel>
-			</Border>
+﻿<Window x:Class="ToolkitForTSW.Views.BackupView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library"
+        Title="Backup" Width="800"
+        Style="{StaticResource AllWindows}"
+        mc:Ignorable="d">
+  <ScrollViewer>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="200" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Border Grid.Row="0" Grid.Column="0"
+              Style="{StaticResource DefaultBorder}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource TextBlockHeader}">Backup sets</TextBlock>
+          <DataGrid Name="BackupSetsDataGrid" MinHeight="340"
+                    ItemsSource="{Binding BackupSetsList.Item}"
+                    SelectedItem="{Binding SelectedBackupSet}"
+                    Style="{StaticResource DataGridReadOnly}">
+            <DataGrid.Columns>
+              <DataGridTextColumn Binding="{Binding Name}"
+                                  Header="Backup Set" SortDirection="Descending" />
+            </DataGrid.Columns>
+          </DataGrid>
+          <WrapPanel Height="30">
+            <TextBlock Style="{StaticResource TextBlockDefault}">Backup folder:</TextBlock>
+            <TextBlock Style="{StaticResource TextBlockDefault}" Text="{Binding BackupPath}" />
+          </WrapPanel>
+          <WrapPanel>
+            <Button Name="MakeBackup"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="Create a new backup">
+              New backup
+            </Button>
+            <Button Name="RestoreBackup"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="Restore selected backup set back into game">
+              Restore
+            </Button>
+            <Button Name="DeleteBackup"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="Delete selected backup set">
+              Delete
+            </Button>
+          </WrapPanel>
+        </StackPanel>
+      </Border>
 
-			<Border Grid.Column="1"  Grid.Row="0" Style="{StaticResource DefaultBorder}">
-				<StackPanel>
-					<TextBlock Style="{StaticResource TextBlockHeader}">Options</TextBlock>
-					<CheckBox Name="ConfigCheckBox" IsChecked="{Binding SaveConfig, Mode=TwoWay}" ToolTip="Save active game configuration settings">Save active configuration</CheckBox>
-					<CheckBox Name="SaveGamesCheckBox" IsChecked= "{Binding SaveSaveGames, Mode=TwoWay}" ToolTip="Save your game status information" >Save game status</CheckBox>
-					<CheckBox Name="ScenarioCheckBox" IsChecked="{Binding SaveScenarios, Mode=TwoWay}" ToolTip="Save scenario files" >Save scenarios</CheckBox>
-		
+      <Border Grid.Row="0" Grid.Column="1"
+              Style="{StaticResource DefaultBorder}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource TextBlockHeader}">Options</TextBlock>
+          <CheckBox Name="ConfigCheckBox"
+                    IsChecked="{Binding SaveConfig, Mode=TwoWay}"
+                    ToolTip="Save active game configuration settings">
+            Save active configuration
+          </CheckBox>
+          <CheckBox Name="SaveGamesCheckBox"
+                    IsChecked="{Binding SaveSaveGames, Mode=TwoWay}"
+                    ToolTip="Save your game status information">
+            Save game status
+          </CheckBox>
+          <CheckBox Name="ScenarioCheckBox"
+                    IsChecked="{Binding SaveScenarios, Mode=TwoWay}"
+                    ToolTip="Save scenario files">
+            Save scenarios
+          </CheckBox>
 
-					<CheckBox Name="ScreenshotsCheckBox" IsChecked="{Binding SaveScreenShots, Mode=TwoWay}" ToolTip="Save screenshots. This may take a lot of time!" >Save screenshots</CheckBox>
-					<CheckBox Name="LoadingScreensCheckBox" IsChecked="{Binding SaveLoadingScreens, Mode=TwoWay}" ToolTip="Save Loading screens">Save Loading Screens</CheckBox>
-					<CheckBox Name="LogsCheckBox" IsChecked="{Binding SaveLogs, Mode=TwoWay}" ToolTip="Save log reports">Save log files</CheckBox>
-					<CheckBox Name="CrashesCheckBox" IsChecked="{Binding SaveCrashes, Mode=TwoWay}" ToolTip="Save crash reports and dumps">Save crash data</CheckBox>
-					<TextBlock Style="{StaticResource TextBlockDefault}" 
-										 Height="40" 
-										 Padding="0,15,0,0"
-										 FontWeight="Bold">ToolkitForTSW items to save</TextBlock>
-					<CheckBox Name="DatabaseCheckBox" IsChecked="{Binding SaveDatabase, Mode=TwoWay}" ToolTip="Save ToolkitForTSW Database" >Save database</CheckBox>
-					<CheckBox Name="SaveManualsCheckBox" IsChecked="{Binding SaveManuals, Mode=TwoWay}" ToolTip="Save Manuals" >Save manuals</CheckBox>
-					<CheckBox Name="SettingsCheckBox" IsChecked="{Binding SaveSettings, Mode=TwoWay}" ToolTip="Save ToolkitForTSW Setting collections" >Save settings</CheckBox>
-					<CheckBox Name="ModsCheckBox" IsChecked="{Binding SaveMods, Mode=TwoWay}" ToolTip="Save ToolkitForTSW Mods" >Save mods</CheckBox>
 
-					<WrapPanel>
-                        <Button Name="SetSaveAll" Style="{StaticResource ButtonDefault}" Width="80" ToolTip="Select all options">Select all</Button>
-                        <Button Name="SetSaveNone" Style="{StaticResource ButtonDefault}" Width="80" ToolTip="Turn all options off">Deselect all</Button>
-					</WrapPanel>
-				</StackPanel>
-			</Border>
-			<Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"   Style="{StaticResource DefaultBorder}">
-				<StackPanel>
-					<userControls:ResultsTextBox x:Name="ResultsTextBox2" Style="{StaticResource DefaultResultsTextBox}"  Text="{Binding Result}" Source="../Images/page_delete.png"/>
-					<Button Name="OKButton" HorizontalAlignment="Right" Style="{StaticResource OKButton}" 
-					        ToolTip="Close backup window" Click="OnOKButtonClicked" >
-						Close
-					</Button>
-				</StackPanel>
-			</Border>
-		</Grid>
-	</ScrollViewer>
+          <CheckBox Name="ScreenshotsCheckBox"
+                    IsChecked="{Binding SaveScreenShots, Mode=TwoWay}"
+                    ToolTip="Save screenshots. This may take a lot of time!">
+            Save screenshots
+          </CheckBox>
+          <CheckBox Name="LoadingScreensCheckBox"
+                    IsChecked="{Binding SaveLoadingScreens, Mode=TwoWay}"
+                    ToolTip="Save Loading screens">
+            Save Loading Screens
+          </CheckBox>
+          <CheckBox Name="LogsCheckBox"
+                    IsChecked="{Binding SaveLogs, Mode=TwoWay}"
+                    ToolTip="Save log reports">
+            Save log files
+          </CheckBox>
+          <CheckBox Name="CrashesCheckBox"
+                    IsChecked="{Binding SaveCrashes, Mode=TwoWay}"
+                    ToolTip="Save crash reports and dumps">
+            Save crash data
+          </CheckBox>
+          <TextBlock Height="40" Padding="0,15,0,0"
+                     FontWeight="Bold"
+                     Style="{StaticResource TextBlockDefault}">
+            ToolkitForTSW items to save
+          </TextBlock>
+          <CheckBox Name="DatabaseCheckBox"
+                    IsChecked="{Binding SaveDatabase, Mode=TwoWay}"
+                    ToolTip="Save ToolkitForTSW Database">
+            Save database
+          </CheckBox>
+          <CheckBox Name="SaveManualsCheckBox"
+                    IsChecked="{Binding SaveManuals, Mode=TwoWay}"
+                    ToolTip="Save Manuals">
+            Save manuals
+          </CheckBox>
+          <CheckBox Name="SettingsCheckBox"
+                    IsChecked="{Binding SaveSettings, Mode=TwoWay}"
+                    ToolTip="Save ToolkitForTSW Setting collections">
+            Save settings
+          </CheckBox>
+          <CheckBox Name="ModsCheckBox"
+                    IsChecked="{Binding SaveMods, Mode=TwoWay}"
+                    ToolTip="Save ToolkitForTSW Mods">
+            Save mods
+          </CheckBox>
+
+          <WrapPanel>
+            <Button Name="SetSaveAll" Width="80"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="Select all options">
+              Select all
+            </Button>
+            <Button Name="SetSaveNone" Width="80"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="Turn all options off">
+              Deselect all
+            </Button>
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+      <Border Grid.Row="1" Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Style="{StaticResource DefaultBorder}">
+        <StackPanel>
+          <userControls:ResultsTextBox x:Name="ResultsTextBox2" Source="../Images/page_delete.png"
+                                       Style="{StaticResource DefaultResultsTextBox}"
+                                       Text="{Binding Result}" />
+          <Button Name="OKButton" HorizontalAlignment="Right"
+                  Click="OnOKButtonClicked"
+                  Style="{StaticResource OKButton}"
+                  ToolTip="Close backup window">
+            Close
+          </Button>
+        </StackPanel>
+      </Border>
+    </Grid>
+  </ScrollViewer>
 </Window>

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using System;
 using System.Globalization;
+using ToolkitForTSW.Settings.Enums;
 
-
-
-namespace ToolkitForTSW.Settings
+namespace ToolkitForTSW.Settings.ViewModels
   {
-  public class CSettingsSound : CSetting
+  public class SettingsSoundViewModel : Screen
     {
-
+    private readonly ISetting _setting;
     #region Properties
 
     private Double _MasterSoundVolume;
@@ -18,7 +18,8 @@ namespace ToolkitForTSW.Settings
       set
         {
         _MasterSoundVolume = value;
-        OnPropertyChanged("MasterSoundVolume");
+        //SetLimitVolumes();
+        NotifyOfPropertyChange(nameof(MasterSoundVolume));
         }
       }
 
@@ -30,7 +31,8 @@ namespace ToolkitForTSW.Settings
       set
         {
         _AmbienceSoundVolume = value;
-        OnPropertyChanged("AmbienceSoundVolume");
+        //SetLimitVolumes();
+        NotifyOfPropertyChange(nameof(AmbienceSoundVolume));
         }
       }
 
@@ -42,7 +44,8 @@ namespace ToolkitForTSW.Settings
       set
         {
         _DialogSoundVolume = value;
-        OnPropertyChanged("DialogSoundVolume");
+        //SetLimitVolumes();
+        NotifyOfPropertyChange(nameof(DialogSoundVolume));
         }
       }
 
@@ -54,7 +57,8 @@ namespace ToolkitForTSW.Settings
       set
         {
         _ExternalAlertVolume = value;
-        OnPropertyChanged("ExternalAlertVolume");
+        //SetLimitVolumes();
+        NotifyOfPropertyChange(nameof(ExternalAlertVolume));
         }
       }
 
@@ -66,7 +70,8 @@ namespace ToolkitForTSW.Settings
       set
         {
         _SFXSoundVolume = value;
-        OnPropertyChanged("SFXSoundVolume");
+        //SetLimitVolumes();
+        NotifyOfPropertyChange(nameof(SFXSoundVolume));
         }
       }
 
@@ -78,7 +83,8 @@ namespace ToolkitForTSW.Settings
       set
         {
         _MenuSFXSoundVolume = value;
-        OnPropertyChanged("MenuSFXSoundVolume");
+        //SetLimitVolumes();
+        NotifyOfPropertyChange(nameof(MenuSFXSoundVolume));
         }
       }
 
@@ -91,7 +97,7 @@ namespace ToolkitForTSW.Settings
       set
         {
         _Subtitles = value;
-        OnPropertyChanged("Subtitles");
+        NotifyOfPropertyChange(nameof(Subtitles));
         }
       }
 
@@ -103,11 +109,11 @@ namespace ToolkitForTSW.Settings
       set
         {
         _WindowFocus = value;
-        OnPropertyChanged("WindowFocus");
+        NotifyOfPropertyChange(nameof(WindowFocus));
         }
       }
 
-    private Boolean _LimitVolume= TSWOptions.LimitSoundVolumes;
+    private Boolean _LimitVolume = TSWOptions.LimitSoundVolumes;
 
     public Boolean LimitVolume
       {
@@ -115,37 +121,40 @@ namespace ToolkitForTSW.Settings
       set
         {
         _LimitVolume = value;
-        OnPropertyChanged("LimitVolume");
+        SetLimitVolumes();
+        NotifyOfPropertyChange(nameof(MasterSoundVolume));
+        NotifyOfPropertyChange(nameof(AmbienceSoundVolume));
+        NotifyOfPropertyChange(nameof(DialogSoundVolume));
+        NotifyOfPropertyChange(nameof(ExternalAlertVolume));
+        NotifyOfPropertyChange(nameof(SFXSoundVolume));
+        NotifyOfPropertyChange(nameof(MenuSFXSoundVolume));
         }
       }
 
     #endregion
 
-    public CSettingsSound(CSettingsManager _settingsManager)
+    public SettingsSoundViewModel(ISetting setting)
       {
-      SettingsManager = _settingsManager;
+      _setting = setting;
+      DisplayName = "Sound";
       }
     public void Init()
       {
       GetAllSounds();
-      WindowFocus = GetBooleanValue("WindowFocus", true);
-      Subtitles = GetBooleanValue("Subtitles", true);
+      WindowFocus = _setting.GetBooleanValue("WindowFocus", true);
+      Subtitles = _setting.GetBooleanValue("Subtitles", true);
       }
 
     public void Update()
       {
       WriteAllSounds();
-      WriteBooleanValue(WindowFocus, "WindowFocus", SectionEnum.User);
-      WriteBooleanValue(Subtitles, "Subtitles", SectionEnum.User);
+      _setting.WriteBooleanValue(WindowFocus, "WindowFocus", SectionEnum.User);
+      _setting.WriteBooleanValue(Subtitles, "Subtitles", SectionEnum.User);
       }
 
     private Double GetSoundVolume(String Key)
       {
-      var Style = NumberStyles.AllowDecimalPoint | NumberStyles.Number;
-      var Culture = CultureInfo.CreateSpecificCulture("en-GB");
-      SettingsManager.GetSetting(Key, out var Temp);
-      Double.TryParse(Temp, Style, Culture, out var Temp2);
-      return Temp2;
+      return _setting.GetDoubleValue(Key, 0.0);
       }
 
     private void GetAllSounds()
@@ -162,15 +171,15 @@ namespace ToolkitForTSW.Settings
       {
       if (LimitVolume)
         {
-        LimitVolumes();
+        SetLimitVolumes();
         }
       CultureInfo Gb = CultureInfo.CreateSpecificCulture("en-GB");
-      SettingsManager.UpdateSetting("MasterSoundVolume", MasterSoundVolume.ToString("0.0000", Gb), SectionEnum.User);
-      SettingsManager.UpdateSetting("AmbienceSoundVolume", AmbienceSoundVolume.ToString("0.0000", Gb), SectionEnum.User);
-      SettingsManager.UpdateSetting("DialogueSoundVolume", DialogSoundVolume.ToString("0.0000", Gb), SectionEnum.User);
-      SettingsManager.UpdateSetting("ExternalAlertVolume", ExternalAlertVolume.ToString("0.0000", Gb), SectionEnum.User);
-      SettingsManager.UpdateSetting("SFXSoundVolume", SFXSoundVolume.ToString("0.0000", Gb), SectionEnum.User);
-      SettingsManager.UpdateSetting("MenuSFXVolume", MenuSFXSoundVolume.ToString("0.0000", Gb), SectionEnum.User);
+      _setting.WriteStringValue(MasterSoundVolume.ToString("0.0000", Gb), "MasterSoundVolume", SectionEnum.User);
+      _setting.WriteStringValue(AmbienceSoundVolume.ToString("0.0000", Gb), "AmbienceSoundVolume", SectionEnum.User);
+      _setting.WriteStringValue(DialogSoundVolume.ToString("0.0000", Gb), "DialogueSoundVolume", SectionEnum.User);
+      _setting.WriteStringValue(ExternalAlertVolume.ToString("0.0000", Gb), "ExternalAlertVolume", SectionEnum.User);
+      _setting.WriteStringValue(SFXSoundVolume.ToString("0.0000", Gb), "SFXSoundVolume", SectionEnum.User);
+      _setting.WriteStringValue(MenuSFXSoundVolume.ToString("0.0000", Gb), "MenuSFXVolume", SectionEnum.User);
       }
 
     public void SetRecommendedValues()
@@ -200,14 +209,17 @@ namespace ToolkitForTSW.Settings
       MenuSFXSoundVolume = 0.5;
       }
 
-    public void LimitVolumes()
+    public void SetLimitVolumes()
       {
-      MasterSoundVolume = Math.Min(MasterSoundVolume, 1.0);
-      AmbienceSoundVolume = Math.Min(AmbienceSoundVolume, 1.0);
-      ExternalAlertVolume = Math.Min(ExternalAlertVolume, 1.0);
-      DialogSoundVolume = Math.Min(DialogSoundVolume, 1.0);
-      SFXSoundVolume = Math.Min(SFXSoundVolume, 1.0);
-      MenuSFXSoundVolume = Math.Min(MenuSFXSoundVolume, 1.0);
+      if (LimitVolume)
+        {
+        MasterSoundVolume = Math.Min(MasterSoundVolume, 1.0);
+        AmbienceSoundVolume = Math.Min(AmbienceSoundVolume, 1.0);
+        ExternalAlertVolume = Math.Min(ExternalAlertVolume, 1.0);
+        DialogSoundVolume = Math.Min(DialogSoundVolume, 1.0);
+        SFXSoundVolume = Math.Min(SFXSoundVolume, 1.0);
+        MenuSFXSoundVolume = Math.Min(MenuSFXSoundVolume, 1.0);
+        }
       }
     }
   }

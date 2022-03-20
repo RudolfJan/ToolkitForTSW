@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="ToolkitForTSW.Settings.Views.SettingsAdvancedView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ToolkitForTSW.Settings.Views" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="{StaticResource WindowBackground}"
+             mc:Ignorable="d">
+  <Grid>
+    <Border VerticalAlignment="Stretch" Style="{StaticResource ThinBorder}">
+      <StackPanel>
+        <WrapPanel>
+          <CheckBox Name="EyeAdaptation">Eye adaptation</CheckBox>
+          <CheckBox Name="MaterialQuality">Low material quality</CheckBox>
+        </WrapPanel>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="115" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="40" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+          </Grid.RowDefinitions>
+
+          <TextBlock Grid.Row="0" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Screen percentage
+          </TextBlock>
+          <Slider Name="ScreenPercentageSlider" Grid.Row="0"
+                  Grid.Column="1" IsSelectionRangeEnabled="True"
+                  IsSnapToTickEnabled="True" Maximum="200"
+                  Minimum="50" SelectionEnd="120"
+                  SelectionStart="80" TickFrequency="5"
+                  Value="{Binding ScreenPercentage, Mode=TwoWay}" />
+          <TextBox Grid.Row="0" Grid.Column="2"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=ScreenPercentageSlider, StringFormat={}{0:0}}" />
+
+          <TextBlock Grid.Row="1" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            View distance scale
+          </TextBlock>
+          <Slider Name="ViewDistanceScaleSlider" Grid.Row="1"
+                  Grid.Column="1" IsSelectionRangeEnabled="True"
+                  IsSnapToTickEnabled="True" Maximum="30"
+                  Minimum="1" SelectionEnd="5"
+                  SelectionStart="1" TickFrequency="1"
+                  Value="{Binding ViewDistanceScale, Mode=TwoWay}" />
+          <TextBox Grid.Row="1" Grid.Column="2"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=ViewDistanceScaleSlider, StringFormat={}{0:0}}" />
+
+          <TextBlock Grid.Row="2" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Motion blur
+          </TextBlock>
+          <Slider Name="MotionBlurSlider" Grid.Row="2"
+                  Grid.Column="1" IsSelectionRangeEnabled="True"
+                  IsSnapToTickEnabled="True" Maximum="4"
+                  Minimum="0" SelectionEnd="1"
+                  SelectionStart="0" TickFrequency="1"
+                  Value="{Binding MotionBlurQuality, Mode=TwoWay}" />
+          <TextBox Grid.Row="2" Grid.Column="2"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=MotionBlurSlider, StringFormat={}{0:0}}" />
+
+          <TextBlock Grid.Row="3" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Foliage distance
+          </TextBlock>
+          <Slider Name="LODDistanceSlider" Grid.Row="3"
+                  Grid.Column="1" IsSelectionRangeEnabled="True"
+                  IsSnapToTickEnabled="True" Maximum="10"
+                  Minimum="0" SelectionEnd="3"
+                  SelectionStart="1" TickFrequency="1"
+                  Value="{Binding LODDistanceScale, Mode=TwoWay}" />
+          <TextBox Grid.Row="3" Grid.Column="2"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=LODDistanceSlider, StringFormat={}{0:0}}" />
+
+          <TextBlock Grid.Row="4" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Gamma correction
+          </TextBlock>
+          <Slider Name="GammaCorrectionSlider" Grid.Row="4"
+                  Grid.Column="1" IsSelectionRangeEnabled="False"
+                  LargeChange="0.05" Maximum="0.8"
+                  Minimum="0.2" SmallChange="0.05"
+                  TickFrequency="0.05" TickPlacement="BottomRight"
+                  Value="{Binding GammaCorrection, Mode=TwoWay}" />
+          <TextBox Grid.Row="4" Grid.Column="2"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=GammaCorrectionSlider, StringFormat='{}{0:0.00}'}" />
+        </Grid>
+        <WrapPanel>
+          <Button Name="SetRecommendedAdvancedSettings" Style="{StaticResource WideButton}">
+            Set recommended
+          </Button>
+          <CheckBox IsChecked="{Binding UseAdvanced, Mode=TwoWay}">
+            Use advanced settings
+          </CheckBox>
+        </WrapPanel>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl>

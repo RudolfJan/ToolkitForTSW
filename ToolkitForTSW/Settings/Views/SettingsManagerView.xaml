@@ -1,0 +1,132 @@
+﻿<Window x:Class="ToolkitForTSW.Settings.Views.SettingsManagerView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:core="clr-namespace:System;assembly=mscorlib"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:enums="clr-namespace:ToolkitForTSW.Settings.Enums"
+        xmlns:local="clr-namespace:ToolkitForTSW.Settings.Views" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library" Title="Settings"
+        MinHeight="600"
+        Style="{StaticResource AllWindows}"
+        mc:Ignorable="d">
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="SettingsDictionary.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Window.Resources>
+
+  <ScrollViewer>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="200" />
+        <ColumnDefinition MinWidth="200" />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="160" />
+      </Grid.RowDefinitions>
+      <Border Grid.Column="0" Style="{StaticResource BorderDefault}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource TextBlockHeader}">Settings files</TextBlock>
+          <DataGrid Name="SettingFilesDataGrid" MinHeight="380"
+                    AutoGenerateColumns="False"
+                    ItemsSource="{Binding SavedUserSettingsList}"
+                    SelectedItem="{Binding SelectedSaveSet}"
+                    Style="{StaticResource DefaultDataGrid}">
+            <DataGrid.Columns>
+              <DataGridTextColumn x:Name="NameColumn" Width="160"
+                                  Binding="{Binding Name}"
+                                  Header="Set name" SortMemberPath="Name" />
+            </DataGrid.Columns>
+          </DataGrid>
+          <WrapPanel>
+          <Button Name="DeleteSaveSet" Style="{StaticResource ButtonNarrow}">
+            Delete Set
+          </Button>
+            <Button Name="OpenUserSettingsFile" 
+            Style="{StaticResource ButtonDefault}" >Show User Settings</Button>
+            <Button Name="OpenEngineIniFile" 
+            Style="{StaticResource ButtonDefault}" >Show Engine.ini</Button>
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+
+      <Border Grid.Row="0" Grid.Column="1"
+              Style="{StaticResource BorderDefault}">
+        <StackPanel>
+          <TextBlock Style="{StaticResource TextBlockHeader}">Loaded settings</TextBlock>
+          <DataGrid Name="SettingsDictionaryDataGrid" MinHeight="350"
+                    MaxHeight="450" AutoGenerateColumns="False"
+                    ItemsSource="{Binding SettingsDictionary.Item}"
+                    Style="{StaticResource DefaultDataGrid}">
+            <DataGrid.Columns>
+              <DataGridTextColumn x:Name="KeyColumn" Width="150"
+                                  Binding="{Binding Key}"
+                                  Header=" Key " SortMemberPath="Key" SortDirection="Ascending"/>
+              <DataGridTextColumn Binding="{Binding Value}" Header=" Value " />
+             </DataGrid.Columns>
+          </DataGrid>
+          <Button Name="UpdateLoadedSettings" Style="{StaticResource ButtonDefault}">
+            Update
+          </Button>
+        </StackPanel>
+      </Border>
+
+      <Border Grid.Row="0" Grid.Column="2"
+              Style="{StaticResource BorderDefault}">
+        <StackPanel>
+          <TabControl x:Name="Items" />
+          <TextBlock Visibility="{Binding SetIsNotLoaded, Converter={StaticResource BoolToVisibilityConverter}}" 
+          FontSize="14" 
+          TextWrapping="Wrap" 
+          Style="{StaticResource TextBlockDefault}">
+          Load the active settings or a save set to show the settings in this pane. 
+          </TextBlock>
+        </StackPanel>
+      </Border>
+
+      <Border Grid.Row="1" Grid.Column="0"
+              Grid.ColumnSpan="3"
+              Style="{StaticResource DefaultBorder}">
+        <StackPanel>
+          <WrapPanel>
+            <Button Name="LoadActiveGameSettings" Style="{StaticResource WideButton}">
+              Load active settings
+            </Button>
+            <Button Name="LoadSaveSet" Style="{StaticResource WideButton}">
+              Load save set
+            </Button>
+            <Button Name="SaveInGame" Style="{StaticResource WideButton}">
+              Save in game
+            </Button>
+          </WrapPanel>
+          <WrapPanel>
+            <TextBlock Style="{StaticResource TextBlockDefault}">Save set name</TextBlock>
+            <TextBox Text="{Binding SaveSetName, Mode=TwoWay}" MinWidth="160"/>
+            <Button Name="UpdateSaveSet" Style="{StaticResource WideButton}">
+              Save as SaveSet
+            </Button>
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+
+      <Border Grid.Row="2" Grid.Column="0"
+              Grid.ColumnSpan="3"
+              Style="{StaticResource DefaultBorder}">
+        <DockPanel>
+          <userControls:ResultsTextBox x:Name="ResultsTextBox" Width="700"
+                                       Source="../../Images/page_delete.png"
+                                       Style="{StaticResource DefaultResultsTextBox}"
+                                       Text="{Binding Result}" />
+          <Button Name="CloseForm" VerticalAlignment="Bottom"
+                  DockPanel.Dock="Right"
+                  Style="{StaticResource OKButton}">
+            Close
+          </Button>
+
+        </DockPanel>
+      </Border>
+    </Grid>
+  </ScrollViewer>
+</Window>

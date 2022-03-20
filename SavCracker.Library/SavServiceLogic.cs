@@ -14,7 +14,7 @@ namespace SavCracker.Library
           {
           case "Services":
               {
-              if (!(arrayElement is StructPropertyModel arrayStructElement))
+              if (arrayElement is not StructPropertyModel arrayStructElement)
                 {
                 break;
                 }
@@ -33,7 +33,7 @@ namespace SavCracker.Library
                   case "formation":
                   case "Formation":
                       {
-                      if (!(payloadProperty is StructPropertyModel))
+                      if (payloadProperty is not StructPropertyModel)
                         {
                         //exception
                         }
@@ -55,8 +55,8 @@ namespace SavCracker.Library
                               break;
                               }
                           case "SelectedReskins":
-                            {
-                            service.LiveryIdentifier = PropertiesLogic.GetReskin(elementProperty);
+                              {
+                              service.LiveryIdentifier = PropertiesLogic.GetReskin(elementProperty);
                               break;
                               }
                           case "None":

@@ -4,6 +4,7 @@ using Logging.Library.Wpf.ViewModels;
 using System.Threading.Tasks;
 using ToolkitForTSW.Mod.ViewModels;
 using ToolkitForTSW.Options;
+using ToolkitForTSW.Settings.ViewModels;
 using Utilities.Library;
 using Utilities.Library.Wpf.ViewModels;
 
@@ -70,6 +71,12 @@ namespace ToolkitForTSW.ViewModels
       {
       var launchVM = IoC.Get<LaunchTSWViewModel>();
       return _windowManager.ShowWindowAsync(launchVM);
+      }
+
+    public Task EditSettings()
+      {
+      var settingsVM = IoC.Get<SettingsManagerViewModel>();
+      return _windowManager.ShowWindowAsync(settingsVM);
       }
 
     public Task ManageMods()

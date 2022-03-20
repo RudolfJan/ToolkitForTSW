@@ -211,7 +211,7 @@
                         </Grid>
 
 
-                        <CheckBox Name="UseAdvancedSettingsCheckBox" IsChecked="{Binding UseAdvancedSettings}" IsEnabled="False">Use advanced settings by default</CheckBox>
+                        <CheckBox Name="UseAdvancedSettingsCheckBox" IsChecked="{Binding UseAdvancedSettings}">Use advanced settings by default</CheckBox>
                         <CheckBox Name="LimitSoundVolumesCheckBox" IsChecked="{Binding LimitSoundVolumes}">Limit sound volumes by default</CheckBox>
                         <CheckBox Name="MakeBackupOnStartCheckBox" IsChecked="{Binding AutoBackup}">Make data backup when starting ToolkitForTSW</CheckBox>
                     </StackPanel>

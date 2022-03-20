@@ -37,8 +37,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLiteDatabase.Library", "..\RudolfLibraries\SQLiteDatabase.Library\SQLiteDatabase.Library.csproj", "{84ED9EBC-BE74-40F3-AC15-1A2F4AC4A24F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SavCrackerTestApp", "SavCrackerTestApp\SavCrackerTestApp.csproj", "{F20784D2-694C-438B-A765-A14DFB63EB32}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities.Library", "..\RudolfLibraries\Utilities.Library\Utilities.Library.csproj", "{8CA047F2-49DD-4AF8-80F4-280F9D3476DF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.Library", "..\RudolfLibraries\Filter.Library\Filter.Library.csproj", "{72C617E5-25B9-466F-BF5B-CFDD926D3F63}"
@@ -48,8 +46,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screenshots.Library", "..\RudolfLibraries\Screenshots.Library\Screenshots.Library.csproj", "{6E418E5D-3F8E-4C80-B70A-502A09364748}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screenshots.Library.WPF", "..\RudolfLibraries\Screenshots.Library.WPF\Screenshots.Library.WPF.csproj", "{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gvas.Library", "Gvas.Library\Gvas.Library.csproj", "{EB99AEB0-76DE-4C43-B7BD-D5F1A0F4849D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C80C224F-76E9-47FC-8EA1-BA3AFDCAC35F}"
 	ProjectSection(SolutionItems) = preProject
@@ -88,10 +84,6 @@ Global
 		{84ED9EBC-BE74-40F3-AC15-1A2F4AC4A24F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84ED9EBC-BE74-40F3-AC15-1A2F4AC4A24F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84ED9EBC-BE74-40F3-AC15-1A2F4AC4A24F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F20784D2-694C-438B-A765-A14DFB63EB32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F20784D2-694C-438B-A765-A14DFB63EB32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F20784D2-694C-438B-A765-A14DFB63EB32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F20784D2-694C-438B-A765-A14DFB63EB32}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8CA047F2-49DD-4AF8-80F4-280F9D3476DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8CA047F2-49DD-4AF8-80F4-280F9D3476DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CA047F2-49DD-4AF8-80F4-280F9D3476DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -112,10 +104,6 @@ Global
 		{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{601D0754-0EB7-4778-BFC5-6F9BEDEAB0B5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB99AEB0-76DE-4C43-B7BD-D5F1A0F4849D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB99AEB0-76DE-4C43-B7BD-D5F1A0F4849D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB99AEB0-76DE-4C43-B7BD-D5F1A0F4849D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB99AEB0-76DE-4C43-B7BD-D5F1A0F4849D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0FBB407E-2244-49AB-92D2-ED93102DD298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0FBB407E-2244-49AB-92D2-ED93102DD298}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FBB407E-2244-49AB-92D2-ED93102DD298}.Release|Any CPU.ActiveCfg = Release|Any CPU

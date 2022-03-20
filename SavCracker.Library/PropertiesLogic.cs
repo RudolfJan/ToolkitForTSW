@@ -9,7 +9,7 @@ namespace SavCracker.Library
     {
     public static string GetSoftObjectPropertyValue(SavPropertyModel property)
       {
-      if (!(property is SoftObjectPropertyModel))
+      if (property is not SoftObjectPropertyModel)
         {
         var ex = new InvalidCastException("property is not a SoftObjectPropertyModel");
         Log.Trace("property is not a SoftObjectPropertyModel, should never happen", ex, LogEventType.Error);
@@ -32,7 +32,7 @@ namespace SavCracker.Library
       }
     private static TimespanPropertyModel GetTimespanPropertyFromStruct(SavPropertyModel property)
       {
-      if (!(property is StructPropertyModel))
+      if (property is not StructPropertyModel)
         {
         var ex = new InvalidCastException("property is not a StructPropertyModel");
         Log.Trace("property is not a StructProperty, should never happen", ex, LogEventType.Error);
@@ -41,7 +41,7 @@ namespace SavCracker.Library
 
       var structProperty = (StructPropertyModel)property;
 
-      if (!(structProperty.PayLoad[0] is TimespanPropertyModel))
+      if (structProperty.PayLoad[0] is not TimespanPropertyModel)
         {
         var ex = new InvalidCastException("property is not a TimespanPropertyModel");
         Log.Trace("property is not a TimespanProperty, should never happen", ex, LogEventType.Error);
@@ -53,14 +53,14 @@ namespace SavCracker.Library
 
     private static GuidPropertyModel GetGuidPropertyFromStruct(SavPropertyModel property)
       {
-      if (!(property is StructPropertyModel))
+      if (property is not StructPropertyModel)
         {
         var ex = new InvalidCastException("property is not a StructPropertyModel");
         Log.Trace("property is not a StructProperty, should never happen", ex, LogEventType.Error);
         throw ex;
         }
       var structProperty = (StructPropertyModel)property;
-      if (!(structProperty.PayLoad[0] is GuidPropertyModel))
+      if (structProperty.PayLoad[0] is not GuidPropertyModel)
         {
         var ex = new InvalidCastException("property is not a GuidPropertyModel");
         Log.Trace("property is not a GuidProperty, should never happen", ex, LogEventType.Error);
@@ -72,7 +72,7 @@ namespace SavCracker.Library
 
     public static string GetReskin(SavPropertyModel property)
       {
-      if (!(property is ArrayPropertyModel))
+      if (property is not ArrayPropertyModel)
         {
         var ex = new InvalidCastException("property is not an ArrayPropertyModel");
         Log.Trace("property is not an ArrayProperty, should never happen", ex, LogEventType.Error);
@@ -83,7 +83,7 @@ namespace SavCracker.Library
         {
         return string.Empty;
         }
-      if (!(arrayProperty.PayLoad[0] is StringPropertyModel))
+      if (arrayProperty.PayLoad[0] is not StringPropertyModel)
         {
         var ex = new InvalidCastException("property is not a StringPropertyPropertyModel");
         Log.Trace("property is not a StringProperty, should never happen", ex, LogEventType.Error);
@@ -101,14 +101,14 @@ namespace SavCracker.Library
 
     private static StringPropertyModel GetSoftObjectPathFromStruct(SavPropertyModel property)
       {
-      if (!(property is StructPropertyModel))
+      if (property is not StructPropertyModel)
         {
         var ex = new InvalidCastException("property is not a StructPropertyModel");
         Log.Trace("property is not a StructProperty, should never happen", ex, LogEventType.Error);
         throw ex;
         }
       var structProperty = (StructPropertyModel)property;
-      if (!(structProperty.PayLoad[0] is StringPropertyModel))
+      if (structProperty.PayLoad[0] is not StringPropertyModel)
         {
         var ex = new InvalidCastException("property is not a SoftObjectPropertyModel");
         Log.Trace("property is not a SoftObjectProperty, should never happen", ex, LogEventType.Error);
@@ -120,13 +120,13 @@ namespace SavCracker.Library
 
     public static string GetSoftObjectPathValue(SavPropertyModel property)
       {
-      var softObjectPathProperty= GetSoftObjectPathFromStruct(property);
+      var softObjectPathProperty = GetSoftObjectPathFromStruct(property);
       return softObjectPathProperty.Value;
       }
 
     public static string GetStrPropertyValue(SavPropertyModel property)
       {
-      if (!(property is StringPropertyModel))
+      if (property is not StringPropertyModel)
         {
         var ex = new InvalidCastException("property is not a StringPropertyModel");
         Log.Trace("property is not a StringProperty, should never happen", ex, LogEventType.Error);
@@ -139,7 +139,7 @@ namespace SavCracker.Library
 
     public static bool GetBoolPropertyValue(SavPropertyModel property)
       {
-      if (!(property is BoolPropertyModel))
+      if (property is not BoolPropertyModel)
         {
         var ex = new InvalidCastException("property is not a BoolPropertyModel");
         Log.Trace("property is not a BoolProperty, should never happen", ex, LogEventType.Error);
@@ -152,7 +152,7 @@ namespace SavCracker.Library
     public static List<string> GetStopLocations(SavPropertyModel property)
       {
       var stopLocations = new List<string>();
-      if (!(property is ArrayPropertyModel))
+      if (property is not ArrayPropertyModel)
         {
         var ex = new InvalidCastException("property is not an ArrayPropertyModel");
         Log.Trace("property is not an ArrayPropertyModel, should never happen", ex, LogEventType.Error);

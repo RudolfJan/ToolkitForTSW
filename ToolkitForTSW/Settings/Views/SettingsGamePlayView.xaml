@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="ToolkitForTSW.Settings.Views.SettingsGamePlayView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:core="clr-namespace:System;assembly=mscorlib"
+             xmlns:enums="clr-namespace:ToolkitForTSW.Settings.Enums"
+             xmlns:local="clr-namespace:ToolkitForTSW.Settings.Views" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:ToolkitForTSW.Settings.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:SettingsGamePlayViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="{StaticResource WindowBackground}" mc:Ignorable="d">
+
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="SettingsDictionary.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <Grid>
+    <Border VerticalAlignment="Stretch" Style="{StaticResource ThinBorder}">
+      <StackPanel>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="172*" />
+            <ColumnDefinition Width="127*" />
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="37*" />
+            <ColumnDefinition Width="115*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+          </Grid.RowDefinitions>
+          <CheckBox Name="JunctionDerail" Grid.Row="0"
+                    Grid.Column="0" Margin="5,5,5,5"
+                    IsChecked="{Binding DisableJunctionDerail}">
+            Disable Junction Derail
+          </CheckBox>
+          <CheckBox x:Name="QuickWalk" Grid.Row="0" Grid.Column="1"
+                    Grid.ColumnSpan="2" Margin="5,5,5,5"
+                    IsChecked="{Binding QuickWalk}">
+            Run
+          </CheckBox>
+          <CheckBox Grid.Row="0" Grid.Column="3"
+                    Grid.ColumnSpan="2" Margin="5,5,5,5"
+                    IsChecked="{Binding ForceFeedback}">
+            Force feedback
+          </CheckBox>
+          <CheckBox Grid.Row="1" Grid.Column="0"
+                    Margin="5,5,5,5"
+                    IsChecked="{Binding CabSway}">
+            Cab sway
+          </CheckBox>
+          <Slider Name="CabSwayLevelSlider" Grid.Row="1"
+                  Grid.Column="1" Grid.ColumnSpan="2"
+                  Width="160" HorizontalAlignment="Left"
+                  IsSnapToTickEnabled="False" Maximum="200"
+                  Minimum="50" TickFrequency="10"
+                  Value="{Binding CabSwayLevelPercentage, Mode=TwoWay}" />
+          <TextBox Grid.Row="1" Grid.Column="3"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=CabSwayLevelSlider, StringFormat={}{0:0}}" />
+          <TextBlock Grid.Row="2" Grid.Column="0"
+                     Margin="5,0,5,0"
+                     Style="{StaticResource TextBlockDefault}">
+            Measurements
+          </TextBlock>
+          <ComboBox Grid.Row="2" Grid.Column="1"
+                    Grid.ColumnSpan="2" Margin="5,5,5,5"
+                    ItemsSource="{Binding Source={StaticResource UnitsEnum}}"
+                    SelectedValue="{Binding Units}" />
+
+          <TextBlock Grid.Row="3" Grid.Column="0"
+                     Margin="5,0,5,0"
+                     Style="{StaticResource TextBlockDefault}">
+            Grade units
+          </TextBlock>
+          <ComboBox Grid.Row="3" Grid.Column="1"
+                    Grid.ColumnSpan="2" Margin="5,5,5,5"
+                    ItemsSource="{Binding Source={StaticResource GradeUnitsEnum}}"
+                    SelectedValue="{Binding GradeUnits}" />
+
+          <TextBlock Grid.Row="4" Grid.Column="0"
+                     Margin="5,0,5,0"
+                     Style="{StaticResource TextBlockDefault}">
+            Temperature units
+          </TextBlock>
+          <ComboBox Grid.Row="4" Grid.Column="1"
+                    Grid.ColumnSpan="2" Margin="5,5,5,5"
+                    ItemsSource="{Binding Source={StaticResource TemperatureEnum}}"
+                    SelectedValue="{Binding TemperatureUnits}" />
+
+        </Grid>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl>
