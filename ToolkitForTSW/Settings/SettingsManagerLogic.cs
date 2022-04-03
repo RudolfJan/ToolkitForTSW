@@ -212,7 +212,6 @@ Dictionary to contain all settings
       var SettingsFile = new FileInfo(Path + "GameUserSettings.ini");
       WriteSettingsInDictionary(SettingsFile);
       var EngineIniFile = new FileInfo(Path + "Engine.ini");
-      //SettingsExperimental.SaveValueSetToSaveSet(Path);
       WriteSettingsInDictionary(EngineIniFile, true);
       }
 

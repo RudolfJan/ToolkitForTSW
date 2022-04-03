@@ -316,6 +316,7 @@ namespace ToolkitForTSW.Settings.ViewModels
       SettingsQuality.Update();
       SettingsAdvanced.Update();
       SettingsUser.Update();
+      SettingsExperimental.Update();
       }
 
     public bool CanDeleteSaveSet
@@ -412,7 +413,7 @@ namespace ToolkitForTSW.Settings.ViewModels
       SettingsDictionary = new BindableCollection<ISetting>(_settingsManagerLogic.SettingsDictionary.OrderBy(x => x.Key));
       }
 
-    public List<ISetting> CopyBindableSettings(BindableCollection<ISetting> settingsDictionary)
+    public static List<ISetting> CopyBindableSettings(BindableCollection<ISetting> settingsDictionary)
       {
       var output = new List<ISetting>();
       foreach (var s in settingsDictionary)
@@ -428,8 +429,8 @@ namespace ToolkitForTSW.Settings.ViewModels
         {
         return SelectedSaveSet != null;
         }
-
       }
+
     public void OpenUserSettingsFile()
       {
       var path = SettingsManagerLogic.GetSavedSettingsLocation(SelectedSaveSet);

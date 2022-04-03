@@ -23,6 +23,32 @@ namespace ToolkitForTSW.Settings.ViewModels
         }
       }
 
+
+    private bool _inWorldAdvertising;
+
+    public bool InWorldAdvertising
+      {
+      get { return _inWorldAdvertising; }
+      set
+        {
+        _inWorldAdvertising = value;
+        NotifyOfPropertyChange(nameof(InWorldAdvertising));
+        }
+      }
+
+    private bool _darkMode;
+
+    public bool DarkMode
+      {
+      get { return _darkMode; }
+      set
+        {
+        _darkMode = value;
+        NotifyOfPropertyChange(nameof(DarkMode));
+        }
+      }
+
+
     private bool _immersive;
 
     public bool Immersive
@@ -108,6 +134,8 @@ namespace ToolkitForTSW.Settings.ViewModels
       BigSpeedoMeter = _setting.GetBooleanValue("bLargeSpeedoHUD", false);
       Immersive = _setting.GetBooleanValueFromInt("ControllerLayout", true);
       AutoHideCrosshair = _setting.GetBooleanValueFromInt("AutoHideCrosshair", true);
+      DarkMode = _setting.GetBooleanValue("bLiveryEditorDarkMode", true);
+      InWorldAdvertising = _setting.GetBooleanValue("bEnableInWorldAdvertising", false);
       GetCrosshairVisbility();
       }
 
@@ -119,6 +147,8 @@ namespace ToolkitForTSW.Settings.ViewModels
       _setting.WriteBooleanValueAsInt(Immersive, "ControllerLayout", SectionEnum.User);
       _setting.WriteBooleanValueAsInt(AutoHideCrosshair, "AutoHideCrosshair", SectionEnum.User);
       _setting.WriteStringValue(CrosshairVisibility.ToString(), "CursorType", SectionEnum.User);
+      _setting.WriteBooleanValue(DarkMode, "bLiveryEditorDarkMode", SectionEnum.User);
+      _setting.WriteBooleanValue(InWorldAdvertising, "bEnableInWorldAdvertising", SectionEnum.User);
       }
 
     private void GetCrosshairVisbility()

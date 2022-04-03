@@ -1,0 +1,151 @@
+﻿<Window x:Class="ToolkitForTSW.GameSave.Views.GameSaveView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:ToolkitForTSW.GameSave.Views" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:usercontrols="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library" Title="Game Save Manager"
+        Style="{StaticResource AllWindows}"
+        mc:Ignorable="d">
+  <ScrollViewer>
+    <StackPanel>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Grid.Column="0"
+                Style="{StaticResource BorderDefault}">
+
+          <StackPanel>
+            <TextBlock Style="{StaticResource HeaderTextBlock}">
+              Profiles
+            </TextBlock>
+            <DataGrid Width="100" Height="150"
+                      ItemsSource="{Binding ProfileList}"
+                      SelectedItem="{Binding SelectedProfile}"
+                      Style="{StaticResource DataGridReadOnly}">
+              <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding}" Header=" Profile" />
+              </DataGrid.Columns>
+            </DataGrid>
+          </StackPanel>
+        </Border>
+        <Border Grid.Row="0" Grid.Column="1"
+                Style="{StaticResource BorderDefault}">
+          <StackPanel>
+            <TextBlock Style="{StaticResource HeaderTextBlock}">
+              Game save files
+            </TextBlock>
+            <CheckBox Focusable="False"
+                      IsChecked="{Binding ActiveSaveGame, Mode=TwoWay}"
+                      IsHitTestVisible="False">
+              Active save game
+            </CheckBox>
+            <CheckBox Focusable="False"
+                      IsChecked="{Binding AutoSaveGame, Mode=TwoWay}"
+                      IsHitTestVisible="False">
+              Auto save game
+            </CheckBox>
+            <CheckBox Focusable="False"
+                      IsChecked="{Binding CheckpointSaveGame, Mode=TwoWay}"
+                      IsHitTestVisible="False">
+              Checkpoint save game
+            </CheckBox>
+            <Button Name="UseAutoSave"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="Use the Autosave as active save">
+              Use autosave
+            </Button>
+            <Button Name="UseCheckpointSave"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="Use checkpointsave as active save">
+              Use checkpoint
+            </Button>
+
+          </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Style="{StaticResource BorderDefault}">
+          <StackPanel>
+            <TextBlock Style="{StaticResource HeaderTextBlock}">
+              Save game archive
+            </TextBlock>
+            <DataGrid Width="260" Height="200"
+                      ItemsSource="{Binding FilteredGameSaveList}"
+                      SelectedItem="{Binding SelectedGameSave}"
+                      Style="{StaticResource DataGridReadOnly}">
+              <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding RouteAbbreviation}" Header=" Route" />
+                <DataGridTextColumn Binding="{Binding Activity}" Header=" Activity" />
+                <DataGridTextColumn Binding="{Binding SaveName}" Header=" SaveName" />
+              </DataGrid.Columns>
+            </DataGrid>
+            <WrapPanel>
+              <Button Name="UseArchivedGameSave" Style="{StaticResource ButtonDefault}">Use as active</Button>
+
+              <Button Name="DeleteGameSave" Style="{StaticResource ButtonNarrow}">Delete</Button>
+            </WrapPanel>
+
+          </StackPanel>
+        </Border>
+
+        <Border Grid.Row="0" Grid.Column="3"
+                Style="{StaticResource BorderDefault}">
+          <StackPanel>
+            <TextBlock Style="{StaticResource HeaderTextBlock}">
+              Edit Save Game meta data
+            </TextBlock>
+            <WrapPanel>
+              <DataGrid Width="100" Height="150"
+                        ItemsSource="{Binding ActivityTagList}"
+                        SelectedItem="{Binding SelectedActivityTag}"
+                        Style="{StaticResource DataGridReadOnly}">
+                <DataGrid.Columns>
+                  <DataGridTextColumn Binding="{Binding TagName}" Header="Activity" />
+                </DataGrid.Columns>
+              </DataGrid>
+              <DataGrid Width="100" Height="150"
+                        ItemsSource="{Binding FilteredRouteTagList}"
+                        SelectedItem="{Binding SelectedRouteTag}"
+                        Style="{StaticResource DataGridReadOnly}">
+                <DataGrid.Columns>
+                  <DataGridTextColumn Binding="{Binding TagName}" Header="Route" />
+                </DataGrid.Columns>
+              </DataGrid>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="3"
+                Style="{StaticResource BorderDefault}">
+          <StackPanel>
+            <usercontrols:LabelTextBox LabelText="Save Name" LabelWidth="60"
+                                       Style="{StaticResource LabelTextBoxDefault}"
+                                       TextBoxText="{Binding SaveName, Mode=TwoWay}" />
+            <usercontrols:LabelTextBox Height="Auto" LabelText="Description"
+                                       LabelWidth="60"
+                                       Style="{StaticResource LabelTextBoxMultiLine}"
+                                       TextBoxText="{Binding Description, Mode=TwoWay}" />
+            <WrapPanel>
+              <Button Name="SaveActive" Style="{StaticResource ButtonDefault}">Save active</Button>
+              <Button Name="SaveAuto" Style="{StaticResource ButtonDefault}">Save auto</Button>
+              <Button Name="SaveCheckpoint" Style="{StaticResource ButtonDefault}">Save checkpoint</Button>
+            </WrapPanel>
+            <Button Name="ClearGameSave" Style="{StaticResource ButtonNarrow}">Clear</Button>
+          </StackPanel>
+        </Border>
+      </Grid>
+      <Button Name="CloseForm" HorizontalAlignment="Right"
+              Style="{StaticResource ButtonOK}">
+        Close
+      </Button>
+    </StackPanel>
+  </ScrollViewer>
+</Window>

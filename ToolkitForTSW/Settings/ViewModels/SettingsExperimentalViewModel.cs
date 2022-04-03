@@ -136,18 +136,6 @@ namespace ToolkitForTSW.Settings.ViewModels
       return output;
       }
 
-    public void LoadValueSetFromSaveSet(string saveDirectory)
-      {
-      var savePath = $"{saveDirectory}ExperimentalSettings.csv";
-
-      if (!File.Exists(savePath))
-        {
-        return;
-        }
-      StringReader reader = new StringReader(File.ReadAllText(savePath));
-      LoadValueSet(reader, true);
-      }
-
     public void LoadValueSetFromString(string settings, bool hasHeader)
       {
       StringReader reader = new StringReader(settings);

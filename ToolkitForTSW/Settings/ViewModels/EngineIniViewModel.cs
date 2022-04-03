@@ -284,8 +284,10 @@ namespace ToolkitForTSW.Settings.ViewModels
 
     public Task CloseForm()
       {
-      var engineIniClosedEvent = new EngineIniClosedEvent();
-      engineIniClosedEvent.HasChanged = HasChanged; // TODO add additional logic for this. It tells Settingsexperimental to update the UI.
+      var engineIniClosedEvent = new EngineIniClosedEvent
+        {
+        HasChanged = HasChanged // TODO add additional logic for this. It tells Settingsexperimental to update the UI.
+        };
       _events.PublishOnUIThreadAsync(engineIniClosedEvent);
       TryCloseAsync();
       return Task.CompletedTask;

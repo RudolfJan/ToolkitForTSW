@@ -18,6 +18,9 @@
     <Border VerticalAlignment="Stretch" Style="{StaticResource BorderThin}">
       <StackPanel>
         <CheckBox Name="AutoLoadJourneysCheckbox" IsChecked="{Binding AutoLoadJourneys}">Autoload Journeys</CheckBox>
+        <CheckBox Name="InWorldAdvertisingCheckbox" IsChecked="{Binding InWorldAdvertising}">In world advertisements</CheckBox>
+        <CheckBox Name="LiveryEditorDarkmodeCheckbox" IsChecked="{Binding DarkMode}">Livewry Designer Darkmode</CheckBox>
+
         <CheckBox Name="ImmersiveCheckbox" IsChecked="{Binding Immersive}">Controller uses Immersive mode</CheckBox>
         <CheckBox Name="HideUIforSceeenshotsCheckbox" IsChecked="{Binding HideUIForScreenshots}">Hide UI in DTG screenshots</CheckBox>
         <CheckBox IsChecked="{Binding BigSpeedoMeter}">Big speedometer</CheckBox>

@@ -95,6 +95,17 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
+    private bool _saveCreatorsClub;
+    public bool SaveCreatorsClub
+      {
+      get { return _saveCreatorsClub; }
+      set
+        {
+        _saveCreatorsClub = value;
+        NotifyOfPropertyChange(() => SaveCreatorsClub);
+        }
+      }
+
 
     private bool _saveScenarios;
     public bool SaveScenarios
@@ -295,6 +306,7 @@ namespace ToolkitForTSW.ViewModels
       BackUpPart(SourceBase, TargetBase, "Saved\\LoadingScreens\\", SaveLoadingScreens);
       BackUpPart(SourceBase, TargetBase, "Saved\\Logs\\", SaveLogs);
       BackUpPart(SourceBase, TargetBase, "Saved\\Crashes\\", SaveCrashes);
+      BackUpPart(SourceBase, TargetBase, "Saved\\PersistentDownloadDir\\UGC\\0\\", SaveCreatorsClub);
       BackUpToolkitPart(TSWOptions.ManualsFolder, TargetBase + "ToolKit\\Manuals\\", SaveManuals);
       BackUpToolkitPart(TSWOptions.GetSaveLocationPath(), TargetBase + "ToolKit\\OptionsSets\\", SaveSettings);
       BackUpToolkitPart(TSWOptions.ModsFolder, TargetBase + "ToolKit\\Mods\\", SaveMods);
@@ -394,7 +406,14 @@ namespace ToolkitForTSW.ViewModels
       {
       var target = TSWOptions.ToolkitForTSWFolder;
       // var target="D:\\Test\\";
-      FileHelpers.CopyDir(source, target, true);
+      if (Directory.Exists(source))
+        {
+        FileHelpers.CopyDir(source, target, true);
+        }
+      else
+        {
+        Log.Trace("ToolkitForTSW data not restored because the data is not in backup set", LogEventType.InformUser);
+        }
       }
 
     public void DeleteBackup()

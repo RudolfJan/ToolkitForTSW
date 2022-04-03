@@ -110,8 +110,10 @@ Makes mid tones darker or lighter. Supported values 0.2 to 0.8, default 0.5 high
         TSWOptions.UseAdvancedSettings = _UseAdvanced;
         // Tell others this is changed
         TSWOptions.WriteToRegistry();
-        UseAdvancedEvent useAdvancedEvent = new UseAdvancedEvent();
-        useAdvancedEvent.UseAdvanced = _UseAdvanced;
+        UseAdvancedEvent useAdvancedEvent = new UseAdvancedEvent
+          {
+          UseAdvanced = _UseAdvanced
+          };
         _events.PublishOnUIThreadAsync(useAdvancedEvent);
         NotifyOfPropertyChange(nameof(UseAdvanced));
         }

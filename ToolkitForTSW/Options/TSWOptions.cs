@@ -51,10 +51,11 @@ namespace ToolkitForTSW
     public static string TemplateFolder { get; set; }
     public static string ScenarioFolder { get; set; }
     public static string ThumbnailFolder { get; set; }
+    public static string SaveGameArchiveFolder { get; set; }
     public static bool NotFirstRun { get; set; }
 
     public static PlatformEnum CurrentPlatform { get; set; } = PlatformEnum.NotSet;
-    public static string Version { get; } = "1.1";
+    public static string Version { get; } = "1.2";
 
     public static string GameSaveLocation
       {
@@ -417,6 +418,7 @@ namespace ToolkitForTSW
       {
       ManualsFolder = ToolkitForTSWFolder + "Manuals\\";
       var RouteGuidesFolder = ManualsFolder + "RouteGuides\\";
+      SaveGameArchiveFolder = ToolkitForTSWFolder + "SaveGame\\";
       ModsFolder = ToolkitForTSWFolder + "Mods\\";
       UnpackFolder = ToolkitForTSWFolder + "Unpack\\";
       AssetUnpackFolder = ToolkitForTSWFolder + "Unpack\\UnpackedAssets";
@@ -438,6 +440,7 @@ namespace ToolkitForTSW
         {
         Directory.CreateDirectory(ManualsFolder);
         Directory.CreateDirectory(RouteGuidesFolder);
+        Directory.CreateDirectory(SaveGameArchiveFolder);
         Directory.CreateDirectory(TempFolder);
         Directory.CreateDirectory(ModsFolder);
         Directory.CreateDirectory(UnpackFolder);

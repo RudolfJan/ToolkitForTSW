@@ -77,6 +77,11 @@
                     ToolTip="Save screenshots. This may take a lot of time!">
             Save screenshots
           </CheckBox>
+          <CheckBox Name="CreatorsClubCheckBox"
+                    IsChecked="{Binding SaveCreatorsClub, Mode=TwoWay}"
+                    ToolTip="Save downloaded liveries and scenarios from Creators Club">
+            Save Creators Club
+          </CheckBox>
           <CheckBox Name="LoadingScreensCheckBox"
                     IsChecked="{Binding SaveLoadingScreens, Mode=TwoWay}"
                     ToolTip="Save Loading screens">

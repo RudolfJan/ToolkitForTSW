@@ -101,11 +101,7 @@
                     ToolTip="Edit your TSW settings and create several different setting collections">
               Edit TSW2 settings
             </Button>
-            <Button Name="ManageMods"
-                    Style="{StaticResource WideButton}"
-                    ToolTip="Add community content mods to the game or remove them">
-              Manage mods
-            </Button>
+
             <Button Name="RadioStations"
                     Style="{StaticResource WideButton}"
                     ToolTip="Manage railway radio stations collection">
@@ -120,6 +116,16 @@
                     Style="{StaticResource WideButton}"
                     ToolTip="Install Mods directly from your download">
               Mod Installer
+            </Button>
+            <Button Name="ManageMods"
+                    Style="{StaticResource WideButton}"
+                    ToolTip="Add community content mods to the game or remove them">
+              Manage mods
+            </Button>
+            <Button Name="ManageGameSave"
+                    Style="{StaticResource WideButton}"
+                    ToolTip="Do more with your save files">
+              Manage save files
             </Button>
           </StackPanel>
         </Border>
