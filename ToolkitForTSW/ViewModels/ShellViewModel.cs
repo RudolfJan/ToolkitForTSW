@@ -2,8 +2,10 @@
 using Logging.Library;
 using Logging.Library.Wpf.ViewModels;
 using System.Threading.Tasks;
+using ToolkitForTSW.GameSave.ViewModels;
 using ToolkitForTSW.Mod.ViewModels;
 using ToolkitForTSW.Options;
+using ToolkitForTSW.Settings.ViewModels;
 using Utilities.Library;
 using Utilities.Library.Wpf.ViewModels;
 
@@ -72,6 +74,12 @@ namespace ToolkitForTSW.ViewModels
       return _windowManager.ShowWindowAsync(launchVM);
       }
 
+    public Task EditSettings()
+      {
+      var settingsVM = IoC.Get<SettingsManagerViewModel>();
+      return _windowManager.ShowWindowAsync(settingsVM);
+      }
+
     public Task ManageMods()
       {
       var viewModel = IoC.Get<ModManagerViewModel>();
@@ -106,6 +114,13 @@ namespace ToolkitForTSW.ViewModels
       var viewmodel = IoC.Get<PakInstallerViewModel>();
       return _windowManager.ShowWindowAsync(viewmodel);
       }
+
+    public Task ManageGameSave()
+      {
+      var viewmodel = IoC.Get<GameSaveViewModel>();
+      return _windowManager.ShowWindowAsync(viewmodel);
+      }
+
     public Task About()
       {
       var viewmodel = IoC.Get<AboutViewModel>();

@@ -7,5 +7,10 @@
       {
       InitializeComponent();
       }
+
+    private void ServicesDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+      {
+
+      }
     }
   }

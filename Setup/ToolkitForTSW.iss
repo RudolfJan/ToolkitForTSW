@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ToolkitForTSW"
-#define MyAppVersion "1.1"
+#define MyAppVersion "1.2"
 #define MyAppPublisher "Holland Hiking"
 #define MyAppURL "http://www.hollandhiking.nl/trainsimulator"
 #define MyAppExeName "ToolkitForTSW.exe"

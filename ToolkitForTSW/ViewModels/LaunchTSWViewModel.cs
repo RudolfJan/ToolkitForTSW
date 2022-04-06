@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Mod.ViewModels;
 using ToolkitForTSW.Models;
-using ToolkitForTSW.Settings;
+using ToolkitForTSW.Settings.ViewModels;
 
 namespace ToolkitForTSW.ViewModels
   {
@@ -69,9 +69,9 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-    private CSettingsManager _SettingsManager;
+    private SettingsManagerViewModel _SettingsManager;
 
-    public CSettingsManager SettingsManager
+    public SettingsManagerViewModel SettingsManager
       {
       get { return _SettingsManager; }
       set
@@ -132,7 +132,7 @@ namespace ToolkitForTSW.ViewModels
     public LaunchTSWViewModel(IWindowManager windowManager)
       {
       _windowManager = windowManager;
-      SettingsManager = new CSettingsManager();
+      // SettingsManager = new SettingsManagerViewModel();  //TODO fix this later
       RailwayRadioStationManager = new RadioStationsViewModel();
       RailwayRadioStationManager.Initialize();
 
@@ -161,13 +161,13 @@ namespace ToolkitForTSW.ViewModels
         {
         try
           {
-
-          var SourceFile = SelectedOptionsSet.FullName + "\\GameUserSettings.ini";
-          var DestinationFile = CSettingsManager.GetInGameSettingsLocation().FullName;
-          File.Copy(SourceFile, DestinationFile, true);
-          SourceFile = SelectedOptionsSet.FullName + "\\Engine.ini";
-          DestinationFile = CSettingsManager.GetInGameEngineIniLocation().FullName;
-          File.Copy(SourceFile, DestinationFile, true);
+          // TODO fix this later
+          //var SourceFile = SelectedOptionsSet.FullName + "\\GameUserSettings.ini";
+          //var DestinationFile = SettingsManagerViewModel.GetInGameSettingsLocation().FullName;
+          //File.Copy(SourceFile, DestinationFile, true);
+          //SourceFile = SelectedOptionsSet.FullName + "\\Engine.ini";
+          //DestinationFile = SettingsManagerViewModel.GetInGameEngineIniLocation().FullName;
+          //File.Copy(SourceFile, DestinationFile, true);
           }
         catch (Exception E)
           {

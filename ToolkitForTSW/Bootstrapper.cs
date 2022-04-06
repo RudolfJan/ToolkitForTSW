@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using ToolkitForTSW.DialogServices;
+using ToolkitForTSW.Settings;
 using ToolkitForTSW.ViewModels;
 using TreeBuilders.Library.Wpf.ViewModels;
 using Utilities.Library.Wpf.Models;
@@ -36,15 +37,19 @@ namespace ToolkitForTSW
       _container.Instance(_container);
 
       // https://stackoverflow.com/questions/11058507/caliburn-micro-view-viewmodel-name-resolution-issue
-   
+
       // Instantiate some singletons
       _container
         .Singleton<IWindowManager, WindowManager>()
         .Singleton<IDialogService, DialogService>()
         .Singleton<IEventAggregator, EventAggregator>()
-        .Singleton<IAboutModel,AboutModel>();
+        .Singleton<IAboutModel, AboutModel>()
+        .Singleton<ISettingsManagerLogic, SettingsManagerLogic>();
 
-      foreach(var assembly in SelectAssemblies())
+      _container.RegisterPerRequest(typeof(ISetting), typeof(ISetting).ToString(), typeof(Setting));
+      //_container.RegisterPerRequest(typeof(ISettingsManagerLogic), typeof(ISettingsManagerLogic).ToString(), typeof(SettingsManagerLogic));
+
+      foreach (var assembly in SelectAssemblies())
         {
         assembly.GetTypes()
           .Where(type => type.IsClass)
@@ -54,7 +59,7 @@ namespace ToolkitForTSW
         }
       }
 
-     protected override IEnumerable<Assembly> SelectAssemblies()
+    protected override IEnumerable<Assembly> SelectAssemblies()
       {
       // https://www.jerriepelser.com/blog/split-views-and-viewmodels-in-caliburn-micro/
 
@@ -69,7 +74,7 @@ namespace ToolkitForTSW
       {
       await DisplayRootViewForAsync(typeof(ShellViewModel));
       }
-  
+
     protected override object GetInstance(Type service, string key)
       {
       return _container.GetInstance(service, key);
@@ -86,4 +91,4 @@ namespace ToolkitForTSW
       }
     }
   }
-  
+

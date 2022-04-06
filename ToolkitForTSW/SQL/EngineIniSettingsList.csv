@@ -270,6 +270,7 @@ GETINI
 GETMAXTICKRATE
 GPUSort.DebugOffsets
 GPUSort.DebugSort
+grass.CullDistanceScale
 grass.CullSubsections
 grass.densityScale
 grass.DisableGPUCull
@@ -289,10 +290,6 @@ grass.UseStreamingManagerForCameras
 HEAPCHECK
 help
 HighResShot
-HMD
-HMDPOS
-HMDVERSION
-HTTP
 httpReplay.ChunkUploadDelayInSeconds
 httpReplay.MaxCacheSize
 httpReplay.MetaFilterOverride

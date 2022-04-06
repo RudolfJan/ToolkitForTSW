@@ -43,7 +43,8 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1">
-          <DataGrid Name="ServicesDataGrid" Style="{StaticResource DefaultDataGrid}" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" ItemsSource="{Binding SelectedSavScenario.SavScenario.SavServiceList }" Height="310" Width="300" SelectedItem="{Binding SelectedSavService, NotifyOnSourceUpdated=True }">
+          <DataGrid Name="ServicesDataGrid" Style="{StaticResource DataGridReadOnly}" 
+          ItemsSource="{Binding SavServiceList }" Height="310" Width="300" SelectedItem="{Binding SelectedSavService, NotifyOnSourceUpdated=True }" SelectionChanged="ServicesDataGrid_SelectionChanged">
             <DataGrid.Columns>
               <DataGridTemplateColumn Header="Services">
                 <DataGridTemplateColumn.CellTemplate>

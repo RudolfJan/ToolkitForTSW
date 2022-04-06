@@ -2,22 +2,12 @@
 using System;
 using System.Diagnostics;
 using System.Windows;
-using ToolkitForTSW;
-using ToolkitForTSW.Mod;
-using ToolkitForTSW.Options;
-using ToolkitForTSW.Settings;
-using TreeBuilders.Library.Wpf;
-using TreeBuilders.Library.Wpf.ViewModels;
-using TreeBuilders.Library.Wpf.Views;
 using Utilities.Library;
-using Utilities.Library.Wpf;
-using Utilities.Library.Wpf.ViewModels;
-using Utilities.Library.Wpf.Views;
 
 namespace ToolkitForTSW.Views
   {
-  
-  public partial class ShellView: Window
+
+  public partial class ShellView : Window
     {
     public CMain MainData { get; set; }
     public Log LogForm;
@@ -41,7 +31,7 @@ namespace ToolkitForTSW.Views
     private void OnOptionsButtonClicked(Object Sender, RoutedEventArgs E)
       {
       var Form = new FormOptions();
-      
+
       Form.ShowDialog();
       }
 
@@ -75,16 +65,16 @@ namespace ToolkitForTSW.Views
       Form.Show();
       }
 
- 
-    private void OnEditSettingsButtonClicked(Object Sender, RoutedEventArgs E)
-      {
-      var Form = new FormSettings();
-      Form.Show();
-      }
+
+    //private void OnEditSettingsButtonClicked(Object Sender, RoutedEventArgs E)
+    //  {
+    //  var Form = new SettingsManagerView();
+    //  Form.Show();
+    //  }
 
     private void OnRadioStationsButtonClicked(Object Sender, RoutedEventArgs E)
       {
-      var Form= new RadioStationsView();
+      var Form = new RadioStationsView();
       Form.Show();
       }
     #endregion

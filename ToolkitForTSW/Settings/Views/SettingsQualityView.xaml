@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="ToolkitForTSW.Settings.Views.SettingsQualityView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="450"
+             d:DesignWidth="800"
+             Background="{StaticResource WindowBackground}"
+             mc:Ignorable="d">
+
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="SettingsDictionary.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+  <Grid>
+    <Border VerticalAlignment="Stretch" Style="{StaticResource BorderThin}">
+      <StackPanel>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+          </Grid.RowDefinitions>
+
+          <TextBlock Grid.Row="0" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Overall quality
+          </TextBlock>
+          <ComboBox Grid.Row="0" Grid.Column="1"
+                    ItemsSource="{Binding Source={StaticResource QualityEnum}}"
+                    SelectedValue="{Binding OverAllQualityLevel}" />
+
+          <TextBlock Grid.Row="1" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Texture quality
+          </TextBlock>
+          <ComboBox Grid.Row="1" Grid.Column="1"
+                    ItemsSource="{Binding Source={StaticResource QualityEnum}}"
+                    SelectedValue="{Binding TextureQuality}" />
+
+          <TextBlock Grid.Row="2" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Foliage quality
+          </TextBlock>
+          <ComboBox Grid.Row="2" Grid.Column="1"
+                    ItemsSource="{Binding Source={StaticResource QualityEnum}}"
+                    SelectedValue="{Binding FoliageQuality}" />
+
+          <TextBlock Grid.Row="3" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Shadow quality
+          </TextBlock>
+          <ComboBox Grid.Row="3" Grid.Column="1"
+                    ItemsSource="{Binding Source={StaticResource QualityPlusOffEnum}}"
+                    SelectedValue="{Binding ShadowQuality}" />
+
+          <TextBlock Grid.Row="4" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Effects quality
+          </TextBlock>
+          <ComboBox Grid.Row="4" Grid.Column="1"
+                    ItemsSource="{Binding Source={StaticResource QualityPlusOffEnum}}"
+                    SelectedValue="{Binding EffectsQuality}" />
+
+          <TextBlock Grid.Row="5" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Post processing quality
+          </TextBlock>
+          <ComboBox Grid.Row="5" Grid.Column="1"
+                    ItemsSource="{Binding Source={StaticResource QualityEnum}}"
+                    SelectedValue="{Binding PostProcessQuality}" />
+
+          <TextBlock Grid.Row="6" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            View distance quality
+          </TextBlock>
+          <ComboBox Name="ViewDistanceComboBox" Grid.Row="6"
+                    Grid.Column="1"
+                    IsEnabled="{Binding UseAdvanced, Converter={StaticResource BooleanToReverseConverter}}"
+                    ItemsSource="{Binding Source={StaticResource QualityEnum}}"
+                    SelectedValue="{Binding ViewDistanceQuality}" />
+          <TextBlock Grid.Row="6" Grid.Column="2"
+                     Style="{StaticResource TextBlockDefault}"
+                     Visibility="{Binding UseAdvanced, Converter={StaticResource BoolToVisibilityConverter}}">
+            Disabled if advanced settings are active
+          </TextBlock>
+          <TextBlock Grid.Row="7" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Audio quality
+          </TextBlock>
+          <ComboBox Grid.Row="7" Grid.Column="1"
+                    ItemsSource="{Binding Source={StaticResource QualityEnum}}"
+                    SelectedValue="{Binding AudioQualityLevel}" />
+
+          <TextBlock Grid.Row="8" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Anti alias method
+          </TextBlock>
+          <ComboBox Grid.Row="8" Grid.Column="1"
+                    ItemsSource="{Binding Source={StaticResource AntiAliasingEnum}}"
+                    SelectedValue="{Binding AntiAliasingMethod}" />
+
+          <TextBlock Grid.Row="9" Grid.Column="0"
+                     Style="{StaticResource TextBlockDefault}">
+            Max FPS
+          </TextBlock>
+          <DockPanel Grid.Row="9" Grid.Column="1"
+                     Grid.ColumnSpan="2">
+            <Slider Name="MaxFrameRateSlider" MinWidth="220"
+                    HorizontalAlignment="Stretch" IsSelectionRangeEnabled="True"
+                    IsSnapToTickEnabled="True" Maximum="120"
+                    Minimum="0" SelectionEnd="60"
+                    SelectionStart="30" TickFrequency="5"
+                    Value="{Binding MaxFrameRate, Mode=TwoWay}" />
+            <TextBox Width="30" VerticalAlignment="Center"
+                     HorizontalContentAlignment="Right" DockPanel.Dock="Right"
+                     Text="{Binding Value, ElementName=MaxFrameRateSlider, StringFormat={}{0:0}}" />
+          </DockPanel>
+        </Grid>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl>

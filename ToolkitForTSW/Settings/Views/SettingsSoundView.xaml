@@ -1,0 +1,159 @@
+﻿<UserControl x:Class="ToolkitForTSW.Settings.Views.SettingsSoundView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ToolkitForTSW.Settings.Views" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="{StaticResource WindowBackground}"
+             mc:Ignorable="d">
+  <Grid>
+    <Border VerticalAlignment="Stretch" Style="{StaticResource ThinBorder}">
+      <StackPanel>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="115" />
+            <ColumnDefinition Width="102*" />
+            <ColumnDefinition Width="158*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="30" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+            <RowDefinition Height="{StaticResource GridHeight}" />
+          </Grid.RowDefinitions>
+
+          <TextBlock Grid.Row="0" Grid.Column="0"
+                     Margin="5,11"
+                     Style="{StaticResource TextBlockDefault}">
+            Master volume
+          </TextBlock>
+          <Slider Name="MasterVolumeSlider" Grid.Row="0"
+                  Grid.Column="1" Grid.ColumnSpan="3"
+                  IsSelectionRangeEnabled="True" IsSnapToTickEnabled="True"
+                  Maximum="4.0" Minimum="0"
+                  SelectionEnd="1.0" SelectionStart="0"
+                  TickFrequency="0.2"
+                  Value="{Binding MasterSoundVolume, Mode=TwoWay}" />
+          <TextBox Grid.Row="0" Grid.Column="4"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=MasterVolumeSlider, StringFormat={}{0:0.0}}" />
+
+          <TextBlock Grid.Row="1" Grid.Column="0"
+                     Margin="5,11"
+                     Style="{StaticResource TextBlockDefault}">
+            Ambient volume
+          </TextBlock>
+          <Slider Name="AmbientVolumeSlider" Grid.Row="1"
+                  Grid.Column="1" Grid.ColumnSpan="3"
+                  IsSelectionRangeEnabled="True" IsSnapToTickEnabled="True"
+                  Maximum="4.0" Minimum="0"
+                  SelectionEnd="1.0" SelectionStart="0"
+                  TickFrequency="0.2"
+                  Value="{Binding AmbienceSoundVolume, Mode=TwoWay}" />
+          <TextBox Grid.Row="1" Grid.Column="4"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=AmbientVolumeSlider, StringFormat={}{0:0.0}}" />
+
+          <TextBlock Grid.Row="2" Grid.Column="0"
+                     Margin="5,11"
+                     Style="{StaticResource TextBlockDefault}">
+            Dialog sound volume
+          </TextBlock>
+          <Slider Name="DialogSoundVolumeSlider" Grid.Row="2"
+                  Grid.Column="1" Grid.ColumnSpan="3"
+                  IsSelectionRangeEnabled="True" IsSnapToTickEnabled="True"
+                  Maximum="4.0" Minimum="0"
+                  SelectionEnd="1.0" SelectionStart="0"
+                  TickFrequency="0.2"
+                  Value="{Binding DialogSoundVolume, Mode=TwoWay}" />
+          <TextBox Grid.Row="2" Grid.Column="4"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=DialogSoundVolumeSlider, StringFormat={}{0:0.0}}" />
+
+          <TextBlock Grid.Row="3" Grid.Column="0"
+                     Margin="5,11"
+                     Style="{StaticResource TextBlockDefault}">
+            External alert volume
+          </TextBlock>
+          <Slider Name="ExternalAlertVolumeSlider" Grid.Row="3"
+                  Grid.Column="1" Grid.ColumnSpan="3"
+                  IsSelectionRangeEnabled="True" IsSnapToTickEnabled="True"
+                  Maximum="4.0" Minimum="0"
+                  SelectionEnd="1.0" SelectionStart="0"
+                  TickFrequency="0.2"
+                  Value="{Binding ExternalAlertVolume, Mode=TwoWay}" />
+          <TextBox Grid.Row="3" Grid.Column="4"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=ExternalAlertVolumeSlider, StringFormat={}{0:0.0}}" />
+
+          <TextBlock Grid.Row="4" Grid.Column="0"
+                     Margin="5,11"
+                     Style="{StaticResource TextBlockDefault}">
+            SFX volume
+          </TextBlock>
+          <Slider Name="SFXSoundVolumeSlider" Grid.Row="4"
+                  Grid.Column="1" Grid.ColumnSpan="3"
+                  IsSelectionRangeEnabled="True" IsSnapToTickEnabled="True"
+                  Maximum="4.0" Minimum="0"
+                  SelectionEnd="1.0" SelectionStart="0"
+                  TickFrequency="0.2"
+                  Value="{Binding SFXSoundVolume, Mode=TwoWay}" />
+          <TextBox Grid.Row="4" Grid.Column="4"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=SFXSoundVolumeSlider, StringFormat={}{0:0.0}}" />
+
+          <TextBlock Grid.Row="5" Grid.Column="0"
+                     Margin="5,11"
+                     Style="{StaticResource TextBlockDefault}">
+            Main Menu UI SFX
+          </TextBlock>
+          <Slider Name="MenuSFXVolumeSlider" Grid.Row="5"
+                  Grid.Column="1" Grid.ColumnSpan="3"
+                  IsSelectionRangeEnabled="True" IsSnapToTickEnabled="True"
+                  Maximum="4.0" Minimum="0"
+                  SelectionEnd="1.0" SelectionStart="0"
+                  TickFrequency="0.2"
+                  Value="{Binding MenuSFXSoundVolume, Mode=TwoWay}" />
+          <TextBox Grid.Row="5" Grid.Column="4"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                   Text="{Binding Value, ElementName=MenuSFXVolumeSlider, StringFormat={}{0:0.0}}" />
+
+          <CheckBox Name="SubtitlesCheckBox" Grid.Row="6"
+                    Grid.Column="0"
+                    IsChecked="{Binding Subtitles, Mode=TwoWay}">
+            Subtitles
+          </CheckBox>
+          <CheckBox Name="WindowAudioFocusCheckBox" Grid.Row="6"
+                    Grid.Column="1" Grid.ColumnSpan="2"
+                    Margin="5,5,0,5"
+                    IsChecked="{Binding WindowFocus, Mode=TwoWay}">
+            Window Audio Focus
+          </CheckBox>
+          <CheckBox Name="LimitVolumes" Grid.Row="7"
+                    Grid.Column="0"
+                    IsChecked="{Binding LimitVolume, Mode=TwoWay}">
+            Limit volumes
+          </CheckBox>
+          <Button Name="SetRecommendedValues" Grid.Row="7"
+                  Grid.Column="1" Grid.ColumnSpan="2"
+                  Width="160" Margin="5,5,0,5"
+                  HorizontalAlignment="Left"
+                  Style="{StaticResource DefaultButton}">
+            Set recommended values
+          </Button>
+        </Grid>
+
+        <TextBlock MaxWidth="420" TextWrapping="Wrap">
+          In TSW you can only set sound volumes up to 1.0. The sliders do not allow to set
+          higher values, though TSW will work with these higher volumes.
+          The &quot;Limit volumes&quot; checkbox will limit the set volumes to 1.0 if checked.
+        </TextBlock>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl>

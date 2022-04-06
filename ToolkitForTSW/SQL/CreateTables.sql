@@ -35,6 +35,14 @@ CREATE TABLE IF NOT EXISTS RadioStations (
 				DlcSource TEXT NOT NULL
 				);
 
+CREATE TABLE IF NOT EXISTS GameSaves (
+        Id  INTEGER PRIMARY KEY NOT NULL,
+        Activity TEXT  NOT NULL,
+        RouteAbbreviation TEXT NOT NULL,
+				SaveName TEXT NOT NULL,
+        Description TEXT NOT NULL
+        );
+
 CREATE TABLE IF NOT EXISTS Mods (
 	Id INTEGER PRIMARY KEY NOT NULL,
 	ModName TEXT NOT NULL,

@@ -1,0 +1,68 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core="clr-namespace:System;assembly=mscorlib" xmlns:enums="clr-namespace:ToolkitForTSW.Settings.Enums">
+
+  <ObjectDataProvider x:Key="HudStyleEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:HudStyleEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+  <ObjectDataProvider x:Key="TemperatureEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:TemperatureEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+  <ObjectDataProvider x:Key="UnitsEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:UnitsEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+  <ObjectDataProvider x:Key="GradeUnitsEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:GradeUnitsEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+  <ObjectDataProvider x:Key="ScreenModeEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:ScreenModeEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+  <ObjectDataProvider x:Key="QualityEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:QualityEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+  <ObjectDataProvider x:Key="QualityPlusOffEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:QualityPlusOffEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+
+  <ObjectDataProvider x:Key="AntiAliasingEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:AntiAliasingEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+  <ObjectDataProvider x:Key="CrosshairVisibilityEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:CrosshairVisibilityEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+</ResourceDictionary>

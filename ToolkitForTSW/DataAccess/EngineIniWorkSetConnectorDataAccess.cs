@@ -19,7 +19,7 @@ namespace ToolkitForTSW.DataAccess
       {
       var sql = "SELECT Count() " +
         "FROM EngineIniWorkSetConnectors " +
-        "WHERE EngineIniWorkSetConnectors.SettingId = @settingId " +
+        "WHERE EngineIniWorkSetConnectors.EngineIniSettingId = @settingId " +
         "AND EngineIniWorkSetConnectors.EngineIniWorkSetId= @worksetId;";
       return DbAccess.LoadData<int, dynamic>(sql, new { settingId, worksetId }).First();
       }

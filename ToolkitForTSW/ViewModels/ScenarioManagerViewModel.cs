@@ -41,11 +41,28 @@ namespace ToolkitForTSW.ViewModels
           ScenarioIssueList = new BindableCollection<string>(
           ScenarioProblemTracker.FindScenarioProblems(SelectedSavScenario
             .SavScenario));
+          SavServiceList = new BindableCollection<SavServiceModel>(_selectedSavScenario.SavScenario.SavServiceList);
           NotifyOfPropertyChange(() => ScenarioIssueList);
           }
         NotifyOfPropertyChange(() => CanPublishScenario);
         NotifyOfPropertyChange(() => CanEditScenario);
         NotifyOfPropertyChange(() => CanOpenHex);
+        }
+      }
+
+
+    private BindableCollection<SavServiceModel> _savServiceList;
+
+    public BindableCollection<SavServiceModel> SavServiceList
+      {
+      get
+        {
+        return _savServiceList;
+        }
+      set
+        {
+        _savServiceList = value;
+        NotifyOfPropertyChange(nameof(SavServiceList));
         }
       }
 

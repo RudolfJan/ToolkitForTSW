@@ -1,6 +1,6 @@
 ToolkitForTSW
 
-ToolkitForTSW is a toolkit for Train Simulator World.
+ToolkitForTSW is a toolkit for Train Simulator World (TSW2).
 At present it has limited functionality, but this will increase over time.
 After installation, please set up the program options before trying to do anything else.
 
@@ -18,8 +18,16 @@ See the manual for details. You can find the manual in the ToolkitForTSW data fo
 
 Version history:
 
+version 1.2:
+- Added tool to manage game save files
+- Settings window fully revised (mostly internal)
+- Backup can handle Creators Club as well
+- Bux fix with backup
+- Bug fixed with extracting .pak files
+- Bug fixed for scenario manager, it now will show services also
+
 Version 1.1:
-- Added removal tool for ntro videos
+- Added removal tool for intro videos
 - Options settings improved
 - Mod installer and manager improved
 
@@ -38,16 +46,4 @@ Version 0.9:
 Version 08:
 - Screenshot manager totally revised
 
-Version 0.71
-- Fixed an issue with the installation procedure
 
-Version 0.7:
-- Added Scenario Editor
-- Updated Mod tool
-- Bug fixes
-
-Version 0.6:
-- Application renamed to ToolkitForTSW
-- Now supports TSW2 only
-- Added Scenario manager tool
-- Settings tool improved and added new TSW2 settings.

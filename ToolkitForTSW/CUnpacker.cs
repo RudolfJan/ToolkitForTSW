@@ -180,19 +180,29 @@ Unpacking in progress
     public void UnpackFile(String Pak)
       {
       var Counter = 0;
+      string input = string.Empty;
       Task MyTask = null;
       try
         {
-        String Destination = Pak.Substring(Pak.LastIndexOf("\\", StringComparison.Ordinal));
+        String Destination = Pak.Substring(Pak.LastIndexOf("\\", StringComparison.Ordinal) + 1);
         Result += "Unpack started " + Path.GetFileName(Pak) + "\r\n";
         Destination = TSWOptions.UnpackFolder + Destination;
         Directory.CreateDirectory(Destination);
+
+        if (TSWOptions.CurrentPlatform == PlatformEnum.Steam)
+          {
+          input = $"{TSWOptions.SteamTrainSimWorldDirectory}{Pak}";
+          }
+        else
+          {
+          input = $"{TSWOptions.EGSTrainSimWorldDirectory}{Pak}";
+          }
         Busy = true;
-        MyTask = Task.Run(() => CApps.UnPack(Pak, Destination));
+        MyTask = Task.Run(() => CApps.UnPack(input, Destination));
         }
       catch (Exception E)
         {
-        Result += Log.Trace(@"Unpack .pak file failed: " + Pak + " " + E.Message, LogEventType.Error);
+        Result += Log.Trace(@"Unpack .pak file failed: " + input + " " + E.Message, LogEventType.Error);
         }
 
       while (MyTask != null && !MyTask.IsCompleted)
