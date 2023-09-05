@@ -17,14 +17,68 @@
   <Grid>
     <Border VerticalAlignment="Stretch" Style="{StaticResource BorderThin}">
       <StackPanel>
-        <CheckBox Name="AutoLoadJourneysCheckbox" IsChecked="{Binding AutoLoadJourneys}">Autoload Journeys</CheckBox>
-        <CheckBox Name="InWorldAdvertisingCheckbox" IsChecked="{Binding InWorldAdvertising}">In world advertisements</CheckBox>
-        <CheckBox Name="LiveryEditorDarkmodeCheckbox" IsChecked="{Binding DarkMode}">Livewry Designer Darkmode</CheckBox>
-
-        <CheckBox Name="ImmersiveCheckbox" IsChecked="{Binding Immersive}">Controller uses Immersive mode</CheckBox>
-        <CheckBox Name="HideUIforSceeenshotsCheckbox" IsChecked="{Binding HideUIForScreenshots}">Hide UI in DTG screenshots</CheckBox>
-        <CheckBox IsChecked="{Binding BigSpeedoMeter}">Big speedometer</CheckBox>
-        <TextBlock Margin="5,20,5,5" Style="{StaticResource TextBlockDefault}">Crosshair settings</TextBlock>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+          </Grid.RowDefinitions>
+          <CheckBox Name="AutoLoadJourneysCheckbox" Grid.Row="0"
+                    Grid.Column="0"
+                    IsChecked="{Binding AutoLoadJourneys}">
+            Autoload Journeys
+          </CheckBox>
+          <CheckBox Name="InWorldAdvertisingCheckbox" Grid.Row="0"
+                    Grid.Column="1"
+                    IsChecked="{Binding InWorldAdvertising}">
+            In world advertisements
+          </CheckBox>
+          <CheckBox Name="LiveryEditorDarkmodeCheckbox" Grid.Row="0"
+                    Grid.Column="2"
+                    IsChecked="{Binding DarkMode}">
+            Livery Designer Darkmode
+          </CheckBox>
+          <CheckBox Name="ImmersiveCheckbox" Grid.Row="1"
+                    Grid.Column="0"
+                    IsChecked="{Binding Immersive}">
+            Controller uses Immersive mode
+          </CheckBox>
+          <CheckBox Name="HideUIforSceeenshotsCheckbox" Grid.Row="1"
+                    Grid.Column="1"
+                    IsChecked="{Binding HideUIForScreenshots}">
+            Hide UI in DTG screenshots
+          </CheckBox>
+          <CheckBox Name="ightningEffectsCheckbox" Grid.Row="2"
+                    Grid.Column="0"
+                    IsChecked="{Binding LightningEffects}">
+            Lightning effects
+          </CheckBox>
+          <CheckBox Name="ArcinSparkEffectsCheckbox" Grid.Row="2"
+                    Grid.Column="1"
+                    IsChecked="{Binding ArcingsSparkEffects}">
+            Arcing spark effects
+          </CheckBox>
+          <CheckBox Name="GameSaveEnabledCheckbox" Grid.Row="3"
+                    Grid.Column="0"
+                    IsChecked="{Binding GameSaveEnabled}">
+            Game save is enabled
+          </CheckBox>
+          <CheckBox Name="TutorialsInQuickPlayCheckbox" Grid.Row="3"
+                    Grid.Column="1"
+                    IsChecked="{Binding TutorialsInQuickPlay}">
+            Tutorials in quickplay enabled
+          </CheckBox>
+        </Grid>
+        <TextBlock Margin="5,20,5,5" FontWeight="Bold"
+                   Style="{StaticResource TextBlockDefault}">
+          Crosshair settings
+        </TextBlock>
         <WrapPanel>
           <StackPanel Width="150">
             <RadioButton Margin="{StaticResource MarginDefault}" IsChecked="{Binding CrosshairVisibility, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static enums:CrosshairVisibilityEnum.Off}}">

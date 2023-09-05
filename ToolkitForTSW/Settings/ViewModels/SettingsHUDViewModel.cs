@@ -114,6 +114,31 @@ namespace ToolkitForTSW.Settings.ViewModels
         }
       }
 
+    private Boolean _safetySystemHelper = true;
+    public Boolean SafetySystemHelper
+      {
+      get { return _safetySystemHelper; }
+      set
+        {
+        _safetySystemHelper = value;
+        NotifyOfPropertyChange(nameof(SafetySystemHelper));
+        }
+      }
+
+    private bool _bigSpeedoMeter;
+    public bool BigSpeedoMeter
+      {
+      get
+        {
+        return _bigSpeedoMeter;
+        }
+      set
+        {
+        _bigSpeedoMeter = value;
+        NotifyOfPropertyChange(nameof(BigSpeedoMeter));
+        }
+      }
+
     public SettingsHUDViewModel(ISetting setting)
       {
       _setting = setting;
@@ -131,6 +156,8 @@ namespace ToolkitForTSW.Settings.ViewModels
       Score = _setting.GetBooleanValue("ShowScore", true);
       StopMarker = _setting.GetBooleanValue("ShowObjectiveStopAtMarker", true);
       ScenarioMarker = _setting.GetBooleanValue("ShowScenarioMarker", true);
+      SafetySystemHelper = _setting.GetBooleanValue("bDisplaySafetySystemHelper", true);
+      BigSpeedoMeter = _setting.GetBooleanValue("bLargeSpeedoHUD", false);
       }
 
     public void Update()
@@ -144,6 +171,8 @@ namespace ToolkitForTSW.Settings.ViewModels
       _setting.WriteBooleanValue(StopMarker, "ShowObjectiveStopAtMarker", SectionEnum.User);
       _setting.WriteBooleanValue(ScenarioMarker, "ShowScenarioMarker", SectionEnum.User);
       _setting.WriteBooleanValue(Score, "ShowScore", SectionEnum.User);
+      _setting.WriteBooleanValue(SafetySystemHelper, "bDisplaySafetySystemHelper", SectionEnum.User);
+      _setting.WriteBooleanValue(BigSpeedoMeter, "bLargeSpeedoHUD", SectionEnum.User);
       }
 
     private void GetNextSignalMarker()

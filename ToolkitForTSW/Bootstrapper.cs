@@ -1,8 +1,10 @@
 ﻿using Caliburn.Micro;
 using Logging.Library.Wpf.ViewModels;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -19,20 +21,34 @@ namespace ToolkitForTSW
     {
     private readonly SimpleContainer _container = new SimpleContainer();
 
+    public static readonly IConfiguration Config = CreateConfig();
+
+    static IConfiguration CreateConfig()
+      {
+      var builder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json")
+        .AddUserSecrets<Bootstrapper>();
+      IConfiguration config = builder.Build();
+
+      return config;
+      }
+
     public Bootstrapper()
       {
       Initialize();
-      StarDebugLogger();
+      StartDebugLogger();
       }
 
     [Conditional("DEBUG")]
-    public static void StarDebugLogger()
+    public static void StartDebugLogger()
       {
       LogManager.GetLog = type => new DebugLog(type);
       }
 
     protected override void Configure()
       {
+
       // This makes the container return a SimpleContainer if you need one
       _container.Instance(_container);
 

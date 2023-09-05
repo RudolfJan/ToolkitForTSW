@@ -41,13 +41,11 @@
             </DataGrid.Columns>
           </DataGrid>
           <WrapPanel>
-          <Button Name="DeleteSaveSet" Style="{StaticResource ButtonNarrow}">
-            Delete Set
-          </Button>
-            <Button Name="OpenUserSettingsFile" 
-            Style="{StaticResource ButtonDefault}" >Show User Settings</Button>
-            <Button Name="OpenEngineIniFile" 
-            Style="{StaticResource ButtonDefault}" >Show Engine.ini</Button>
+            <Button Name="DeleteSaveSet" Style="{StaticResource ButtonNarrow}">
+              Delete Set
+            </Button>
+            <Button Name="OpenUserSettingsFile" Style="{StaticResource ButtonDefault}">Show User Settings</Button>
+            <Button Name="OpenEngineIniFile" Style="{StaticResource ButtonDefault}">Show Engine.ini</Button>
           </WrapPanel>
         </StackPanel>
       </Border>
@@ -63,9 +61,10 @@
             <DataGrid.Columns>
               <DataGridTextColumn x:Name="KeyColumn" Width="150"
                                   Binding="{Binding Key}"
-                                  Header=" Key " SortMemberPath="Key" SortDirection="Ascending"/>
+                                  Header=" Key " SortDirection="Ascending"
+                                  SortMemberPath="Key" />
               <DataGridTextColumn Binding="{Binding Value}" Header=" Value " />
-             </DataGrid.Columns>
+            </DataGrid.Columns>
           </DataGrid>
           <Button Name="UpdateLoadedSettings" Style="{StaticResource ButtonDefault}">
             Update
@@ -77,11 +76,11 @@
               Style="{StaticResource BorderDefault}">
         <StackPanel>
           <TabControl x:Name="Items" />
-          <TextBlock Visibility="{Binding SetIsNotLoaded, Converter={StaticResource BoolToVisibilityConverter}}" 
-          FontSize="14" 
-          TextWrapping="Wrap" 
-          Style="{StaticResource TextBlockDefault}">
-          Load the active settings or a save set to show the settings in this pane. 
+          <TextBlock FontSize="14"
+                     Style="{StaticResource TextBlockDefault}"
+                     TextWrapping="Wrap"
+                     Visibility="{Binding SetIsNotLoaded, Converter={StaticResource BoolToVisibilityConverter}}">
+            Load the active settings or a save set to show the settings in this pane.
           </TextBlock>
         </StackPanel>
       </Border>
@@ -103,7 +102,7 @@
           </WrapPanel>
           <WrapPanel>
             <TextBlock Style="{StaticResource TextBlockDefault}">Save set name</TextBlock>
-            <TextBox Text="{Binding SaveSetName, Mode=TwoWay}" MinWidth="160"/>
+            <TextBox MinWidth="160" Text="{Binding SaveSetName, Mode=TwoWay}" />
             <Button Name="UpdateSaveSet" Style="{StaticResource WideButton}">
               Save as SaveSet
             </Button>

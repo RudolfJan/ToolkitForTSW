@@ -129,7 +129,7 @@ Makes mid tones darker or lighter. Supported values 0.2 to 0.8, default 0.5 high
 
     public void Init()
       {
-      EyeAdaptationQuality = _setting.GetBooleanValue("r.EyeAdaptationQuality", false);
+      EyeAdaptationQuality = _setting.GetBooleanValue("r.EyeAdaptationQuality", true);
       MaterialQualityLevel = _setting.GetBooleanValueFromInt("r.MaterialQualityLevel", false);
       ScreenPercentage = _setting.GetUIntValue("ScreenPercentage", 100);
       GammaCorrection = _setting.GetDoubleValue("r.Color.mid", 0.5);
@@ -166,7 +166,7 @@ Makes mid tones darker or lighter. Supported values 0.2 to 0.8, default 0.5 high
       ViewDistanceScale = 5;
       MotionBlurQuality = 0;
       LODDistanceScale = 3;
-      EyeAdaptationQuality = false;
+      EyeAdaptationQuality = true;
       MaterialQualityLevel = false;
       GammaCorrection = 0.5;
       }

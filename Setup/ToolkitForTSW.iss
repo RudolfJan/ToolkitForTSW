@@ -2,13 +2,13 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ToolkitForTSW"
-#define MyAppVersion "1.2"
+#define MyAppVersion "3.0"
 #define MyAppPublisher "Holland Hiking"
 #define MyAppURL "http://www.hollandhiking.nl/trainsimulator"
 #define MyAppExeName "ToolkitForTSW.exe"
 #define DataDirName= "{code:GetDataDir}"
 #define DefaultDirName="{code:GetInstallDir}"
-
+#define ToolkitServiceName="ToolkitForTSWService.exe"
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
@@ -33,7 +33,7 @@ SolidCompression=yes
 WizardImageFile=Inputfiles\NoCopy\Setup.bmp
 WizardImageBackColor=clInfoBk
 WizardImageStretch=False
-AppCopyright=2017/2021 Rudolf Heijink
+AppCopyright=2017/2023 Rudolf Heijink
 DisableWelcomePage=no    
 DisableDirPage=no
 
@@ -45,14 +45,21 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "Inputfiles\Binaries\*.exe"; DestDir: "{#DefaultDirName}"; Flags: ignoreversion
+Source: "Inputfiles\Binaries\{#MyAppExeName}"; DestDir: "{#DefaultDirName}"; Flags: ignoreversion
 Source: "Inputfiles\Binaries\*.dll"; DestDir: "{#DefaultDirName}"; Flags: ignoreversion
 Source: "Inputfiles\Binaries\*.json"; DestDir: "{#DefaultDirName}"; Flags: ignoreversion
 Source: "Inputfiles\Binaries\runtimes\*.*"; DestDir: "{#DefaultDirName}\runtimes"; Flags: ignoreversion recursesubdirs
 Source: "Inputfiles\Binaries\Images\*.*"; DestDir: "{#DefaultDirName}\Images"; Flags: ignoreversion
 Source: "Inputfiles\Binaries\SQL\*.*"; DestDir: "{#DefaultDirName}\SQL"; Flags: ignoreversion
+; Source: "Inputfiles\Binaries\Scripts\*.*"; DestDir: "{#DefaultDirName}\Scripts"; Flags: ignoreversion
 Source: "Inputfiles\Manuals\*.pdf"; DestDir: "{#DefaultDirName}\Manuals"; Flags: ignoreversion
 Source: "Inputfiles\NoCopy\CSXicon.bmp"; DestDir: "{#DefaultDirName}"; Flags: ignoreversion
+
+; Install toolkit service here
+;Source: "Inputfiles\ToolkitForTSWService\Binaries\{ToolkitServiceName}.exe"; DestDir: "{#DefaultDirName}\ToolkitForTSWService"; Flags: ignoreversion
+;Source: "Inputfiles\ToolkitForTSWService\Binaries\*.dll"; DestDir: "{#DefaultDirName}\ToolkitForTSWService"; Flags: ignoreversion
+;Source: "Inputfiles\ToolkitForTSWService\Binaries\*.json"; DestDir: "{#DefaultDirName}\ToolkitForTSWService"; Flags: ignoreversion
+;Source: "Inputfiles\ToolkitForTSWService\Binaries\runtimes\*.*"; DestDir: "{#DefaultDirName}\ToolkitForTSWService\runtimes"; Flags: ignoreversion recursesubdirs
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -103,7 +110,7 @@ begin
   DataDirPage := CreateInputDirPage(wpSelectDir,
     'Select ToolkitForTSW Data Directory', 'Select where ToolkitForTSW must store data files.'+#13+'NOTE: the installer will NOT move files from an existing directory to the directory you selected',
     'Select the folder in which Setup should install ToolkitForTSW data files, then click Next.',
-    False, 'ToolkitForTSWData');
+    False, 'TSW3\ToolkitForTSWData');
   DataDirPage.Add('');
 
   { Set default values, using settings that were stored last time if possible }
@@ -123,7 +130,7 @@ begin
   { Validate certain pages before allowing the user to proceed }
   if CurPageID = DataDirPage.ID then begin
      if DataDirPage.Values[0] = '' then
-        DataDirPage.Values[0] := 'C:\ToolkitForTSW';
+        DataDirPage.Values[0] := 'C:\TSW3\ToolkitForTSW';
       Result := True;
     end;
      Result := True;

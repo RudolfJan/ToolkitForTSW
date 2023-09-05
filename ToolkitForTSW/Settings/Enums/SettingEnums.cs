@@ -40,6 +40,20 @@ namespace ToolkitForTSW.Settings.Enums
     [Description("Imperial")] Imperial,
     [Description("Automatic")] Automatic
     }
+  public enum MassUnitsEnum
+    {
+    [Description("Automatic")] Automatic,
+    [Description("long Tons")] LongTons,
+    [Description("Short Tons")] ShortTons,
+    [Description("Thousand Pounds")] ThousandPounds
+    }
+
+  public enum ImperialDistanceEnum
+    {
+    [Description("Automatic")] Automatic,
+    [Description("Feet")] Feet,
+    [Description("Yard")] Yard
+    }
 
   public enum GradeUnitsEnum
     {
@@ -85,5 +99,13 @@ namespace ToolkitForTSW.Settings.Enums
     [Description("100%")] Full = 2,
     [Description("Large")] Large = 3
     }
+
+  public enum FiringModeEnum
+    {
+    [Description("Automatic")] Automatic,
+    [Description("Manual")] Manual,
+    [Description("Assisted")] Assisted
+    }
+
   #endregion
   }

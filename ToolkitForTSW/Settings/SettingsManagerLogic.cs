@@ -207,7 +207,7 @@ Dictionary to contain all settings
       var Path = TSWOptions.GetOptionsSetPath() + SaveSetName + "\\"; // Warning order is important here
       if (!Directory.Exists(Path))
         {
-        var Dir = Directory.CreateDirectory(Path);
+        Directory.CreateDirectory(Path);
         }
       var SettingsFile = new FileInfo(Path + "GameUserSettings.ini");
       WriteSettingsInDictionary(SettingsFile);

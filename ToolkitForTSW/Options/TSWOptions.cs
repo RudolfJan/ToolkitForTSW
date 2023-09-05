@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows;
 using ToolkitForTSW.Options;
 using Utilities.Library;
+using Utilities.Library.TextHelpers;
 using Utilities.Library.Wpf.Models;
 using MessageBox = System.Windows.MessageBox;
 
@@ -53,16 +54,17 @@ namespace ToolkitForTSW
     public static string ThumbnailFolder { get; set; }
     public static string SaveGameArchiveFolder { get; set; }
     public static bool NotFirstRun { get; set; }
+    private static readonly string subKeyString = "TSW3";
 
     public static PlatformEnum CurrentPlatform { get; set; } = PlatformEnum.NotSet;
-    public static string Version { get; } = "1.2";
+
+    public static string Version { get; } = "3.0";
 
     public static string GameSaveLocation
       {
       get
         {
-        return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-         + @"\My Games\TrainSimWorld2\";
+        return TextHelper.AddBackslash(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\My Games\\TrainSimWorld3");
         }
       }
 
@@ -108,10 +110,8 @@ namespace ToolkitForTSW
     public static string SteamProgramDirectory
       {
       set { _SteamProgramDirectory = value; }
-
       get
         {
-
         if (TestMode) // append test folder to default directory if test mode has been selected
           {
           return _SteamProgramDirectory;
@@ -140,16 +140,16 @@ namespace ToolkitForTSW
       get
         {
         return SteamProgramDirectory + "\\userdata\\" + SteamUserId +
-               "\\760\\remote\\1282590\\screenshots";
+           "\\760\\remote\\1944790\\screenshots";
         }
       }
+
 
     public static string RegkeyString
       {
       get
         {
         AboutData.CurrentAssembly = currentAssembly;
-
         _RegkeyString = "software\\" + AboutData.Company + "\\" +
                             AboutData.Product;
         return _RegkeyString;
@@ -165,7 +165,7 @@ namespace ToolkitForTSW
         }
       }
 
-    private static string _steamTrainSimWorldDirectory;
+    private static string _steamTrainSimWorldDirectory = string.Empty;
 
     public static string SteamTrainSimWorldDirectory
       {
@@ -173,7 +173,7 @@ namespace ToolkitForTSW
       set { _steamTrainSimWorldDirectory = value; }
       }
 
-    private static string _egsTrainSimWorldDirectory;
+    private static string _egsTrainSimWorldDirectory = string.Empty;
 
     public static string EGSTrainSimWorldDirectory
       {
@@ -182,7 +182,7 @@ namespace ToolkitForTSW
       }
 
 
-    private static string _egsTrainSimWorldStarter;
+    private static string _egsTrainSimWorldStarter = string.Empty;
 
     public static string EGSTrainSimWorldStarter
       {
@@ -215,16 +215,12 @@ namespace ToolkitForTSW
         }
       }
 
-    private static string _backupFolder;
+    private static string _backupFolder = "";
 
     public static string BackupFolder
       {
       get
         {
-        if (string.IsNullOrEmpty(_backupFolder))
-          {
-          _backupFolder = ToolkitForTSWFolder + "Backup\\";
-          }
         return _backupFolder;
         }
       set
@@ -233,7 +229,7 @@ namespace ToolkitForTSW
         }
       }
 
-    private static string _InstallDirectory;
+    private static string _InstallDirectory = string.Empty;
 
     public static string InstallDirectory
       {
@@ -363,11 +359,10 @@ namespace ToolkitForTSW
 
     #endregion
 
-    private static RegistryKey OpenRegistry()
+    internal static RegistryKey OpenCurrentUserRegistry()
       {
       return Registry.CurrentUser.CreateSubKey(RegkeyString, true);
       }
-
 
 
     // To be used to show the platform to the users
@@ -414,18 +409,18 @@ namespace ToolkitForTSW
       }
 
 
-    public static void CreateDirectories()
+    public static void CreateDirectories(string baseFolder)
       {
-      ManualsFolder = ToolkitForTSWFolder + "Manuals\\";
+      ManualsFolder = baseFolder + "Manuals\\";
       var RouteGuidesFolder = ManualsFolder + "RouteGuides\\";
-      SaveGameArchiveFolder = ToolkitForTSWFolder + "SaveGame\\";
-      ModsFolder = ToolkitForTSWFolder + "Mods\\";
-      UnpackFolder = ToolkitForTSWFolder + "Unpack\\";
-      AssetUnpackFolder = ToolkitForTSWFolder + "Unpack\\UnpackedAssets";
-      TempFolder = ToolkitForTSWFolder + "Temp\\";
-      TemplateFolder = ToolkitForTSWFolder + "Templates\\";
-      ScenarioFolder = ToolkitForTSWFolder + "Scenarios\\";
-      ThumbnailFolder = ToolkitForTSWFolder + "Thumbnails\\";
+      SaveGameArchiveFolder = baseFolder + "SaveGame\\";
+      ModsFolder = baseFolder + "Mods\\";
+      UnpackFolder = baseFolder + "Unpack\\";
+      AssetUnpackFolder = baseFolder + "Unpack\\UnpackedAssets";
+      TempFolder = baseFolder + "Temp\\";
+      TemplateFolder = baseFolder + "Templates\\";
+      ScenarioFolder = baseFolder + "Scenarios\\";
+      ThumbnailFolder = baseFolder + "Thumbnails\\";
       // Unfortunately this does not work and gives security issues
       //try
       //  {
@@ -449,10 +444,14 @@ namespace ToolkitForTSW
         Directory.CreateDirectory(TempFolder);
         Directory.CreateDirectory($"{OptionsSetDir}Steam\\");
         Directory.CreateDirectory($"{OptionsSetDir}EGS\\");
-        Directory.CreateDirectory(BackupFolder);
-        Directory.CreateDirectory($"{BackupFolder}Steam\\"); // Just in case, order is important!
-        Directory.CreateDirectory($"{BackupFolder}EGS\\");
-        Directory.CreateDirectory($"{BackupFolder}Movies\\");
+        // By default, the Backup folder is not set.
+        if (!string.IsNullOrEmpty(BackupFolder))
+          {
+          Directory.CreateDirectory(BackupFolder);
+          Directory.CreateDirectory($"{BackupFolder}Steam\\"); // Just in case, order is important!
+          Directory.CreateDirectory($"{BackupFolder}EGS\\");
+          Directory.CreateDirectory($"{BackupFolder}Movies\\");
+          }
         Directory.CreateDirectory(TemplateFolder);
         Directory.CreateDirectory(ScenarioFolder);
         Directory.CreateDirectory(ThumbnailFolder);
@@ -480,8 +479,10 @@ namespace ToolkitForTSW
         {
         File.Copy(SourceDir + "Manuals\\ToolkitForTSW Manual.pdf",
           ManualsFolder + "ToolkitForTSW Manual.pdf", true);
-        File.Copy(SourceDir + "Manuals\\TSW2 Starters guide.pdf", ManualsFolder + "TSW2 Starters guide.pdf",
-          true);
+        File.Copy(SourceDir + "Manuals\\TSW3 Starters guide.pdf", ManualsFolder + "TSW3 Starters guide.pdf",
+  true);
+        File.Copy(SourceDir + "Manuals\\TSW3 Advanced guide.pdf", ManualsFolder + "TSW3 Advanced guide.pdf",
+  true);
         File.Copy(SourceDir + "Manuals\\License information.pdf", ManualsFolder + "License information.pdf",
           true);
         }
@@ -493,19 +494,28 @@ namespace ToolkitForTSW
 
     public static void ReadFromRegistry()
       {
-      if (AppKey == null)
-        {
-        AppKey = OpenRegistry();
-        }
+      AppKey ??= OpenCurrentUserRegistry();
+      // For TSW3 we use a separate subKey where relevant, so you still can use the old version for TSW2 next to the TSW3 version of ToolkitForTSW
+      var subKey = AppKey.CreateSubKey(subKeyString);
 
-      InstallDirectory = (string)AppKey.GetValue("InstallDirectory", "");
+      IsInitialized = ((int)subKey.GetValue("Initialized", 0) == 1);
+      InstallDirectory = (string)subKey.GetValue("InstallDirectory", "");
+      ToolkitForTSWFolder = (string)subKey.GetValue("TSWToolsFolder", "");
+      BackupFolder = (string)subKey.GetValue("BackupFolder", "");
+      UseAdvancedSettings = (int)subKey.GetValue("UseAdvancedSettings", 1) == 1;
+      SteamTrainSimWorldDirectory = (string)subKey.GetValue("SteamTrainSimWorldDirectory", "");
+      EGSTrainSimWorldDirectory = (string)subKey.GetValue("EGSTrainSimWorldDirectory", "");
+      EGSTrainSimWorldStarter = (string)subKey.GetValue("EGSTrainSimWorldStarter", "");
+      if (SteamTrainSimWorldDirectory.Length == 0 && TrainSimWorldDirectory.Length > 0)
+        {
+        SteamTrainSimWorldDirectory = TrainSimWorldDirectory;
+        }
 
       string DefaultSteamProgramPath = (string)AppKey.GetValue("SteamPath", "");
       SteamProgramDirectory =
         (string)AppKey.GetValue("SteamProgramDirectory", DefaultSteamProgramPath);
       SteamUserId = (string)AppKey.GetValue("SteamUserId", "");
-      ToolkitForTSWFolder = (string)AppKey.GetValue("TSWToolsFolder", "");
-      BackupFolder = (string)AppKey.GetValue("BackupFolder", "");
+
       TextEditor = (string)AppKey.GetValue("TextEditor", "");
       XmlEditor = (string)AppKey.GetValue("XMLEditor", "");
       Unpacker = (string)AppKey.GetValue("Unpacker", "");
@@ -513,6 +523,7 @@ namespace ToolkitForTSW
       TrackIRProgram = (string)AppKey.GetValue("TrackIRProgram", "");
       FileCompare = (string)AppKey.GetValue("FileCompare", "");
       SevenZip = (string)AppKey.GetValue("7Zip", "");
+
       var SavedCurrentPlatform = TSWOptions.CurrentPlatform;
 
       CurrentPlatform = (PlatformEnum)AppKey.GetValue("CurrentPlatform", PlatformEnum.NotSet);
@@ -520,71 +531,78 @@ namespace ToolkitForTSW
         {
         PlatformChangedEventHandler.SetPlatformChangedEvent(new PlatformChangedEventArgs(SavedCurrentPlatform, CurrentPlatform));
         }
-      SteamTrainSimWorldDirectory = (string)AppKey.GetValue("SteamTrainSimWorldDirectory", "");
-      EGSTrainSimWorldDirectory = (string)AppKey.GetValue("EGSTrainSimWorldDirectory", "");
-      EGSTrainSimWorldStarter = (string)AppKey.GetValue("EGSTrainSimWorldStarter", "");
-      if (SteamTrainSimWorldDirectory.Length == 0 && TrainSimWorldDirectory.Length > 0)
-        {
-        SteamTrainSimWorldDirectory = TrainSimWorldDirectory;
-        }
-
 
       //TestMode = ((int)AppKey.GetValue("TestMode", 0) == 1);
       TestMode = false;
-      IsInitialized = ((int)AppKey.GetValue("Initialized", 0) == 1);
 
       if (!AllowDevMode)
         {
         _DeveloperMode = ((int)AppKey.GetValue("DeveloperMode", 0) == 1);
         }
 
-      UseAdvancedSettings = (int)AppKey.GetValue("UseAdvancedSettings", 1) == 1;
       LimitSoundVolumes = (int)AppKey.GetValue("LimitSoundVolumes", 1) == 1;
       AutoBackup = (int)AppKey.GetValue("AutoBackup", 0) == 1;
 
       CheckOptionsLogic.Instance.SetAllOptionChecks();
       }
 
+    public static string GetTSW2ToolkitPath()
+      {
+      var appKey = OpenCurrentUserRegistry();
+      return (string)appKey.GetValue("TSWToolsFolder", "");
+      }
+
     public static void WriteToRegistry()
       {
-      if (AppKey == null)
-        {
-        AppKey = OpenRegistry();
-        }
+      var appKey = OpenCurrentUserRegistry();
+      AppKey = appKey; // is this correct?
+      // For TSW3 we use a separate subKey where relevant, so you still can use the old version for TSW2 next to the TSW3 version of ToolkitForTSW
 
-      AppKey.SetValue("SteamProgramDirectory", SteamProgramDirectory,
+      var subKey = appKey.CreateSubKey(subKeyString, true);
+      WriteToRegistry(appKey, subKey);
+      }
+
+
+    public static void WriteToRegistry(RegistryKey appKey, RegistryKey subKey)
+      {
+      subKey.SetValue("Initialized", IsInitialized, RegistryValueKind.DWord);
+      subKey.SetValue("UseAdvancedSettings", UseAdvancedSettings, RegistryValueKind.DWord);
+      subKey.SetValue("TSWToolsFolder", ToolkitForTSWFolder, RegistryValueKind.String);
+      subKey.SetValue("BackupFolder", BackupFolder, RegistryValueKind.String);
+      subKey.SetValue("SteamTrainSimWorldDirectory", SteamTrainSimWorldDirectory,
+RegistryValueKind.String);
+      subKey.SetValue("EGSTrainSimWorldDirectory", EGSTrainSimWorldDirectory,
+   RegistryValueKind.String);
+      subKey.SetValue("EGSTrainSimWorldStarter", EGSTrainSimWorldStarter,
+   RegistryValueKind.String);
+
+      appKey.SetValue("SteamProgramDirectory", SteamProgramDirectory,
         RegistryValueKind.String);
-      AppKey.SetValue("SteamUserId", SteamUserId, RegistryValueKind.String);
-      AppKey.SetValue("TSWToolsFolder", ToolkitForTSWFolder, RegistryValueKind.String);
-      AppKey.SetValue("BackupFolder", BackupFolder, RegistryValueKind.String);
-      AppKey.SetValue("TextEditor", TextEditor, RegistryValueKind.String);
-      AppKey.SetValue("XMLEditor", XmlEditor, RegistryValueKind.String);
-      AppKey.SetValue("Unpacker", Unpacker, RegistryValueKind.String);
-      AppKey.SetValue("UAssetUnpacker", UAssetUnpacker, RegistryValueKind.String);
-      AppKey.SetValue("TrackIRProgram", TrackIRProgram, RegistryValueKind.String);
-      AppKey.SetValue("7Zip", SevenZip, RegistryValueKind.String);
-      AppKey.SetValue("FileCompare", FileCompare, RegistryValueKind.String);
+      appKey.SetValue("SteamUserId", SteamUserId, RegistryValueKind.String);
+
+      appKey.SetValue("TextEditor", TextEditor, RegistryValueKind.String);
+      appKey.SetValue("XMLEditor", XmlEditor, RegistryValueKind.String);
+      appKey.SetValue("Unpacker", Unpacker, RegistryValueKind.String);
+      appKey.SetValue("UAssetUnpacker", UAssetUnpacker, RegistryValueKind.String);
+      appKey.SetValue("TrackIRProgram", TrackIRProgram, RegistryValueKind.String);
+      appKey.SetValue("7Zip", SevenZip, RegistryValueKind.String);
+      appKey.SetValue("FileCompare", FileCompare, RegistryValueKind.String);
       // AppKey.SetValue("TestMode", TestMode, RegistryValueKind.DWord);
-      AppKey.SetValue("DeveloperMode", DeveloperMode, RegistryValueKind.DWord);
-      AppKey.SetValue("Initialized", IsInitialized, RegistryValueKind.DWord);
-      AppKey.SetValue("UseAdvancedSettings", UseAdvancedSettings, RegistryValueKind.DWord);
-      AppKey.SetValue("LimitSoundVolumes", LimitSoundVolumes, RegistryValueKind.DWord);
-      AppKey.SetValue("AutoBackup", AutoBackup, RegistryValueKind.DWord);
-      AppKey.SetValue("CurrentPlatform", CurrentPlatform, RegistryValueKind.DWord);
-      AppKey.SetValue("SteamTrainSimWorldDirectory", SteamTrainSimWorldDirectory,
-   RegistryValueKind.String);
-      AppKey.SetValue("EGSTrainSimWorldDirectory", EGSTrainSimWorldDirectory,
-   RegistryValueKind.String);
-      AppKey.SetValue("EGSTrainSimWorldStarter", EGSTrainSimWorldStarter,
-   RegistryValueKind.String);
+      appKey.SetValue("DeveloperMode", DeveloperMode, RegistryValueKind.DWord);
+
+      appKey.SetValue("LimitSoundVolumes", LimitSoundVolumes, RegistryValueKind.DWord);
+      appKey.SetValue("AutoBackup", AutoBackup, RegistryValueKind.DWord);
+      appKey.SetValue("CurrentPlatform", CurrentPlatform, RegistryValueKind.DWord);
+
       }
 
     public static bool GetNotFirstRun()
       {
-      var AppKey2 = OpenRegistry();
-      if (AppKey2 != null)
+      var AppKey2 = OpenCurrentUserRegistry();
+      var subKey = AppKey2.CreateSubKey(subKeyString);
+      if (subKey != null)
         {
-        NotFirstRun = (int)AppKey2.GetValue("NotFirstRun", 0) == 1;
+        NotFirstRun = (int)subKey.GetValue("NotFirstRun", 0) == 1;
         }
 
       return NotFirstRun;
@@ -592,19 +610,21 @@ namespace ToolkitForTSW
 
     public static void SetNotFirstRun()
       {
-      var AppKey2 = OpenRegistry();
-      AppKey2.SetValue("NotFirstRun", true, RegistryValueKind.DWord);
+      var AppKey2 = OpenCurrentUserRegistry();
+      var subKey = AppKey2.CreateSubKey(subKeyString, true);
+      subKey.SetValue("NotFirstRun", true, RegistryValueKind.DWord);
       }
 
     public static void TestNotFirstRun()
       {
-      var AppKey2 = OpenRegistry();
-      AppKey2.SetValue("NotFirstRun", false, RegistryValueKind.DWord);
+      var AppKey2 = OpenCurrentUserRegistry();
+      var subKey = AppKey2.CreateSubKey(subKeyString);
+      subKey.SetValue("NotFirstRun", false, RegistryValueKind.DWord);
       }
 
     public static void UpdateTSWToolsDirectory(string InitialInstallDirectory)
       {
-      if (string.CompareOrdinal(InitialInstallDirectory, ToolkitForTSWFolder) != 0)
+      if (!string.IsNullOrEmpty(ToolkitForTSWFolder) && string.CompareOrdinal(InitialInstallDirectory, ToolkitForTSWFolder) != 0)
         {
         // try moving files
         if (!Directory.Exists(ToolkitForTSWFolder) && Directory.Exists(InitialInstallDirectory))

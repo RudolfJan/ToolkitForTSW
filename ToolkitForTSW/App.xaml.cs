@@ -1,11 +1,10 @@
-﻿using System.Windows;
-
-namespace ToolkitForTSW
-{
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App
+﻿namespace ToolkitForTSW
+  {
+  public partial class App
     {
+    public App()
+      {
+      Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(Bootstrapper.Config["SycfusionLicense"]);
+      }
     }
-}
+  }

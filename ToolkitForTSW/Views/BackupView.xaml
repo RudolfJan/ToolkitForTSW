@@ -19,9 +19,11 @@
         <StackPanel>
           <TextBlock Style="{StaticResource TextBlockHeader}">Backup sets</TextBlock>
           <DataGrid Name="BackupSetsDataGrid" MinHeight="340"
+                    HorizontalScrollBarVisibility="Auto"
                     ItemsSource="{Binding BackupSetsList.Item}"
                     SelectedItem="{Binding SelectedBackupSet}"
-                    Style="{StaticResource DataGridReadOnly}">
+                    Style="{StaticResource DataGridReadOnly}"
+                    VerticalScrollBarVisibility="Auto">
             <DataGrid.Columns>
               <DataGridTextColumn Binding="{Binding Name}"
                                   Header="Backup Set" SortDirection="Descending" />
@@ -46,6 +48,16 @@
                     Style="{StaticResource ButtonDefault}"
                     ToolTip="Delete selected backup set">
               Delete
+            </Button>
+            <Button Name="ViewMetaData"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="View the metadata">
+              Metadata
+            </Button>
+            <Button Name="ViewBackupFolder"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="View the backup folder">
+              View folder
             </Button>
           </WrapPanel>
         </StackPanel>

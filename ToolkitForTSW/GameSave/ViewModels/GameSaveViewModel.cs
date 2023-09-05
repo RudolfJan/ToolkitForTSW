@@ -351,8 +351,6 @@ namespace ToolkitForTSW.GameSave.ViewModels
       Save("TSWAutoSaveGame");
       }
 
-
-
     public bool CanSaveCheckpoint
       {
       get
@@ -370,16 +368,17 @@ namespace ToolkitForTSW.GameSave.ViewModels
       Save("TSWCheckpointSaveGame");
       }
 
-
     private void Save(string saveType)
       {
       var source = $"{TSWOptions.GameSaveLocation}Saved\\SaveGames\\{saveType}_{SelectedProfile}.sav";
       var destination = $"{TSWOptions.SaveGameArchiveFolder}{SelectedRouteTag.TagName}-{SaveName}-{SelectedActivityTag.TagName}.sav";
-      var newGameSave = new GameSaveModel();
-      newGameSave.SaveName = SaveName;
-      newGameSave.Description = Description;
-      newGameSave.RouteAbbreviation = SelectedRouteTag.TagName;
-      newGameSave.Activity = SelectedActivityTag.TagName;
+      var newGameSave = new GameSaveModel
+        {
+        SaveName = SaveName,
+        Description = Description,
+        RouteAbbreviation = SelectedRouteTag.TagName,
+        Activity = SelectedActivityTag.TagName
+        };
       newGameSave.Id = GameSaveDataAccess.InsertGameSave(newGameSave);
       File.Copy(source, destination, true);
       GameSaveList.Add(newGameSave);

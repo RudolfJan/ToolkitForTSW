@@ -73,6 +73,14 @@
                     IsChecked="{Binding StopMarker}">
             Show Stop Marker
           </CheckBox>
+          <CheckBox Grid.Row="4" Grid.Column="1"
+                    IsChecked="{Binding SafetySystemHelper}">
+            Show Safety System Helper
+          </CheckBox>
+          <CheckBox Grid.Row="4" Grid.Column="2"
+                    IsChecked="{Binding BigSpeedoMeter}">
+            Big speedometer
+          </CheckBox>
 
         </Grid>
       </StackPanel>

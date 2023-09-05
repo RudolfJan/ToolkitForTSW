@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="ToolkitForTSW.Options.DataFolderSetupView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ToolkitForTSW.Options" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:userControls="clr-namespace:Styles.Library.UserControls;assembly=Styles.Library" d:DesignHeight="450"
+             d:DesignWidth="400"
+             Background="{StaticResource WindowBackground}"
+             mc:Ignorable="d">
+  <StackPanel Width="400">
+    <TextBlock Style="{StaticResource TextBlockHeader}">
+      Data Folder Setup
+    </TextBlock>
+    <TextBlock Style="{StaticResource TextBlockDefault}" TextWrapping="Wrap">
+      The Data Folder is the folder where the game stores all of its data.
+      This includes the game's configuration files, save files, and downloaded content.
+      The Data Folder is also where the Toolkit stores its own data,
+      such as the list of installed mods.
+    </TextBlock>
+    <TextBlock Style="{StaticResource TextBlockDefault}" TextWrapping="Wrap">
+      If you want to continue playing TSW2, make a new folder, otherwise you can re-use the folder you used for TSW2
+    </TextBlock>
+    <TextBlock Style="{StaticResource TextBlockDefault}" TextWrapping="Wrap">
+      If you are new to this game, you only need to confirm the data-folder you selected during setup.
+    </TextBlock>
+    <userControls:LabelTextBox IsEnabled="False" LabelText="TSW2 folder"
+                               LabelWidth="110"
+                               TextBoxText="{Binding TSW2DataFolder}" />
+    <userControls:FileInputBox Grid.Row="3" FileDialogType="BrowseDir"
+                               FileName="{Binding TSW3DataFolder, Mode=TwoWay}"
+                               LabelText="TSW3 folder"
+                               Style="{StaticResource OptionsOpenFile}"
+                               ToolTip="This folder is where all data ToolkitForTSW is working with will be stored" />
+    <TextBlock Height="20" Style="{StaticResource TextBlockDefault}" />
+    <Button Name="CloseForm" HorizontalAlignment="Right"
+            Style="{StaticResource ButtonOK}">
+      Close
+    </Button>
+  </StackPanel>
+</UserControl>

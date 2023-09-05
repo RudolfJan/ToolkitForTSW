@@ -78,19 +78,7 @@ namespace ToolkitForTSW.Settings.ViewModels
         }
       }
 
-    private bool _bigSpeedoMeter;
-    public bool BigSpeedoMeter
-      {
-      get
-        {
-        return _bigSpeedoMeter;
-        }
-      set
-        {
-        _bigSpeedoMeter = value;
-        NotifyOfPropertyChange(nameof(BigSpeedoMeter));
-        }
-      }
+
 
     private bool _autoHideCrosshair;
     public bool AutoHideCrosshair
@@ -119,6 +107,58 @@ namespace ToolkitForTSW.Settings.ViewModels
         NotifyOfPropertyChange(nameof(CrosshairVisibility));
         }
       }
+
+    private bool _lightningEffects;
+    public bool LightningEffects
+      {
+      get { return _lightningEffects; }
+      set
+        {
+        _lightningEffects = value;
+        NotifyOfPropertyChange(nameof(LightningEffects));
+        }
+      }
+
+    private bool _arcingSparkEffects;
+    public bool ArcingSparkEffects
+      {
+      get
+        {
+        return _arcingSparkEffects;
+        }
+      set
+        {
+        _arcingSparkEffects = value;
+        NotifyOfPropertyChange(nameof(ArcingSparkEffects));
+        }
+      }
+
+    private bool _gameSaveEnabled;
+    public bool GameSaveEnabled
+      {
+      get { return _gameSaveEnabled; }
+      set
+        {
+        _gameSaveEnabled = value;
+        NotifyOfPropertyChange(nameof(GameSaveEnabled));
+        }
+      }
+
+    private bool _tutorialsInQuickPlay;
+    public bool TutorialsInQuickPlay
+      {
+      get
+        {
+        return (_tutorialsInQuickPlay);
+        }
+      set
+        {
+        _tutorialsInQuickPlay = value;
+        NotifyOfPropertyChange(nameof(TutorialsInQuickPlay));
+        }
+      }
+
+
     #endregion
 
     public SettingsUserViewModel(ISetting setting)
@@ -131,24 +171,34 @@ namespace ToolkitForTSW.Settings.ViewModels
       {
       AutoLoadJourneys = _setting.GetBooleanValue("bAutoLoadJourneys", true);
       HideUIForScreenshots = _setting.GetBooleanValue("bHideUIInDTLScreenshots", true);
-      BigSpeedoMeter = _setting.GetBooleanValue("bLargeSpeedoHUD", false);
+
       Immersive = _setting.GetBooleanValueFromInt("ControllerLayout", true);
       AutoHideCrosshair = _setting.GetBooleanValueFromInt("AutoHideCrosshair", true);
       DarkMode = _setting.GetBooleanValue("bLiveryEditorDarkMode", true);
       InWorldAdvertising = _setting.GetBooleanValue("bEnableInWorldAdvertising", false);
+      LightningEffects = _setting.GetBooleanValue("bLightningEffects", false);
+      ArcingSparkEffects = _setting.GetBooleanValue("bArcingSparkEffects", false);
+      GameSaveEnabled = _setting.GetBooleanValue("bSaveGameEnabled", true);
+      TutorialsInQuickPlay = _setting.GetBooleanValue("bQuickPlayIncludesTutorials", false);
       GetCrosshairVisbility();
+
       }
 
     public void Update()
       {
       _setting.WriteBooleanValue(AutoLoadJourneys, "bAutoLoadJourneys", SectionEnum.User);
       _setting.WriteBooleanValue(HideUIForScreenshots, "bHideUIInDTLScreenshots", SectionEnum.User);
-      _setting.WriteBooleanValue(BigSpeedoMeter, "bLargeSpeedoHUD", SectionEnum.User);
+
       _setting.WriteBooleanValueAsInt(Immersive, "ControllerLayout", SectionEnum.User);
       _setting.WriteBooleanValueAsInt(AutoHideCrosshair, "AutoHideCrosshair", SectionEnum.User);
       _setting.WriteStringValue(CrosshairVisibility.ToString(), "CursorType", SectionEnum.User);
       _setting.WriteBooleanValue(DarkMode, "bLiveryEditorDarkMode", SectionEnum.User);
       _setting.WriteBooleanValue(InWorldAdvertising, "bEnableInWorldAdvertising", SectionEnum.User);
+      _setting.WriteBooleanValue(LightningEffects, "bLightningEffects", SectionEnum.User);
+      _setting.WriteBooleanValue(ArcingSparkEffects, "bArcingSparkEffects", SectionEnum.User);
+      _setting.WriteBooleanValue(GameSaveEnabled, "bSaveGameEnabled", SectionEnum.User);
+      _setting.WriteBooleanValue(TutorialsInQuickPlay, "bQuickPlayIncludesTutorials", SectionEnum.User);
+
       }
 
     private void GetCrosshairVisbility()

@@ -69,5 +69,11 @@ namespace ToolkitForTSW.DataAccess
       var sql = "DELETE FROM Mods WHERE Id=@id";
       DbAccess.SaveData<dynamic>(sql, new { id });
       }
+    public static void DeleteAllMods()
+      {
+      var sql = "DELETE FROM Mods;";
+      DbAccess.SaveData<dynamic>(sql, new { });
+      }
     }
   }
+

@@ -1,4 +1,6 @@
-﻿using SavCracker.Library.Models;
+﻿// Ignore Spelling: Sav
+
+using SavCracker.Library.Models;
 using System;
 
 namespace SavCracker.Library
@@ -30,6 +32,7 @@ namespace SavCracker.Library
       if (output.Length > 0)
         return output;
       output = TryLocateConsistNamePart(input, "Formations/");
+
       if (output.Length > 0)
         return output;
       output = TryLocateConsistNamePart(input, "RailVehicleDefinition/");
