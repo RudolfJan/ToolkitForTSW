@@ -17,7 +17,7 @@ namespace ToolkitForTSW.DataAccess
     public static ModSetModel GetModSetById(int id)
       {
       var sql = "SELECT * FROM ModSets WHERE Id=@id";
-      return DbAccess.LoadData<ModSetModel, dynamic>(sql, new { id}).FirstOrDefault();
+      return DbAccess.LoadData<ModSetModel, dynamic>(sql, new { id }).FirstOrDefault();
       }
 
     public static List<ModSetModel> GetAllLiverySetsPerRoute(int routeId)
@@ -28,19 +28,19 @@ namespace ToolkitForTSW.DataAccess
 
     public static int InsertModSet(ModSetModel modSet)
       {
-      if(modSet.RouteId == 0)
+      if (modSet.RouteId == 0)
         {
         var sql = $"INSERT OR IGNORE INTO ModSets (ModSetName, ModSetDescription, RouteId) " +
           $"VALUES(@ModSetName, @ModSetDescription, NULL);{DbAccess.LastRowInsertQuery}";
 
-         return DbAccess.SaveData<dynamic>(sql, new { modSet.ModSetName, modSet.ModSetDescription });
+        return DbAccess.SaveData<dynamic>(sql, new { modSet.ModSetName, modSet.ModSetDescription });
         }
       else
-        { 
-      var sql = $"INSERT OR IGNORE INTO ModSets (ModSetName, ModSetDescription, RouteId) " +
-                $"VALUES(@ModSetName, @ModSetDescription, @RouteId);{DbAccess.LastRowInsertQuery}";
+        {
+        var sql = $"INSERT OR IGNORE INTO ModSets (ModSetName, ModSetDescription, RouteId) " +
+                  $"VALUES(@ModSetName, @ModSetDescription, @RouteId);{DbAccess.LastRowInsertQuery}";
 
-      return DbAccess.SaveData<dynamic>(sql, new { modSet.ModSetName, modSet.ModSetDescription, modSet.RouteId });
+        return DbAccess.SaveData<dynamic>(sql, new { modSet.ModSetName, modSet.ModSetDescription, modSet.RouteId });
         }
       }
 
@@ -56,6 +56,12 @@ namespace ToolkitForTSW.DataAccess
       {
       var sql = "DELETE FROM ModSets WHERE Id=@id";
       DbAccess.SaveData<dynamic>(sql, new { id });
+      }
+
+    public static void DeleteAllModSets()
+      {
+      var sql = "DELETE FROM ModSets";
+      DbAccess.SaveData<dynamic>(sql, new { });
       }
     }
   }

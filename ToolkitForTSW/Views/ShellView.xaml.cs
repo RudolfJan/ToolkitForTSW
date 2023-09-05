@@ -9,7 +9,7 @@ namespace ToolkitForTSW.Views
 
   public partial class ShellView : Window
     {
-    public CMain MainData { get; set; }
+    // public InitializeDataLogic MainData { get; set; }
     public Log LogForm;
     public static LogEventHandler LogEventHandler { get; set; }
 
@@ -22,18 +22,18 @@ namespace ToolkitForTSW.Views
       Trace.Indent();
       LogEventHandler = new LogEventHandler();
       LogForm = new Log();
-      MainData = new CMain();
-      DataContext = MainData;
+      //MainData = new InitializeDataLogic();
+      ///DataContext = MainData;
       }
 
     #region Utilities
 
-    private void OnOptionsButtonClicked(Object Sender, RoutedEventArgs E)
-      {
-      var Form = new FormOptions();
+    //private void OnOptionsButtonClicked(Object Sender, RoutedEventArgs E)
+    //  {
+    //  var Form = new OptionsView();
 
-      Form.ShowDialog();
-      }
+    //  Form.ShowDialog();
+    //  }
 
     #endregion
 

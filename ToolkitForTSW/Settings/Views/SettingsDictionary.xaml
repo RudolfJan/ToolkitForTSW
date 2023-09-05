@@ -50,6 +50,26 @@
     </ObjectDataProvider.MethodParameters>
   </ObjectDataProvider>
 
+  <ObjectDataProvider x:Key="FiringModeEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:FiringModeEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+  <ObjectDataProvider x:Key="ImperialDistanceEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:ImperialDistanceEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
+
+  <ObjectDataProvider x:Key="MassUnitsEnum" MethodName="GetValues"
+                      ObjectType="{x:Type core:Enum}">
+    <ObjectDataProvider.MethodParameters>
+      <x:Type Type="enums:MassUnitsEnum" />
+    </ObjectDataProvider.MethodParameters>
+  </ObjectDataProvider>
 
   <ObjectDataProvider x:Key="AntiAliasingEnum" MethodName="GetValues"
                       ObjectType="{x:Type core:Enum}">

@@ -185,7 +185,7 @@ namespace ToolkitForTSW.Settings
     public void WriteDoubleValue(double value, string key, SectionEnum section)
       {
       var Culture = CultureInfo.CreateSpecificCulture("en-GB");
-      var tmp = value.ToString(Culture); //DEBUG
+      // var tmp = value.ToString(Culture); //DEBUG
       _settingsManagerLogic.UpdateSetting(key, value.ToString(Culture), section);
       }
 

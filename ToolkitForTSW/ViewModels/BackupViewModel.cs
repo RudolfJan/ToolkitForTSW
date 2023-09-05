@@ -3,6 +3,8 @@ using Logging.Library;
 using System;
 using System.IO;
 using System.Linq;
+using System.ServiceProcess;
+using System.Windows;
 using Utilities.Library;
 
 namespace ToolkitForTSW.ViewModels
@@ -14,6 +16,8 @@ namespace ToolkitForTSW.ViewModels
     /*
   List with all backup sets
   */
+    public string SetName { get; set; } = string.Empty;
+
     private BindableCollection<DirectoryInfo> _BackupSetsList;
     public BindableCollection<DirectoryInfo> BackupSetsList
       {
@@ -21,7 +25,7 @@ namespace ToolkitForTSW.ViewModels
       set
         {
         _BackupSetsList = value;
-        NotifyOfPropertyChange(() => BackupSetsList);
+        NotifyOfPropertyChange(nameof(BackupSetsList));
         }
       }
 
@@ -35,8 +39,10 @@ namespace ToolkitForTSW.ViewModels
       set
         {
         _selectedBackupSet = value;
-        NotifyOfPropertyChange(() => CanDeleteBackup);
-        NotifyOfPropertyChange(() => CanRestoreBackup);
+        NotifyOfPropertyChange(nameof(CanDeleteBackup));
+        NotifyOfPropertyChange(nameof(CanRestoreBackup));
+        NotifyOfPropertyChange(nameof(CanViewMetaData));
+        NotifyOfPropertyChange(nameof(CanViewBackupFolder));
         }
       }
 
@@ -47,7 +53,7 @@ namespace ToolkitForTSW.ViewModels
       set
         {
         _SaveConfig = value;
-        NotifyOfPropertyChange(() => SaveConfig);
+        NotifyOfPropertyChange(nameof(SaveConfig));
         }
       }
 
@@ -209,6 +215,10 @@ namespace ToolkitForTSW.ViewModels
     private void FillBackupList(string backupPath)
       {
       BackupSetsList.Clear();
+      if (!Directory.Exists(backupPath))
+        {
+        Log.Trace($"Backup folder {backupPath} does not exist. Did you forget to save your options", LogEventType.Error);
+        }
       DirectoryInfo DirInfo = new DirectoryInfo(backupPath);
       var Dirs = DirInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
       foreach (var X in Dirs)
@@ -228,6 +238,8 @@ namespace ToolkitForTSW.ViewModels
       SaveManuals = true;
       SaveSettings = true;
       SaveMods = true;
+      SaveCreatorsClub = false;
+      SetName = "Manual";
       }
 
     public void SetSaveAll()
@@ -243,6 +255,8 @@ namespace ToolkitForTSW.ViewModels
       SaveManuals = true;
       SaveSettings = true;
       SaveMods = true;
+      SaveCreatorsClub = true;
+      SetName = "Manual";
       }
 
     public void SetSaveDaily()
@@ -258,6 +272,8 @@ namespace ToolkitForTSW.ViewModels
       SaveManuals = false;
       SaveSettings = false;
       SaveMods = false;
+      SaveCreatorsClub = false;
+      SetName = "Daily";
       }
 
     public void SetSaveNone()
@@ -273,12 +289,15 @@ namespace ToolkitForTSW.ViewModels
       SaveManuals = false;
       SaveSettings = false;
       SaveMods = false;
+      SaveCreatorsClub = false;
+      SetName = "Manual";
       }
 
-    public static string CreateBackupSetName()
+    private DateTime? _backupDateTime;
+    public string CreateBackupSetName()
       {
-      DateTime Now = DateTime.Now;
-      return Now.ToString("yyyy-MM-dd$HHmm");
+      _backupDateTime = DateTime.Now;
+      return _backupDateTime?.ToString("yyyy-MM-dd$HHmm");
       }
 
     public void MakeDailyBackup()
@@ -287,6 +306,7 @@ namespace ToolkitForTSW.ViewModels
       var TargetBase = BackupPath + CreateBackupSetName() + "\\";
       var datePart = TargetBase.Substring(0, TargetBase.Length - 6);
       var shouldDo = BackupSetsList.Where(x => x.FullName.Substring(0, x.FullName.Length - 5) == datePart).FirstOrDefault();
+
 
       if (shouldDo == null)
         {
@@ -314,6 +334,8 @@ namespace ToolkitForTSW.ViewModels
       BackupSetsList.Add(new DirectoryInfo(TargetBase));
       SaveSaveGamesFiles(SourceBase, TargetBase, SaveSaveGames);
       SaveScenarioFiles(SourceBase, TargetBase, SaveScenarios);
+      WriteBackupMetaData(TargetBase, CreateMetaData(SetName));
+
       Result += "Backup succeeded for set " + TargetBase;
       }
 
@@ -430,5 +452,112 @@ namespace ToolkitForTSW.ViewModels
         }
       FillBackupList(BackupPath);
       }
+
+    #region backgroundservice     
+    public static bool GetBackupServiceStatus()
+      {
+      //check service
+      var services = ServiceController.GetServices();
+      foreach (var s in services)
+        {
+        if (s.ServiceName == "ToolkitForTSWService")
+          {
+          return true;
+          }
+        }
+      return false;
+      }
+    public static void StartBackupService()
+      {
+      CApps.ExecuteFile("Scripts\\StartBackupService.bat", runAsAdmin: true);
+      }
+
+    public static void StopBackupService()
+      {
+      CApps.ExecuteFile("Scripts\\StopBackupService.bat");
+      }
+
+    public static void SetBackupServiceState()
+      {
+      if (TSWOptions.AutoBackup && !GetBackupServiceStatus())
+        {
+        StartBackupService();
+        }
+      if (!TSWOptions.AutoBackup && GetBackupServiceStatus())
+        {
+        StopBackupService();
+        }
+      }
+
+    #endregion
+
+    #region metadata
+    private string CreateMetaData(string setName)
+      {
+      var output = string.Empty;
+      output += $"Backup type: {setName}\r\n";
+      output += $"Backup date: {_backupDateTime?.ToString("yyyy-MM-dd$HHmm")}\r\n";
+      output += $"Config: {SaveConfig}\r\n";
+      output += $"Savegames: {SaveSaveGames}\r\n";
+      output += $"Screenshots: {SaveScreenShots}\r\n";
+      output += $"Loadingscreens: {SaveLoadingScreens}\r\n";
+      output += $"Logs: {SaveLogs}\r\n";
+      output += $"Crashes: {SaveCrashes}\r\n";
+      output += $"Scenarios: {SaveScenarios}\r\n";
+      output += $"Database: {SaveDatabase}\r\n";
+      output += $"Manuals: {SaveManuals}\r\n";
+      output += $"Settings: {SaveSettings}";
+      output += $"Mods: {SaveMods}\r\n";
+      output += $"Creators Club: {SaveCreatorsClub}\r\n";
+      return output;
+      }
+
+    private static void WriteBackupMetaData(string targetBase, string metaData)
+      {
+      var path = $"{targetBase}Metadata.txt";
+      File.WriteAllText(path, metaData);
+      }
+
+    public bool CanViewMetaData
+      {
+      get
+        {
+        return SelectedBackupSet != null;
+        }
+      }
+
+    public void ViewMetaData()
+      {
+      string metaData = string.Empty;
+      var path = $"{SelectedBackupSet.FullName}\\Metadata.txt";
+      if (File.Exists(path))
+        {
+        metaData = File.ReadAllText(path);
+        }
+      if (string.IsNullOrEmpty(metaData))
+        {
+        metaData = "No metadata available";
+        }
+      MessageBox.Show(metaData, "Metadata", MessageBoxButton.OK, MessageBoxImage.Information);
+      }
+
+
+    public bool CanViewBackupFolder
+      {
+      get
+        {
+        return SelectedBackupSet != null;
+        }
+      }
+    public void ViewBackupFolder()
+      {
+      var path = SelectedBackupSet.FullName;
+      if (Directory.Exists(path))
+        {
+        ProcessHelper.OpenFolder(path);
+        }
+      }
+
+    #endregion
     }
   }

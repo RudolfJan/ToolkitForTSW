@@ -172,7 +172,7 @@ namespace ToolkitForTSW.Settings
     public int BitCount { get; set; }
     public int Frequency { get; set; }
 
-    public override string ToString()
+    public override readonly string ToString()
       {
       return string.Format(System.Globalization.CultureInfo.CurrentCulture,
           "{0} by {1}, {2}, {3} Bit, {4} Hertz",

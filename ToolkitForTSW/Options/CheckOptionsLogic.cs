@@ -98,25 +98,25 @@ namespace ToolkitForTSW.Options
 
     public void SetSteamTSW2ProgramOK()
       {
-      Check.SteamTSW2ProgramOK= !string.IsNullOrEmpty(TSWOptions.SteamTrainSimWorldDirectory)
+      Check.SteamTSW2ProgramOK = !string.IsNullOrEmpty(TSWOptions.SteamTrainSimWorldDirectory)
           && File.Exists(TSWOptions.SteamTrainSimWorldDirectory + "TS2prototype.exe");
       }
 
     public void SetEGSTSW2ProgramOK()
       {
-      Check.EGSTSW2ProgramOK= !string.IsNullOrEmpty(TSWOptions.EGSTrainSimWorldDirectory)
-          && File.Exists(TSWOptions.EGSTrainSimWorldDirectory + "TS2prototype.exe");
+      Check.EGSTSW2ProgramOK = string.IsNullOrEmpty(TSWOptions.EGSTrainSimWorldDirectory)
+          || (!string.IsNullOrEmpty(TSWOptions.EGSTrainSimWorldDirectory) && File.Exists(TSWOptions.EGSTrainSimWorldDirectory + "TS2prototype.exe"));
       }
 
     public void SetToolkitFolderOK()
       {
-      Check.ToolkitFolderOK=!string.IsNullOrEmpty(TSWOptions.ToolkitForTSWFolder)
+      Check.ToolkitFolderOK = !string.IsNullOrEmpty(TSWOptions.ToolkitForTSWFolder)
           && Directory.Exists(TSWOptions.ToolkitForTSWFolder);
       }
 
     public void SetSteamIdOK()
       {
-      Check.SteamIdOk= !string.IsNullOrEmpty(TSWOptions.SteamUserId)
+      Check.SteamIdOk = !string.IsNullOrEmpty(TSWOptions.SteamUserId)
           && !string.IsNullOrEmpty(TSWOptions.SavedSteamScreenshots)
           && Directory.Exists(TSWOptions.SavedSteamScreenshots);
       }

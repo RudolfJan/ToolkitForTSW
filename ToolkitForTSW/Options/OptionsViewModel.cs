@@ -1,10 +1,11 @@
-﻿using Microsoft.Win32;
-using Styles.Library.Helpers;
+﻿using Caliburn.Micro;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using ToolkitForTSW.DataAccess;
 using ToolkitForTSW.Models;
 using ToolkitForTSW.Options;
@@ -14,10 +15,20 @@ using Utilities.Library.TextHelpers;
 namespace ToolkitForTSW
   {
   // local copy of all options, to allow explicit saving them
-  public class OptionsViewModel : Notifier
+  public class OptionsViewModel : Screen
     {
     #region Properties
-
+    private bool _isDirty = false;
+    public bool IsDirty
+      {
+      get { return _isDirty; }
+      set
+        {
+        _isDirty = value;
+        NotifyOfPropertyChange(nameof(IsDirty));
+        NotifyOfPropertyChange(nameof(CanCloseForm));
+        }
+      }
 
     public CheckOptionsLogic Check
       {
@@ -34,7 +45,8 @@ namespace ToolkitForTSW
         _steamTrainSimWorldDirectory = value;
         TSWOptions.SteamTrainSimWorldDirectory = value;
         Check.SetSteamTSW2ProgramOK();
-        OnPropertyChanged("SteamTrainSimWorlDirectory");
+        NotifyOfPropertyChange(nameof(SteamTrainSimWorldDirectory));
+        IsDirty = true;
         }
       }
 
@@ -47,7 +59,8 @@ namespace ToolkitForTSW
         {
         _steamTrainSimWorldProgram = value;
         Check.SetSteamTSW2ProgramOK();
-        OnPropertyChanged("SteamTrainSimWorldProgram");
+        NotifyOfPropertyChange(nameof(SteamTrainSimWorldProgram));
+        IsDirty = true;
         }
       }
 
@@ -61,6 +74,8 @@ namespace ToolkitForTSW
         _egsTrainSimWorldDirectory = value;
         TSWOptions.EGSTrainSimWorldDirectory = value;
         Check.SetEGSTSW2ProgramOK();
+        NotifyOfPropertyChange(nameof(EGSTrainSimWorldDirectory));
+        IsDirty = true;
         }
       }
 
@@ -73,6 +88,8 @@ namespace ToolkitForTSW
         {
         _egsTrainSimWorldProgram = value;
         Check.SetEGSTSW2ProgramOK();
+        NotifyOfPropertyChange(nameof(EGSTrainSimWorldProgram));
+        IsDirty = true;
         }
       }
     private string _egsTrainSimWorldStarter;
@@ -80,7 +97,12 @@ namespace ToolkitForTSW
     public string EGSTrainSimWorldStarter
       {
       get { return _egsTrainSimWorldStarter; }
-      set { _egsTrainSimWorldStarter = value; }
+      set
+        {
+        _egsTrainSimWorldStarter = value;
+        NotifyOfPropertyChange(nameof(EGSTrainSimWorldStarter));
+        IsDirty = true;
+        }
       }
 
 
@@ -97,7 +119,8 @@ namespace ToolkitForTSW
         _SteamProgramDirectory = value;
         TSWOptions.SteamProgramDirectory = value;
         Check.SetSteamFolderOK();
-        OnPropertyChanged("SteamProgramDirectory");
+        NotifyOfPropertyChange(nameof(SteamProgramDirectory));
+        IsDirty = true;
         }
       }
 
@@ -114,7 +137,8 @@ namespace ToolkitForTSW
         _SteamUserId = value;
         TSWOptions.SteamUserId = value;
         Check.SetSteamIdOK();
-        OnPropertyChanged("SteamUserId");
+        NotifyOfPropertyChange(nameof(SteamUserId));
+        IsDirty = true;
         }
       }
 
@@ -124,7 +148,6 @@ namespace ToolkitForTSW
       TrackIRProgram = "";
       TSWOptions.TrackIRProgram = TrackIRProgram;
       Check.SetTrackIROK();
-
       }
 
     public void Clear7Zip()
@@ -137,61 +160,59 @@ namespace ToolkitForTSW
     public void ClearUmodel()
       {
       UAssetUnpacker = "";
-      TSWOptions.UAssetUnpacker=UAssetUnpacker;
+      TSWOptions.UAssetUnpacker = UAssetUnpacker;
       Check.SetUmodelOK();
       }
 
     public void ClearUnreal()
       {
-      Unpacker="";
-      TSWOptions.Unpacker=Unpacker;
+      Unpacker = "";
+      TSWOptions.Unpacker = Unpacker;
       Check.SetUnrealOK();
       }
 
 
-    public void CleartextEditor()
+    public void ClearTextEditor()
       {
-      TextEditor="";
-      TSWOptions.TextEditor=TextEditor;
+      TextEditor = "";
+      TSWOptions.TextEditor = TextEditor;
       Check.SetTextEditorOK();
       }
 
     public void ClearEGS()
       {
-      EGSTrainSimWorldProgram="";
-      EGSTrainSimWorldDirectory="";
+      EGSTrainSimWorldProgram = "";
+      EGSTrainSimWorldDirectory = "";
       TSWOptions.EGSTrainSimWorldDirectory = EGSTrainSimWorldDirectory;
       Check.SetEGSTSW2ProgramOK();
       }
 
     public void ClearSteam()
       {
-      SteamTrainSimWorldProgram="";
-      SteamTrainSimWorldDirectory="";
+      SteamTrainSimWorldProgram = "";
+      SteamTrainSimWorldDirectory = "";
       TSWOptions.SteamTrainSimWorldDirectory = SteamTrainSimWorldDirectory;
       Check.SetSteamTSW2ProgramOK();
       }
 
-
     public void ClearSteamProgramFolder()
       {
-      SteamProgramDirectory="";
-      TSWOptions.SteamProgramDirectory=SteamProgramDirectory;
+      SteamProgramDirectory = "";
+      TSWOptions.SteamProgramDirectory = SteamProgramDirectory;
       Check.SetSteamFolderOK();
       }
 
     public void ClearToolkitFolder()
       {
-      ToolkitForTSWFolder="";
+      ToolkitForTSWFolder = "";
       TSWOptions.ToolkitForTSWFolder = ToolkitForTSWFolder;
       Check.SetToolkitFolderOK();
       }
 
-
     public void ClearBackupFolder()
       {
-      BackupFolder="";
-      TSWOptions.BackupFolder=BackupFolder;
+      BackupFolder = "";
+      TSWOptions.BackupFolder = BackupFolder;
       Check.SetBackupFolderOK();
       }
 
@@ -209,7 +230,8 @@ namespace ToolkitForTSW
         _toolkitForTSWFolder = value;
         TSWOptions.ToolkitForTSWFolder = value;
         Check.SetToolkitFolderOK();
-        OnPropertyChanged("ToolkitForTSWFolder");
+        NotifyOfPropertyChange(nameof(ToolkitForTSWFolder));
+        IsDirty = true;
         }
       }
 
@@ -222,7 +244,8 @@ namespace ToolkitForTSW
         _BackupFolder = value;
         TSWOptions.BackupFolder = value;
         Check.SetBackupFolderOK();
-        OnPropertyChanged("BackupFolder");
+        NotifyOfPropertyChange(nameof(BackupFolder));
+        IsDirty = true;
         }
       }
 
@@ -237,7 +260,8 @@ namespace ToolkitForTSW
       set
         {
         _XMLEditor = value;
-        OnPropertyChanged("XMLEditor");
+        NotifyOfPropertyChange(nameof(XMLEditor));
+        IsDirty = true;
         }
       }
 
@@ -254,7 +278,8 @@ namespace ToolkitForTSW
         _TextEditor = value;
         TSWOptions.TextEditor = value;
         Check.SetTextEditorOK();
-        OnPropertyChanged("TextEditor");
+        NotifyOfPropertyChange(nameof(TextEditor));
+        IsDirty = true;
         }
       }
 
@@ -271,7 +296,8 @@ namespace ToolkitForTSW
         _Unpacker = value;
         TSWOptions.Unpacker = value;
         Check.SetUnrealOK();
-        OnPropertyChanged("Unpacker");
+        NotifyOfPropertyChange(nameof(Unpacker));
+        IsDirty = true;
         }
       }
 
@@ -288,7 +314,8 @@ namespace ToolkitForTSW
         _UAssetUnpacker = value;
         TSWOptions.UAssetUnpacker = value;
         Check.SetUmodelOK();
-        OnPropertyChanged("UAssetUnpacker");
+        NotifyOfPropertyChange(nameof(UAssetUnpacker));
+        IsDirty = true;
         }
       }
 
@@ -302,7 +329,7 @@ namespace ToolkitForTSW
         _trackIRProgram = value;
         TSWOptions.TrackIRProgram = value;
         Check.SetTrackIROK();
-        OnPropertyChanged("TrackIRProgram");
+        NotifyOfPropertyChange(nameof(TrackIRProgram));
         }
       }
 
@@ -319,7 +346,8 @@ namespace ToolkitForTSW
         _SevenZip = value;
         TSWOptions.SevenZip = value;
         Check.SetSevenZipOK();
-        OnPropertyChanged("SevenZip");
+        NotifyOfPropertyChange(nameof(SevenZip));
+        IsDirty = true;
         }
       }
 
@@ -334,7 +362,8 @@ namespace ToolkitForTSW
       set
         {
         _useAdvancedSettings = value;
-        OnPropertyChanged("UseAdvancedSettings");
+        NotifyOfPropertyChange(nameof(UseAdvancedSettings));
+        IsDirty = true;
         }
       }
 
@@ -349,7 +378,8 @@ namespace ToolkitForTSW
       set
         {
         _limitSoundVolumes = value;
-        OnPropertyChanged("LimitSoundVolumes");
+        NotifyOfPropertyChange(nameof(LimitSoundVolumes));
+        IsDirty = true;
         }
       }
 
@@ -363,7 +393,8 @@ namespace ToolkitForTSW
       set
         {
         _AutoBackup = value;
-        OnPropertyChanged("AutoBackup");
+        NotifyOfPropertyChange(nameof(AutoBackup));
+        IsDirty = true;
         }
       }
 
@@ -377,13 +408,12 @@ namespace ToolkitForTSW
       set
         {
         _currentPlatform = value;
-        OnPropertyChanged("CurrentPlatform");
+        NotifyOfPropertyChange(nameof(CurrentPlatform));
+        IsDirty = true;
         }
       }
 
-
     private int RouteId { get; set; } = 0;
-
 
     private ObservableCollection<RouteModel> _RouteList;
     public ObservableCollection<RouteModel> RouteList
@@ -392,7 +422,7 @@ namespace ToolkitForTSW
       set
         {
         _RouteList = value;
-        OnPropertyChanged("RouteList");
+        NotifyOfPropertyChange(nameof(RouteList));
         }
       }
 
@@ -403,7 +433,9 @@ namespace ToolkitForTSW
       set
         {
         _SelectedRoute = value;
-        OnPropertyChanged("SelectedRoute");
+        NotifyOfPropertyChange(nameof(SelectedRoute));
+        NotifyOfPropertyChange(nameof(CanEditRoute));
+        NotifyOfPropertyChange(nameof(CanDeleteRoute));
         }
       }
 
@@ -414,7 +446,7 @@ namespace ToolkitForTSW
       set
         {
         _RouteName = value;
-        OnPropertyChanged("RouteName");
+        NotifyOfPropertyChange(nameof(RouteName));
         }
       }
 
@@ -425,7 +457,8 @@ namespace ToolkitForTSW
       set
         {
         _RouteAbbrev = value;
-        OnPropertyChanged("RouteAbbrev");
+        NotifyOfPropertyChange(nameof(RouteAbbrev));
+        NotifyOfPropertyChange(nameof(CanSaveRoute));
         }
       }
 
@@ -436,7 +469,7 @@ namespace ToolkitForTSW
       set
         {
         _RouteDescription = value;
-        OnPropertyChanged("RouteDescription");
+        NotifyOfPropertyChange(nameof(RouteDescription));
         }
       }
 
@@ -447,7 +480,7 @@ namespace ToolkitForTSW
       set
         {
         _ScenarioPlannerRouteName = value;
-        OnPropertyChanged("ScenarioPlannerRouteName");
+        NotifyOfPropertyChange(nameof(ScenarioPlannerRouteName));
         }
       }
     private string _ScenarioPlannerRouteString;
@@ -457,7 +490,7 @@ namespace ToolkitForTSW
       set
         {
         _ScenarioPlannerRouteString = value;
-        OnPropertyChanged("ScenarioPlannerRouteString");
+        NotifyOfPropertyChange(nameof(ScenarioPlannerRouteString));
         }
       }
 
@@ -468,7 +501,7 @@ namespace ToolkitForTSW
       set
         {
         _RouteImagePath = value;
-        OnPropertyChanged("RouteImagePath");
+        NotifyOfPropertyChange(nameof(RouteImagePath));
         }
       }
 
@@ -477,8 +510,9 @@ namespace ToolkitForTSW
 
     #region Constructor
 
-    public OptionsViewModel()
+    protected override void OnViewLoaded(object view)
       {
+      base.OnViewLoaded(view);
       LoadOptions();
       }
 
@@ -503,10 +537,17 @@ namespace ToolkitForTSW
       EGSTrainSimWorldStarter = TSWOptions.EGSTrainSimWorldStarter;
       EGSTrainSimWorldDirectory = TSWOptions.EGSTrainSimWorldDirectory;
       SteamTrainSimWorldDirectory = TSWOptions.SteamTrainSimWorldDirectory;
-      SteamTrainSimWorldProgram = SteamTrainSimWorldDirectory + "TS2Prototype.exe";
-      EGSTrainSimWorldProgram = EGSTrainSimWorldDirectory + "TS2Prototype.exe";
+      if (!string.IsNullOrEmpty(SteamTrainSimWorldDirectory))
+        {
+        SteamTrainSimWorldProgram = SteamTrainSimWorldDirectory + "TS2Prototype.exe";
+        }
+      if (!string.IsNullOrEmpty(EGSTrainSimWorldDirectory))
+        {
+        EGSTrainSimWorldProgram = EGSTrainSimWorldDirectory + "TS2Prototype.exe";
+        }
       CurrentPlatform = TSWOptions.CurrentPlatform;
       RouteList = new ObservableCollection<RouteModel>(RouteDataAccess.GetAllRoutes());
+      IsDirty = false; // Tricky, you need this because IsDirty will be set on any data change afterwards
       // ClearFileOptions(); //DEBUG
       }
 
@@ -556,7 +597,7 @@ namespace ToolkitForTSW
         LocateTSW2Program();
         GuessUserId();
         }
-      if(string.IsNullOrEmpty(SteamUserId))
+      if (string.IsNullOrEmpty(SteamUserId))
         {
         GuessUserId();
         }
@@ -677,7 +718,15 @@ namespace ToolkitForTSW
       TSWOptions.SteamProgramDirectory = TextHelper.AddBackslash(SteamProgramDirectory);
       TSWOptions.SteamUserId = SteamUserId;
       TSWOptions.ToolkitForTSWFolder = TextHelper.AddBackslash(ToolkitForTSWFolder);
-      TSWOptions.BackupFolder = TextHelper.AddBackslash(BackupFolder);
+      if (string.IsNullOrEmpty(BackupFolder))
+        {
+        TSWOptions.BackupFolder = "";
+        }
+      else
+        {
+        TSWOptions.BackupFolder = TextHelper.AddBackslash(BackupFolder);
+        }
+
       TSWOptions.XmlEditor = XMLEditor;
       TSWOptions.TextEditor = TextEditor;
       TSWOptions.SevenZip = SevenZip;
@@ -687,12 +736,28 @@ namespace ToolkitForTSW
       TSWOptions.UseAdvancedSettings = UseAdvancedSettings;
       TSWOptions.LimitSoundVolumes = LimitSoundVolumes;
       TSWOptions.AutoBackup = AutoBackup;
+      // BackupViewModel.SetBackupServiceState(); //TODO fix this
       TSWOptions.EGSTrainSimWorldStarter = EGSTrainSimWorldStarter;
-      SteamTrainSimWorldDirectory = Path.GetDirectoryName(SteamTrainSimWorldProgram);
-      EGSTrainSimWorldDirectory = Path.GetDirectoryName(EGSTrainSimWorldProgram);
-      TSWOptions.EGSTrainSimWorldDirectory = TextHelper.AddBackslash(EGSTrainSimWorldDirectory);
-      TSWOptions.SteamTrainSimWorldDirectory = TextHelper.AddBackslash(SteamTrainSimWorldDirectory);
 
+      EGSTrainSimWorldDirectory = Path.GetDirectoryName(EGSTrainSimWorldProgram);
+      if (EGSTrainSimWorldDirectory == null)
+        {
+
+        TSWOptions.EGSTrainSimWorldDirectory = "";
+        }
+      else
+        {
+        TSWOptions.EGSTrainSimWorldDirectory = TextHelper.AddBackslash(EGSTrainSimWorldDirectory);
+        }
+      SteamTrainSimWorldDirectory = Path.GetDirectoryName(SteamTrainSimWorldProgram);
+      if (SteamTrainSimWorldDirectory == null)
+        {
+        TSWOptions.SteamTrainSimWorldDirectory = "";
+        }
+      else
+        {
+        TSWOptions.SteamTrainSimWorldDirectory = TextHelper.AddBackslash(SteamTrainSimWorldDirectory);
+        }
       var oldPlatform = TSWOptions.CurrentPlatform;
       TSWOptions.CurrentPlatform = CurrentPlatform;
       if (CurrentPlatform == PlatformEnum.Steam)
@@ -706,12 +771,13 @@ namespace ToolkitForTSW
 
       TSWOptions.WriteToRegistry();
       CheckOptionsLogic.Instance.SetAllOptionChecks();
-      TSWOptions.CreateDirectories();
+      TSWOptions.CreateDirectories(TSWOptions.ToolkitForTSWFolder);
       TSWOptions.CopyManuals();
       if (CurrentPlatform != oldPlatform)
         {
         PlatformChangedEventHandler.SetPlatformChangedEvent(new PlatformChangedEventArgs(oldPlatform, CurrentPlatform));
         }
+      IsDirty = false;
       }
 
     // try to guess the correct user for screenshots by having a look at the file system.
@@ -740,14 +806,46 @@ namespace ToolkitForTSW
         }
       }
 
-    public void CancelOptions()
+    public void Reset()
       {
-      LoadOptions(); // Revert all values, this looks a bit clumsy but we need to keep the
-                     // OptionsviewModel and TSWOptions in sync to make the OptionsChecker work.
-                     // Would love a better solution ....
+      LoadOptions();
+      }
+
+    public bool CanCloseForm
+      {
+      get
+        {
+        return !IsDirty;
+        }
+      }
+
+    public Task CancelForm()
+      {
+      return TryCloseAsync(false);
+      }
+    public Task CloseForm()
+      {
+      return TryCloseAsync(true);
       }
 
     #region RouteEditor
+    public bool CanEditRoute
+      {
+      get { return SelectedRoute != null; }
+      }
+
+    public bool CanDeleteRoute
+      {
+      get
+        {
+        return SelectedRoute != null;
+        }
+      }
+
+    public bool CanSaveRoute
+      {
+      get { return RouteAbbrev != null && RouteAbbrev.Length >= 2; }
+      }
 
     public void LoadRouteList()
       {

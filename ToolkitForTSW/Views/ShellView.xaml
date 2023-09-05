@@ -8,16 +8,32 @@
     <StackPanel>
       <Image MaxHeight="250" Margin="10"
              Source="../Images/MainWindowImage.png" />
-      <TextBlock MaxWidth="500" MaxHeight="60"
-                 FontSize="16" FontWeight="Bold"
-                 Style="{StaticResource TextBlockDefault}"
-                 TextWrapping="Wrap">
-        Important. Use this Toolkit only for TSW2! For TSW2020 download TSWTools, which is a similar program
-      </TextBlock>
-      <TextBlock FontSize="12" FontWeight="Bold"
-                 Foreground="Red"
-                 Style="{StaticResource TextBlockDefault}"
-                 Text="{Binding CurrentPlatformText, NotifyOnSourceUpdated=True, Mode=TwoWay}" />
+      <Border Style="{StaticResource BorderDefault}">
+        <StackPanel>
+          <TextBlock MaxWidth="500" MaxHeight="60"
+                     FontSize="16" FontWeight="Bold"
+                     Style="{StaticResource TextBlockDefault}"
+                     TextWrapping="Wrap">
+            Important. Use this Toolkit only for TSW3! For TSW2 use the TSW2 version of ToolkitForTSW. For TSW2020 use TSWTools
+          </TextBlock>
+          <TextBlock FontSize="12" FontWeight="Bold"
+                     Foreground="Red"
+                     Style="{StaticResource TextBlockDefault}"
+                     Text="{Binding CurrentPlatformText, NotifyOnSourceUpdated=True, Mode=TwoWay}" />
+
+          <WrapPanel>
+            <!--  TODO Warning, the blocks below are hidden, awaiting implementation of the background service  -->
+
+            <Border Background="{Binding BackupServiceActive, Converter={StaticResource BoolToColorConverter}, ConverterParameter=SeaGreen;OrangeRed;1.0, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource ColorRectangleBig}"
+                    Visibility="Hidden" />
+            <TextBlock Style="{StaticResource TextBlockDefault}"
+                       Text="Backup Service Status" Visibility="Hidden" />
+          </WrapPanel>
+
+        </StackPanel>
+      </Border>
+
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition />
@@ -29,9 +45,9 @@
           <StackPanel>
 
             <TextBlock Style="{StaticResource HeaderTextBlock}">Utilities</TextBlock>
-            <Button Name="OptionsButton" Click="OnOptionsButtonClicked"
+            <Button Name="Options"
                     Style="{StaticResource WideButton}"
-                    ToolTip="Settings for TSWTools">
+                    ToolTip="Settings for ToolkitForTSW">
               Options
             </Button>
             <Button Name="LogViewer"
@@ -43,7 +59,7 @@
                     IsEnabled="{Binding Check.Check.BackupFolderOK}"
                     Style="{StaticResource WideButton}"
                     ToolTip="Make a backup of your saved game data and avoid the risk of loosing progress">
-              Backup save area
+              Backups
             </Button>
             <Button Name="DeleteIntroMovies"
                     IsEnabled="{Binding Check.Check.BackupFolderOK}"
@@ -94,12 +110,12 @@
             <Button Name="LaunchTSW"
                     Style="{StaticResource WideButton}"
                     ToolTip="Launch TSW with additional settings">
-              Launch TSW2
+              Launch TSW
             </Button>
             <Button Name="EditSettings"
                     Style="{StaticResource WideButton}"
                     ToolTip="Edit your TSW settings and create several different setting collections">
-              Edit TSW2 settings
+              Edit TSW settings
             </Button>
 
             <Button Name="RadioStations"
@@ -144,10 +160,16 @@
               ToolkitForTSW manual
             </Button>
             <Button Name="GetStartersGuide"
-                    IsEnabled="{Binding Check.Check.ToolkitFolderOK}"
+                    IsEnabled="{Binding CanGetStartersGuide}"
                     Style="{StaticResource WideButton}"
-                    ToolTip="You go the TSW starters guide included with TSWTools. Read it here!">
-              TSW2 Starters guide
+                    ToolTip="You get the TSW starters guide included with ToolkitForTSW. Read it here!">
+              Starters guide
+            </Button>
+            <Button Name="GetAdvancedGuide"
+                    IsEnabled="{Binding CanGetAdvancedGuide}"
+                    Style="{StaticResource WideButton}"
+                    ToolTip="You get the TSW advanced users' guide included with ToolkitForTSW. Read it here!">
+              Advanced Users guide
             </Button>
             <Button Name="GetRouteGuides"
                     IsEnabled="{Binding Check.Check.ToolkitFolderOK}"

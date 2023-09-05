@@ -1,7 +1,5 @@
 ﻿using SQLiteDatabase.Library;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using ToolkitForTSW.Models;
 
 namespace ToolkitForTSW.DataAccess
@@ -32,14 +30,14 @@ namespace ToolkitForTSW.DataAccess
       {
       var sql = $"INSERT OR IGNORE INTO ModModSet (ModId, ModSetId) " +
                 $"VALUES(@ModId, @ModSetId);{DbAccess.LastRowInsertQuery}";
-      return DbAccess.SaveData<dynamic>(sql, new { modModSet.ModId, modModSet.ModSetId});
+      return DbAccess.SaveData<dynamic>(sql, new { modModSet.ModId, modModSet.ModSetId });
       }
 
     public static List<ModModel> GetAllModsPerModSet(int modSetId)
       {
       var sql = "SELECT Mods.Id, Mods.ModName, Mods.FileName, Mods.FilePath, Mods.ModDescription, Mods.ModImage, Mods.ModSource, Mods.ModType, Mods.DLCName FROM Mods, ModModSet " +
                 "WHERE Mods.Id=ModModSet.ModId AND ModModSet.ModSetId= @modSetId;";
-      return DbAccess.LoadData<ModModel, dynamic>(sql, new { modSetId});
+      return DbAccess.LoadData<ModModel, dynamic>(sql, new { modSetId });
       }
 
     public static int UpdateModModSet(ModModSetModel modModSet)
@@ -54,6 +52,12 @@ namespace ToolkitForTSW.DataAccess
       {
       var sql = "DELETE FROM ModModSet WHERE Id=@id";
       DbAccess.SaveData<dynamic>(sql, new { id });
+      }
+
+    public static void DeleteAllModModSets()
+      {
+      var sql = "DELETE FROM ModModSet";
+      DbAccess.SaveData<dynamic>(sql, new { });
       }
 
     internal static void DeleteModFromModSet(int modId, int modSetId)

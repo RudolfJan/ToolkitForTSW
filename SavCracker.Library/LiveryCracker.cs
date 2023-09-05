@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿// Ignore Spelling: sav
+
 using SavCracker.Library.Models;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace SavCracker.Library
@@ -15,7 +15,7 @@ namespace SavCracker.Library
     public LiveryCracker()
       {
       var liveryFile = "D:\\UGCLiveries_0 two empties.sav";
-      var jsonFile = $"{Path.GetDirectoryName(liveryFile)}{Path.GetFileNameWithoutExtension(liveryFile)}.json";
+      //var jsonFile = $"{Path.GetDirectoryName(liveryFile)}{Path.GetFileNameWithoutExtension(liveryFile)}.json";
       savCracker = new SavCracker(liveryFile);
       ReadHeader();
       ReadLiveryArray();
@@ -53,13 +53,16 @@ namespace SavCracker.Library
         header.CustomFormatList.Add(entry);
         }
       header.SaveGameType = savCracker.GetString();
-       }
+      }
 
     public void ReadLiveryArray()
       {
-      var arrayName= savCracker.GetString();
+      var arrayName = savCracker.GetString();
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
       var arrayType = savCracker.GetString();
-      var reskins= savCracker.ExtractArrayProperty(arrayName);
+
+      var reskins = savCracker.ExtractArrayProperty(arrayName);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
       }
     }
   }

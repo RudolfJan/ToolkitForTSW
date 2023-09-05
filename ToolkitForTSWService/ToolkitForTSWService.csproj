@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows7.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon>Images\LuaCreator.ico</ApplicationIcon>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
+    <UserSecretsId>dotnet-ToolkitForTSWService-443F168E-B694-4DB0-89BE-744C0F490EB9</UserSecretsId>
+    <ApplicationIcon>LuaCreator.ico</ApplicationIcon>
+    <Company>Holland Hiking</Company>
+    <Copyright>(C) 2022 Rudolf Heijink</Copyright>
+    <PackageProjectUrl>https://github.com/RudolfJan/ToolkitForTSW</PackageProjectUrl>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="LuaCreator.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\RudolfLibraries\Utilities.Library\Utilities.Library.csproj" />
+  </ItemGroup>
+</Project>

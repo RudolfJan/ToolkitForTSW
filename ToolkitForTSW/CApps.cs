@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Logging.Library;
+using System;
 using System.Diagnostics; // needed for Process class
 using System.IO;
-using System.Windows;
-using Logging.Library;
 using Utilities.Library;
 using Utilities.Library.TextHelpers;
 
@@ -69,14 +68,14 @@ namespace ToolkitForTSW
       }
 
 
-    public static String ExecuteFile(FileInfo Filepath, String Arguments = "")
+    public static String ExecuteFile(FileInfo Filepath, String Arguments = "", bool runAsAdmin = false)
       {
-      return ExecuteFile(Filepath.FullName, Arguments);
+      return ExecuteFile(Filepath.FullName, Arguments, runAsAdmin: runAsAdmin);
       }
 
-    public static String ExecuteFile(String Filepath, String Arguments = "")
+    public static String ExecuteFile(String Filepath, String Arguments = "", bool runAsAdmin = false)
       {
-      return ProcessHelper.RunProcess(Filepath, Arguments, CreateNoWindow: false);
+      return ProcessHelper.RunProcess(Filepath, Arguments, CreateNoWindow: false, RunAsAdmin: runAsAdmin);
       }
 
     public static String ExecuteFileMinimized(String Filepath, String Arguments = "")
@@ -106,7 +105,7 @@ namespace ToolkitForTSW
       return Result;
       }
 
-     public static String UnPack(String InputFile, String OutputDirectory)
+    public static String UnPack(String InputFile, String OutputDirectory)
       {
       String Result = String.Empty;
       try
@@ -143,7 +142,7 @@ namespace ToolkitForTSW
         }
       }
 
-     public static String LaunchUrl(String Filepath, Boolean IsMinimised)
+    public static String LaunchUrl(String Filepath, Boolean IsMinimised)
       {
       var OpenFileProcess = new Process();
       try
@@ -171,5 +170,5 @@ namespace ToolkitForTSW
                           "\r\nMake sure to install it at the correct location");
         }
       }
-     }
+    }
   }

@@ -87,8 +87,13 @@
                 <DataGridTextColumn Binding="{Binding SaveName}" Header=" SaveName" />
               </DataGrid.Columns>
             </DataGrid>
+            <TextBlock Style="{StaticResource TextBlockDefault}">Hint: select a profile to use a saved game from the archive</TextBlock>
             <WrapPanel>
-              <Button Name="UseArchivedGameSave" Style="{StaticResource ButtonDefault}">Use as active</Button>
+              <Button Name="UseArchivedGameSave"
+                      Style="{StaticResource ButtonDefault}"
+                      ToolTip="Make sure to select a profile as well">
+                Use as active
+              </Button>
 
               <Button Name="DeleteGameSave" Style="{StaticResource ButtonNarrow}">Delete</Button>
             </WrapPanel>
@@ -103,7 +108,7 @@
               Edit Save Game meta data
             </TextBlock>
             <WrapPanel>
-              <DataGrid Width="100" Height="150"
+              <DataGrid Width="140" Height="150"
                         ItemsSource="{Binding ActivityTagList}"
                         SelectedItem="{Binding SelectedActivityTag}"
                         Style="{StaticResource DataGridReadOnly}">
@@ -111,7 +116,7 @@
                   <DataGridTextColumn Binding="{Binding TagName}" Header="Activity" />
                 </DataGrid.Columns>
               </DataGrid>
-              <DataGrid Width="100" Height="150"
+              <DataGrid Width="140" Height="150"
                         ItemsSource="{Binding FilteredRouteTagList}"
                         SelectedItem="{Binding SelectedRouteTag}"
                         Style="{StaticResource DataGridReadOnly}">
