@@ -277,31 +277,7 @@
                                        LabelText="Steam user key" LabelWidth="100"
                                        TextBoxText="{Binding SteamUserId, Mode=TwoWay}"
                                        ToolTip="To obtain the Steam screenshots, ToolkitForTSW needs the steam Id. If it is guessed wrong, provide it here" />
-            <userControls:LabelTextBox Width="340" HorizontalAlignment="Left"
-                                       LabelText="EGS start Url" LabelWidth="100"
-                                       TextBoxText="{Binding EGSTrainSimWorldStarter, Mode=TwoWay}"
-                                       ToolTip="You need to set this if you want to launch TSW2 using Epic Games Store, seen user manual for details" />
-
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-              </Grid.ColumnDefinitions>
-              <StackPanel Grid.Column="0">
-                <TextBlock Style="{StaticResource TextBlockDefault}">Platform:</TextBlock>
-              </StackPanel>
-              <StackPanel Grid.Column="1">
-                <RadioButton Margin="5" Focusable="False"
-                             IsChecked="{Binding Path=CurrentPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=NotSet}"
-                             IsEnabled="False" IsHitTestVisible="False">
-                  Undefined
-                </RadioButton>
-                <RadioButton Margin="5" IsChecked="{Binding Path=CurrentPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Steam}">Steam</RadioButton>
-                <RadioButton Margin="5" IsChecked="{Binding Path=CurrentPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=EpicGamesStore}">Epic Games Store</RadioButton>
-              </StackPanel>
-            </Grid>
-
+ 
 
             <CheckBox Name="UseAdvancedSettingsCheckBox" IsChecked="{Binding UseAdvancedSettings}">Use advanced settings by default</CheckBox>
             <CheckBox Name="LimitSoundVolumesCheckBox" IsChecked="{Binding LimitSoundVolumes}">Limit sound volumes by default</CheckBox>

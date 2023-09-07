@@ -355,6 +355,8 @@ namespace ToolkitForTSW
       }
 
     public static string Installer { get; set; } = string.Empty;
+    public static object GameEdition { get; set; } = string.Empty;
+    public static int GameEditionId { get; internal set; }
 
 
     #endregion
@@ -370,9 +372,9 @@ namespace ToolkitForTSW
       {
       return platform switch
         {
-          PlatformEnum.NotSet => "Platform not set",
-          PlatformEnum.Steam => "Steam",
-          PlatformEnum.EpicGamesStore => "Epic Game Store",
+          PlatformEnum.NotSet => $"{GameEdition} Platform not set",
+          PlatformEnum.Steam => $"{GameEdition} Steam",
+          PlatformEnum.EpicGamesStore => $"{GameEdition} Epic Game Store",
           _ => "Platform unknown",
           };
       }

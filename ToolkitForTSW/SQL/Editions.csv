@@ -1,0 +1,5 @@
+"Id","EditionOrder","EditionName","EditionLongName","SteamGameId","SteamProgramPath","EGSProgramPath","Selected","Description"
+0,1,"TSW2020","TS2Prototype","24010","","",0,"Release in 2017"
+0,2,"TSW2","TrainSimWorld2","1282590","","",0,"Release in 2021"
+0,3,"TSW3","TrainSimWorld3","1944790","","",0,"Release in 2022"
+0,4,"TSW4","TrainSimWorld4","2362300","","",1,"Release in 2023"

@@ -10,17 +10,16 @@
              Source="../Images/MainWindowImage.png" />
       <Border Style="{StaticResource BorderDefault}">
         <StackPanel>
-          <TextBlock MaxWidth="500" MaxHeight="60"
+          <WrapPanel>
+            <Button Name="ChangePlatform" Width="150" Style="{StaticResource ButtonWide}">
+            Change Edition/Platform
+            </Button>
+           <TextBlock MaxWidth="500" MaxHeight="60"
                      FontSize="16" FontWeight="Bold"
-                     Style="{StaticResource TextBlockDefault}"
-                     TextWrapping="Wrap">
-            Important. Use this Toolkit only for TSW3! For TSW2 use the TSW2 version of ToolkitForTSW. For TSW2020 use TSWTools
-          </TextBlock>
-          <TextBlock FontSize="12" FontWeight="Bold"
                      Foreground="Red"
                      Style="{StaticResource TextBlockDefault}"
                      Text="{Binding CurrentPlatformText, NotifyOnSourceUpdated=True, Mode=TwoWay}" />
-
+          </WrapPanel>
           <WrapPanel>
             <!--  TODO Warning, the blocks below are hidden, awaiting implementation of the background service  -->
 

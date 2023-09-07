@@ -93,9 +93,9 @@ namespace ToolkitForTSW
             File.Copy(dbSource, dbTarget);
             // remove data from modsdatabase
             InitDatabase();
-            ModDataAccess.DeleteAllMods();
-            ModSetDataAccess.DeleteAllModSets();
-            ModModSetDataAccess.DeleteAllModModSets();
+            //ModDataAccess.DeleteAllMods();
+            //ModSetDataAccess.DeleteAllModSets();
+            //ModModSetDataAccess.DeleteAllModModSets();
             }
           else
             {
@@ -111,6 +111,12 @@ namespace ToolkitForTSW
         {
         InitDatabase();
         }
+      }
+    public static void InitializeEdition()
+      {
+      EditionDataAccess.LoadEditionsFromCSV();
+      TSWOptions.GameEdition = EditionDataAccess.GetActiveEdition();
+      TSWOptions.GameEditionId = EditionDataAccess.GetActiveEditionId();
       }
 
     private static void MakeBackup()

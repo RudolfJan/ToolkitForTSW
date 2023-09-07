@@ -36,7 +36,7 @@ namespace ToolkitForTSW.DataAccess
       return DbAccess.LoadData<string, dynamic>(sql, new { settingId }).FirstOrDefault();
       }
 
-   
+
     public static int InsertEngineIniSetting(EngineIniSettingsModel setting)
       {
       var sql = $"INSERT OR IGNORE INTO EngineIniSettings (SettingName, SettingDescription, MinValue, MaxValue, DefaultValue, ValueType) " +
@@ -56,9 +56,9 @@ namespace ToolkitForTSW.DataAccess
     private static int UpdateEngineIniDescription(string settingName, string settingDescription)
       {
       var sql = "UPDATE OR IGNORE EngineIniSettings SET SettingDescription=@settingDescription " +
-                "WHERE SettingName=@SettingName;" +
+                "WHERE SettingName=@settingName;" +
                 $"{DbAccess.LastRowInsertQuery}";
-      return DbAccess.SaveData<dynamic>(sql, new { settingName, settingDescription});
+      return DbAccess.SaveData<dynamic>(sql, new { settingName, settingDescription });
       }
 
     public static void DeleteEngineIniSetting(int id)
@@ -120,7 +120,7 @@ namespace ToolkitForTSW.DataAccess
           var settingName = "";
           var settingDescription = "";
           var row = 1;
-          var rangeUsed= ws.RangeUsed();
+          var rangeUsed = ws.RangeUsed();
           int maxRows = rangeUsed.LastRowUsed().RowNumber();
           while (row < maxRows)
             {
@@ -131,12 +131,12 @@ namespace ToolkitForTSW.DataAccess
               range = ws.Range(address, address);
               }
             settingName = ws.Cell(row, 1).Value.ToString();
-            settingDescription=string.Empty;
+            settingDescription = string.Empty;
             foreach (var cell in range.Cells())
               {
               settingDescription += cell.CellRight().Value.ToString() + "\r\n";
               }
-            UpdateEngineIniDescription(settingName,settingDescription);
+            UpdateEngineIniDescription(settingName, settingDescription);
             row += range.Cells().Count();
             }
           }

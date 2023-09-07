@@ -398,20 +398,7 @@ namespace ToolkitForTSW
         }
       }
 
-    private PlatformEnum _currentPlatform = PlatformEnum.NotSet;
-    public PlatformEnum CurrentPlatform
-      {
-      get
-        {
-        return _currentPlatform;
-        }
-      set
-        {
-        _currentPlatform = value;
-        NotifyOfPropertyChange(nameof(CurrentPlatform));
-        IsDirty = true;
-        }
-      }
+
 
     private int RouteId { get; set; } = 0;
 
@@ -545,7 +532,7 @@ namespace ToolkitForTSW
         {
         EGSTrainSimWorldProgram = EGSTrainSimWorldDirectory + "TS2Prototype.exe";
         }
-      CurrentPlatform = TSWOptions.CurrentPlatform;
+
       RouteList = new ObservableCollection<RouteModel>(RouteDataAccess.GetAllRoutes());
       IsDirty = false; // Tricky, you need this because IsDirty will be set on any data change afterwards
       // ClearFileOptions(); //DEBUG
@@ -758,26 +745,11 @@ namespace ToolkitForTSW
         {
         TSWOptions.SteamTrainSimWorldDirectory = TextHelper.AddBackslash(SteamTrainSimWorldDirectory);
         }
-      var oldPlatform = TSWOptions.CurrentPlatform;
-      TSWOptions.CurrentPlatform = CurrentPlatform;
-      if (CurrentPlatform == PlatformEnum.Steam)
-        {
-        TSWOptions.TrainSimWorldDirectory = SteamTrainSimWorldDirectory;
-        }
-      if (CurrentPlatform == PlatformEnum.EpicGamesStore)
-        {
-        TSWOptions.TrainSimWorldDirectory = EGSTrainSimWorldDirectory;
-        }
 
       TSWOptions.WriteToRegistry();
       CheckOptionsLogic.Instance.SetAllOptionChecks();
       TSWOptions.CreateDirectories(TSWOptions.ToolkitForTSWFolder);
       TSWOptions.CopyManuals();
-      if (CurrentPlatform != oldPlatform)
-        {
-        PlatformChangedEventHandler.SetPlatformChangedEvent(new PlatformChangedEventArgs(oldPlatform, CurrentPlatform));
-        }
-      IsDirty = false;
       }
 
     // try to guess the correct user for screenshots by having a look at the file system.

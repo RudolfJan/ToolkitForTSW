@@ -17,7 +17,7 @@ namespace ToolkitForTSW.ViewModels
     {
     private readonly IEventAggregator _events;
     private readonly IWindowManager _windowManager;
-    private string _currentPlatformText = $"Current platform: {TSWOptions.GetPlatformDisplayString(TSWOptions.CurrentPlatform)}";
+    private string _currentPlatformText;
     public string CurrentPlatformText
       {
       get
@@ -70,9 +70,10 @@ namespace ToolkitForTSW.ViewModels
       TSWOptions.ReadFromRegistry();
       TSWOptions.CreateDirectories(TSWOptions.ToolkitForTSWFolder); // TODO this method creates the folders, but also sets the option names for folders. These roles must be refactored to avoid double logic.
       InitializeDataLogic.InitDatabase(); //TODo, logic to make this not happen if the database is already initialized properly
+      InitializeDataLogic.InitializeEdition(); // Set the TSW version you are using
       InitializeDataLogic.FolderAndFileSetup();
       InitializeDataLogic.SevenZipSetup();
-
+      CurrentPlatformText = $"Current platform: {TSWOptions.GetPlatformDisplayString(TSWOptions.CurrentPlatform)}";
       var optionsCheckResult = InitializeDataLogic.CheckOptions();
 
       CheckOptionsMessager(optionsCheckResult, _windowManager);
@@ -121,6 +122,11 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
+    public Task ChangePlatform(string platform)
+      {
+      var viewmodel = IoC.Get<ChangePlatformViewModel>();
+      return _windowManager.ShowDialogAsync(viewmodel);
+      }
     public Task Options()
       {
       var viewmodel = IoC.Get<OptionsViewModel>();
@@ -250,7 +256,14 @@ namespace ToolkitForTSW.ViewModels
         LogCollectionManager.LogEvents.Add(args.EntryClass);
         var message = args.EntryClass.LogEntry;
         var viewmodel = IoC.Get<NotificationViewModel>();
-        viewmodel.Message = message;
+        if (message.Length > 100)
+          {
+          viewmodel.Message = message.Substring(0, 100); //Prevents this simple window tho clutter the whole screen
+          }
+        else
+          {
+          viewmodel.Message = message;
+          }
         _windowManager.ShowWindowAsync(viewmodel);
         }
       }
