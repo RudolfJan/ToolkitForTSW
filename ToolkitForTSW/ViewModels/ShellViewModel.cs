@@ -68,9 +68,10 @@ namespace ToolkitForTSW.ViewModels
       base.OnViewLoaded(view);
       await FirstRun(_windowManager);
       TSWOptions.ReadFromRegistry();
-      TSWOptions.CreateDirectories(TSWOptions.ToolkitForTSWFolder); // TODO this method creates the folders, but also sets the option names for folders. These roles must be refactored to avoid double logic.
+      TSWOptions.CreateToolkitFolder(TSWOptions.ToolkitForTSWFolder);
       InitializeDataLogic.InitDatabase(); //TODo, logic to make this not happen if the database is already initialized properly
       InitializeDataLogic.InitializeEdition(); // Set the TSW version you are using
+      TSWOptions.CreateDirectories($"{TSWOptions.ToolkitForTSWFolder}"); // TODO this method creates the folders, but also sets the option names for folders. These roles must be refactored to avoid double logic.
       InitializeDataLogic.FolderAndFileSetup();
       InitializeDataLogic.SevenZipSetup();
       CurrentPlatformText = $"Current platform: {TSWOptions.GetPlatformDisplayString(TSWOptions.CurrentPlatform)}";

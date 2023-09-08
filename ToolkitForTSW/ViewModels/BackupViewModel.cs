@@ -112,7 +112,6 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-
     private bool _saveScenarios;
     public bool SaveScenarios
       {
@@ -179,7 +178,6 @@ namespace ToolkitForTSW.ViewModels
         }
       }
 
-
     private string _BackupPath;
     public string BackupPath
       {
@@ -206,7 +204,11 @@ namespace ToolkitForTSW.ViewModels
     public BackupViewModel()
       {
       BackupSetsList = new BindableCollection<DirectoryInfo>();
-      BackupPath = $"{TSWOptions.BackupFolder}{TSWOptions.GetPlatformFolderName(TSWOptions.CurrentPlatform)}\\";
+      if (!string.IsNullOrEmpty(TSWOptions.GameEdition) && !string.IsNullOrEmpty(TSWOptions.GetPlatformFolderName(TSWOptions.CurrentPlatform)))
+        {
+        BackupPath = $"{TSWOptions.BackupFolder}{TSWOptions.GameEdition}\\{TSWOptions.GetPlatformFolderName(TSWOptions.CurrentPlatform)}\\";
+        Directory.CreateDirectory(BackupPath);
+        }
       FillBackupList(BackupPath);
       SetSaveDefault();
 
@@ -220,8 +222,8 @@ namespace ToolkitForTSW.ViewModels
         Log.Trace($"Backup folder {backupPath} does not exist. Did you forget to save your options", LogEventType.Error);
         }
       DirectoryInfo DirInfo = new DirectoryInfo(backupPath);
-      var Dirs = DirInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
-      foreach (var X in Dirs)
+      DirectoryInfo[] Dirs = DirInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
+      foreach (DirectoryInfo X in Dirs)
         {
         BackupSetsList.Add(X);
         }
@@ -303,10 +305,9 @@ namespace ToolkitForTSW.ViewModels
     public void MakeDailyBackup()
       {
       FillBackupList(BackupPath);
-      var TargetBase = BackupPath + CreateBackupSetName() + "\\";
-      var datePart = TargetBase.Substring(0, TargetBase.Length - 6);
-      var shouldDo = BackupSetsList.Where(x => x.FullName.Substring(0, x.FullName.Length - 5) == datePart).FirstOrDefault();
-
+      string TargetBase = BackupPath + CreateBackupSetName() + "\\";
+      string datePart = TargetBase.Substring(0, TargetBase.Length - 6);
+      DirectoryInfo shouldDo = BackupSetsList.Where(x => x.FullName.Substring(0, x.FullName.Length - 5) == datePart).FirstOrDefault();
 
       if (shouldDo == null)
         {
@@ -318,9 +319,9 @@ namespace ToolkitForTSW.ViewModels
 
     public void MakeBackup()
       {
-      var SourceBase = TSWOptions.GetSaveLocationPath();
-      var ToolkitBase = TSWOptions.ToolkitForTSWFolder;
-      var TargetBase = BackupPath + CreateBackupSetName() + "\\";
+      string SourceBase = TSWOptions.GetSaveLocationPath();
+      string ToolkitBase = TSWOptions.ToolkitForTSWFolder;
+      string TargetBase = BackupPath + CreateBackupSetName() + "\\";
       BackUpPart(SourceBase, TargetBase, "Saved\\Config\\", SaveConfig);
       BackUpPart(SourceBase, TargetBase, "Saved\\Screenshots\\", SaveScreenShots);
       BackUpPart(SourceBase, TargetBase, "Saved\\LoadingScreens\\", SaveLoadingScreens);
@@ -328,14 +329,13 @@ namespace ToolkitForTSW.ViewModels
       BackUpPart(SourceBase, TargetBase, "Saved\\Crashes\\", SaveCrashes);
       BackUpPart(SourceBase, TargetBase, "Saved\\PersistentDownloadDir\\UGC\\0\\", SaveCreatorsClub);
       BackUpToolkitPart(TSWOptions.ManualsFolder, TargetBase + "ToolKit\\Manuals\\", SaveManuals);
-      BackUpToolkitPart(TSWOptions.GetSaveLocationPath(), TargetBase + "ToolKit\\OptionsSets\\", SaveSettings);
+      BackUpToolkitPart(TSWOptions.OptionsSetDir, TargetBase + "ToolKit\\OptionsSets\\", SaveSettings);
       BackUpToolkitPart(TSWOptions.ModsFolder, TargetBase + "ToolKit\\Mods\\", SaveMods);
       BackUpSingleFile(ToolkitBase, TargetBase + "ToolKit\\", "TSWTools.db", SaveDatabase);
       BackupSetsList.Add(new DirectoryInfo(TargetBase));
       SaveSaveGamesFiles(SourceBase, TargetBase, SaveSaveGames);
       SaveScenarioFiles(SourceBase, TargetBase, SaveScenarios);
       WriteBackupMetaData(TargetBase, CreateMetaData(SetName));
-
       Result += "Backup succeeded for set " + TargetBase;
       }
 
@@ -343,11 +343,11 @@ namespace ToolkitForTSW.ViewModels
       {
       if (saveScenarios)
         {
-        var sourceDir = new DirectoryInfo($"{sourceBase}Saved\\SaveGames\\");
-        var targetDir = $"{targetBase}Saved\\SaveGames\\";
-        var files = sourceDir.GetFiles("USD_*.sav", SearchOption.TopDirectoryOnly);
+        DirectoryInfo sourceDir = new DirectoryInfo($"{sourceBase}Saved\\SaveGames\\");
+        string targetDir = $"{targetBase}Saved\\SaveGames\\";
+        FileInfo[] files = sourceDir.GetFiles("USD_*.sav", SearchOption.TopDirectoryOnly);
         Directory.CreateDirectory(targetDir);
-        foreach (var file in files)
+        foreach (FileInfo file in files)
           {
           File.Copy(file.FullName, $"{targetDir}{file.Name}", true);
           }
@@ -358,11 +358,11 @@ namespace ToolkitForTSW.ViewModels
       {
       if (saveSaveGames)
         {
-        var sourceDir = new DirectoryInfo($"{sourceBase}Saved\\SaveGames\\");
-        var targetDir = $"{targetBase}Saved\\SaveGames\\";
+        DirectoryInfo sourceDir = new DirectoryInfo($"{sourceBase}Saved\\SaveGames\\");
+        string targetDir = $"{targetBase}Saved\\SaveGames\\";
         Directory.CreateDirectory(targetDir);
-        var files = sourceDir.GetFiles("*.sav", SearchOption.TopDirectoryOnly);
-        foreach (var file in files)
+        FileInfo[] files = sourceDir.GetFiles("*.sav", SearchOption.TopDirectoryOnly);
+        foreach (FileInfo file in files)
           {
           if (!file.Name.StartsWith("USD_"))
             {
@@ -376,8 +376,8 @@ namespace ToolkitForTSW.ViewModels
       {
       if (Included)
         {
-        var Source = SourceBase + Folder;
-        var Target = TargetBase + Folder;
+        string Source = SourceBase + Folder;
+        string Target = TargetBase + Folder;
         FileHelpers.CopyDir(Source, Target, true);
         }
       }
@@ -393,8 +393,8 @@ namespace ToolkitForTSW.ViewModels
       {
       if (Included)
         {
-        var Source = SourceBase + fileName;
-        var Target = TargetBase + fileName;
+        string Source = SourceBase + fileName;
+        string Target = TargetBase + fileName;
         Directory.CreateDirectory(TargetBase);
         File.Copy(Source, Target, true);
         }
@@ -418,15 +418,15 @@ namespace ToolkitForTSW.ViewModels
 
     public void RestoreBackup()
       {
-      var source = SelectedBackupSet.FullName;
-      var target = TSWOptions.GetSaveLocationPath() + "Saved\\";
+      string source = SelectedBackupSet.FullName;
+      string target = TSWOptions.GetSaveLocationPath() + "Saved\\";
       FileHelpers.CopyDir($"{source}\\Saved\\", target, true);
       RestoreToolkitFiles($"{source}\\Toolkit\\");
       }
 
     public static void RestoreToolkitFiles(string source)
       {
-      var target = TSWOptions.ToolkitForTSWFolder;
+      string target = TSWOptions.ToolkitForTSWFolder;
       // var target="D:\\Test\\";
       if (Directory.Exists(source))
         {
@@ -441,7 +441,7 @@ namespace ToolkitForTSW.ViewModels
     public void DeleteBackup()
       {
       // TODO may cause game crash, needs better fault protection
-      var source = SelectedBackupSet.FullName;
+      string source = SelectedBackupSet.FullName;
       try
         {
         Directory.Delete(source, true);
@@ -457,8 +457,8 @@ namespace ToolkitForTSW.ViewModels
     public static bool GetBackupServiceStatus()
       {
       //check service
-      var services = ServiceController.GetServices();
-      foreach (var s in services)
+      ServiceController[] services = ServiceController.GetServices();
+      foreach (ServiceController s in services)
         {
         if (s.ServiceName == "ToolkitForTSWService")
           {
@@ -494,7 +494,7 @@ namespace ToolkitForTSW.ViewModels
     #region metadata
     private string CreateMetaData(string setName)
       {
-      var output = string.Empty;
+      string output = string.Empty;
       output += $"Backup type: {setName}\r\n";
       output += $"Backup date: {_backupDateTime?.ToString("yyyy-MM-dd$HHmm")}\r\n";
       output += $"Config: {SaveConfig}\r\n";
@@ -514,7 +514,7 @@ namespace ToolkitForTSW.ViewModels
 
     private static void WriteBackupMetaData(string targetBase, string metaData)
       {
-      var path = $"{targetBase}Metadata.txt";
+      string path = $"{targetBase}Metadata.txt";
       File.WriteAllText(path, metaData);
       }
 
@@ -529,7 +529,7 @@ namespace ToolkitForTSW.ViewModels
     public void ViewMetaData()
       {
       string metaData = string.Empty;
-      var path = $"{SelectedBackupSet.FullName}\\Metadata.txt";
+      string path = $"{SelectedBackupSet.FullName}\\Metadata.txt";
       if (File.Exists(path))
         {
         metaData = File.ReadAllText(path);
@@ -541,7 +541,6 @@ namespace ToolkitForTSW.ViewModels
       MessageBox.Show(metaData, "Metadata", MessageBoxButton.OK, MessageBoxImage.Information);
       }
 
-
     public bool CanViewBackupFolder
       {
       get
@@ -551,7 +550,7 @@ namespace ToolkitForTSW.ViewModels
       }
     public void ViewBackupFolder()
       {
-      var path = SelectedBackupSet.FullName;
+      string path = SelectedBackupSet.FullName;
       if (Directory.Exists(path))
         {
         ProcessHelper.OpenFolder(path);

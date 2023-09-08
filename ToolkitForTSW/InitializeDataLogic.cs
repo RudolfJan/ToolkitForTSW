@@ -3,6 +3,7 @@ using Logging.Library;
 using Screenshots.Library.Logic;
 using Screenshots.Library.WPF.ViewModels;
 using SQLiteDatabase.Library;
+using Syroot.Windows.IO;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using ToolkitForTSW.Options;
 using ToolkitForTSW.ViewModels;
 using Utilities.Library;
 using Utilities.Library.Filters.DataAccess;
+using Utilities.Library.TextHelpers;
 using Utilities.Library.Zip;
 using DatabaseFactory = ToolkitForTSW.DataAccess.DatabaseFactory;
 
@@ -20,25 +22,13 @@ namespace ToolkitForTSW
 
     {
     internal static string InitialInstallDirectory = "";
-    public InitializeDataLogic()
-      {
-      // https://docs.microsoft.com/en-us/dotnet/desktop/wpf/app-development/how-to-add-a-splash-screen-to-a-wpf-application?view=netframeworkdesktop-4.8
 
-      TSWOptions.ReadFromRegistry();
-      InitialInstallDirectory = TSWOptions.ToolkitForTSWFolder; //Is always set by the installer
-      // DEBUG
-      if (string.IsNullOrEmpty(InitialInstallDirectory))
-        {
-        InitialInstallDirectory = "D:\\ToolkitForTSWTest\\";// TODO change this
-        }
-
-      TSWOptions.CreateDirectories(InitialInstallDirectory);
-      }
+    // https://docs.microsoft.com/en-us/dotnet/desktop/wpf/app-development/how-to-add-a-splash-screen-to-a-wpf-application?view=netframeworkdesktop-4.8
 
     public static CheckOptionsReporter CheckOptions()
       {
       CheckOptionsLogic.Instance.SetAllOptionChecks();
-      var optionsChecker = new CheckOptionsReporter();
+      CheckOptionsReporter optionsChecker = new CheckOptionsReporter();
       optionsChecker.BuildOptionsCheckReport();
       return optionsChecker;
       }
@@ -72,22 +62,22 @@ namespace ToolkitForTSW
 
     private static void CopyToolkitFolder(string oldToolkitPath, string targetPath, string folderName)
       {
-      var source = $"{oldToolkitPath}{folderName}";
-      var target = $"{targetPath}{folderName}";
+      string source = $"{oldToolkitPath}{folderName}";
+      string target = $"{targetPath}{folderName}";
       FileHelpers.CopyDir(source, target, true);
       }
-    // This function makes sure all TSW2 stuff is properly transferred, if you migrate to TSW3
+    // This function makes sure all TSW2 stuff is properly transferred, if you migrate to TSWxx
     // It only should run once
     internal static void CopyTSW2StuffAndCleanDatabase()
       {
       if (!TSWOptions.GetNotFirstRun())
         {
-        var toolkitPath = TSWOptions.GetTSW2ToolkitPath();
+        string toolkitPath = TSWOptions.GetTSW2ToolkitPath();
         if (!string.IsNullOrEmpty(toolkitPath))
           {
           // TODO need to do this BEFORE attempting to create the database
-          var dbSource = $"{toolkitPath}TSWTools.db";
-          var dbTarget = $"{InitialInstallDirectory}TSWTools.db";
+          string dbSource = $"{toolkitPath}TSWTools.db";
+          string dbTarget = $"{InitialInstallDirectory}TSWTools.db";
           if (File.Exists(dbSource) && !File.Exists(dbTarget))
             {
             File.Copy(dbSource, dbTarget);
@@ -115,8 +105,17 @@ namespace ToolkitForTSW
     public static void InitializeEdition()
       {
       EditionDataAccess.LoadEditionsFromCSV();
-      TSWOptions.GameEdition = EditionDataAccess.GetActiveEdition();
+      Models.EditionModel edition = EditionDataAccess.GetActiveEdition();
+      TSWOptions.GameEdition = edition.EditionName;
       TSWOptions.GameEditionId = EditionDataAccess.GetActiveEditionId();
+      if (TSWOptions.CurrentPlatform == PlatformEnum.EpicGamesStore)
+        {
+        TSWOptions.GameSaveLocation = TextHelper.AddBackslash($"{KnownFolders.Documents.Path}\\My Games\\{edition.EditionLongName}{TSWOptions.CurrentPlatform}");
+        }
+      else
+        {
+        TSWOptions.GameSaveLocation = TextHelper.AddBackslash($"{KnownFolders.Documents.Path}\\My Games\\{edition.EditionLongName}");
+        }
       }
 
     private static void MakeBackup()
@@ -124,7 +123,7 @@ namespace ToolkitForTSW
       // Make a backup when required
       if (TSWOptions.AutoBackup && !string.IsNullOrEmpty(TSWOptions.BackupFolder))
         {
-        var backup = new BackupViewModel();
+        BackupViewModel backup = new BackupViewModel();
         backup.MakeDailyBackup();
         }
       }
@@ -132,10 +131,10 @@ namespace ToolkitForTSW
     public static void MoveMods()
       {
       // Move Mods to proper directory
-      var destination = TSWOptions.ModsFolder;
+      string destination = TSWOptions.ModsFolder;
       if (Directory.Exists(destination))
         {
-        var source = destination.Replace("Mods", "Liveries");
+        string source = destination.Replace("Mods", "Liveries");
         if (Directory.Exists(source))
           {
           FileHelpers.CopyDir(source, destination, true);
@@ -146,8 +145,8 @@ namespace ToolkitForTSW
 
     public static void MoveTemplates()
       {
-      var destination = TSWOptions.TemplateFolder;
-      var source = ".\\Templates\\";
+      string destination = TSWOptions.TemplateFolder;
+      string source = ".\\Templates\\";
       if (Directory.Exists(source))
         {
         if (Directory.Exists(destination))
@@ -166,14 +165,14 @@ namespace ToolkitForTSW
       }
     public static void InitDatabase()
       {
-      var factory = new DatabaseFactory();
-      var databasePath = DatabasePath;
-      var connectionString = $"Data Source = {databasePath}; Version = 3;";
+      DatabaseFactory factory = new DatabaseFactory();
+      string databasePath = DatabasePath;
+      string connectionString = $"Data Source = {databasePath}; Version = 3;";
       DbManager.CurrentDatabaseVersion = 5;
       DbManager.DatabaseVersionDescription = "Added experimental settings";
       DbManager.InitDatabase(connectionString, databasePath, factory);
       // TODO check process logic very carefully to make sure you set the version correct and execute the proper update procedure.
-      var version = DbManager.GetCurrentVersion();
+      VersionModel version = DbManager.GetCurrentVersion();
       if (version.VersionNr < 3) // old database version is not compatible
         {
         DbManager.DeleteDatabase();
@@ -191,7 +190,7 @@ namespace ToolkitForTSW
 
     private static void InitScreenshotManagerDatabase()
       {
-      var screenshotFactory = new Screenshots.Library.DataAccess.DatabaseFactory();
+      Screenshots.Library.DataAccess.DatabaseFactory screenshotFactory = new Screenshots.Library.DataAccess.DatabaseFactory();
       screenshotFactory.CreateStructures();
       CategoryDataAccess.ImportCategoriesFromCsv("SQL\\ImportCategories.csv");
       TagDataAccess.ImportTagsFromCsv("SQL\\ImportTags.csv");

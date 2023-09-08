@@ -70,10 +70,10 @@ namespace ToolkitForTSW.DataAccess
         }
       }
 
-    internal static string GetActiveEdition()
+    internal static EditionModel GetActiveEdition()
       {
-      var sql = "SELECT EditionName FROM Editions WHERE Selected=1";
-      return DbAccess.LoadData<string, dynamic>(sql, new { }).FirstOrDefault();
+      var sql = "SELECT * FROM Editions WHERE Selected=1";
+      return DbAccess.LoadData<EditionModel, dynamic>(sql, new { }).FirstOrDefault();
       }
 
     internal static int GetActiveEditionId()

@@ -1,12 +1,12 @@
 ﻿using Logging.Library;
 using Microsoft.Win32;
+using Syroot.Windows.IO;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
 using ToolkitForTSW.Options;
 using Utilities.Library;
-using Utilities.Library.TextHelpers;
 using Utilities.Library.Wpf.Models;
 using MessageBox = System.Windows.MessageBox;
 
@@ -14,7 +14,7 @@ namespace ToolkitForTSW
   {
   public class TSWOptions
     {
-    private static readonly Assembly currentAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+    private static readonly Assembly currentAssembly = Assembly.GetExecutingAssembly();
     private static readonly AboutModel AboutData = new AboutModel();
 
     // Number of read only constants, that depend on the version
@@ -60,13 +60,7 @@ namespace ToolkitForTSW
 
     public static string Version { get; } = "3.0";
 
-    public static string GameSaveLocation
-      {
-      get
-        {
-        return TextHelper.AddBackslash(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\My Games\\TrainSimWorld3");
-        }
-      }
+    public static string GameSaveLocation { get; set; } // editiondependent
 
     // static holder for instance, need to use lambda to construct since constructor private
     private static readonly Lazy<TSWOptions> _instance
@@ -144,7 +138,6 @@ namespace ToolkitForTSW
         }
       }
 
-
     public static string RegkeyString
       {
       get
@@ -180,7 +173,6 @@ namespace ToolkitForTSW
       get { return _egsTrainSimWorldDirectory; }
       set { _egsTrainSimWorldDirectory = value; }
       }
-
 
     private static string _egsTrainSimWorldStarter = string.Empty;
 
@@ -242,7 +234,7 @@ namespace ToolkitForTSW
 
     public static string OptionsSetDir
       {
-      get { return ToolkitForTSWFolder + "OptionsSets\\"; }
+      get { return "OptionsSets\\"; }
       }
 
     public static bool IsInitialized
@@ -355,9 +347,8 @@ namespace ToolkitForTSW
       }
 
     public static string Installer { get; set; } = string.Empty;
-    public static object GameEdition { get; set; } = string.Empty;
+    public static string GameEdition { get; set; } = string.Empty;
     public static int GameEditionId { get; internal set; }
-
 
     #endregion
 
@@ -365,7 +356,6 @@ namespace ToolkitForTSW
       {
       return Registry.CurrentUser.CreateSubKey(RegkeyString, true);
       }
-
 
     // To be used to show the platform to the users
     public static string GetPlatformDisplayString(PlatformEnum platform)
@@ -395,7 +385,7 @@ namespace ToolkitForTSW
       {
       if (TSWOptions.CurrentPlatform == PlatformEnum.EpicGamesStore)
         {
-        var location = TSWOptions.GameSaveLocation;
+        string location = TSWOptions.GameSaveLocation;
         if (location.EndsWith("\\"))
           {
           location = location.Substring(0, location.Length - 1);
@@ -410,29 +400,20 @@ namespace ToolkitForTSW
       return TSWOptions.OptionsSetDir + TSWOptions.GetPlatformFolderName(TSWOptions.CurrentPlatform) + "\\";
       }
 
-
     public static void CreateDirectories(string baseFolder)
       {
+      string editionBaseFolder = $"{baseFolder}{TSWOptions.GameEdition}\\";
       ManualsFolder = baseFolder + "Manuals\\";
-      var RouteGuidesFolder = ManualsFolder + "RouteGuides\\";
-      SaveGameArchiveFolder = baseFolder + "SaveGame\\";
-      ModsFolder = baseFolder + "Mods\\";
-      UnpackFolder = baseFolder + "Unpack\\";
-      AssetUnpackFolder = baseFolder + "Unpack\\UnpackedAssets";
+      string RouteGuidesFolder = ManualsFolder + "RouteGuides\\";
+      SaveGameArchiveFolder = editionBaseFolder + "SaveGame\\";
+      ModsFolder = editionBaseFolder + "Mods\\";
+      UnpackFolder = editionBaseFolder + "Unpack\\";
+      AssetUnpackFolder = editionBaseFolder + "Unpack\\UnpackedAssets";
       TempFolder = baseFolder + "Temp\\";
       TemplateFolder = baseFolder + "Templates\\";
-      ScenarioFolder = baseFolder + "Scenarios\\";
+      ScenarioFolder = editionBaseFolder + "Scenarios\\";
       ThumbnailFolder = baseFolder + "Thumbnails\\";
-      // Unfortunately this does not work and gives security issues
-      //try
-      //  {
-      //  MoveData(BackupFolder, $"{BackupFolder}Steam\\");
-      //  MoveData(OptionsSetDir, $"{OptionsSetDir}Steam\\");
-      //  }
-      //catch(Exception ex)
-      //  {
-      //  Log.Trace("Error moving directories for EGS update because " + ex.Message, LogEventType.Error);
-      //  }
+
       try
         {
         Directory.CreateDirectory(ManualsFolder);
@@ -442,10 +423,10 @@ namespace ToolkitForTSW
         Directory.CreateDirectory(ModsFolder);
         Directory.CreateDirectory(UnpackFolder);
         Directory.CreateDirectory(AssetUnpackFolder);
-        Directory.CreateDirectory(OptionsSetDir);
+        Directory.CreateDirectory($"{editionBaseFolder}{OptionsSetDir}");
         Directory.CreateDirectory(TempFolder);
-        Directory.CreateDirectory($"{OptionsSetDir}Steam\\");
-        Directory.CreateDirectory($"{OptionsSetDir}EGS\\");
+        Directory.CreateDirectory($"{editionBaseFolder}{OptionsSetDir}Steam\\");
+        Directory.CreateDirectory($"{editionBaseFolder}{OptionsSetDir}EGS\\");
         // By default, the Backup folder is not set.
         if (!string.IsNullOrEmpty(BackupFolder))
           {
@@ -476,7 +457,7 @@ namespace ToolkitForTSW
 
     public static void CopyManuals()
       {
-      var SourceDir = InstallDirectory;
+      string SourceDir = InstallDirectory;
       try
         {
         File.Copy(SourceDir + "Manuals\\ToolkitForTSW Manual.pdf",
@@ -498,7 +479,7 @@ namespace ToolkitForTSW
       {
       AppKey ??= OpenCurrentUserRegistry();
       // For TSW3 we use a separate subKey where relevant, so you still can use the old version for TSW2 next to the TSW3 version of ToolkitForTSW
-      var subKey = AppKey.CreateSubKey(subKeyString);
+      RegistryKey subKey = AppKey.CreateSubKey(subKeyString);
 
       IsInitialized = ((int)subKey.GetValue("Initialized", 0) == 1);
       InstallDirectory = (string)subKey.GetValue("InstallDirectory", "");
@@ -526,7 +507,7 @@ namespace ToolkitForTSW
       FileCompare = (string)AppKey.GetValue("FileCompare", "");
       SevenZip = (string)AppKey.GetValue("7Zip", "");
 
-      var SavedCurrentPlatform = TSWOptions.CurrentPlatform;
+      PlatformEnum SavedCurrentPlatform = TSWOptions.CurrentPlatform;
 
       CurrentPlatform = (PlatformEnum)AppKey.GetValue("CurrentPlatform", PlatformEnum.NotSet);
       if (SavedCurrentPlatform != CurrentPlatform)
@@ -550,20 +531,19 @@ namespace ToolkitForTSW
 
     public static string GetTSW2ToolkitPath()
       {
-      var appKey = OpenCurrentUserRegistry();
+      RegistryKey appKey = OpenCurrentUserRegistry();
       return (string)appKey.GetValue("TSWToolsFolder", "");
       }
 
     public static void WriteToRegistry()
       {
-      var appKey = OpenCurrentUserRegistry();
+      RegistryKey appKey = OpenCurrentUserRegistry();
       AppKey = appKey; // is this correct?
       // For TSW3 we use a separate subKey where relevant, so you still can use the old version for TSW2 next to the TSW3 version of ToolkitForTSW
 
-      var subKey = appKey.CreateSubKey(subKeyString, true);
+      RegistryKey subKey = appKey.CreateSubKey(subKeyString, true);
       WriteToRegistry(appKey, subKey);
       }
-
 
     public static void WriteToRegistry(RegistryKey appKey, RegistryKey subKey)
       {
@@ -600,8 +580,8 @@ RegistryValueKind.String);
 
     public static bool GetNotFirstRun()
       {
-      var AppKey2 = OpenCurrentUserRegistry();
-      var subKey = AppKey2.CreateSubKey(subKeyString);
+      RegistryKey AppKey2 = OpenCurrentUserRegistry();
+      RegistryKey subKey = AppKey2.CreateSubKey(subKeyString);
       if (subKey != null)
         {
         NotFirstRun = (int)subKey.GetValue("NotFirstRun", 0) == 1;
@@ -612,15 +592,15 @@ RegistryValueKind.String);
 
     public static void SetNotFirstRun()
       {
-      var AppKey2 = OpenCurrentUserRegistry();
-      var subKey = AppKey2.CreateSubKey(subKeyString, true);
+      RegistryKey AppKey2 = OpenCurrentUserRegistry();
+      RegistryKey subKey = AppKey2.CreateSubKey(subKeyString, true);
       subKey.SetValue("NotFirstRun", true, RegistryValueKind.DWord);
       }
 
     public static void TestNotFirstRun()
       {
-      var AppKey2 = OpenCurrentUserRegistry();
-      var subKey = AppKey2.CreateSubKey(subKeyString);
+      RegistryKey AppKey2 = OpenCurrentUserRegistry();
+      RegistryKey subKey = AppKey2.CreateSubKey(subKeyString);
       subKey.SetValue("NotFirstRun", false, RegistryValueKind.DWord);
       }
 
@@ -659,6 +639,15 @@ RegistryValueKind.String);
         {
         SetNotFirstRun();
         }
+      }
+
+    internal static void CreateToolkitFolder(string toolkitForTSWFolder)
+      {
+      if (string.IsNullOrEmpty(toolkitForTSWFolder))
+        {
+        toolkitForTSWFolder = KnownFolders.Documents.Path;
+        }
+      Directory.CreateDirectory(toolkitForTSWFolder);
       }
     }
   }
